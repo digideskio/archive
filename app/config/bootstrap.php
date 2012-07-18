@@ -32,6 +32,11 @@
 require __DIR__ . '/bootstrap/libraries.php';
 
 /**
+ * The environments file checks and sets the environment we should be running in
+ */
+require __DIR__ . '/bootstrap/environments.php';
+
+/**
  * The error configuration allows you to use the filter system along with the advanced matching
  * rules of the `ErrorHandler` class to provide a high level of control over managing exceptions in
  * your application, with no impact on framework or application code.
