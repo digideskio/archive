@@ -37,6 +37,10 @@ class PagesController extends \lithium\action\Controller {
 		$options['template'] = join('/', $path);
 		return $this->render($options);
 	}
+	
+	public function blank() {
+		return $this->render(array('layout' => ''));
+	}
 }
 
 ?>
