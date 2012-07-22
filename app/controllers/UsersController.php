@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Users;
 use lithium\action\DispatchException;
+use lithium\security\Auth;
 
 class UsersController extends \lithium\action\Controller {
 
@@ -13,27 +14,63 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-		$user = Users::first($this->request->id);
-		return compact('user');
+	
+		//Dont run the query if no username is provided
+		if($this->request->params['username']) {
+		
+			//Get single record from the database where the username matches the URL
+			$user = Users::first(array(
+				'conditions' => array('username' => $this->request->params['username'])
+			));
+			
+			//Send the retrieved post data to the view
+			return compact('user');
+		}
+		
+		//since no username was specified, redirect to the index page
+		$this->redirect(array('Users::index'));
 	}
 
 	public function add() {
+        
+        //TODO don't repeat the entire validation from the Users model
+        //instead, just add the uniqueUsername rule when creating a new user
+        $validates = array(
+			'username' => array(
+				array('uniqueUsername', 'message' => 'This username is already taken.'),
+				array('notEmpty', 'message' => 'Please enter a username.'),
+				array('alphaNumeric', 'skipEmpty' => true, 'message' => 'Alphanumeric characters only.'),
+			),
+		    'password' => array(
+		        array('notEmpty', 'message'=>'Please enter a password.')
+		    ),
+		    'name' => array(
+		        array('notEmpty', 'message'=>'Please enter a full name.')
+		    ),
+		    'email' => array(
+		        array('notEmpty', 'message'=>'Include an email address.'),
+		        array('email', 'skipEmpty' => true, 'message' => 'The email address must be valid.')
+		    ),
+		);
+		
 		$user = Users::create();
 
-		if (($this->request->data) && $user->save($this->request->data)) {
-			return $this->redirect(array('Users::view', 'args' => array($user->id)));
+		if (($this->request->data) && $user->save($this->request->data, array('validate' => $validates))) {
+			return $this->redirect(array('Users::view', 'args' => array($user->username)));
 		}
 		return compact('user');
 	}
 
 	public function edit() {
-		$user = Users::find($this->request->id);
+		$user = Users::first(array(
+			'conditions' => array('username' => $this->request->params['username'])
+		));
 
 		if (!$user) {
 			return $this->redirect('Users::index');
 		}
 		if (($this->request->data) && $user->save($this->request->data)) {
-			return $this->redirect(array('Users::view', 'args' => array($user->id)));
+			return $this->redirect(array('Users::view', 'args' => array($user->username)));
 		}
 		return compact('user');
 	}

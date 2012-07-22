@@ -61,6 +61,10 @@ if (!Environment::is('production')) {
 // Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
 // Router::connect('/{:controller}/{:action}/{:id:\d+}');
 
+Router::connect('/users/view/{:username}', array('Users::view'));
+Router::connect('/users/edit/{:username}', array('Users::edit'));
+Router::connect('/users/delete/{:username}', array('Users::delete'));
+
 /**
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of
  * database which uses 24-character hexidecimal values as primary keys, uncomment the routes below.
