@@ -29,6 +29,10 @@ td.meta {
   color: #999999;
 }
 
+.modal-footer form {
+	margin-bottom: 0px;
+}
+
 @media (max-width: 979px) {
   body {
     padding-top: 0;

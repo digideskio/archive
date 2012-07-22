@@ -80,7 +80,11 @@ class UsersController extends \lithium\action\Controller {
 			$msg = "Users::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		Users::find($this->request->id)->delete();
+		
+		Users::first(array(
+			'conditions' => array('username' => $this->request->params['username'])
+		))->delete();
+			
 		return $this->redirect('Users::index');
 	}
 }

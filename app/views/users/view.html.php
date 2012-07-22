@@ -65,7 +65,9 @@ $this->title($user->username);
 			<p>Are you sure you want to permanently delete <strong><?=$user->name; ?></strong>?</p>
 			</div>
 			<div class="modal-footer">
+			<?=$this->form->create($user, array('url' => "/users/delete/$user->username", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<a href="/users/delete/<?=$user->username ?>" class="btn btn-danger">Delete</a>
+			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
+			<?=$this->form->end(); ?>
 	</div>
 </div>
