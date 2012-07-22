@@ -1,0 +1,37 @@
+body {
+  padding-top: 60px;
+  padding-bottom: 40px;
+}
+.sidebar-nav {
+  padding: 9px 0;
+}
+
+.navbar-fixed-top .brand {
+  font-weight: bold;
+  color: black;
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .1), 0 0 30px rgba(255, 255, 255, .125);
+  -webkit-transition: all .2s linear;
+  -moz-transition: all .2s linear;
+  transition: all .2s linear;
+}
+
+.btn-toolbar {
+  min-height: 33px;
+}
+
+.action.btn-group {
+  float: right;
+}
+
+td.meta {
+  text-transform: uppercase;
+    font-size: 11px;
+  color: #999999;
+}
+
+@media (max-width: 979px) {
+  body {
+    padding-top: 0;
+  }
+}
+​

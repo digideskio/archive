@@ -1,31 +1,32 @@
-<?php
-/**
- * Lithium: the most rad php framework
- *
- * @copyright     Copyright 2012, Union of RAD (http://union-of-rad.org)
- * @license       http://opensource.org/licenses/bsd-license.php The BSD License
- */
-?>
 <!doctype html>
 <html>
 <head>
 	<?php echo $this->html->charset();?>
-	<title>Application &gt; <?php echo $this->title(); ?></title>
-	<?php echo $this->html->style(array('debug', 'lithium')); ?>
+	<title>Archive &gt; <?php echo $this->title(); ?></title>
+	<?php echo $this->html->style(array('bootstrap.min.css', 'bootstrap-responsive.min.css', 'app.css')); ?>
 	<?php echo $this->scripts(); ?>
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
+	
 </head>
 <body class="app">
-	<div id="container">
-		<div id="header">
-			<h1>Application</h1>
-			<h2>
-				Powered by <?php echo $this->html->link('Lithium', 'http://lithify.me/'); ?>.
-			</h2>
+
+	<?php echo $this->_render('element', 'navbar'); ?>
+
+	<div id="container" class="container">
+	
+		<div id="main"  class="row" >
+		
+			<?php echo $this->_render('element', 'sidebar'); ?>
+	
+			<div id="content" class="span10">
+				<?php echo $this->content(); ?>
+			</div>
+		
 		</div>
-		<div id="content">
-			<?php echo $this->content(); ?>
-		</div>
+	
 	</div>
+
+	<?php echo $this->html->script(array('jquery.min.js', 'bootstrap.min.js')); ?>
+	
 </body>
 </html>
