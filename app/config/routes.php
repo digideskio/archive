@@ -37,6 +37,13 @@ Router::connect('/home', 'Pages::view');
 Router::connect('/pages/{:args}', 'Pages::view');
 
 /**
+ * Connect the login and logout URLs
+ */
+
+Router::connect('/login', 'Sessions::add');
+Router::connect('/logout', 'Sessions::delete');
+
+/**
  * Add the testing routes. These routes are only connected in non-production environments, and allow
  * browser-based access to the test suite for running unit and integration tests for the Lithium
  * core, as well as your own application and any other loaded plugins or frameworks. Browse to
