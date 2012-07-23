@@ -15,7 +15,11 @@
 
 </div>
 
+
+
 <div id="tools" class="btn-toolbar">
+
+<?php if($auth->role->name == 'Admin'): ?>
 
 	<div class="action btn-group">
 
@@ -25,8 +29,9 @@
 
 	</div>
 
-</div>
+<?php endif; ?>
 
+</div>
 
 
 <table class="table table-striped table-bordered">
@@ -41,18 +46,18 @@
 </thead>
 <tbody>
 
-<?php foreach($users as $user){ ?>
+<?php foreach($users as $user): ?>
 
 <tr>
 
 	<th><?=$this->html->link($user->username,'/users/view/'.$user->username); ?></th>
 	<td><?= $user->name; ?></td>
 	<td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
-	<td></td>
+	<td><?= $user->role->name; ?></td>
 
 </tr>
     
-<?php } ?>
+<?php endforeach; ?>
 
 
 

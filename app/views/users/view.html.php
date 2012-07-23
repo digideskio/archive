@@ -24,10 +24,12 @@ $this->title($user->username);
 
 <div id="tools" class="btn-toolbar">
 
+<?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
+
 	<div class="action btn-group">
 
 		<a class="btn btn-inverse" href="/users/edit/<?=$user->username ?>">
-			<i class="icon-file icon-white"></i> Edit
+			<i class="icon-pencil icon-white"></i> Edit User
 		</a>
 		<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
 			<span class="caret"></span>
@@ -46,13 +48,29 @@ $this->title($user->username);
 		</ul>
 
 	</div>
+	
+<?php endif; ?>
+
+<?php if($auth->username == $user->username): ?>
+
+	<div class="action btn-group">
+
+		<a class="btn btn-inverse" href="/users/edit/<?=$user->username ?>">
+			<i class="icon-pencil icon-white"></i> Edit Profile
+		</a>
+
+	</div>
+
+<?php endif; ?>
 
 </div>
 
 
 <h1><?=$user->name ?></h1>
 
-<p><?=$user->email ?></p>
+<h5><?=$user->email ?></h5>
+
+<h6><?=$user->role->name ?></h6>
 
 
 

@@ -7,6 +7,8 @@ use lithium\util\Validator;
 
 class Users extends \lithium\data\Model {
 
+	public $belongsTo = array('Roles');
+
 	public $validates = array(
 		'username' => array(
 			//array('uniqueUsername', 'message' => 'This username is already taken.'),
