@@ -19,7 +19,8 @@ class UsersTest extends \lithium\test\Unit {
 			"username" => "test",
 			"password" => "abcd",
 			"name" => "Full Name",
-			"email" => "email@example.com"
+			"email" => "email@example.com",
+			"role_id" => '3'
 		);
 		
 		
@@ -37,7 +38,8 @@ class UsersTest extends \lithium\test\Unit {
 			"username" => "test",
 			"password" => "efgh",
 			"name" => "Test Name",
-			"email" => "test@example.com"
+			"email" => "test@example.com",
+			"role_id" => '3'
 		);
 		
 		$this->assertFalse($repeat_user->save($repeat_username_data));
@@ -50,7 +52,8 @@ class UsersTest extends \lithium\test\Unit {
 			"username" => "",
 			"password" => "abcd",
 			"name" => "Full Name",
-			"email" => "email@example.com"
+			"email" => "email@example.com",
+			"role_id" => '3'
 		));
 		
 		$this->assertFalse($user->save());
@@ -61,7 +64,8 @@ class UsersTest extends \lithium\test\Unit {
 			"username" => "test",
 			"password" => "",
 			"name" => "Full Name",
-			"email" => "email@example.com"
+			"email" => "email@example.com",
+			"role_id" => '3'
 		));
 		
 		$this->assertFalse($user->save());
@@ -72,7 +76,8 @@ class UsersTest extends \lithium\test\Unit {
 			"username" => "test",
 			"password" => "abcd",
 			"name" => "",
-			"email" => "email@example.com"
+			"email" => "email@example.com",
+			"role_id" => '3'
 		));
 		
 		$this->assertFalse($user->save());
@@ -83,7 +88,8 @@ class UsersTest extends \lithium\test\Unit {
 			"username" => "test",
 			"password" => "abcd",
 			"name" => "Full Name",
-			"email" => ""
+			"email" => "",
+			"role_id" => '3'
 		));
 		
 		$this->assertFalse($user->save());
