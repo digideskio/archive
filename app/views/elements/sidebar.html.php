@@ -2,6 +2,9 @@
 	
 	<div class="well" style="padding: 8px 0;">
 		<ul class="nav nav-list">
+			<li><a href="/collections"><i class="icon-briefcase"></i> Collections</a></li>
+			<li><a href="/works"><i class="icon-picture"></i> Artworks</a></li>
+			<li class="divider"></li>
 			<li><a href="/users"><i class="icon-user"></i> Users</a></li>
 		</ul>
 	</div>
