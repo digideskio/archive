@@ -32,6 +32,16 @@ class UsersTest extends \lithium\test\Unit {
 		
 		$this->assertTrue($check);
 		
+		$repeat_user = Users::create();
+		$repeat_username_data = array(
+			"username" => "test",
+			"password" => "efgh",
+			"name" => "Test Name",
+			"email" => "test@example.com"
+		);
+		
+		$this->assertFalse($repeat_user->save($repeat_username_data));
+		
 		$user->delete();
 	}
 	

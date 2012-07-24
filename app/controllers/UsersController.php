@@ -82,18 +82,11 @@ class UsersController extends \lithium\action\Controller {
         if($auth->role->name != 'Admin') {
         	return $this->redirect('Users::index');
         }
-        
-        //Get the validation rules from the Model
-        $userModel = new Users();
-        $rules = $userModel->validates;
-        
-        //Add the uniqueUsername validation rule
-        array_push(&$rules['username'], array('uniqueUsername', 'message' => 'This username is already taken.'));
 		
 		$user = Users::create();
 		$roles = Roles::all();
 
-		if (($this->request->data) && $user->save($this->request->data, array('validate' => $rules))) {
+		if (($this->request->data) && $user->save($this->request->data)) {
 			return $this->redirect(array('Users::view', 'args' => array($user->username)));
 		}
 		return compact('user', 'roles');
@@ -131,10 +124,13 @@ class UsersController extends \lithium\action\Controller {
         	);
         }
         
-        // If the user is not an Admin, unset the role_id from form submit just in case,
+        // If the user is not an Admin, unset the role_id from form submit just in case
         if($auth->role->name != 'Admin' && isset($this->request->data['role_id'])) {
         	unset($this->request->data['role_id']);
         }
+        
+        // Unset the username just in case, because we prefer it not to be changed
+        unset($this->request->data['username']);
 		
 		if (($this->request->data) && $user->save($this->request->data)) {
 			return $this->redirect(array('Users::view', 'args' => array($user->username)));

@@ -11,7 +11,7 @@ class Users extends \lithium\data\Model {
 
 	public $validates = array(
 		'username' => array(
-			//array('uniqueUsername', 'message' => 'This username is already taken.'),
+			array('uniqueUsername', 'message' => 'This username is already taken.'),
 			array('notEmpty', 'message' => 'Please enter a username.'),
 			array('alphaNumeric', 'skipEmpty' => true, 'message' => 'Alphanumeric characters only.'),
 		),
@@ -29,8 +29,28 @@ class Users extends \lithium\data\Model {
 }
 
 Validator::add('uniqueUsername', function($value, $rule, $options) {
-	$conflicts = Users::count(array('username' => $value));
-	if($conflicts) return false;
+
+	// Get the submitted values
+	$id = isset($options["values"]["id"]) ? $options["values"]["id"] : NULL;
+	
+	// Check event, set during the call to Model::save()
+	$event = $options["events"];  // 'update' OR 'create'
+	
+	// If the id is set, look up who it belogns to
+	if($id) {
+		$user = Users::first($id);
+	}
+	
+	// Check for conflicts if the record is new, or if the stored value is
+	// different from the submitted one
+	if
+	(
+		($event == 'create') ||
+		($event == 'update' && $id && $user->username != $value)
+	) {
+		$conflicts = Users::count(array('username' => $value));
+		if($conflicts) return false;
+	}
 	return true;
 });
 
