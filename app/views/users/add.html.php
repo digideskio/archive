@@ -12,6 +12,24 @@ $this->form->config(
 
 ?>
 
+<div id="location" class="row-fluid">
+
+    
+	<ul class="breadcrumb">
+
+	<li>
+	<?=$this->html->link('Users','/users'); ?>
+	<span class="divider">/</span>
+	</li>
+	
+	<li class="active">
+		Add
+	</li>
+
+	</ul>
+
+</div>
+
 <div class="well">
 <?=$this->form->create($user); ?>
     <?=$this->form->field('username', array('autocomplete' => 'off'));?>
