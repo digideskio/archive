@@ -45,7 +45,7 @@ class CollectionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 	
-		//Dont run the query if no slug is provided
+		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
@@ -57,7 +57,7 @@ class CollectionsController extends \lithium\action\Controller {
 			return compact('collection', 'auth');
 		}
 		
-		//since no username was specified, redirect to the index page
+		//since no record was specified, redirect to the index page
 		$this->redirect(array('Collections::index'));
 	}
 
@@ -130,10 +130,10 @@ class CollectionsController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
         
-        // If the user is not an Admin or Editor, redirect to the collection view
+        // If the user is not an Admin or Editor, redirect to the record view
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
         	return $this->redirect(array(
-        		'Users::view', 'args' => array($this->request->params['username']))
+        		'Collections::view', 'args' => array($this->request->params['slug']))
         	);
         }
         

@@ -20,7 +20,7 @@ class Collections extends \lithium\data\Model {
 Collections::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 
-	// Check if this is a new collection
+	// Check if this is a new record
 	if(!$params['entity']->exists()) {
 	
 		//create a slug based on the title
