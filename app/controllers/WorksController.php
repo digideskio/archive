@@ -3,47 +3,158 @@
 namespace app\controllers;
 
 use app\models\Works;
+
+use app\models\Users;
+use app\models\Roles;
+
 use lithium\action\DispatchException;
+use lithium\security\Auth;
 
 class WorksController extends \lithium\action\Controller {
 
 	public function index() {
+    
+    	// Check authorization
+	    $check = (Auth::check('default')) ?: null;
+	
+		// If the user is not authorized, redirect to the login screen
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+        // Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+		
 		$works = Works::all();
-		return compact('works');
+		return compact('works', 'auth');
 	}
 
 	public function view() {
-		$work = Works::first($this->request->id);
-		return compact('work');
+    
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$work = Works::first(array(
+				'conditions' => array('slug' => $this->request->params['slug']),
+			));
+			
+			//Send the retrieved data to the view
+			return compact('work', 'auth');
+		}
+		
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Works::index'));
 	}
 
 	public function add() {
+    
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+        
+        // If the user is not an Admin or Editor, redirect to the index
+        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        	return $this->redirect('Works::index');
+        }
+        
 		$work = Works::create();
 
 		if (($this->request->data) && $work->save($this->request->data)) {
-			return $this->redirect(array('Works::view', 'args' => array($work->id)));
+			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 		}
 		return compact('work');
 	}
 
 	public function edit() {
-		$work = Works::find($this->request->id);
+    
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+		
+		$work = Works::first(array(
+			'conditions' => array('slug' => $this->request->params['slug'])
+		));
 
 		if (!$work) {
 			return $this->redirect('Works::index');
 		}
 		if (($this->request->data) && $work->save($this->request->data)) {
-			return $this->redirect(array('Works::view', 'args' => array($work->id)));
+			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 		}
+		
+		// If the database times are zero, just show an empty string in the form
+		if($work->earliest_date == '0000-00-00 00:00:00') {
+			$work->earliest_date = '';
+		}
+		
+		if($work->latest_date == '0000-00-00 00:00:00') {
+			$work->latest_date = '';
+		}
+		
 		return compact('work');
 	}
 
 	public function delete() {
+    
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+        
+		$work = Works::first(array(
+			'conditions' => array('slug' => $this->request->params['slug']),
+		));
+        
+        // If the user is not an Admin or Editor, redirect to the record view
+        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        	return $this->redirect(array(
+        		'Works::view', 'args' => array($this->request->params['slug']))
+        	);
+        }
+        
+        // For the following to work, the delete form must have an explicit 'method' => 'post'
+        // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Works::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		Works::find($this->request->id)->delete();
+		
+		$work->delete();
 		return $this->redirect('Works::index');
 	}
 }
