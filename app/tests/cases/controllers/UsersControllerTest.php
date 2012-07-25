@@ -2,7 +2,7 @@
 
 namespace app\tests\cases\controllers;
 
-use app\controllers\UsersController;;
+use app\controllers\UsersController;
 
 use app\models\Users;
 
@@ -15,6 +15,8 @@ class UsersControllerTest extends \lithium\test\Unit {
 	public $editor_data;
 
 	public function setUp() {
+	
+		Auth::clear('default');
 	
 		$admin = Users::create();
 		$admin_data = array(
@@ -124,8 +126,6 @@ class UsersControllerTest extends \lithium\test\Unit {
 		
 		$response = $users->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
-	
-	
 	
 	}
 }

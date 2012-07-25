@@ -57,7 +57,7 @@ class UsersController extends \lithium\action\Controller {
 				'with' => array('Roles')
 			));
 			
-			//Send the retrieved post data to the view
+			//Send the retrieved data to the view
 			return compact('user', 'auth');
 		}
 		
