@@ -15,7 +15,7 @@ class SessionsControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
 	
-		$user = Users::create();
+		$this->user = Users::create();
 		$data = array(
 			"username" => "test",
 			"password" => "abcd",
@@ -23,8 +23,7 @@ class SessionsControllerTest extends \lithium\test\Unit {
 			"email" => "email@example.com",
 			"role_id" => '3'
 		);
-		$user->save($data);
-	
+		$this->user->save($data);
 	
 	}
 
