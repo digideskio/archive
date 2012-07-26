@@ -3,21 +3,14 @@
 namespace app\models;
 
 use lithium\util\Inflector;
+use lithium\util\Validator;
 
 class Works extends \lithium\data\Model {
 
 	public $validates = array(
 		'title' => array(
 			array('notEmpty', 'message' => 'Please enter a title.'),
-		),
-		//Date checks don't work for values just listing the year, like '2007'
-		//TODO preprocess the date from form submit
-        /*'earliest_date' => array(
-            array('date', 'skipEmpty' => true, 'message'=>'Please enter a valid date.')
-        ),
-        'latest_date' => array(
-            array('date', 'skipEmpty' => true, 'message'=>'Please enter a valid date.')
-        ),*/
+		)
     );
     
     public function dimensions($entity) {
@@ -86,10 +79,6 @@ class Works extends \lithium\data\Model {
     
 }
 
-//TODO
-//If earliest date is entered as YYYY, save it as YYYY-01-01
-//If latest date is entered as YYYY, save it as YYYY-12-31
-
 Works::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 
@@ -112,6 +101,30 @@ Works::applyFilter('save', function($self, $params, $chain) {
 		));
 		
 		$params['data']['slug'] = $slug . ($count ? "-" . (++$count) : ''); //add slug-X only if $count > 0
+	}
+	
+	date_default_timezone_set('UTC');
+	
+	if( isset($params['data']['earliest_date']) && 
+		$params['data']['earliest_date'] &&
+		strtotime($params['data']['earliest_date'])
+	) {
+		if(preg_match('/^\d{4}$/', $params['data']['earliest_date'])) {
+			$params['data']['earliest_date'] .= '-01-01 00:00:00';
+		}
+		$time = strtotime($params['data']['earliest_date']);
+		$params['data']['earliest_date'] = date("Y-m-d H:i:s", $time);
+	}
+	
+	if( isset($params['data']['latest_date']) && 
+		$params['data']['latest_date'] &&
+		strtotime($params['data']['latest_date'])
+	) {
+		if(preg_match('/^\d{4}$/', $params['data']['latest_date'])) {
+			$params['data']['latest_date'] .= '-01-01 00:00:00';
+		}
+		$time = strtotime($params['data']['latest_date']);
+		$params['data']['latest_date'] = date("Y-m-d H:i:s", $time);
 	}
   
 	$response = $chain->next($self, $params, $chain);
