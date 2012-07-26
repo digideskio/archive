@@ -1,6 +1,6 @@
 <?php 
 
-$this->title('Artworks');
+$this->title('Artwork');
 
 ?>
 
@@ -38,7 +38,7 @@ $this->title('Artworks');
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-		<div class="alert alert-success">You can add the first Artwork by clicking the <strong><?=$this->html->link('Add Artwork','/collections/add/'); ?></strong> button.</div>
+		<div class="alert alert-success">You can add the first Artwork by clicking the <strong><?=$this->html->link('Add Artwork','/works/add/'); ?></strong> button.</div>
 
 	<?php endif; ?>
 

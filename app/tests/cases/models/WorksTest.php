@@ -32,7 +32,7 @@ class WorksTest extends \lithium\test\Unit {
 		$second_work->delete();
 	}
 	
-	public function testCreateCollectionWithNoTitle() {
+	public function testCreateWithNoTitle() {
 		$work = Works::create(array(
 			"title" => "",
 			"artist" => "Artwork Artist"
