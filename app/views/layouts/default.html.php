@@ -7,6 +7,18 @@
 	<?php echo $this->scripts(); ?>
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 	
+	<?php echo $this->html->script(array('jquery.min.js')); ?>
+	
+		<?php echo $this->html->script(array(
+			'plupload.js',
+			'plupload.gears.js',
+			'plupload.silverlight.js',
+			'plupload.flash.js',
+			'plupload.browserplus.js',
+			'plupload.html4.js',
+			'plupload.html5.js'
+		)); ?>
+	
 </head>
 <body class="app">
 
@@ -26,7 +38,7 @@
 	
 	</div>
 
-	<?php echo $this->html->script(array('jquery.min.js', 'bootstrap.min.js')); ?>
+	<?php echo $this->html->script(array('bootstrap.min.js')); ?>
 	
 </body>
 </html>

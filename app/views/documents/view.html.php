@@ -95,11 +95,11 @@ $this->title($publication->title);
 					<td class="meta">Location</td>
 					<td>
 						<?php 
-							if($publication->location_code) {
-								echo "<span class='label label-success'>$publication->location_code</span>\n";
-							}
 							if($publication->location) {
-								echo "<span class='label'>$publication->location</span>";
+								echo "<span class='label'>$publication->location</span> ";
+							}
+							if($publication->location_code) {
+								echo " <span class='label label-success'>$publication->location_code</span>";
 							}
 						?>
 					</td>
