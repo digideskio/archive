@@ -57,7 +57,7 @@ $this->form->config(array('templates' => array(
 		
 		<legend>Upload</legend>
 
-			<h6 style="letter-spacing:.2em">Drop Files Here</h6>
+			<h6 style="letter-spacing:.2em; text-align:center;">Drop Files Here</h6>
 			
 			<hr/>
 
@@ -77,7 +77,7 @@ $this->form->config(array('templates' => array(
                 var uploader = new plupload.Uploader({
                     
                     runtimes : 'gears,html5,flash,silverlight,browserplus',
-                    url:"http://dev.fakeweiwei.com/upload.php",
+                    url:"/documents/upload/",
                     browse_button : "pickfiles",
                     button_browse_hover : true,
                     drop_element : "dropArea",
@@ -227,10 +227,10 @@ $this->form->config(array('templates' => array(
                     $fileItem.find('.progress').addClass('progress-success');
                     $('#cancel'+file.id).remove();
                     
-                    $('#filelink').html('<div class="alert">Your finished uploads will be available on the <a href="/documents">Documents</a> page.</div>');
+                    //$('#filelink').html('<div class="alert">Your finished uploads will be available on the <a href="/documents">Documents</a> page.</div>');
                     
-                     //response = jQuery.parseJSON( response.response );
-                    
+                     response = jQuery.parseJSON( response.response );
+                     
                  
                 });
                 
