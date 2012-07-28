@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($publication->title);
+$this->title($document->title);
 
 ?>
 
@@ -9,12 +9,12 @@ $this->title($publication->title);
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Publications','/publications'); ?>
+	<?=$this->html->link('Documents','/documents'); ?>
 	<span class="divider">/</span>
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?>
+	<?=$this->html->link($document->title,'/documents/view/'.$document->slug); ?>
 	</li>
 
 	</ul>
@@ -27,15 +27,15 @@ $this->title($publication->title);
 
 	<div class="action btn-group">
 
-		<a class="btn btn-inverse" href="/publications/edit/<?=$publication->slug ?>">
-			<i class="icon-pencil icon-white"></i> Edit Publication
+		<a class="btn btn-inverse" href="/documents/edit/<?=$document->slug ?>">
+			<i class="icon-pencil icon-white"></i> Edit Document
 		</a>
 		<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
 			<li>
-				<a href="/publications/edit/<?=$publication->slug ?>">
+				<a href="/documents/edit/<?=$document->slug ?>">
 					<i class="icon-pencil"></i> Edit
 				</a>
 			</li>
@@ -53,71 +53,60 @@ $this->title($publication->title);
 </div>
 
 <div class="row">
-	<div class="span4">
+	<div class="span6">
 	
 		<ul class="thumbnails">
-			<li class="span4">
-			<a href class="thumbnail">
-			<div style="width: 290px; height: 290px; display: block; background-color:#CCCCCC;"></div>
-			</a>
-			</li>
+		<?php $span = 'span6'; ?>
+		<?php $px = '560'; ?>
+		<li class="<?=$span?>" >
+		<a href="/uploads/<?=$document->hash?>.<?=$document->format->extension?>" class="thumbnail">
+		<img src="/uploads/<?=$document->hash?>_<?=$px?>x<?=$px?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+		</a>
+		</li>
 		</ul>
 		
 	</div>
 	
-	<div class="span6">
-	
-		<div class="alert alert-block">
-    	<p>
-    		<?php echo $publication->citation(); ?>
-    	</p>
-		</div>
+	<div class="span4">
 	
 		<table class="table">
 			<tbody>
 				<tr>
 					<td><i class="icon-barcode"></i></td>
-					<td class="meta">Publication&nbsp;ID</td>
+					<td class="meta">File Type</td>
 					<td>
-						<?php 
-						
-						if($publication->publication_number) {
-							echo $publication->publication_number;
-						} else {
-							echo '<span class="label label-important">Missing</span>';
-						}
-						
-						?>
+						<span class="label"><?= $document->format->mime_type ?></span>
 					</td>
 				</tr>
 				<tr>
-					<td><i class="icon-globe"></i></td>
-					<td class="meta">Location</td>
+					<td><i class="icon-bookmark"></i></td>
+					<td class="meta">Title</td>
+					<td><?=$document->title ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-calendar"></i></td>
+					<td class="meta">Date</td>
+					<td><?=$document->file_date ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-picture"></i></td>
+					<td class="meta">Artwork</td>
 					<td>
-						<?php 
-							if($publication->location) {
-								echo "<span class='label'>$publication->location</span> ";
-							}
-							if($publication->location_code) {
-								echo " <span class='label label-success'>$publication->location_code</span>";
-							}
-						?>
+						None
 					</td>
 				</tr>
 				<tr>
-					<td><i class="icon-tag"></i></td>
-					<td class="meta">Subjects</td>
-					<td><?=$publication->subject ?></td>
-				</tr>
-				<tr>
-					<td><i class="icon-flag"></i></td>
-					<td class="meta">Language</td>
-					<td><?=$publication->language ?></td>
-				</tr>
-				<tr>
-					<td><i class="icon-comment"></i></td>
-					<td class="meta">Remarks</td>
-					<td><?=$publication->remarks ?></td>
+					<td><i class="icon-camera"></i></td>
+					<td class="meta">PhotoCredit</td>
+					<td>
+					<?php
+						if($document->credit) { 
+							echo $document->credit;
+						 } else {
+						 	echo '<span class="label label-warning">Unknown</span>';
+						 }
+					?>
+					</td>
 				</tr>
 			</tbody>
 		
@@ -131,13 +120,13 @@ $this->title($publication->title);
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete Publication</h3>
+			<h3>Delete Document</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$publication->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$document->title; ?></strong>?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($publication, array('url' => "/publications/delete/$publication->slug", 'method' => 'post')); ?>
+			<?=$this->form->create($document, array('url' => "/documents/delete/$document->slug", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

@@ -4,6 +4,8 @@ namespace app\models;
 
 use lithium\util\Inflector;
 
+use Imagine;
+
 class Documents extends \lithium\data\Model {
 
 	public $belongsTo = array('Formats');
@@ -11,6 +13,31 @@ class Documents extends \lithium\data\Model {
 	public $validates = array();
 	
 }
+
+Documents::applyFilter('delete', function($self, $params, $chain) {
+
+	$target_dir = 'uploads';
+
+	$hash = $params['entity']->hash;
+	$format_id = $params['entity']->format_id;
+
+	// Look up the format
+	$format = Formats::first(array(
+		'conditions' => array('id' => $format_id)
+	));
+
+	$file_path = $target_dir . DIRECTORY_SEPARATOR . $hash . '.' . $format->extension;
+	$twosixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . $format->extension;
+	$fivesixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . $format->extension;
+
+	unlink($file_path);
+	unlink($twosixty);
+	unlink($fivesixty);
+
+
+	return $chain->next($self, $params, $chain);
+
+});
 
 Documents::applyFilter('create', function($self, $params, $chain) {
 
@@ -84,7 +111,6 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		
 		// Look up the format
 		$format = Formats::first(array(
-			'fields' => array('id'),
 			'conditions' => array('mime_type' => $mime_type)
 		));
 		
@@ -96,8 +122,27 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		//Give the file a unique filename based on its md5sum
 		$hash_name = $hash . '.' . $format->extension;
 		$final_path = $target_dir . DIRECTORY_SEPARATOR . $hash_name;
-		rename($file_path, $final_path);	
+		rename($file_path, $final_path);
+		
+		try {
+			$imagine = new Imagine\Gd\Imagine();
+		
+			$twosixty	= new Imagine\Image\Box(260, 260);
+			$fivesixty	= new Imagine\Image\Box(560, 560);
+			$mode		= Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+		
+			$imagine->open($final_path)->thumbnail($twosixty, $mode)->save(
+				$target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . $format->extension
+			);
+		
+			$imagine->open($final_path)->thumbnail($fivesixty, $mode)->save(
+				$target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . $format->extension
+			);
 	
+		} catch (Imagine\Exception\Exception $e) {
+			error_log($e);
+		}
+		
 	}
 	
 	return $chain->next($self, $params, $chain);

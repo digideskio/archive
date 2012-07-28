@@ -49,15 +49,28 @@ $this->title('Documents');
 
 <thead>
 	<tr>
-		<th><i class="icon-barcode"></i></th>
-		<th>Author</th>
+		<th>Preview</th>
 		<th>Title</th>
-		<th>Year</th>
-		<th>Publisher</th>
+		<th>Date</th>
 	</tr>
 </thead>
 		
 <tbody>
+
+<?php foreach($documents as $document): ?>
+
+	<tr>
+		<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
+		<?php $px = '260'; ?>
+		<a href="/documents/view/<?=$document->slug ?>">
+		<img width='125' height='125' src="/uploads/<?=$document->hash?>_<?=$px?>x<?=$px?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+		</a>
+		</td>
+		<td><?=$this->html->link($document->title, 'documents/view/'.$document->slug); ?></td>
+		<td><?=$document->file_date ?></td>
+	</tr>
+
+<?php endforeach; ?>
 
 
     

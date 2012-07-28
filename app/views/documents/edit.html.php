@@ -1,6 +1,6 @@
 <?php
 
-$this->title($publication->title);
+$this->title($document->title);
 
 $this->form->config(
     array( 
@@ -18,12 +18,12 @@ $this->form->config(
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Publications','/publications'); ?>
+	<?=$this->html->link('Documents','/documents'); ?>
 	<span class="divider">/</span>
 	</li>
 
 	<li>
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?>
+	<?=$this->html->link($document->title,'/documents/view/'.$document->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -37,29 +37,14 @@ $this->form->config(
 
 
 <div class="well">
-<?=$this->form->create($publication); ?>
+<?=$this->form->create($document); ?>
 	<legend>Info</legend>
 	
-	 <span class="help-block">Is the publication an interview?</span>
-	
-	<label class="checkbox">
-    <?=$this->form->checkbox('interview');?> Interview
-    </label>
-    
-	<?=$this->form->field('author');?>
 	<?=$this->form->field('title');?>
-	<?=$this->form->field('publisher');?>
-	<?=$this->form->field('earliest_date');?>
-	<?=$this->form->field('latest_date');?>
-	<?=$this->form->field('pages');?>
-	<?=$this->form->field('url', array('label' => 'Website'));?>
-	<?=$this->form->field('subject');?>
-	<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-	<?=$this->form->field('language');?>
-	<?=$this->form->field('location');?>
-	<?=$this->form->field('location_code');?>
-	<?=$this->form->field('publication_number', array('label' => 'Publication ID'));?>
+	<?=$this->form->field('file_date');?>
+	<?=$this->form->field('repository', array('label' => 'Image Repository'));?>
+	<?=$this->form->field('credit', array('label' => 'Photo Credit'));?>
 	<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-	<?=$this->html->link('Cancel','/publications/view/' . $publication->slug, array('class' => 'btn')); ?>
+	<?=$this->html->link('Cancel','/documents/view/' . $document->slug, array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>

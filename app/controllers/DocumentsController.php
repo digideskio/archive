@@ -33,7 +33,10 @@ class DocumentsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$documents = Documents::all();
+		$documents = Documents::find('all', array(
+			'with' => array('Formats')
+		));
+		
 		return compact('documents', 'auth');
 	}
 
@@ -56,6 +59,8 @@ class DocumentsController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
+				'with' => array('Formats')
+				
 			));
 			
 			//Send the retrieved data to the view
@@ -112,12 +117,8 @@ class DocumentsController extends \lithium\action\Controller {
 		}
 		
 		// If the database times are zero, just show an empty string in the form
-		if($document->earliest_date == '0000-00-00 00:00:00') {
-			$document->earliest_date = '';
-		}
-		
-		if($document->latest_date == '0000-00-00 00:00:00') {
-			$document->latest_date = '';
+		if($document->file_date == '0000-00-00 00:00:00') {
+			$document->file_date = '';
 		}
 		
 		return compact('document');
@@ -154,7 +155,11 @@ class DocumentsController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 		
-		$document->delete();
+		$target_dir = 'uploads';
+		
+		$data = compact('target_dir');
+		
+		$document->delete($data);
 		return $this->redirect('Documents::index');
 	}
 	
