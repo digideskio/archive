@@ -41,6 +41,7 @@ $this->form->config(
 	<legend>Info</legend>
 	
 	<?=$this->form->field('title');?>
+	<?=$this->form->field('slug', array('label' => 'Permalink', 'disabled' => 'disabled'));?>
 	<?=$this->form->field('file_date');?>
 	<?=$this->form->field('repository', array('label' => 'Image Repository'));?>
 	<?=$this->form->field('credit', array('label' => 'Photo Credit'));?>

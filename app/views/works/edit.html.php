@@ -78,10 +78,43 @@ $this->form->config(
 		<legend>Exhibitions</legend>
 	<?=$this->form->end(); ?>
 	</div>
+	
 	<div class="well">
-	<?=$this->form->create(); ?>
 		<legend>Images</legend>
-	<?=$this->form->end(); ?>
+		<table class="table">
+		
+			<?php foreach($workDocuments as $wd): ?>
+			
+				<tr>
+					<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
+						<?php $px = '260'; ?>
+						<a href="/documents/view/<?=$wd->document->slug ?>" title="<?=$wd->document->title ?>">
+						<img width="125" height="125" src="/uploads/<?=$wd->document->hash?>_<?=$px?>x<?=$px?>.<?=$wd->format->extension?>" alt="<?=$wd->document->title ?>">
+						</a>
+					</td>
+					<td align="right" style="text-align:right">
+			<?=$this->form->create($wd, array('url' => "/works_documents/delete/$wd->id", 'method' => 'post')); ?>
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
+			<?=$this->form->end(); ?>
+					</td>
+				</tr>
+			
+			<?php endforeach; ?>
+			
+			</table>
+		
+		<?=$this->form->create(null, array('url' => "/works_documents/add/", 'method' => 'post')); ?>
+			<legend>Add a Document</legend>
+			<span class="help-block">Find the document you want to add, click the <code>Edit</code> button, copy the text in the <code>Permalink</code> field, and paste it here.</span>
+			<?=$this->form->field('document_slug', array('label' => 'Document Permalink'));?>
+			
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
+		
+		<?=$this->form->submit('Add Document', array('class' => 'btn btn-inverse')); ?>
+		<?=$this->form->end(); ?>
+		
 	</div>
 
 	</div>

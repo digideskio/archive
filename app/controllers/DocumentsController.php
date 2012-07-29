@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Documents;
+use app\models\WorksDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -60,11 +61,15 @@ class DocumentsController extends \lithium\action\Controller {
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
 				'with' => array('Formats')
-				
+			));
+		
+			$works_documents = WorksDocuments::find('all', array(
+				'with' => 'Works',
+				'conditions' => array('document_id' => $document->id)
 			));
 			
 			//Send the retrieved data to the view
-			return compact('document', 'auth');
+			return compact('document', 'works_documents', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page

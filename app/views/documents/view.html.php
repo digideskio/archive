@@ -69,8 +69,39 @@ $this->title($document->title);
 	
 	<div class="span4">
 	
+   		<?php foreach($works_documents as $wd): ?>
+			<div class="alert alert-block">
+				<p>
+					<?php echo $wd->work->caption(); ?>
+					
+					<?php
+							echo "(Photo &copy; ";
+							if($document->credit) { echo $document->credit . ', '; }
+							echo $document->year() . ').';
+					?>
+					
+				</p>
+			</div>
+		<?php endforeach; ?>
+	
 		<table class="table">
 			<tbody>
+				<tr>
+					<td><i class="icon-picture"></i></td>
+					<td class="meta">Artwork</td>
+					<td>
+						<ul class="unstyled" style="margin-bottom:0">
+						
+							<?php foreach($works_documents as $wd): ?>
+							<li><strong><?=$this->html->link(
+								$wd->work->title,
+								'/works/view/'.$wd->work->slug
+							);?></strong></li>
+							<?php endforeach; ?>
+						
+						</ul>
+					</td>
+				</tr>
 				<tr>
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">File Type</td>
@@ -87,13 +118,6 @@ $this->title($document->title);
 					<td><i class="icon-calendar"></i></td>
 					<td class="meta">Date</td>
 					<td><?=$document->file_date ?></td>
-				</tr>
-				<tr>
-					<td><i class="icon-picture"></i></td>
-					<td class="meta">Artwork</td>
-					<td>
-						None
-					</td>
 				</tr>
 				<tr>
 					<td><i class="icon-camera"></i></td>

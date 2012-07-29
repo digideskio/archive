@@ -8,9 +8,35 @@ use Imagine;
 
 class Documents extends \lithium\data\Model {
 
-	public $belongsTo = array('Formats');
+	public $belongsTo = array(
+		"Formats" => array(
+			"to" => "app\models\Formats",
+			"key" => "format_id",
+		),
+	);
 
 	public $validates = array();
+	
+	public function year($entity) {
+	
+	$year = (
+		$entity->file_date != 
+		'0000-00-00 00:00:00'
+	) ? date_format(date_create($entity->file_date), 'Y') : '';
+	
+	return $year;
+		
+	}
+	
+	public function thumbnail($entity) {
+	
+		$format = Formats::find('first', array(
+			'conditions' => array('id' => $entity->format_id),
+		));
+	
+		return $entity->hash . "_260x260." . $format->extension;
+	
+	}
 	
 }
 

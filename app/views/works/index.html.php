@@ -64,9 +64,14 @@ $this->title('Artwork');
 <tr>
 	<td><?=$work->creation_number?></td>
 	
-	<?php //TODO create an work->preview() function or helper?>
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		
+		<?php $wd = $work->works_documents[0]; if($wd->id) { ?>	
+			<a href="/works/view/<?=$work->slug?>">
+			<img width="125" height="125" src="uploads/<?=$wd->preview(); ?>" />
+			</a>
+		<?php } else { ?>
+			<span class="label label-warning">No Image</span>
+		<?php } ?>
 	</td>
     <td><?=$this->html->link($work->title,'/works/view/'.$work->slug); ?></td>
     <td><?=$work->years(); ?></td>

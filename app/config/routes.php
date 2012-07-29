@@ -88,6 +88,8 @@ Router::connect('/documents/view/{:slug}', array('Documents::view'));
 Router::connect('/documents/edit/{:slug}', array('Documents::edit'));
 Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
 
+Router::connect('/works_documents/delete/{:id}', array('WorksDocuments::delete'));
+
 /**
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of
  * database which uses 24-character hexidecimal values as primary keys, uncomment the routes below.

@@ -56,6 +56,30 @@ $this->title($work->title);
 	<div class="span6">
 	
 		<ul class="thumbnails">
+			
+				<?php
+					$num_thumbs = sizeof($workDocuments );
+					$span = $num_thumbs > 1 ? 'span3' : 'span6';
+					$px = $num_thumbs > 1 ? '260' : '560';
+				?>
+		
+			<?php foreach($workDocuments as $wd): ?>
+			
+				<li class="<?=$span?>">
+					<a href="/documents/view/<?=$wd->document->slug?>" class="thumbnail">
+						<img src="/uploads/<?=$wd->document->hash?>_<?=$px?>x<?=$px?>.<?=$wd->format->extension?>" alt="<?=$wd->document->title ?>">
+					</a>
+				</li>
+			
+			<?php endforeach; ?>
+			
+			<?php if(sizeof($workDocuments) == 0): ?>
+				<li class="<?=$span?>">
+				<div class="thumbnail">
+				<span class="label label-warning">No Image</span>
+				</div>
+				</li>
+			<?php endif; ?>
 		
 		</ul>
 		

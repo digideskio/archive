@@ -44,35 +44,22 @@ $this->title('Documents');
 
 <?php endif; ?>
 
-<table class="table table-bordered">
-
-
-<thead>
-	<tr>
-		<th>Preview</th>
-		<th>Title</th>
-		<th>Date</th>
-	</tr>
-</thead>
-		
-<tbody>
+<ul class="thumbnails">
 
 <?php foreach($documents as $document): ?>
 
-	<tr>
-		<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $px = '260'; ?>
-		<a href="/documents/view/<?=$document->slug ?>">
-		<img width='125' height='125' src="/uploads/<?=$document->hash?>_<?=$px?>x<?=$px?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+	<?php
+		$span = 'span2';
+		$px = '260';
+	?>
+	
+	<li class="<?=$span?>">
+		<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
+			<img src="/uploads/<?=$document->hash?>_<?=$px?>x<?=$px?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
 		</a>
-		</td>
-		<td><?=$this->html->link($document->title, 'documents/view/'.$document->slug); ?></td>
-		<td><?=$document->file_date ?></td>
-	</tr>
+	</li>
 
 <?php endforeach; ?>
 
+</ul>
 
-    
-</tbody>
-</table>

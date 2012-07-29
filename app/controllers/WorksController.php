@@ -6,6 +6,8 @@ use app\models\Works;
 
 use app\models\Users;
 use app\models\Roles;
+use app\models\Documents;
+use app\models\WorksDocuments;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -28,7 +30,9 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$works = Works::all();
+		$works = Works::find('all', array(
+			'with' => 'WorksDocuments'
+		));
 		return compact('works', 'auth');
 	}
 
@@ -52,9 +56,17 @@ class WorksController extends \lithium\action\Controller {
 			$work = Works::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
+		
+			$workDocuments = WorksDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Formats'
+				),
+				'conditions' => array('work_id' => $work->id),
+			));
 			
 			//Send the retrieved data to the view
-			return compact('work', 'auth');
+			return compact('work', 'workDocuments', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -101,7 +113,15 @@ class WorksController extends \lithium\action\Controller {
 		));
 		
 		$work = Works::first(array(
-			'conditions' => array('slug' => $this->request->params['slug'])
+			'conditions' => array('slug' => $this->request->params['slug']),
+		));
+		
+		$workDocuments = WorksDocuments::find('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('work_id' => $work->id),
 		));
 
 		if (!$work) {
@@ -120,7 +140,7 @@ class WorksController extends \lithium\action\Controller {
 			$work->latest_date = '';
 		}
 		
-		return compact('work');
+		return compact('work', 'workDocuments');
 	}
 
 	public function delete() {
