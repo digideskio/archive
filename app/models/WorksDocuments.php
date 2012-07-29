@@ -30,7 +30,11 @@ class WorksDocuments extends \lithium\data\Model {
 			'conditions' => array('id' => $entity->document_id),
 		));
 		
-		return $document->thumbnail();
+		if($document) {
+		
+			return $document->thumbnail();
+		
+		}
 		
 	}
 }

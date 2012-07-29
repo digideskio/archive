@@ -78,6 +78,23 @@ class Works extends \lithium\data\Model {
 		
 		return implode('<br/>', $info);
 	}
+	
+	public function preview($entity) {
+	
+		$work_documents = WorksDocuments::first('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('work_id' => $entity->id),
+		));
+		
+		if($work_documents) {
+		
+			return $work_documents->document->thumbnail();
+		}
+	
+	}
     
 }
 

@@ -80,7 +80,15 @@ $this->title($collection->title);
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 	
+		<?php $thumbnail = $cw->work->preview(); $work_slug = $cw->work->slug;
 		
+			if($thumbnail) {
+				echo "<a href='/works/view/$work_slug'>";
+				echo "<img width='125' height='125' src='/files/thumb/$thumbnail' />";
+				echo "</a>";
+			}
+		
+		?>
 	
 	</td>
     <td><?=$this->html->link($cw->work->title,'/works/view/'.$cw->work->slug); ?></td>
