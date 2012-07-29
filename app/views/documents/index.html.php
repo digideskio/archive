@@ -54,7 +54,7 @@ $this->title('Documents');
 	
 	<li class="<?=$span?>">
 		<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
-			<img src="/files/thumb/<?=$document->slug?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+			<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
 		</a>
 	</li>
 

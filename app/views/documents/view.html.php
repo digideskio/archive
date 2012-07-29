@@ -59,7 +59,7 @@ $this->title($document->title);
 		<?php $span = 'span6'; ?>
 		<li class="<?=$span?>" >
 		<a href="/files/download/<?=$document->slug?>.<?=$document->format->extension?>" class="thumbnail">
-		<img src="/files/small/<?=$document->slug?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+		<img src="/files/small/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
 		</a>
 		</li>
 		</ul>

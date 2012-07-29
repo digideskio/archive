@@ -84,7 +84,7 @@ class FilesController extends \lithium\action\Controller {
 					'/webroot/files/' . 
 					$document->hash . '_' . $px . 'x' . $px .
 					'.' .
-					$document->format->extension;
+					'jpeg';
 				
 				if(file_exists($path)){
 					$this->response->headers(array('Content-type' => $document->format->mime_type));
@@ -131,7 +131,7 @@ class FilesController extends \lithium\action\Controller {
 					'/webroot/files/' . 
 					$document->hash . '_' . $px . 'x' . $px .
 					'.' .
-					$document->format->extension;
+					'jpeg';
 				
 				if(file_exists($path)){
 					$this->response->headers(array('Content-type' => $document->format->mime_type));
