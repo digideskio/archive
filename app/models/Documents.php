@@ -151,7 +151,7 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		rename($file_path, $final_path);
 		
 		try {
-			$imagine = new Imagine\Gd\Imagine();
+			$imagine = new Imagine\Imagick\Imagine();
 		
 			$twosixty	= new Imagine\Image\Box(260, 260);
 			$fivesixty	= new Imagine\Image\Box(560, 560);
