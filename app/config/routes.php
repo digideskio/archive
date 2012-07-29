@@ -90,6 +90,11 @@ Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
 
 Router::connect('/works_documents/delete/{:id}', array('WorksDocuments::delete'));
 
+Router::connect('/files/view/{:file}', array('Files::view'));
+Router::connect('/files/small/{:file}', array('Files::small'));
+Router::connect('/files/thumb/{:file}', array('Files::thumb'));
+Router::connect('/files/download/{:file}', array('Files::download'));
+
 /**
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of
  * database which uses 24-character hexidecimal values as primary keys, uncomment the routes below.

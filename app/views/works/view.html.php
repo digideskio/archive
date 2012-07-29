@@ -60,14 +60,14 @@ $this->title($work->title);
 				<?php
 					$num_thumbs = sizeof($workDocuments );
 					$span = $num_thumbs > 1 ? 'span3' : 'span6';
-					$px = $num_thumbs > 1 ? '260' : '560';
+					$size = $num_thumbs > 1 ? 'thumb' : 'small';
 				?>
 		
 			<?php foreach($workDocuments as $wd): ?>
 			
 				<li class="<?=$span?>">
 					<a href="/documents/view/<?=$wd->document->slug?>" class="thumbnail">
-						<img src="/uploads/<?=$wd->document->hash?>_<?=$px?>x<?=$px?>.<?=$wd->format->extension?>" alt="<?=$wd->document->title ?>">
+						<img src="/files/<?=$size?>/<?=$wd->document->slug?>.<?=$wd->format->extension?>" alt="<?=$wd->document->title ?>">
 					</a>
 				</li>
 			

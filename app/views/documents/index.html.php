@@ -50,12 +50,11 @@ $this->title('Documents');
 
 	<?php
 		$span = 'span2';
-		$px = '260';
 	?>
 	
 	<li class="<?=$span?>">
 		<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
-			<img src="/uploads/<?=$document->hash?>_<?=$px?>x<?=$px?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+			<img src="/files/thumb/<?=$document->slug?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
 		</a>
 	</li>
 

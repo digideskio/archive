@@ -57,10 +57,9 @@ $this->title($document->title);
 	
 		<ul class="thumbnails">
 		<?php $span = 'span6'; ?>
-		<?php $px = '560'; ?>
 		<li class="<?=$span?>" >
-		<a href="/uploads/<?=$document->hash?>.<?=$document->format->extension?>" class="thumbnail">
-		<img src="/uploads/<?=$document->hash?>_<?=$px?>x<?=$px?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
+		<a href="/files/download/<?=$document->slug?>.<?=$document->format->extension?>" class="thumbnail">
+		<img src="/files/small/<?=$document->slug?>.<?=$document->format->extension?>" alt="<?=$document->title ?>">
 		</a>
 		</li>
 		</ul>

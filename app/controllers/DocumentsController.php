@@ -160,7 +160,7 @@ class DocumentsController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 		
-		$target_dir = 'uploads';
+		$target_dir = 'files';
 		
 		$data = compact('target_dir');
 		
@@ -195,7 +195,7 @@ class DocumentsController extends \lithium\action\Controller {
 		
 		// Settings
 		$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-		$targetDir = 'uploads';
+		$targetDir = 'files';
 
 		$cleanupTargetDir = true; // Remove old files
 		$maxFileAge = 5 * 3600; // Temp file age in seconds

@@ -34,7 +34,7 @@ class Documents extends \lithium\data\Model {
 			'conditions' => array('id' => $entity->format_id),
 		));
 	
-		return $entity->hash . "_260x260." . $format->extension;
+		return $entity->slug . '.' . $format->extension;
 	
 	}
 	
@@ -42,7 +42,7 @@ class Documents extends \lithium\data\Model {
 
 Documents::applyFilter('delete', function($self, $params, $chain) {
 
-	$target_dir = 'uploads';
+	$target_dir = 'files';
 
 	$hash = $params['entity']->hash;
 	$format_id = $params['entity']->format_id;
@@ -155,13 +155,14 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		
 			$twosixty	= new Imagine\Image\Box(260, 260);
 			$fivesixty	= new Imagine\Image\Box(560, 560);
-			$mode		= Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
+			$inset		= Imagine\Image\ImageInterface::THUMBNAIL_INSET;
+			$outbound	= Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
 		
-			$imagine->open($final_path)->thumbnail($twosixty, $mode)->save(
+			$imagine->open($final_path)->thumbnail($twosixty, $outbound)->save(
 				$target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . $format->extension
 			);
 		
-			$imagine->open($final_path)->thumbnail($fivesixty, $mode)->save(
+			$imagine->open($final_path)->thumbnail($fivesixty, $inset)->save(
 				$target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . $format->extension
 			);
 	
