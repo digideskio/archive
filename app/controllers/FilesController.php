@@ -87,7 +87,7 @@ class FilesController extends \lithium\action\Controller {
 					'jpeg';
 				
 				if(file_exists($path)){
-					$this->response->headers(array('Content-type' => $document->format->mime_type));
+					$this->response->headers(array('Content-type' => 'image/jpeg'));
 					$this->response->body = file_get_contents($path);
 		 
 					return compact('file');
@@ -134,7 +134,7 @@ class FilesController extends \lithium\action\Controller {
 					'jpeg';
 				
 				if(file_exists($path)){
-					$this->response->headers(array('Content-type' => $document->format->mime_type));
+					$this->response->headers(array('Content-type' => 'image/jpeg'));
 					$this->response->body = file_get_contents($path);
 		 
 					return compact('file');
