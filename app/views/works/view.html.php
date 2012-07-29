@@ -58,12 +58,12 @@ $this->title($work->title);
 		<ul class="thumbnails">
 			
 				<?php
-					$num_thumbs = sizeof($workDocuments );
+					$num_thumbs = sizeof($work_documents);
 					$span = $num_thumbs > 1 ? 'span3' : 'span6';
 					$size = $num_thumbs > 1 ? 'thumb' : 'small';
 				?>
 		
-			<?php foreach($workDocuments as $wd): ?>
+			<?php foreach($work_documents as $wd): ?>
 			
 				<li class="<?=$span?>">
 					<a href="/documents/view/<?=$wd->document->slug?>" class="thumbnail">
@@ -73,7 +73,7 @@ $this->title($work->title);
 			
 			<?php endforeach; ?>
 			
-			<?php if(sizeof($workDocuments) == 0): ?>
+			<?php if(sizeof($work_documents) == 0): ?>
 				<li class="<?=$span?>">
 				<div class="thumbnail">
 				<span class="label label-warning">No Image</span>
@@ -120,6 +120,14 @@ $this->title($work->title);
 					<td class="meta">Collections</td>
 					<td>
 						<ul class="unstyled" style="margin-bottom:0">
+						
+							<?php foreach($collection_works as $cw): ?>
+							<li><strong><?=$this->html->link(
+								$cw->collection->title,
+								'/collections/view/'.$cw->collection->slug
+							);?></strong></li>
+							<?php endforeach; ?>
+						
 						</ul>
 					</td>
 				</tr>

@@ -39,6 +39,7 @@ $this->form->config(
 <div class="well">
 <?=$this->form->create($collection); ?>
     <?=$this->form->field('title',array('value'=>$collection->title)); ?>
+	<?=$this->form->field('slug', array('label' => 'Permalink', 'disabled' => 'disabled'));?>
     <?=$this->form->field('description',
         array('type'=>'textarea','value'=>$collection->description)); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>

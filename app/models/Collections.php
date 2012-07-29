@@ -6,6 +6,8 @@ use lithium\util\Inflector;
 
 class Collections extends \lithium\data\Model {
 
+	public $hasMany = array('CollectionsWorks');
+
 	public $validates = array(
 		'title' => array(
 			array(

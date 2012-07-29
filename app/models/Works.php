@@ -7,7 +7,7 @@ use lithium\util\Validator;
 
 class Works extends \lithium\data\Model {
 
-	public $hasMany = array('WorksDocuments');
+	public $hasMany = array('CollectionsWorks', 'WorksDocuments');
 
 	public $validates = array(
 		'title' => array(

@@ -3,6 +3,8 @@
 namespace app\controllers;
 
 use app\models\Collections;
+use app\models\CollectionsWorks;
+use app\models\Works;
 
 use app\models\Users;
 use app\models\Roles;
@@ -28,7 +30,9 @@ class CollectionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$collections = Collections::all();
+		$collections = Collections::find('all', array(
+			'with' => 'CollectionsWorks'
+		));
 		return compact('collections', 'auth');
 	}
 
@@ -50,11 +54,16 @@ class CollectionsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$collection = Collections::first(array(
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('slug' => $this->request->params['slug'])
+			));
+			
+			$collection_works = CollectionsWorks::find('all', array(
+				'with' => 'Works',
+				'conditions' => array('collection_id' => $collection->id)
 			));
 			
 			//Send the retrieved data to the view
-			return compact('collection', 'auth');
+			return compact('collection', 'collection_works', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page

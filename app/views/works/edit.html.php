@@ -69,6 +69,48 @@ $this->form->config(
 	<div class="span5">
 	<div class="well">
 		<legend>Collections</legend>
+		<table class="table">
+		
+			<?php foreach($collection_works as $cw): ?>
+			
+				<tr>
+					<td>
+						<a href="/collections/view/<?=$cw->collection->slug ?>"><?=$cw->collection->title ?></a>
+					</td>
+					<td align="right" style="text-align:right">
+			<?=$this->form->create($cw, array('url' => "/collections_works/delete/$cw->id", 'method' => 'post')); ?>
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
+			<?=$this->form->end(); ?>
+					</td>
+				</tr>
+			
+			<?php endforeach; ?>
+			
+			</table>
+		
+		<?php if(sizeof($other_collections) > 0): ?>
+		
+		<form action="/collections_works/add" method="post">
+		<legend>Add this work to a Collection</legend>
+		<select name="collection_id">
+			<?php foreach($other_collections as $oc): ?>
+			<option value="<?=$oc->id ?>"><?=$oc->title ?></option>
+			<?php endforeach; ?>
+		</select>
+		
+		<input type="hidden" name="work_id" value="<?=$work->id ?>" />
+		<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+		
+		<br/>
+		
+		<?=$this->form->submit('Add', array('class' => 'btn btn-inverse')); ?>
+		
+		</form>
+		
+		<?php endif; ?>
+		
+		
 	</div>
 	
 	
@@ -83,7 +125,7 @@ $this->form->config(
 		<legend>Images</legend>
 		<table class="table">
 		
-			<?php foreach($workDocuments as $wd): ?>
+			<?php foreach($work_documents as $wd): ?>
 			
 				<tr>
 					<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">

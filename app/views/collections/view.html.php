@@ -73,6 +73,24 @@ $this->title($collection->title);
 		
 <tbody>
 
+<?php foreach($collection_works as $cw): ?>
+
+<tr>
+	<td><?=$cw->work->creation_number?></td>
+	
+	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
+	
+		
+	
+	</td>
+    <td><?=$this->html->link($cw->work->title,'/works/view/'.$cw->work->slug); ?></td>
+    <td><?=$cw->work->years(); ?></td>
+    <td><?php echo $cw->work->notes(); ?></td>
+    <td><?=$cw->work->classification ?></td>
+</tr>
+    
+<?php endforeach; ?>
+
 </tbody>
 
 

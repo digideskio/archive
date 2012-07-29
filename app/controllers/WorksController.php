@@ -8,6 +8,8 @@ use app\models\Users;
 use app\models\Roles;
 use app\models\Documents;
 use app\models\WorksDocuments;
+use app\models\Collections;
+use app\models\CollectionsWorks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -57,16 +59,21 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
 		
-			$workDocuments = WorksDocuments::find('all', array(
+			$work_documents = WorksDocuments::find('all', array(
 				'with' => array(
 					'Documents',
 					'Formats'
 				),
 				'conditions' => array('work_id' => $work->id),
 			));
+		
+			$collection_works = CollectionsWorks::find('all', array(
+				'with' => 'Collections',
+				'conditions' => array('work_id' => $work->id),
+			));
 			
 			//Send the retrieved data to the view
-			return compact('work', 'workDocuments', 'auth');
+			return compact('work', 'work_documents', 'collection_works', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -116,7 +123,14 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
 		
-		$workDocuments = WorksDocuments::find('all', array(
+		$collection_works = CollectionsWorks::find('all', array(
+			'with' => 'Collections',
+			'conditions' => array('work_id' => $work->id),
+		));
+		
+		$other_collections = Collections::all();
+		
+		$work_documents = WorksDocuments::find('all', array(
 			'with' => array(
 				'Documents',
 				'Formats'
@@ -140,7 +154,7 @@ class WorksController extends \lithium\action\Controller {
 			$work->latest_date = '';
 		}
 		
-		return compact('work', 'workDocuments');
+		return compact('work', 'work_documents', 'collection_works', 'other_collections');
 	}
 
 	public function delete() {

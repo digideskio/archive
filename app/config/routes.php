@@ -76,6 +76,8 @@ Router::connect('/collections/view/{:slug}', array('Collections::view'));
 Router::connect('/collections/edit/{:slug}', array('Collections::edit'));
 Router::connect('/collections/delete/{:slug}', array('Collections::delete'));
 
+Router::connect('/collections_works/delete/{:id}', array('CollectionsWorks::delete'));
+
 Router::connect('/works/view/{:slug}', array('Works::view'));
 Router::connect('/works/edit/{:slug}', array('Works::edit'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));

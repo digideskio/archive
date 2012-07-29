@@ -53,8 +53,8 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 	));
 
 	$file_path = $target_dir . DIRECTORY_SEPARATOR . $hash . '.' . $format->extension;
-	$twosixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . $format->extension;
-	$fivesixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . $format->extension;
+	$twosixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . 'jpeg';
+	$fivesixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . 'jpeg';
 
 	unlink($file_path);
 	unlink($twosixty);
@@ -159,11 +159,11 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 			$outbound	= Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
 		
 			$imagine->open($final_path)->thumbnail($twosixty, $outbound)->save(
-				$target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . $format->extension
+				$target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . 'jpeg'
 			);
 		
 			$imagine->open($final_path)->thumbnail($fivesixty, $inset)->save(
-				$target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . $format->extension
+				$target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . 'jpeg'
 			);
 	
 		} catch (Imagine\Exception\Exception $e) {
