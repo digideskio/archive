@@ -178,7 +178,7 @@ $this->title($work->title);
 			<h3>Delete Artwork</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$work->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$work->title; ?></strong>? This will not delete any associated documents. It will only remove this Artwork and its information from the listings.</p>
 			</div>
 			<div class="modal-footer">
 			<?=$this->form->create($work, array('url' => "/works/delete/$work->slug", 'method' => 'post')); ?>

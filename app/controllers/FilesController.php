@@ -80,11 +80,7 @@ class FilesController extends \lithium\action\Controller {
 			
 			if($document) {
 		
-				$path = LITHIUM_APP_PATH . 
-					'/webroot/files/' . 
-					$document->hash . '_' . $px . 'x' . $px .
-					'.' .
-					'jpeg';
+				$path = LITHIUM_APP_PATH . '/webroot/files/small/' . $document->hash . '.jpeg';
 				
 				if(file_exists($path)){
 					$this->response->headers(array('Content-type' => 'image/jpeg'));
@@ -118,8 +114,6 @@ class FilesController extends \lithium\action\Controller {
 	
 			$ext = strrpos($file, '.');
 			$slug = substr($file, 0, $ext);
-			$px = '260';
-		
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $slug),
 				'with' => array('Formats')
@@ -127,11 +121,7 @@ class FilesController extends \lithium\action\Controller {
 			
 			if($document) {
 		
-				$path = LITHIUM_APP_PATH . 
-					'/webroot/files/' . 
-					$document->hash . '_' . $px . 'x' . $px .
-					'.' .
-					'jpeg';
+				$path = LITHIUM_APP_PATH . '/webroot/files/thumb/' . $document->hash . '.jpeg';
 				
 				if(file_exists($path)){
 					$this->response->headers(array('Content-type' => 'image/jpeg'));

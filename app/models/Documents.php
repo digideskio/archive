@@ -42,6 +42,14 @@ class Documents extends \lithium\data\Model {
 
 Documents::applyFilter('delete', function($self, $params, $chain) {
 
+	$document_id = $params['entity']->id;
+		
+	//Delete any relationships
+	WorksDocuments::find('all', array(
+		'conditions' => array('document_id' => $document_id)
+	))->delete();
+	
+	//Delete all files
 	$target_dir = 'files';
 
 	$hash = $params['entity']->hash;
@@ -53,12 +61,12 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 	));
 
 	$file_path = $target_dir . DIRECTORY_SEPARATOR . $hash . '.' . $format->extension;
-	$twosixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . 'jpeg';
-	$fivesixty = $target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . 'jpeg';
+	$small = $target_dir . DIRECTORY_SEPARATOR . 'small' . DIRECTORY_SEPARATOR . $hash . '.jpeg';
+	$thumb = $target_dir . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR . $hash . '.jpeg';
 
 	unlink($file_path);
-	unlink($twosixty);
-	unlink($fivesixty);
+	unlink($small);
+	unlink($thumb);
 
 
 	return $chain->next($self, $params, $chain);
@@ -150,6 +158,24 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		$final_path = $target_dir . DIRECTORY_SEPARATOR . $hash_name;
 		rename($file_path, $final_path);
 		
+		$image_path = $final_path;
+		
+		//create a preview for pdf
+		if ($format == 'pdf') {
+			$image_path = $targetDir . DIRECTORY_SEPARATOR . $hash . '.jpeg';
+			exec("/usr/bin/convert ".$final_path."[0] $preview", $preview_info);
+		}
+		
+		//Make paths for the image previews
+		$small = $target_dir . DIRECTORY_SEPARATOR . 'small';
+		$thumb = $target_dir . DIRECTORY_SEPARATOR . 'thumb';
+		
+		if (!file_exists($small))
+			@mkdir($small);
+			
+		if (!file_exists($thumb))
+			@mkdir($thumb);
+		
 		try {
 			$imagine = new Imagine\Imagick\Imagine();
 		
@@ -158,12 +184,12 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 			$inset		= Imagine\Image\ImageInterface::THUMBNAIL_INSET;
 			$outbound	= Imagine\Image\ImageInterface::THUMBNAIL_OUTBOUND;
 		
-			$imagine->open($final_path)->thumbnail($twosixty, $outbound)->save(
-				$target_dir . DIRECTORY_SEPARATOR . $hash . '_260x260.' . 'jpeg'
+			$imagine->open($image_path)->thumbnail($twosixty, $outbound)->save(
+				$thumb . DIRECTORY_SEPARATOR . $hash . '.jpeg'
 			);
 		
-			$imagine->open($final_path)->thumbnail($fivesixty, $inset)->save(
-				$target_dir . DIRECTORY_SEPARATOR . $hash . '_560x560.' . 'jpeg'
+			$imagine->open($image_path)->thumbnail($fivesixty, $inset)->save(
+				$small . DIRECTORY_SEPARATOR . $hash . '.jpeg'
 			);
 	
 		} catch (Imagine\Exception\Exception $e) {

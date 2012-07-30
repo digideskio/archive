@@ -86,6 +86,8 @@ $this->title($collection->title);
 				echo "<a href='/works/view/$work_slug'>";
 				echo "<img width='125' height='125' src='/files/thumb/$thumbnail' />";
 				echo "</a>";
+			} else {
+				echo '<span class="label label-warning">No Image</span>';
 			}
 		
 		?>
@@ -108,7 +110,7 @@ $this->title($collection->title);
 			<h3>Delete Collection</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>? This will not delete any of the artworks inside. It will only remove this Collection from the listings.</p>
 			</div>
 			<div class="modal-footer">
 			<?=$this->form->create($collection, array('url' => "/collections/delete/$collection->slug", 'method' => 'post')); ?>
