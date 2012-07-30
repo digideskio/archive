@@ -98,6 +98,23 @@ class Works extends \lithium\data\Model {
     
 }
 
+Works::applyFilter('delete', function($self, $params, $chain) {
+
+	$work_id = $params['entity']->id;
+		
+	//Delete any relationships
+	CollectionsWorks::find('all', array(
+		'conditions' => array('work_id' => $work_id)
+	))->delete();
+	
+	WorksDocuments::find('all', array(
+		'conditions' => array('work_id' => $work_id)
+	))->delete();
+
+	return $chain->next($self, $params, $chain);
+
+});
+
 Works::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 

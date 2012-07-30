@@ -19,6 +19,19 @@ class Collections extends \lithium\data\Model {
 	);
 }
 
+Collections::applyFilter('delete', function($self, $params, $chain) {
+
+	$collection_id = $params['entity']->id;
+		
+	//Delete any relationships
+	CollectionsWorks::find('all', array(
+		'conditions' => array('collection_id' => $collection_id)
+	))->delete();
+
+	return $chain->next($self, $params, $chain);
+
+});
+
 Collections::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 
