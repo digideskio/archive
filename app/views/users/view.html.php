@@ -65,12 +65,15 @@ $this->title($user->username);
 
 </div>
 
+<div class="alert alert-info">
 
 <h1><?=$user->name ?></h1>
 
 <h5><?=$user->email ?></h5>
 
 <h6><?=$user->role->name ?></h6>
+
+</div>
 
 
 
