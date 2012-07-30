@@ -2,21 +2,17 @@
 
 namespace app\controllers;
 
+use app\models\Exhibitions;
+use app\models\ExhibitionsWorks;
 use app\models\Works;
 
 use app\models\Users;
 use app\models\Roles;
-use app\models\Documents;
-use app\models\WorksDocuments;
-use app\models\Collections;
-use app\models\CollectionsWorks;
-use app\models\Exhibitions;
-use app\models\ExhibitionsWorks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
-class WorksController extends \lithium\action\Controller {
+class ExhibitionsController extends \lithium\action\Controller {
 
 	public function index() {
     
@@ -34,10 +30,10 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$works = Works::find('all', array(
-			'with' => 'WorksDocuments'
+		$exhibitions = Exhibitions::find('all', array(
+			'with' => 'ExhibitionsWorks'
 		));
-		return compact('works', 'auth');
+		return compact('exhibitions', 'auth');
 	}
 
 	public function view() {
@@ -57,34 +53,30 @@ class WorksController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$work = Works::first(array(
-				'conditions' => array('slug' => $this->request->params['slug']),
-			));
-		
-			$work_documents = WorksDocuments::find('all', array(
-				'with' => array(
-					'Documents',
-					'Formats'
-				),
-				'conditions' => array('work_id' => $work->id),
-			));
-		
-			$collection_works = CollectionsWorks::find('all', array(
-				'with' => 'Collections',
-				'conditions' => array('work_id' => $work->id),
-			));
-		
-			$exhibition_works = ExhibitionsWorks::find('all', array(
-				'with' => 'Exhibitions',
-				'conditions' => array('work_id' => $work->id),
+			$exhibition = Exhibitions::first(array(
+				'conditions' => array('slug' => $this->request->params['slug'])
 			));
 			
+			$exhibition_works = ExhibitionsWorks::find('all', array(
+				'with' => 'Works',
+				'conditions' => array('exhibition_id' => $exhibition->id)
+			));
+		
+			// If the database times are zero, just show an empty string
+			if($exhibition->earliest_date == '0000-00-00 00:00:00') {
+				$exhibition->earliest_date = '';
+			}
+		
+			if($exhibition->latest_date == '0000-00-00 00:00:00') {
+				$exhibition->latest_date = '';
+			}
+			
 			//Send the retrieved data to the view
-			return compact('work', 'work_documents', 'collection_works', 'exhibition_works', 'auth');
+			return compact('exhibition', 'exhibition_works', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
-		$this->redirect(array('Works::index'));
+		$this->redirect(array('Exhibitions::index'));
 	}
 
 	public function add() {
@@ -102,15 +94,15 @@ class WorksController extends \lithium\action\Controller {
         
         // If the user is not an Admin or Editor, redirect to the index
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Works::index');
+        	return $this->redirect('Exhibitions::index');
         }
         
-		$work = Works::create();
+		$exhibition = Exhibitions::create();
 
-		if (($this->request->data) && $work->save($this->request->data)) {
-			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
+		if (($this->request->data) && $exhibition->save($this->request->data)) {
+			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
-		return compact('work');
+		return compact('exhibition');
 	}
 
 	public function edit() {
@@ -126,49 +118,27 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$work = Works::first(array(
-			'conditions' => array('slug' => $this->request->params['slug']),
-		));
-		
-		$collection_works = CollectionsWorks::find('all', array(
-			'with' => 'Collections',
-			'conditions' => array('work_id' => $work->id),
-		));
-		
-		$other_collections = Collections::all();
-		
-		$exhibition_works = ExhibitionsWorks::find('all', array(
-			'with' => 'Exhibitions',
-			'conditions' => array('work_id' => $work->id),
-		));
-		
-		$other_exhibitions = Exhibitions::all();
-		
-		$work_documents = WorksDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Formats'
-			),
-			'conditions' => array('work_id' => $work->id),
+		$exhibition = Exhibitions::first(array(
+			'conditions' => array('slug' => $this->request->params['slug'])
 		));
 
-		if (!$work) {
-			return $this->redirect('Works::index');
+		if (!$exhibition) {
+			return $this->redirect('Exhibitions::index');
 		}
-		if (($this->request->data) && $work->save($this->request->data)) {
-			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
-		}
-		
-		// If the database times are zero, just show an empty string in the form
-		if($work->earliest_date == '0000-00-00 00:00:00') {
-			$work->earliest_date = '';
+		if (($this->request->data) && $exhibition->save($this->request->data)) {
+			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
 		
-		if($work->latest_date == '0000-00-00 00:00:00') {
-			$work->latest_date = '';
+		// If the database times are zero, just show an empty string
+		if($exhibition->earliest_date == '0000-00-00 00:00:00') {
+			$exhibition->earliest_date = '';
 		}
 		
-		return compact('work', 'work_documents', 'collection_works', 'other_collections', 'exhibition_works', 'other_exhibitions');
+		if($exhibition->latest_date == '0000-00-00 00:00:00') {
+			$exhibition->latest_date = '';
+		}
+		
+		return compact('exhibition');
 	}
 
 	public function delete() {
@@ -184,26 +154,26 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
         
-		$work = Works::first(array(
+		$exhibition = Exhibitions::first(array(
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
         
         // If the user is not an Admin or Editor, redirect to the record view
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
         	return $this->redirect(array(
-        		'Works::view', 'args' => array($this->request->params['slug']))
+        		'Exhibitions::view', 'args' => array($this->request->params['slug']))
         	);
         }
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
-			$msg = "Works::delete can only be called with http:post or http:delete.";
+			$msg = "Exhibitions::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
 		
-		$work->delete();
-		return $this->redirect('Works::index');
+		$exhibition->delete();
+		return $this->redirect('Exhibitions::index');
 	}
 }
 

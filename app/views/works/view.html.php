@@ -135,7 +135,16 @@ $this->title($work->title);
 					<td><i class="icon-eye-open"></i></td>
 					<td class="meta">Exhibitions</td>
 					<td>
-						None
+						<ul class="unstyled" style="margin-bottom:0">
+						
+							<?php foreach($exhibition_works as $ew): ?>
+							<li><strong><?=$this->html->link(
+								$ew->exhibition->title,
+								'/exhibitions/view/'.$ew->exhibition->slug
+							);?></strong> <?=$ew->exhibition->years(); ?></li>
+							<?php endforeach; ?>
+						
+						</ul>
 					</td>
 				</tr>
 				<tr>

@@ -3,25 +3,20 @@
 namespace app\models;
 
 use lithium\util\Inflector;
-use lithium\util\Validator;
 
-class Works extends \lithium\data\Model {
+class Exhibitions extends \lithium\data\Model {
 
-	public $hasMany = array('CollectionsWorks', 'WorksDocuments');
+	public $hasMany = array('ExhibitionsWorks');
 
 	public $validates = array(
 		'title' => array(
-			array('notEmpty', 'message' => 'Please enter a title.'),
+			array(
+				'notEmpty',
+				'required' => true,
+				'message'=>'You must include a title.'
+			)
 		)
-    );
-    
-    public function dimensions($entity) {
-    	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));
-    	$measures = $hwd ? implode(' × ', $hwd) . ' cm' : '';
-    	$running_time = $entity->running_time ? $entity->running_time : '';
-    	$dimensions = array_filter(array($measures, $running_time));
-    	return implode(', ', $dimensions);
-    }
+	);
     
     public function years($entity) {
     
@@ -38,88 +33,22 @@ class Works extends \lithium\data\Model {
 
 		return implode('–', $years);
     }
-    
-    public function caption($entity) {
-    
-    	$years = Works::years($entity);
-    
-    	$caption = array_filter(array(
-    		$entity->artist,
-    		'<em>'.$entity->title.'</em>',
-    		$years,
-    		$entity->dimensions()
-    	));
-    	
-    	return implode(', ', $caption) . '.';
-    
-    }
-    
-    public function notes($entity) {
-						
-		$dimensions = $entity->dimensions();
-		
-		$materials = $entity->materials ? $entity->materials : '';
-		$dimensions = $dimensions ? $dimensions : '';
-		$measurement_remarks = $entity->measurement_remarks ? $entity->measurement_remarks : '';
-		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
-		$location = $entity->location ? 'Location: ' . $entity->location : '';
-		$lender = $entity->lender ? 'Lender: ' . $entity->lender : '';
-		$remarks =  $entity->remarks ? $entity->remarks : '';
-		
-		$info = array_filter(array(
-			$materials,
-			$dimensions,
-			$measurement_remarks,
-			$quantity,
-			$location,
-			$lender,
-			$remarks,
-		));
-		
-		return implode('<br/>', $info);
-	}
-	
-	public function preview($entity) {
-	
-		$work_documents = WorksDocuments::first('all', array(
-			'with' => array(
-				'Documents',
-				'Formats'
-			),
-			'conditions' => array('work_id' => $entity->id),
-		));
-		
-		if($work_documents) {
-		
-			return $work_documents->document->thumbnail();
-		}
-	
-	}
-    
 }
 
-Works::applyFilter('delete', function($self, $params, $chain) {
+Exhibitions::applyFilter('delete', function($self, $params, $chain) {
 
-	$work_id = $params['entity']->id;
+	$exhibition_id = $params['entity']->id;
 		
 	//Delete any relationships
-	CollectionsWorks::find('all', array(
-		'conditions' => array('work_id' => $work_id)
-	))->delete();
-	
 	ExhibitionsWorks::find('all', array(
-		'conditions' => array('work_id' => $work_id)
-	))->delete();
-	
-	WorksDocuments::find('all', array(
-		'conditions' => array('work_id' => $work_id)
+		'conditions' => array('exhibition_id' => $exhibition_id)
 	))->delete();
 
 	return $chain->next($self, $params, $chain);
 
 });
 
-Works::applyFilter('save', function($self, $params, $chain) {
+Exhibitions::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 
 	// Check if this is a new record

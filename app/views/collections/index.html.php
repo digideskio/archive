@@ -46,7 +46,9 @@ $this->title('Collections');
 
 <?php foreach($collections as $collection): ?>
 <article>
+	<div class="alert">
     <h1><?=$this->html->link($collection->title,'/collections/view/'.$collection->slug); ?></h1>
     <p><?=$collection->description ?></p>
+    </div>
 </article>
 <?php endforeach; ?>

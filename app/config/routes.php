@@ -82,6 +82,12 @@ Router::connect('/works/view/{:slug}', array('Works::view'));
 Router::connect('/works/edit/{:slug}', array('Works::edit'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
+Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));
+Router::connect('/exhibitions/edit/{:slug}', array('Exhibitions::edit'));
+Router::connect('/exhibitions/delete/{:slug}', array('Exhibitions::delete'));
+
+Router::connect('/exhibitions_works/delete/{:id}', array('ExhibitionsWorks::delete'));
+
 Router::connect('/publications/view/{:slug}', array('Publications::view'));
 Router::connect('/publications/edit/{:slug}', array('Publications::edit'));
 Router::connect('/publications/delete/{:slug}', array('Publications::delete'));

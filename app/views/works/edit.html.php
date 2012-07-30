@@ -110,15 +110,53 @@ $this->form->config(
 		
 		<?php endif; ?>
 		
-		
 	</div>
 	
 	
 		
 	<div class="well">
-	<?=$this->form->create(); ?>
 		<legend>Exhibitions</legend>
-	<?=$this->form->end(); ?>
+		<table class="table">
+		
+			<?php foreach($exhibition_works as $ew): ?>
+			
+				<tr>
+					<td>
+						<a href="/exhibitions/view/<?=$ew->exhibition->slug ?>"><?=$ew->exhibition->title ?></a>
+					</td>
+					<td align="right" style="text-align:right">
+			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
+			<?=$this->form->end(); ?>
+					</td>
+				</tr>
+			
+			<?php endforeach; ?>
+			
+			</table>
+		
+		<?php if(sizeof($other_exhibitions) > 0): ?>
+		
+		<form action="/exhibitions_works/add" method="post">
+		<legend>Add this work to an Exhibition</legend>
+		<select name="exhibition_id">
+			<?php foreach($other_exhibitions as $oe): ?>
+			<option value="<?=$oe->id ?>"><?=$oe->title ?></option>
+			<?php endforeach; ?>
+		</select>
+		
+		<input type="hidden" name="work_id" value="<?=$work->id ?>" />
+		<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+		
+		<br/>
+		
+		<?=$this->form->submit('Add', array('class' => 'btn btn-inverse')); ?>
+		
+		</form>
+		
+		<?php endif; ?>
+		
 	</div>
 	
 	<div class="well">
