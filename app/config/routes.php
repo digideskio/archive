@@ -82,6 +82,10 @@ Router::connect('/works/view/{:slug}', array('Works::view'));
 Router::connect('/works/edit/{:slug}', array('Works::edit'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
+Router::connect('/architectures/view/{:slug}', array('Architectures::view'));
+Router::connect('/architectures/edit/{:slug}', array('Architectures::edit'));
+Router::connect('/architectures/delete/{:slug}', array('Architectures::delete'));
+
 Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));
 Router::connect('/exhibitions/edit/{:slug}', array('Exhibitions::edit'));
 Router::connect('/exhibitions/delete/{:slug}', array('Exhibitions::delete'));
@@ -97,6 +101,7 @@ Router::connect('/documents/edit/{:slug}', array('Documents::edit'));
 Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
 
 Router::connect('/works_documents/delete/{:id}', array('WorksDocuments::delete'));
+Router::connect('/architectures_documents/delete/{:id}', array('ArchitecturesDocuments::delete'));
 
 Router::connect('/files/view/{:file}', array('Files::view'));
 Router::connect('/files/small/{:file}', array('Files::small'));

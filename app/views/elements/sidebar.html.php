@@ -4,6 +4,7 @@
 		<ul class="nav nav-list">
 			<li><a href="/collections"><i class="icon-briefcase"></i> Collections</a></li>
 			<li><a href="/works"><i class="icon-picture"></i> Artwork</a></li>
+			<li><a href="/architectures"><i class="icon-road"></i> Architecture</a></li>
 			<li><a href="/exhibitions"><i class="icon-eye-open"></i> Exhibitions</a></li>
 			<li><a href="/publications"><i class="icon-book"></i> Publications</a></li>
 			<li class="divider"></li>
