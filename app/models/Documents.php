@@ -73,6 +73,22 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 
 });
 
+Documents::applyFilter('save', function($self, $params, $chain) {
+
+	// Check if this is a new record
+	if(!$params['entity']->exists()) {
+	
+		// Set the date created
+		$params['data']['date_created'] = date("Y-m-d H:i:s");
+		
+	}
+	
+	// Set the date modified
+	$params['data']['date_modified'] = date("Y-m-d H:i:s");
+	
+	return $chain->next($self, $params, $chain);
+});
+
 Documents::applyFilter('create', function($self, $params, $chain) {
 
 	if ($params['data'] && isset($params['data']['file_path']) && isset($params['data']['file_name'])) {

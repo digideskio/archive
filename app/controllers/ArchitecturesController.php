@@ -31,7 +31,8 @@ class ArchitecturesController extends \lithium\action\Controller {
 		));
 		
 		$architectures = Architectures::find('all', array(
-			'with' => 'ArchitecturesDocuments'
+			'with' => 'ArchitecturesDocuments',
+			'order' => array('earliest_date' => 'DESC')
 		));
 		return compact('architectures', 'auth');
 	}
@@ -56,17 +57,23 @@ class ArchitecturesController extends \lithium\action\Controller {
 			$architecture = Architectures::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
-		
-			$architecture_documents = ArchitecturesDocuments::find('all', array(
-				'with' => array(
-					'Documents',
-					'Formats'
-				),
-				'conditions' => array('architecture_id' => $architecture->id),
-			));
 			
-			//Send the retrieved data to the view
-			return compact('architecture', 'architecture_documents', 'auth');
+			if(!$architecture) {
+				$this->redirect(array('Architectures::index'));
+			} else {
+		
+				$architecture_documents = ArchitecturesDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('architecture_id' => $architecture->id),
+				));
+			
+				//Send the retrieved data to the view
+				return compact('architecture', 'architecture_documents', 'auth');
+			
+			}
 		}
 		
 		//since no record was specified, redirect to the index page

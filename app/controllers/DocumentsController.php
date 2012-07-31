@@ -35,7 +35,8 @@ class DocumentsController extends \lithium\action\Controller {
 		));
 		
 		$documents = Documents::find('all', array(
-			'with' => array('Formats')
+			'with' => array('Formats'),
+			'order' => array('date_modified' => 'DESC')
 		));
 		
 		return compact('documents', 'auth');
