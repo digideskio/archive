@@ -33,12 +33,13 @@ class WorksTest extends \lithium\test\Unit {
 	}
 	
 	public function testCreateWithNoTitle() {
-		$work = Works::create(array(
+		$work = Works::create();
+		$data = array (
 			"title" => "",
 			"artist" => "Artwork Artist"
-		));
+		);
 		
-		$this->assertFalse($work->save());
+		$this->assertFalse($work->save($data));
 	}
 	
 	public function testValidDates() {

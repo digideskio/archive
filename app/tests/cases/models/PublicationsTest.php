@@ -32,11 +32,12 @@ class PublicationsTest extends \lithium\test\Unit {
 	}
 	
 	public function testCreatePublicationWithNoTitle() {
-		$publication = Publications::create(array(
+		$publication = Publications::create();
+		$data = array (
 			"title" => "",
-		));
+		);
 		
-		$this->assertFalse($publication->save());
+		$this->assertFalse($publication->save($data));
 	}
 
 

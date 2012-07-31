@@ -33,12 +33,13 @@ class CollectionsTest extends \lithium\test\Unit {
 	}
 	
 	public function testCreateCollectionWithNoTitle() {
-		$collection = Collections::create(array(
+		$collection = Collections::create();
+		$data = array (
 			"title" => "",
 			"description" => "This is the Collection Description"
-		));
+		);
 		
-		$this->assertFalse($collection->save());
+		$this->assertFalse($collection->save($data));
 	}
 
 
