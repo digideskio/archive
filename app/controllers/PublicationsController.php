@@ -28,7 +28,9 @@ class PublicationsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$publications = Publications::all();
+		$publications = Publications::find('all', array(
+			'order' => array('earliest_date' => 'DESC')
+		));
 		return compact('publications', 'auth');
 	}
 

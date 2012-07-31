@@ -24,7 +24,7 @@ class Publications extends \lithium\data\Model {
     		'0000-00-00 00:00:00'
     	) ? date_format(date_create($entity->latest_date), 'Y') : 0;
     	
-    	$years = array_filter(array($earliest_year, $latest_year));
+    	$years = array_unique(array_filter(array($earliest_year, $latest_year)));
 
 		return implode('–', $years);
     }
@@ -54,6 +54,9 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 
 	// Check if this is a new record
 	if(!$params['entity']->exists()) {
+	
+		// Set the date created
+		$params['data']['date_created'] = date("Y-m-d H:i:s");
 	
 		//create a slug based on the title
 		$slug = Inflector::slug($params['data']['title']);
@@ -96,6 +99,9 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 		$time = strtotime($params['data']['latest_date']);
 		$params['data']['latest_date'] = date("Y-m-d H:i:s", $time);
 	}
+	
+	// Set the date modified
+	$params['data']['date_modified'] = date("Y-m-d H:i:s");
   
 	$response = $chain->next($self, $params, $chain);
 

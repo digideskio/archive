@@ -57,8 +57,8 @@ $this->title($publication->title);
 	
 		<ul class="thumbnails">
 			<li class="span4">
-			<a href class="thumbnail">
-			<div style="width: 290px; height: 290px; display: block; background-color:#CCCCCC;"></div>
+			<div class="thumbnail">
+			<span class="label label-warning">No Image</span>
 			</a>
 			</li>
 		</ul>

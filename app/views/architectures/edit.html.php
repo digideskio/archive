@@ -52,7 +52,7 @@ $this->form->config(
 			<?=$this->form->field('city');?>
 			<?=$this->form->field('country');?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/architectures/view'.$architecture->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
 	</div>
