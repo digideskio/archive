@@ -78,6 +78,7 @@ Router::connect('/collections/delete/{:slug}', array('Collections::delete'));
 
 Router::connect('/collections_works/delete/{:id}', array('CollectionsWorks::delete'));
 
+Router::connect('/works/pages/{:page:[0-9]+}', array('Works::index'));
 Router::connect('/works/view/{:slug}', array('Works::view'));
 Router::connect('/works/edit/{:slug}', array('Works::edit'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
@@ -96,6 +97,7 @@ Router::connect('/publications/view/{:slug}', array('Publications::view'));
 Router::connect('/publications/edit/{:slug}', array('Publications::edit'));
 Router::connect('/publications/delete/{:slug}', array('Publications::delete'));
 
+Router::connect('/documents/pages/{:page:[0-9]+}', array('Documents::index'));
 Router::connect('/documents/view/{:slug}', array('Documents::view'));
 Router::connect('/documents/edit/{:slug}', array('Documents::edit'));
 Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
@@ -107,6 +109,9 @@ Router::connect('/files/view/{:file}', array('Files::view'));
 Router::connect('/files/small/{:file}', array('Files::small'));
 Router::connect('/files/thumb/{:file}', array('Files::thumb'));
 Router::connect('/files/download/{:file}', array('Files::download'));
+
+//Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
+
 
 /**
  * If you're using a document-oriented database, such as CouchDB or MongoDB, or another type of

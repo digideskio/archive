@@ -34,12 +34,18 @@ class DocumentsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$documents = Documents::find('all', array(
+		$limit = 20;
+        $page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+        $order = array('date_modified' => 'DESC');
+        $total = Documents::count();
+        $documents = Documents::find('all', array(
 			'with' => array('Formats'),
-			'order' => array('date_modified' => 'DESC')
+			'limit' => $limit,
+			'order' => $order,
+			'page' => $page
 		));
 		
-		return compact('documents', 'auth');
+		return compact('documents', 'page', 'limit', 'total', 'auth');
 	}
 
 	public function view() {

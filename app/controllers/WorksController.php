@@ -34,10 +34,17 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$works = Works::find('all', array(
-			'with' => 'WorksDocuments'
+		$limit = 50;
+        $page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+        $order = array('earliest_date' => 'DESC');
+        $total = Works::count();
+        $works = Works::find('all', array(
+			'with' => 'WorksDocuments',
+			'limit' => $limit,
+			'order' => $order,
+			'page' => $page
 		));
-		return compact('works', 'auth');
+		return compact('works', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {
