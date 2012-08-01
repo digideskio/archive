@@ -32,7 +32,7 @@ $this->title('Artwork');
 
 </div>
 
-<?php if(sizeof($works) == 0): ?>
+<?php if($total == 0): ?>
 
 	<div class="alert alert-danger">There is no Artwork in the Archive.</div>
 
@@ -43,6 +43,8 @@ $this->title('Artwork');
 	<?php endif; ?>
 
 <?php endif; ?>
+
+<?php if($total > 0): ?>
 
 <table class="table table-bordered">
 
@@ -95,3 +97,5 @@ $this->title('Artwork');
      <?php endif;?> 
     </ul>
 </div>
+
+<?php endif; ?>

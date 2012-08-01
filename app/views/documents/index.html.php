@@ -32,7 +32,7 @@ $this->title('Documents');
 
 </div>
 
-<?php if(sizeof($documents) == 0): ?>
+<?php if($total == 0): ?>
 
 	<div class="alert alert-danger">There are no Documents in the Archive.</div>
 
@@ -43,6 +43,8 @@ $this->title('Documents');
 	<?php endif; ?>
 
 <?php endif; ?>
+
+<?php if($total > 0): ?>
 
 <ul class="thumbnails">
 
@@ -73,4 +75,6 @@ $this->title('Documents');
      <?php endif;?> 
     </ul>
 </div>
+
+<?php endif; ?>
 
