@@ -166,8 +166,16 @@ class FilesController extends \lithium\action\Controller {
 				$path = LITHIUM_APP_PATH.'/webroot/files/' . $document->hash . '.' . $document->format->extension;
 				
 				if(file_exists($path)){
-					$this->response->headers('download', $file);
-					$this->response->body = file_get_contents($path);
+				
+					$this->response->headers(array(
+						'X-Sendfile' => $path,
+						'Content-type' => 'application/octet-stream',
+						'Content-Disposition' => 'attachment; filename="' . $file . '"'
+					));
+				
+					//header("X-Sendfile: $path");
+					//header("Content-type: application/octet-stream");
+					//header('Content-Disposition: attachment; filename="' . $file . '"');
 		 
 					return compact('file');
 			
