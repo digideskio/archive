@@ -173,10 +173,6 @@ class FilesController extends \lithium\action\Controller {
 						'Content-Disposition' => 'attachment; filename="' . $file . '"'
 					));
 				
-					//header("X-Sendfile: $path");
-					//header("Content-type: application/octet-stream");
-					//header('Content-Disposition: attachment; filename="' . $file . '"');
-		 
 					return compact('file');
 			
 				}
