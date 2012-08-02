@@ -84,6 +84,7 @@ class WorksController extends \lithium\action\Controller {
 			$exhibition_works = ExhibitionsWorks::find('all', array(
 				'with' => 'Exhibitions',
 				'conditions' => array('work_id' => $work->id),
+				'order' => 'earliest_date DESC'
 			));
 			
 			//Send the retrieved data to the view
@@ -149,14 +150,16 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => array('work_id' => $work->id),
 		));
 		
-		$other_exhibitions = Exhibitions::all();
+		$other_exhibitions = Exhibitions::find('all', array(
+			'order' => 'earliest_date DESC'
+		));
 		
 		$work_documents = WorksDocuments::find('all', array(
 			'with' => array(
 				'Documents',
 				'Formats'
 			),
-			'conditions' => array('work_id' => $work->id),
+			'conditions' => array('work_id' => $work->id)
 		));
 
 		if (!$work) {

@@ -141,7 +141,7 @@ $this->title($work->title);
 							<li><strong><?=$this->html->link(
 								$ew->exhibition->title,
 								'/exhibitions/view/'.$ew->exhibition->slug
-							);?></strong> <?=$ew->exhibition->years(); ?></li>
+							);?></strong> (<?=$ew->exhibition->years(); ?>)</li>
 							<?php endforeach; ?>
 						
 						</ul>

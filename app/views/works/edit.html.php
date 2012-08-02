@@ -122,7 +122,7 @@ $this->form->config(
 			
 				<tr>
 					<td>
-						<a href="/exhibitions/view/<?=$ew->exhibition->slug ?>"><?=$ew->exhibition->title ?></a>
+						<a href="/exhibitions/view/<?=$ew->exhibition->slug ?>"><?=$ew->exhibition->title ?></a> <strong>(<?=$ew->exhibition->years(); ?>)</strong> 
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
@@ -142,7 +142,7 @@ $this->form->config(
 		<legend>Add this work to an Exhibition</legend>
 		<select name="exhibition_id">
 			<?php foreach($other_exhibitions as $oe): ?>
-			<option value="<?=$oe->id ?>"><?=$oe->title ?></option>
+			<option value="<?=$oe->id ?>"><?=$oe->title ?> (<?=$oe->years(); ?>) </option>
 			<?php endforeach; ?>
 		</select>
 		
