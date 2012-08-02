@@ -105,10 +105,12 @@ Exhibitions::applyFilter('save', function($self, $params, $chain) {
 		// Set the date created
 		$params['data']['date_created'] = date("Y-m-d H:i:s");
 		
-		$venue = isset($params['data']['venue']) ? $params['data']['venue'] : '';
+		$title = $params['data']['title'];
+		
+		$title_venue = isset($params['data']['venue']) ? $title . ' ' . $params['data']['venue'] : $title;
 	
 		//create a slug based on the title
-		$slug = Inflector::slug($params['data']['title'] . ' ' . $venue);
+		$slug = Inflector::slug($title_venue);
 		
 		//Check if the slug ends with an iterated number such as Slug-1
 		if(preg_match_all("/.*?-(\d+)$/", $slug, $matches)) {
@@ -117,7 +119,7 @@ Exhibitions::applyFilter('save', function($self, $params, $chain) {
 		}
 		
 		//Count the slugs that start with $slug
-		$count = Works::find('count', array(
+		$count = Exhibitions::find('count', array(
 		    'fields' => array('id'),
 		    'conditions' => array('slug' => array('like' => "$slug%"))
 		));

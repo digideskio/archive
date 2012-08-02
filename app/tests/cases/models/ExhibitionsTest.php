@@ -10,43 +10,99 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 	
+	public function testSlugs() {
+	
+		$exhibition = Exhibitions::create();
+		$data = array (
+			"title" => "Exhibition Title",
+			"venue" => "Exhibition Venue"
+		);
+		
+		$slug = "Exhibition-Title-Exhibition-Venue";
+		
+		$this->assertTrue($exhibition->save($data));
+		$this->assertEqual($slug, $exhibition->slug);
+	
+		$second_exhibition = Exhibitions::create();
+		$data = array (
+			"title" => "Exhibition Title",
+			"venue" => "Exhibition Venue"
+		);
+		
+		$second_slug = "Exhibition-Title-Exhibition-Venue-2";
+		
+		$this->assertTrue($second_exhibition->save($data));
+		$this->assertEqual($second_slug, $second_exhibition->slug);
+		
+		$exhibition->delete();
+		$second_exhibition->delete();
+	
+		$exhibition = Exhibitions::create();
+		
+		$data = array (
+			"title" => "Exhibition Title",
+			"venue" => ""
+		);
+		
+		$slug = "Exhibition-Title";
+		
+		$this->assertTrue($exhibition->save($data));
+		$this->assertEqual($slug, $exhibition->slug);
+		
+		$exhibition->delete();
+		
+	}
+	
 	public function testDates() {
-	$exhibition = Exhibitions::create();
-	$data = array(
-		"title" => "Exhibition Title",
-		"earliest_date" => "Dec 1 2011",
-		"latest_date" => "Jan 15, 2012"
-	);
+		$exhibition = Exhibitions::create();
+		$data = array(
+			"title" => "Exhibition Title",
+			"earliest_date" => "Dec 1 2011",
+			"latest_date" => "Jan 15, 2012"
+		);
 	
-	$exhibition->save($data);
+		$exhibition->save($data);
 	
-	$dates = $exhibition->dates();
+		$dates = $exhibition->dates();
 	
-	$this->assertEqual("01 Dec, 2011 – 15 Jan, 2012", $dates);
+		$this->assertEqual("01 Dec, 2011 – 15 Jan, 2012", $dates);
 	
-	$data = array(
-		"earliest_date" => "Jan 1 2012",
-		"latest_date" => "Feb 15, 2012"
-	);
+		$data = array(
+			"earliest_date" => "Jan 1 2012",
+			"latest_date" => "Feb 15, 2012"
+		);
 	
-	$exhibition->save($data);
+		$exhibition->save($data);
 	
-	$dates = $exhibition->dates();
+		$dates = $exhibition->dates();
 	
-	$this->assertEqual("01 Jan – 15 Feb, 2012", $dates);
+		$this->assertEqual("01 Jan – 15 Feb, 2012", $dates);
 	
-	$data = array(
-		"earliest_date" => "Feb 1 2012",
-		"latest_date" => "Feb 15, 2012"
-	);
+		$data = array(
+			"earliest_date" => "Feb 1 2012",
+			"latest_date" => "Feb 15, 2012"
+		);
 	
-	$exhibition->save($data);
+		$exhibition->save($data);
 	
-	$dates = $exhibition->dates();
+		$dates = $exhibition->dates();
 	
-	$this->assertEqual("01 – 15 Feb, 2012", $dates);
+		$this->assertEqual("01 – 15 Feb, 2012", $dates);
 	
-	$exhibition->delete();
+		$data = array(
+			"earliest_date" => "",
+			"latest_date" => ""
+		);
+	
+		$exhibition->save($data);
+		
+		$exhibition = Exhibitions::first();
+	
+		$dates = $exhibition->dates() ?: '';
+	
+		$this->assertEqual('', $dates);
+	
+		$exhibition->delete();
 	
 	}
 	
