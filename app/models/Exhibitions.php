@@ -58,7 +58,7 @@ Exhibitions::applyFilter('save', function($self, $params, $chain) {
 		$params['data']['date_created'] = date("Y-m-d H:i:s");
 	
 		//create a slug based on the title
-		$slug = Inflector::slug($params['data']['title']);
+		$slug = Inflector::slug($params['data']['title'] . ' ' . $params['data']['venue']);
 		
 		//Check if the slug ends with an iterated number such as Slug-1
 		if(preg_match_all("/.*?-(\d+)$/", $slug, $matches)) {
