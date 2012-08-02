@@ -58,15 +58,12 @@ $this->title($exhibition->title);
 	<?php 
 		date_default_timezone_set('UTC');
 		
-		$opening_date = date('d M Y', strtotime($exhibition->earliest_date));
-		$closing_date = date('d M Y', strtotime($exhibition->latest_date));
+		$location = $exhibition->location();
+		$dates = $exhibition->dates();
 	?>
 	
-	<?php if($exhibition->venue) echo "<p><strong>$exhibition->venue</strong></p>"; ?>
-	<?php if($exhibition->city) echo "<p>$exhibition->city</p>"; ?>
-	<?php if($exhibition->country) echo "<p>$exhibition->country</p>"; ?>
-	<?php if($exhibition->earliest_date) echo "<p>Opening Date: $opening_date</p>"; ?>
-	<?php if($exhibition->latest_date) echo "<p>Closing Date: $closing_date</p>"; ?>
+	<?php if($location) echo "<p>$location</p>"; ?>
+	<?php if($dates) echo "<p>$dates</p>"; ?>
 	<?php if($exhibition->curator) echo "<p>$exhibition->curator, Curator</p>"; ?>
 	
 	<p><?=$exhibition->remarks ?></p>

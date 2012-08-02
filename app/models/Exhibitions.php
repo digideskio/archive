@@ -17,6 +17,54 @@ class Exhibitions extends \lithium\data\Model {
 			)
 		)
 	);
+	
+	public function location($entity) {
+	
+		$venue = $entity->venue ? '<strong>' . $entity->venue . '</strong>' : '';
+		$location = array_filter(array($venue, $entity->city, $entity->country));
+		return implode(', ', $location);
+	
+	}
+	
+	public function dates($entity) {
+		
+		// If the record has an earliest_date, find the day, month and year
+		if($entity->earliest_date != '0000-00-00 00:00:00') {
+			$early_day = date('d', strtotime($entity->earliest_date));
+			$early_month = date('M', strtotime($entity->earliest_date));
+			$early_days = date('d M', strtotime($entity->earliest_date));
+			$early_year = date('Y', strtotime($entity->earliest_date));
+		}
+		
+		// If the record has a latest_date, find the day, month and year
+		if($entity->latest_date != '0000-00-00 00:00:00') {
+			$later_days = date('d M', strtotime($entity->latest_date));
+			$later_month = date('M', strtotime($entity->latest_date));
+			$later_year = date('Y', strtotime($entity->latest_date));
+		}
+		
+		// If both earliest_date and latest_date are set for the record
+		if(isset($early_year) && isset($later_year)) {
+		
+			// If the earliest year is equal to the latest year, don't output the earliest year
+			$early_year = ($early_year != $later_year) ? $early_year : '';
+			
+			// If the earliest year is no longer set, check the month
+			if(!$early_year) {
+				// If the months are also equal, unset the earlier month
+				$early_month = ($early_month != $later_month) ? $early_month : '';
+				
+				// Update the value of the earliest days variable
+				$early_days = $early_month ? $early_days : $early_day;
+			}		
+		}
+		
+		$earlies = isset($early_year) ? implode(', ', array_filter(array($early_days, $early_year))) : '';
+		$laters = isset($later_year) ? implode(', ', array_filter(array($later_days, $later_year))) : '';
+		
+		return implode(' – ', array_filter(array($earlies, $laters)));
+	
+	}
     
     public function years($entity) {
     
@@ -56,9 +104,11 @@ Exhibitions::applyFilter('save', function($self, $params, $chain) {
 	
 		// Set the date created
 		$params['data']['date_created'] = date("Y-m-d H:i:s");
+		
+		$venue = isset($params['data']['venue']) ? $params['data']['venue'] : '';
 	
 		//create a slug based on the title
-		$slug = Inflector::slug($params['data']['title'] . ' ' . $params['data']['venue']);
+		$slug = Inflector::slug($params['data']['title'] . ' ' . $venue);
 		
 		//Check if the slug ends with an iterated number such as Slug-1
 		if(preg_match_all("/.*?-(\d+)$/", $slug, $matches)) {

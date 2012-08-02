@@ -70,15 +70,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'conditions' => array('exhibition_id' => $exhibition->id),
 				'order' => $order
 			));
-		
-			// If the database times are zero, just show an empty string
-			if($exhibition->earliest_date == '0000-00-00 00:00:00') {
-				$exhibition->earliest_date = '';
-			}
-		
-			if($exhibition->latest_date == '0000-00-00 00:00:00') {
-				$exhibition->latest_date = '';
-			}
 			
 			//Send the retrieved data to the view
 			return compact('exhibition', 'exhibition_works', 'total', 'auth');
