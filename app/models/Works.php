@@ -18,8 +18,9 @@ class Works extends \lithium\data\Model {
     public function dimensions($entity) {
     	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));
     	$measures = $hwd ? implode(' × ', $hwd) . ' cm' : '';
+    	$diameter = $entity->diameter ? 'Ø ' . $entity->diameter . ' cm' : '';
     	$running_time = $entity->running_time ? $entity->running_time : '';
-    	$dimensions = array_filter(array($measures, $running_time));
+    	$dimensions = array_filter(array($measures, $diameter, $running_time));
     	return implode(', ', $dimensions);
     }
     

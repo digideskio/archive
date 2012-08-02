@@ -153,21 +153,7 @@ $this->title($work->title);
 					<td>
 						<?php 
 						
-						$remarks =  $work->remarks ? $work->remarks : '';
-						$quantity = $work->quantity ? 'Quantity: ' . $work->quantity : '';
-						$measurement_remarks = $work->measurement_remarks ? $work->measurement_remarks : '';
-						$location = $work->location ? 'Location: ' . $work->location : '';
-						$lender = $work->lender ? 'Lender: ' . $work->lender : '';
-						
-						$info = array_filter(array(
-							$remarks,
-							$quantity,
-							$measurement_remarks,
-							$location,
-							$lender
-						));
-						
-						echo implode('<br/>', $info);
+						echo $work->notes();
 						
 						?>
 					
