@@ -64,13 +64,15 @@ $this->title($exhibition->title);
 	
 	<?php if($exhibition->venue) echo "<p><strong>$exhibition->venue</strong></p>"; ?>
 	<?php if($exhibition->city) echo "<p>$exhibition->city</p>"; ?>
-	<?php if($exhibition->country) echo "<p>$exhibition->city</p>"; ?>
+	<?php if($exhibition->country) echo "<p>$exhibition->country</p>"; ?>
 	<?php if($exhibition->earliest_date) echo "<p>Opening Date: $opening_date</p>"; ?>
 	<?php if($exhibition->latest_date) echo "<p>Closing Date: $closing_date</p>"; ?>
 	<?php if($exhibition->curator) echo "<p>$exhibition-curator, Curator</p>"; ?>
 	
 	<p><?=$exhibition->remarks ?></p>
 	</div>
+	
+<?php if($total > 0): ?>
 
 <table class="table table-bordered">
 
@@ -116,6 +118,8 @@ $this->title($exhibition->title);
 <?php endforeach; ?>
 
 </tbody>
+
+<?php endif; ?>
 
 
 <div class="modal fade hide" id="deleteModal">

@@ -56,10 +56,16 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$exhibition = Exhibitions::first(array(
 				'conditions' => array('slug' => $this->request->params['slug'])
 			));
+		
+			$total = ExhibitionsWorks::find('count', array(
+				'conditions' => array('exhibition_id' => $exhibition->id)
+			));
+			$order = 'earliest_date DESC';
 			
 			$exhibition_works = ExhibitionsWorks::find('all', array(
 				'with' => 'Works',
-				'conditions' => array('exhibition_id' => $exhibition->id)
+				'conditions' => array('exhibition_id' => $exhibition->id),
+				'order' => $order
 			));
 		
 			// If the database times are zero, just show an empty string
@@ -72,7 +78,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			}
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'exhibition_works', 'auth');
+			return compact('exhibition', 'exhibition_works', 'total', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
