@@ -67,7 +67,7 @@ $this->title($exhibition->title);
 	<?php if($exhibition->country) echo "<p>$exhibition->country</p>"; ?>
 	<?php if($exhibition->earliest_date) echo "<p>Opening Date: $opening_date</p>"; ?>
 	<?php if($exhibition->latest_date) echo "<p>Closing Date: $closing_date</p>"; ?>
-	<?php if($exhibition->curator) echo "<p>$exhibition-curator, Curator</p>"; ?>
+	<?php if($exhibition->curator) echo "<p>$exhibition->curator, Curator</p>"; ?>
 	
 	<p><?=$exhibition->remarks ?></p>
 	</div>
