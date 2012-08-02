@@ -63,6 +63,14 @@ $this->title('Exhibitions');
 	<?php if($closing_date) echo "<p>Closing Date: $closing_date</p>"; ?>
 	<?php if($exhibition->curator) echo "<p>$exhibition->curator, Curator</p>"; ?>
 	
+	<?php 
+	
+		$has_works = isset($exhibition->exhibitions_works[0]->id) ? true : false;
+	
+		if ($has_works) echo '<span class="badge badge-info">' . sizeof($exhibition->exhibitions_works) . '</span>';
+	
+	?>
+	
 	<p><?=$exhibition->remarks ?></p>
 	</div>
 </article>

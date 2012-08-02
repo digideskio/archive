@@ -30,8 +30,11 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
+	 	$order = 'earliest_date DESC';
+		
 		$exhibitions = Exhibitions::find('all', array(
-			'with' => 'ExhibitionsWorks'
+			'with' => 'ExhibitionsWorks',
+			'order' => $order
 		));
 		return compact('exhibitions', 'auth');
 	}
