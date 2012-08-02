@@ -58,7 +58,7 @@ $this->title('Exhibitions');
 	
 	<?php if($exhibition->venue) echo "<p><strong>$exhibition->venue</strong></p>"; ?>
 	<?php if($exhibition->city) echo "<p>$exhibition->city</p>"; ?>
-	<?php if($exhibition->country) echo "<p>$exhibition->city</p>"; ?>
+	<?php if($exhibition->country) echo "<p>$exhibition->country</p>"; ?>
 	<?php if($opening_date) echo "<p>Opening Date: $opening_date</p>"; ?>
 	<?php if($closing_date) echo "<p>Closing Date: $closing_date</p>"; ?>
 	<?php if($exhibition->curator) echo "<p>$exhibition-curator, Curator</p>"; ?>
