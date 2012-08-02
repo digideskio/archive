@@ -158,6 +158,23 @@ $this->title($work->title);
 						?>
 					
 				</tr>
+				<tr>
+					<td><i class="icon-folder-open"></i></td>
+					<td class="meta">Documents</td>
+					<td>
+						<ul class="unstyled" style="margin-bottom:0">
+					
+		
+					<?php foreach($work_documents as $wd): ?>
+			
+							<li><a href="/documents/view/<?=$wd->document->slug?>">
+								<strong><?=$wd->document->slug?>.<?=$wd->format->extension?></strong>
+							</a></li>
+			
+					<?php endforeach; ?>
+					</ul>
+					<td>
+				</tr>
 			</tbody>
 		
 		</table>
