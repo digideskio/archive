@@ -74,7 +74,7 @@ $this->form->config(
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($ad, array('url' => "/architectures_documents/delete/$ad->id", 'method' => 'post')); ?>
-			<input type="hidden" name="work_slug" value="<?=$architecture->slug ?>" />
+			<input type="hidden" name="architecture_slug" value="<?=$architecture->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 					</td>
