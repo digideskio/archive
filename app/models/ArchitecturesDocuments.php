@@ -7,7 +7,7 @@ class ArchitecturesDocuments extends \lithium\data\Model {
 	public $belongsTo = array(
 		'Architectures' => array(
 			"to" => "app\models\Architectures",
-			"key" => "work_id",
+			"key" => "architecture_id",
 		),
 		'Documents' => array(
 			"to" => "app\models\Documents",

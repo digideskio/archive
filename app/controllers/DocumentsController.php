@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Documents;
 use app\models\WorksDocuments;
+use app\models\ArchitecturesDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -74,9 +75,14 @@ class DocumentsController extends \lithium\action\Controller {
 				'with' => 'Works',
 				'conditions' => array('document_id' => $document->id)
 			));
+		
+			$architectures_documents = ArchitecturesDocuments::find('all', array(
+				'with' => 'Architectures',
+				'conditions' => array('document_id' => $document->id)
+			));
 			
 			//Send the retrieved data to the view
-			return compact('document', 'works_documents', 'auth');
+			return compact('document', 'works_documents', 'architectures_documents', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page

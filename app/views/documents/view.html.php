@@ -69,7 +69,7 @@ $this->title($document->title);
 	<div class="span4">
 	
    		<?php foreach($works_documents as $wd): ?>
-			<div class="alert alert-block">
+			<div class="alert alert-block alert-info">
 				<p>
 					<?php echo $wd->work->caption(); ?>
 					
@@ -82,9 +82,28 @@ $this->title($document->title);
 				</p>
 			</div>
 		<?php endforeach; ?>
+		
+		<?php foreach($architectures_documents as $ad): ?>
+	
+			<div class="alert alert-block alert-info">
+			<p>
+				<?php echo $ad->architecture->caption(); ?>
+					
+					<?php
+							echo "(Photo &copy; ";
+							if($document->credit) { echo $document->credit . ', '; }
+							echo $document->year() . ').';
+					?>
+			</p>
+			</div>
+		
+		<?php endforeach; ?>
 	
 		<table class="table">
 			<tbody>
+				
+				<?php if (sizeof($works_documents) > 0) : ?> 
+			
 				<tr>
 					<td><i class="icon-picture"></i></td>
 					<td class="meta">Artwork</td>
@@ -101,6 +120,28 @@ $this->title($document->title);
 						</ul>
 					</td>
 				</tr>
+				
+				<?php endif; ?>
+				
+				<?php if (sizeof($architectures_documents) > 0) : ?> 
+				<tr>
+					<td><i class="icon-road"></i></td>
+					<td class="meta">Architecture</td>
+					<td>
+						<ul class="unstyled" style="margin-bottom:0">
+						
+							<?php foreach($architectures_documents as $ad): ?>
+							<li><strong><?=$this->html->link(
+								$ad->architecture->title,
+								'/architectures/view/'.$ad->architecture->slug
+							);?></strong></li>
+							<?php endforeach; ?>
+						
+						</ul>
+					</td>
+				</tr>
+				<?php endif; ?>
+				
 				<tr>
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">File Type</td>
