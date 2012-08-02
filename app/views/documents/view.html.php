@@ -58,9 +58,9 @@ $this->title($document->title);
 		<ul class="thumbnails">
 		<?php $span = 'span6'; ?>
 		<li class="<?=$span?>" >
-		<a href="/files/download/<?=$document->slug?>.<?=$document->format->extension?>" class="thumbnail">
+		<div class="thumbnail">
 		<img src="/files/small/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
-		</a>
+		</div>
 		</li>
 		</ul>
 		
@@ -172,6 +172,20 @@ $this->title($document->title);
 					?>
 					</td>
 				</tr>
+				<tr>
+					<td><i class="icon-download-alt"></i></td>
+					<td class="meta">Download</td>
+					<td>
+						<?=$this->html->link(
+							$document->slug . '.' .$document->format->extension,
+							'/files/download/'.$document->slug . '.' .$document->format->extension
+						);?>
+					</td>
+				</tr>
+				
+				
+				
+				
 			</tbody>
 		
 		</table>
