@@ -91,7 +91,7 @@ class Exhibitions extends \lithium\data\Model {
     	
     	$title = (strlen($entity->title) > 30) ? substr($entity->title, 0, 30) . "…" : $entity->title;
     	
-    	$venue = $entity->venue;
+    	$venue = (strlen($entity->venue) > 30) ? substr($entity->venue, 0, 30) . "…" : $entity->venue;
     	
     	return implode(' · ', array_filter(array($year, $title, $venue)));;
     

@@ -57,7 +57,7 @@ class ExhibitionsTest extends \lithium\test\Unit {
 		$exhibition = Exhibitions::create();
 		$data = array(
 			"title" => "The Somewhat Long and Exaggerated Title",
-			"venue" => "The Venue",
+			"venue" => "The Venue That is Also Long and Exagerated",
 			"earliest_date" => "Dec 1 2011",
 			"latest_date" => "Jan 15, 2012"
 		);
@@ -66,7 +66,7 @@ class ExhibitionsTest extends \lithium\test\Unit {
 		
 		$selection = $exhibition->selection();
 		
-		$this->assertEqual("2011 · The Somewhat Long and Exaggera… · The Venue", $selection);
+		$this->assertEqual("2011 · The Somewhat Long and Exaggera… · The Venue That is Also Long an…", $selection);
 		
 		$exhibition->delete();
 		$exhibition = Exhibitions::create();
