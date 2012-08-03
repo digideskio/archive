@@ -142,7 +142,7 @@ $this->form->config(
 		<legend>Add this work to an Exhibition</legend>
 		<select name="exhibition_id">
 			<?php foreach($other_exhibitions as $oe): ?>
-			<option value="<?=$oe->id ?>"><?=$oe->title ?> (<?=$oe->years(); ?>) </option>
+				<option value="<?=$oe->id ?>"><?=$oe->selection(); ?></option>
 			<?php endforeach; ?>
 		</select>
 		

@@ -81,6 +81,21 @@ class Exhibitions extends \lithium\data\Model {
 
 		return implode('–', $years);
     }
+    
+    public function selection($entity) {
+    
+    	$year = (
+    		$entity->earliest_date != 
+    		'0000-00-00 00:00:00'
+    	) ? date_format(date_create($entity->earliest_date), 'Y') : '0';
+    	
+    	$title = (strlen($entity->title) > 30) ? substr($entity->title, 0, 30) . "…" : $entity->title;
+    	
+    	$venue = $entity->venue;
+    	
+    	return implode(' · ', array_filter(array($year, $title, $venue)));;
+    
+    }
 }
 
 Exhibitions::applyFilter('delete', function($self, $params, $chain) {

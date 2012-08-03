@@ -53,6 +53,40 @@ class ExhibitionsTest extends \lithium\test\Unit {
 		
 	}
 	
+	public function testSelection() {
+		$exhibition = Exhibitions::create();
+		$data = array(
+			"title" => "The Somewhat Long and Exaggerated Title",
+			"venue" => "The Venue",
+			"earliest_date" => "Dec 1 2011",
+			"latest_date" => "Jan 15, 2012"
+		);
+	
+		$exhibition->save($data);
+		
+		$selection = $exhibition->selection();
+		
+		$this->assertEqual("2011 · The Somewhat Long and Exaggera… · The Venue", $selection);
+		
+		$exhibition->delete();
+		$exhibition = Exhibitions::create();
+		$data = array(
+			"title" => "The Somewhat Long and Exaggerated Title",
+			"earliest_date" => "Dec 1 2011",
+			"latest_date" => "Jan 15, 2012"
+		);
+	
+		$exhibition->save($data);
+		
+		$selection = $exhibition->selection();
+		
+		$this->assertEqual("2011 · The Somewhat Long and Exaggera…", $selection);
+		
+		$exhibition->delete();
+
+	
+	}
+	
 	public function testDates() {
 		$exhibition = Exhibitions::create();
 		$data = array(
