@@ -7,11 +7,16 @@ use app\controllers\WorksController;
 use app\models\Users;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 use lithium\action\Request;
 
 class WorksControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
 	
 		Auth::clear('default');
 		

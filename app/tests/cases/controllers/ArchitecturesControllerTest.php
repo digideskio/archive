@@ -8,11 +8,17 @@ use app\model\Architectures;
 use app\models\Users;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 use lithium\action\Request;
 
 class ArchitecturesControllerTest extends \lithium\test\Unit {
 
-	public function setUp() {}
+	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
+	}
 
 	public function tearDown() {}
 

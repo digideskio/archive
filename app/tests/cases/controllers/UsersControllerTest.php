@@ -7,6 +7,7 @@ use app\controllers\UsersController;
 use app\models\Users;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 use lithium\action\Request;
 
 class UsersControllerTest extends \lithium\test\Unit {
@@ -15,6 +16,10 @@ class UsersControllerTest extends \lithium\test\Unit {
 	public $editor_data;
 
 	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
 	
 		Auth::clear('default');
 	

@@ -7,11 +7,17 @@ use app\controllers\PublicationsController;
 use app\models\Users;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 use lithium\action\Request;
 
 class PublicationsControllerTest extends \lithium\test\Unit {
 
-	public function setUp() {}
+	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
+	}
 
 	public function tearDown() {}
 

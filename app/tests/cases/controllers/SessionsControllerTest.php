@@ -7,6 +7,7 @@ use app\controllers\SessionsController;
 use app\models\Users;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 use lithium\action\Request;
 
 class SessionsControllerTest extends \lithium\test\Unit {
@@ -14,6 +15,10 @@ class SessionsControllerTest extends \lithium\test\Unit {
 	public $user;
 
 	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
 	
 		$this->user = Users::create();
 		$data = array(
@@ -55,7 +60,7 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		
 		$this->assertTrue($check);
 		
-		Auth::clear('default');
+		$session->delete();
 	
 	}
 	
@@ -72,13 +77,15 @@ class SessionsControllerTest extends \lithium\test\Unit {
 
 		$session = new SessionsController(array('request' => $this->request));
 		
-		/*$response = $session->add(); //FIXME returns an exception about missing template
+		//$response = $session->add(); //FIXME returns an exception about missing template
 		
-		$this->assertEqual($response->headers["Location"], "/login");*/
+		//$this->assertEqual($response->headers["Location"], "/login");
 		
 		$check = (Auth::check('default')) ?: null;
 		
 		$this->assertFalse($check);
+		
+		Auth::clear('default');
 	
 	}
 	
@@ -102,6 +109,8 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		$check = (Auth::check('default')) ?: null;
 		
 		$this->assertFalse($check);
+		
+		Auth::clear('default');
 	
 	}
 }

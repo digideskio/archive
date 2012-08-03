@@ -5,6 +5,7 @@ namespace app\tests\cases\controllers;
 use app\controllers\CollectionsController;
 
 use app\model\Collections;
+use lithium\storage\Session;
 use app\models\Users;
 
 use lithium\security\Auth;
@@ -13,6 +14,10 @@ use lithium\action\Request;
 class CollectionsControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
 	
 		Auth::clear('default');
 	

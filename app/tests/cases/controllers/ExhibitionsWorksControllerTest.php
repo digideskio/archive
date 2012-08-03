@@ -5,11 +5,17 @@ namespace app\tests\cases\controllers;
 use app\controllers\ExhibitionsWorksController;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 use lithium\action\Request;
 
 class ExhibitionsWorksControllerTest extends \lithium\test\Unit {
 
-	public function setUp() {}
+	public function setUp() {
+	
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
+	}
 
 	public function tearDown() {}
 
