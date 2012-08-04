@@ -87,28 +87,18 @@ $this->form->config(
 			
 			<?php endforeach; ?>
 			
+			<?php if(sizeof($other_collections) > 0): ?>
+			
+			<tr>
+				<td></td>
+				<td align="right" style="text-align:right">
+					<a data-toggle="modal" href="#collectionModal" class="btn btn-mini btn-inverse">Add a Collection</a>
+				</td>
+			</tr>
+			
+			<?php endif; ?>
+			
 			</table>
-		
-		<?php if(sizeof($other_collections) > 0): ?>
-		
-		<form action="/collections_works/add" method="post">
-		<legend>Add this work to a Collection</legend>
-		<select name="collection_id">
-			<?php foreach($other_collections as $oc): ?>
-			<option value="<?=$oc->id ?>"><?=$oc->title ?></option>
-			<?php endforeach; ?>
-		</select>
-		
-		<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-		<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
-		
-		<br/>
-		
-		<?=$this->form->submit('Add', array('class' => 'btn btn-inverse')); ?>
-		
-		</form>
-		
-		<?php endif; ?>
 		
 	</div>
 	
@@ -134,6 +124,8 @@ $this->form->config(
 			
 			<?php endforeach; ?>
 			
+			<?php if(sizeof($other_exhibitions) > 0): ?>			
+			
 			<tr>
 				<td></td>
 				<td align="right" style="text-align:right">
@@ -141,32 +133,9 @@ $this->form->config(
 				</td>
 			</tr>
 			
+			<?php endif; ?>
+			
 			</table>
-		
-		<!--
-		
-		<?php if(sizeof($other_exhibitions) > 0): ?>
-		
-		<form action="/exhibitions_works/add" method="post">
-		<legend>Add this work to an Exhibition</legend>
-		<select name="exhibition_id">
-			<?php foreach($other_exhibitions as $oe): ?>
-				<option value="<?=$oe->id ?>"><?=$oe->selection(); ?></option>
-			<?php endforeach; ?>
-		</select>
-		
-		<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-		<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
-		
-		<br/>
-		
-		<?=$this->form->submit('Add', array('class' => 'btn btn-inverse')); ?>
-		
-		</form>
-		
-		<?php endif; ?>
-		
-		-->
 		
 	</div>
 	
@@ -210,6 +179,36 @@ $this->form->config(
 
 	</div>
 
+</div>
+
+<div class="modal fade hide" id="collectionModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Add this Artwork to a Collection</h3>
+		</div>
+		<div class="modal-body">
+			<table class="table"><tbody>
+			<?php foreach($other_collections as $oc): ?>
+				<tr>
+					<td>
+						<a href="/collections/view/<?=$oc->slug ?>">
+							<strong><?=$oc->title ?></a></strong><br/>
+					</td>
+					<td align="right" style="text-align:right">
+			<?=$this->form->create($oc, array('url' => "/collections_works/add", 'method' => 'post')); ?>
+			<input type="hidden" name="collection_id" value="<?=$oc->id ?>" />
+			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
+			<?=$this->form->end(); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			</tbody></table>
+			</div>
+			<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+	</div>
 </div>
 
 <div class="modal fade hide" id="exhibitionModal">
