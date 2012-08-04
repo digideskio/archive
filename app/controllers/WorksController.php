@@ -143,7 +143,9 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => array('work_id' => $work->id),
 		));
 		
-		$other_collections = Collections::all();
+		$other_collections = Collections::find('all', array(
+			'with' => 'CollectionsWorks'
+		));
 		
 		$exhibition_works = ExhibitionsWorks::find('all', array(
 			'with' => 'Exhibitions',
@@ -151,7 +153,9 @@ class WorksController extends \lithium\action\Controller {
 		));
 		
 		$other_exhibitions = Exhibitions::find('all', array(
-			'order' => 'earliest_date DESC'
+			'with' => 'ExhibitionsWorks',
+			'order' => 'earliest_date DESC',
+			//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
 		));
 		
 		$work_documents = WorksDocuments::find('all', array(

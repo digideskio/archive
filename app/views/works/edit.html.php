@@ -134,7 +134,16 @@ $this->form->config(
 			
 			<?php endforeach; ?>
 			
+			<tr>
+				<td></td>
+				<td align="right" style="text-align:right">
+					<a data-toggle="modal" href="#exhibitionModal" class="btn btn-mini btn-inverse">Add an Exhibition</a>
+				</td>
+			</tr>
+			
 			</table>
+		
+		<!--
 		
 		<?php if(sizeof($other_exhibitions) > 0): ?>
 		
@@ -156,6 +165,8 @@ $this->form->config(
 		</form>
 		
 		<?php endif; ?>
+		
+		-->
 		
 	</div>
 	
@@ -199,4 +210,36 @@ $this->form->config(
 
 	</div>
 
+</div>
+
+<div class="modal fade hide" id="exhibitionModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Add this Artwork to an Exhibition</h3>
+		</div>
+		<div class="modal-body">
+			<table class="table"><tbody>
+			<?php foreach($other_exhibitions as $oe): ?>
+				<tr>
+					<td>
+						<a href="/exhibitions/view/<?=$oe->slug ?>">
+							<strong><?=$oe->title ?></a></strong><br/>
+							<?=$oe->venue ?><br/>
+							<?=$oe->dates() ?>
+					</td>
+					<td align="right" style="text-align:right">
+			<?=$this->form->create($oe, array('url' => "/exhibitions_works/add", 'method' => 'post')); ?>
+			<input type="hidden" name="exhibition_id" value="<?=$oe->id ?>" />
+			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
+			<?=$this->form->end(); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+			</tbody></table>
+			</div>
+			<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+	</div>
 </div>
