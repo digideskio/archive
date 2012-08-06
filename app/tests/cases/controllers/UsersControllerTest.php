@@ -12,6 +12,9 @@ use lithium\action\Request;
 
 class UsersControllerTest extends \lithium\test\Unit {
 
+	public $admin;
+	public $admin_data;
+
 	public $editor;
 	public $editor_data;
 
@@ -23,15 +26,15 @@ class UsersControllerTest extends \lithium\test\Unit {
 	
 		Auth::clear('default');
 	
-		$admin = Users::create();
-		$admin_data = array(
+		$this->admin = Users::create();
+		$this->admin_data = array(
 			"username" => "admin",
 			"password" => "abcd",
 			"name" => "Full Name",
 			"email" => "admin@example.com",
 			"role_id" => '1'
 		);
-		$admin->save($admin_data);
+		$this->admin->save($this->admin_data);
 	
 		$this->editor = Users::create();
 		$this->editor_data = array(
@@ -131,6 +134,43 @@ class UsersControllerTest extends \lithium\test\Unit {
 		
 		$response = $users->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
+	
+	}
+	
+	public function testRegister() {
+	
+		Auth::set('default', $this->editor_data);
+	
+		$this->request = new Request();
+		$this->request->params = array(
+			'controller' => 'users'
+		);
+
+		$usersRegister = new UsersController(array('request' => $this->request));
+		
+		$response = $usersRegister->register();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
+		Auth::clear('default');
+		Users::all()->delete();
+
+		$usersRegister = new UsersController(array('request' => $this->request));
+		
+		$response = $usersRegister->register();
+		
+		$this->assertNull($response);
+	
+		$this->request = new Request();
+		$this->request->params = array(
+			'controller' => 'users'
+		);
+		$this->request->data = $this->admin_data;
+
+		$usersRegister = new UsersController(array('request' => $this->request));
+		
+		$response = $usersRegister->register();
+		$this->assertEqual($response->headers["Location"], "/home");
+		
 	
 	}
 }

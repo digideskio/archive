@@ -175,6 +175,25 @@ class UsersController extends \lithium\action\Controller {
 			
 		return $this->redirect('Users::index');
 	}
+	
+	public function register() {
+    	
+    	if(Users::count()) {
+    		return $this->redirect('/login');
+    	}
+    	
+    	$user = Users::create();
+    	
+    	if (($this->request->data) && $user->save($this->request->data)) {
+    	
+        	if(Auth::check('default', $this->request)) {
+            	return $this->redirect('/home');
+        	}
+		}
+    	
+    	return $this->render(array('template' => 'register', 'layout' => 'simple'));
+	
+	}
 }
 
 ?>

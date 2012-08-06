@@ -113,6 +113,23 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		Auth::clear('default');
 	
 	}
+	
+	public function testAdminRegistration() {
+	
+		Users::all()->delete();
+	
+		$this->request = new Request();
+		$this->request->params = array(
+			'controller' => 'sessions'
+		);
+		
+		$session = new SessionsController(array('request' => $this->request));
+		
+		$response = $session->add();
+		
+		$this->assertEqual($response->headers["Location"], "/register");
+		
+	}
 }
 
 ?>
