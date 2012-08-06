@@ -65,8 +65,10 @@ $this->title('Exhibitions');
 		$has_works = isset($exhibition->exhibitions_works[0]->id) ? true : false;
 	
 		if ($has_works) echo '<span class="badge badge-info">' . sizeof($exhibition->exhibitions_works) . '</span>';
-	
+		
 	?>
+	
+	<span class="badge"><?=$exhibition->type ?> Show</span>
 	
 	</div>
 </article>

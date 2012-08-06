@@ -67,6 +67,8 @@ $this->title($exhibition->title);
 	<?php if($exhibition->curator) echo "<p>$exhibition->curator, Curator</p>"; ?>
 	
 	<p><?=$exhibition->remarks ?></p>
+	
+	<p><span class="badge"><?=$exhibition->type ?> Show</span></p>
 	</div>
 	
 <?php if($total > 0): ?>
