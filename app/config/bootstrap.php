@@ -70,6 +70,11 @@ require __DIR__ . '/bootstrap/action.php';
 require __DIR__ . '/bootstrap/session.php';
 
 /**
+ * This file contains configuration access rules
+ */
+require __DIR__ . '/bootstrap/access.php';
+
+/**
  * This file contains your application's globalization rules, including inflections,
  * transliterations, localized validation, and how localized text should be loaded. Uncomment this
  * line if you plan to globalize your site.
