@@ -7,3 +7,6 @@
 [submodule "libraries/_source/Imagine"]
 	path = libraries/_source/Imagine
 	url = git://github.com/avalanche123/Imagine.git
+[submodule "libraries/li3_access"]
+	path = libraries/li3_access
+	url = https://github.com/tmaiaroto/li3_access.git
