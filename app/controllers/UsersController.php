@@ -8,6 +8,8 @@ use app\models\Roles;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
+use li3_access\security\Access;
+
 class UsersController extends \lithium\action\Controller {
 
 	public function index() {
@@ -66,21 +68,25 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin, redirect to the index
-        if($auth->role->name != 'Admin') {
-        	return $this->redirect('Users::index');
+		$rules = array(
+			array('rule' => 'isAdminUser', 'message' => 'You cannot add a user!', 'redirect' => '/users'),
+		);
+		
+	    $check = Auth::check('default');
+
+		if($check) {
+			$auth = Users::first(array(
+				'conditions' => array('username' => $check['username']),
+				'with' => array('Roles')
+			));
+		} else {
+			return $this->redirect('Sessions::add');
+		}
+	    
+	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
+	    
+        if(!empty($access)){
+        	return $this->redirect($access['redirect']);
         }
 		
 		$user = Users::create();
