@@ -1,0 +1,169 @@
+CREATE TABLE `architectures` (
+  `title` varchar(255) DEFAULT NULL,
+  `client` varchar(255) DEFAULT NULL,
+  `project_lead` varchar(255) DEFAULT NULL,
+  `status` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `remarks` text,
+  `earliest_date` date DEFAULT NULL,
+  `latest_date` date DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` datetime DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_architectures_slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `architectures_documents` (
+  `architecture_id` int(11) unsigned NOT NULL,
+  `document_id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `collections` (
+  `title` varchar(255) DEFAULT NULL,
+  `description` text,
+  `slug` varchar(255) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` datetime DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_collections_slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `collections_works` (
+  `collection_id` int(11) unsigned NOT NULL,
+  `work_id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `documents` (
+  `title` varchar(255) DEFAULT NULL,
+  `hash` varchar(32) DEFAULT NULL,
+  `repository` varchar(255) DEFAULT NULL,
+  `format_id` int(11) unsigned NOT NULL,
+  `file_date` date DEFAULT NULL,
+  `credit` varchar(255) DEFAULT NULL,
+  `remarks` text,
+  `slug` varchar(255) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_documents_slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `exhibitions` (
+  `title` varchar(255) DEFAULT NULL,
+  `curator` varchar(255) DEFAULT NULL,
+  `venue` varchar(255) DEFAULT NULL,
+  `city` varchar(255) DEFAULT NULL,
+  `country` varchar(255) DEFAULT NULL,
+  `remarks` text,
+  `earliest_date` datetime DEFAULT NULL,
+  `latest_date` datetime DEFAULT NULL,
+  `type` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_exhibitions_slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `exhibitions_works` (
+  `exhibition_id` int(11) unsigned NOT NULL,
+  `work_id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `formats` (
+  `extension` varchar(128) DEFAULT NULL,
+  `mime_type` varchar(128) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=984 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `publications` (
+  `title` varchar(2048) DEFAULT NULL,
+  `author` varchar(255) DEFAULT NULL,
+  `publisher` varchar(255) DEFAULT NULL,
+  `earliest_date` date DEFAULT NULL,
+  `latest_date` date DEFAULT NULL,
+  `pages` varchar(255) DEFAULT NULL,
+  `url` varchar(2048) DEFAULT NULL,
+  `subject` varchar(2048) DEFAULT NULL,
+  `remarks` text,
+  `language` varchar(255) DEFAULT NULL,
+  `interview` int(1) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `location_code` varchar(255) DEFAULT NULL,
+  `publication_number` varchar(255) DEFAULT NULL,
+  `slug` varchar(255) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_publications_slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `roles` (
+  `name` varchar(255) DEFAULT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `schema_migrations` (
+  `version` varchar(255) DEFAULT NULL,
+  UNIQUE KEY `idx_schema_migrations_version` (`version`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `users` (
+  `username` varchar(255) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `email` varchar(255) DEFAULT NULL,
+  `password` varchar(255) DEFAULT NULL,
+  `role_id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_users_username` (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+CREATE TABLE `works` (
+  `artist` varchar(255) DEFAULT NULL,
+  `title` varchar(255) DEFAULT NULL,
+  `classification` varchar(255) DEFAULT NULL,
+  `materials` text,
+  `quantity` varchar(255) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `lender` varchar(255) DEFAULT NULL,
+  `remarks` text,
+  `earliest_date` datetime DEFAULT NULL,
+  `latest_date` datetime DEFAULT NULL,
+  `creation_number` varchar(255) DEFAULT NULL,
+  `height` float DEFAULT NULL,
+  `width` float DEFAULT NULL,
+  `depth` float DEFAULT NULL,
+  `diameter` float DEFAULT NULL,
+  `weight` float DEFAULT NULL,
+  `running_time` varchar(255) DEFAULT NULL,
+  `measurement_remarks` text,
+  `slug` varchar(255) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `idx_works_slug` (`slug`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+CREATE TABLE `works_documents` (
+  `work_id` int(11) unsigned NOT NULL,
+  `document_id` int(11) unsigned NOT NULL,
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
