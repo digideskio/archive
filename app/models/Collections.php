@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use app\models\Dates;
+
 use lithium\util\Inflector;
 
 class Collections extends \lithium\data\Model {
@@ -22,10 +24,15 @@ class Collections extends \lithium\data\Model {
 Collections::applyFilter('delete', function($self, $params, $chain) {
 
 	$collection_id = $params['entity']->id;
+	$date_id = $params['entity']->date_id;
 		
 	//Delete any relationships
 	CollectionsWorks::find('all', array(
 		'conditions' => array('collection_id' => $collection_id)
+	))->delete();
+	
+	Dates::find('first', array(
+		'conditions' => array('id' => $date_id)
 	))->delete();
 
 	return $chain->next($self, $params, $chain);
@@ -38,8 +45,12 @@ Collections::applyFilter('save', function($self, $params, $chain) {
 	// Check if this is a new record
 	if(!$params['entity']->exists()) {
 	
-		// Set the date created
-		$params['data']['date_created'] = date("Y-m-d H:i:s");
+		$date = Dates::create();
+		$date->save();
+		
+		$params['data']['date_id'] = $date->id;
+		
+		$params['data']['class'] = 'collection';
 	
 		//create a slug based on the title
 		$slug = Inflector::slug($params['data']['title']);
@@ -65,10 +76,12 @@ Collections::applyFilter('save', function($self, $params, $chain) {
 		
 		
 		$params['data']['slug'] = $slug . ($count ? "-" . (++$count) : ''); //add slug-X only if $count > 0
+	} else {
+		$date_id = $params['entity']->date_id;
+		Dates::find('first', array(
+			'conditions' => array('id' => $date_id)
+		))->save();
 	}
-	
-	// Set the date modified
-	$params['data']['date_modified'] = date("Y-m-d H:i:s");
   
 	$response = $chain->next($self, $params, $chain);
 

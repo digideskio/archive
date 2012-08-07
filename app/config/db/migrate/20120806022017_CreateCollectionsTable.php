@@ -9,7 +9,7 @@ class CreateCollectionsTable extends Ruckusing_BaseMigration {
       $t->column("description", "text");
       $t->column("slug", "string");
       $t->column("date_created", "datetime");
-      $t->column("date_modified", "datetime");
+      $t->column("date_modified", "timestamp");
       $t->finish();
       
       $this->add_index("collections", "slug", array("unique" => true));
