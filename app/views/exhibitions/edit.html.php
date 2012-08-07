@@ -1,6 +1,6 @@
 <?php
 
-$this->title($exhibition->title);
+$this->title($collection->title);
 
 $this->form->config(
     array( 
@@ -23,7 +23,7 @@ $this->form->config(
 	</li>
 
 	<li>
-	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?>
+	<?=$this->html->link($collection->title,'/exhibitions/view/'.$collection->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -37,21 +37,30 @@ $this->form->config(
 
 
 <div class="well">
-<?=$this->form->create($exhibition); ?>
+<?=$this->form->create($collection); ?>
     <?=$this->form->field('title');?>
-    <?=$this->form->field('curator');?>
-    <?=$this->form->field('venue');?>
-    <?=$this->form->field('city');?>
-    <?=$this->form->field('country');?>
-	<?=$this->form->field('earliest_date', array('label' => 'Opening Date'));?>
-	<?=$this->form->field('latest_date', array('label' => 'Closing Date'));?>
+    <?=$this->form->field('curator', array('value' => $collection->exhibition->curator));?>
+    <?=$this->form->field('venue', array('value' => $collection->exhibition->venue));?>
+    <?=$this->form->field('city', array('value' => $collection->exhibition->city));?>
+    <?=$this->form->field('country', array('value' => $collection->exhibition->country));?>
+	<?=$this->form->field('start', array(
+		'label' => 'Opening Date',
+		'value' => $collection->date->start
+	));?>
+	<?=$this->form->field('end', array(
+		'label' => 'Closing Date',
+		'value' => $collection->date->end
+	));?>
     <?=$this->form->label('Show Type');?>
     <select name="type">
-    	<option value="Solo" <?php if ($exhibition->type == "Solo") { echo "selected"; }?>>Solo</option>
-    	<option value="Group" <?php if ($exhibition->type == "Group") { echo "selected"; }?>>Group</option>
+    	<option value="Solo" <?php if ($collection->exhibition->type == "Solo") { echo "selected"; }?>>Solo</option>
+    	<option value="Group" <?php if ($collection->exhibition->type == "Group") { echo "selected"; }?>>Group</option>
     </select>
-    <?=$this->form->field('remarks', array('type' => 'textarea'));?>
+    <?=$this->form->field('remarks', array(
+    	'type' => 'textarea',
+    	'value' => $collection->exhibition->remarks
+    ));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/exhibitions/view/'.$exhibition->slug, array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel','/exhibitions/view/'.$collection->slug, array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>

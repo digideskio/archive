@@ -9,6 +9,10 @@ use lithium\util\Inflector;
 class Collections extends \lithium\data\Model {
 
 	public $hasMany = array('CollectionsWorks');
+	
+	public $belongsTo = array('Dates');
+	
+	public $hasOne = array('Exhibitions');
 
 	public $validates = array(
 		'title' => array(
@@ -50,7 +54,7 @@ Collections::applyFilter('save', function($self, $params, $chain) {
 		
 		$params['data']['date_id'] = $date->id;
 		
-		$params['data']['class'] = 'collection';
+		$params['data']['class'] = 'collection'; //FIXME should check whether collection or exhibition
 	
 		//create a slug based on the title
 		$slug = Inflector::slug($params['data']['title']);

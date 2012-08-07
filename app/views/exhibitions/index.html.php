@@ -32,7 +32,7 @@ $this->title('Exhibitions');
 
 </div>
 
-<?php if(sizeof($exhibitions) == 0): ?>
+<?php if(sizeof($collections) == 0): ?>
 
 	<div class="alert alert-danger">There are no Exhibitions in the Archive.</div>
 
@@ -44,31 +44,32 @@ $this->title('Exhibitions');
 
 <?php endif; ?>
 
-<?php foreach($exhibitions as $exhibition): ?>
+<?php foreach($collections as $collection): ?>
 <article>
 	<div class="alert">
-	<h1><?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?></h1>
+	<h1><?=$this->html->link($collection->title,'/exhibitions/view/'.$collection->slug); ?></h1>
 	
 	<?php 
 		date_default_timezone_set('UTC');
 		
-		$location = $exhibition->location();
-		$dates = $exhibition->dates();
+		$location = $collection->exhibition->location();
+		$dates = $collection->date->dates();
+		$curator = $collection->exhibition->curator;
 	?>
 	
 	<?php if($location) echo "<p>$location</p>"; ?>
 	<?php if($dates) echo "<p>$dates</p>"; ?>
-	<?php if($exhibition->curator) echo "<p>$exhibition->curator, Curator</p>"; ?>
+	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
 	
 	<?php 
 	
-		$has_works = isset($exhibition->exhibitions_works[0]->id) ? true : false;
+		$has_works = isset($collection->collections_works[0]->id) ? true : false;
 	
-		if ($has_works) echo '<span class="badge badge-info">' . sizeof($exhibition->exhibitions_works) . '</span>';
+		if ($has_works) echo '<span class="badge badge-info">' . sizeof($collection->collections_works) . '</span>';
 		
 	?>
 	
-	<span class="badge"><?=$exhibition->type ?> Show</span>
+	<span class="badge"><?=$collection->exhibition->type ?> Show</span>
 	
 	</div>
 </article>

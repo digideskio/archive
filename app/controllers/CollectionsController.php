@@ -31,7 +31,8 @@ class CollectionsController extends \lithium\action\Controller {
 		));
 		
 		$collections = Collections::find('all', array(
-			'with' => 'CollectionsWorks'
+			'with' => 'CollectionsWorks',
+			'conditions' => array('class' => 'collection')
 		));
 		return compact('collections', 'auth');
 	}
@@ -54,16 +55,22 @@ class CollectionsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$collection = Collections::first(array(
-				'conditions' => array('slug' => $this->request->params['slug'])
-			));
+				'conditions' => array(
+				'slug' => $this->request->params['slug'],
+				'class' => 'collection'
+			)));
 			
-			$collection_works = CollectionsWorks::find('all', array(
-				'with' => 'Works',
-				'conditions' => array('collection_id' => $collection->id)
-			));
+			if($collection) {
 			
-			//Send the retrieved data to the view
-			return compact('collection', 'collection_works', 'auth');
+				$collection_works = CollectionsWorks::find('all', array(
+					'with' => 'Works',
+					'conditions' => array('collection_id' => $collection->id)
+				));
+			
+				//Send the retrieved data to the view
+				return compact('collection', 'collection_works', 'auth');
+				
+			}
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -110,8 +117,10 @@ class CollectionsController extends \lithium\action\Controller {
 		));
 		
 		$collection = Collections::first(array(
-			'conditions' => array('slug' => $this->request->params['slug'])
-		));
+				'conditions' => array(
+				'slug' => $this->request->params['slug'],
+				'class' => 'collection'
+			)));
 
 		if (!$collection) {
 			return $this->redirect('Collections::index');
@@ -136,8 +145,10 @@ class CollectionsController extends \lithium\action\Controller {
 		));
         
 		$collection = Collections::first(array(
-			'conditions' => array('slug' => $this->request->params['slug']),
-		));
+				'conditions' => array(
+				'slug' => $this->request->params['slug'],
+				'class' => 'collection'
+			)));
         
         // If the user is not an Admin or Editor, redirect to the record view
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {

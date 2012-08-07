@@ -27,7 +27,7 @@ class Dates extends \lithium\data\Model {
 	public function dates($entity) {
 		
 		// If the record has an start, find the day, month and year
-		if($entity->start != '0000-00-00 00:00:00') {
+		if($entity->start && $entity->start != '0000-00-00 00:00:00') {
 			$start_day = date('d', strtotime($entity->start));
 			$start_month = date('M', strtotime($entity->start));
 			$start_days = date('d M', strtotime($entity->start));
@@ -35,7 +35,7 @@ class Dates extends \lithium\data\Model {
 		}
 		
 		// If the record has a end, find the day, month and year
-		if($entity->end != '0000-00-00 00:00:00') {
+		if($entity->end && $entity->end != '0000-00-00 00:00:00') {
 			$end_days = date('d M', strtotime($entity->end));
 			$end_month = date('M', strtotime($entity->end));
 			$end_year = date('Y', strtotime($entity->end));
