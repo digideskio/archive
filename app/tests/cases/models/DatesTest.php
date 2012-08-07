@@ -35,6 +35,57 @@ class DatesTest extends \lithium\test\Unit {
 		$this->assertEqual('2010', $date->years());
 		
 	}
+	
+	public function testDates() {
+		$data = array(
+			"start" => "Dec 1 2011",
+			"end" => "Jan 15, 2012"
+		);
+	
+		$date = Dates::create($data);
+	
+		$dates = $date->dates();
+	
+		$this->assertEqual("01 Dec, 2011 – 15 Jan, 2012", $dates);
+	
+		$data = array(
+			"start" => "Jan 1 2012",
+			"end" => "Feb 15, 2012"
+		);
+	
+		$date = Dates::create($data);
+	
+		$dates = $date->dates();
+	
+		$this->assertEqual("01 Jan – 15 Feb, 2012", $dates);
+	
+		$data = array(
+			"start" => "Feb 1 2012",
+			"end" => "Feb 15, 2012"
+		);
+	
+		$date->save($data);
+	
+		$dates = $date->dates();
+	
+		$this->assertEqual("01 – 15 Feb, 2012", $dates);
+	
+		$data = array(
+			"start" => "",
+			"end" => ""
+		);
+	
+		$date->save($data);
+		
+		$date = Dates::first();
+	
+		$dates = $date->dates() ?: '';
+	
+		$this->assertEqual('', $dates);
+	
+		$date->delete();
+	
+	}
 
 	public function testValidDates() {
 		$start_date_complete = "1999-11-12 12:13:14";

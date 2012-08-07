@@ -4,7 +4,7 @@ namespace app\models;
 
 class Dates extends \lithium\data\Model {
 
-	public $belongsTo = array('Collections', 'Works');
+	public $hasOne = array('Collections', 'Works');
 
 	public $validates = array();
     
@@ -23,6 +23,46 @@ class Dates extends \lithium\data\Model {
 
 		return implode('–', $years);
     }
+	
+	public function dates($entity) {
+		
+		// If the record has an start, find the day, month and year
+		if($entity->start != '0000-00-00 00:00:00') {
+			$start_day = date('d', strtotime($entity->start));
+			$start_month = date('M', strtotime($entity->start));
+			$start_days = date('d M', strtotime($entity->start));
+			$start_year = date('Y', strtotime($entity->start));
+		}
+		
+		// If the record has a end, find the day, month and year
+		if($entity->end != '0000-00-00 00:00:00') {
+			$end_days = date('d M', strtotime($entity->end));
+			$end_month = date('M', strtotime($entity->end));
+			$end_year = date('Y', strtotime($entity->end));
+		}
+		
+		// If both start and end are set for the record
+		if(isset($start_year) && isset($end_year)) {
+		
+			// If the earliest year is equal to the latest year, don't output the earliest year
+			$start_year = ($start_year != $end_year) ? $start_year : '';
+			
+			// If the earliest year is no longer set, check the month
+			if(!$start_year) {
+				// If the months are also equal, unset the earlier month
+				$start_month = ($start_month != $end_month) ? $start_month : '';
+				
+				// Update the value of the earliest days variable
+				$start_days = $start_month ? $start_days : $start_day;
+			}		
+		}
+		
+		$starts = isset($start_year) ? implode(', ', array_filter(array($start_days, $start_year))) : '';
+		$ends = isset($end_year) ? implode(', ', array_filter(array($end_days, $end_year))) : '';
+		
+		return implode(' – ', array_filter(array($starts, $ends)));
+	
+	}
 }
 
 Dates::applyFilter('save', function($self, $params, $chain) {
