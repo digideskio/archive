@@ -66,33 +66,36 @@ class WorksController extends \lithium\action\Controller {
 			$work = Works::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
-		
-			$work_documents = WorksDocuments::find('all', array(
-				'with' => array(
-					'Documents',
-					'Formats'
-				),
-				'conditions' => array('work_id' => $work->id),
-			));
-		
-			$collections = Collections::find('all', array(
-				'with' => 'CollectionsWorks',
-				'conditions' => array(
-					'work_id' => $work->id,
-					'class' => 'collection'
-				),
-			));
-		
-			$exhibitions = Collections::find('all', array(
-				'with' => 'CollectionsWorks',
-				'conditions' => array(
-					'work_id' => $work->id,
-					'class' => 'exhibition'
-				),
-			));
 			
-			//Send the retrieved data to the view
-			return compact('work', 'work_documents', 'collections', 'exhibitions', 'auth');
+			if($work) {
+		
+				$work_documents = WorksDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('work_id' => $work->id),
+				));
+		
+				$collections = Collections::find('all', array(
+					'with' => 'CollectionsWorks',
+					'conditions' => array(
+						'work_id' => $work->id,
+						'class' => 'collection'
+					),
+				));
+		
+				$exhibitions = Collections::find('all', array(
+					'with' => 'CollectionsWorks',
+					'conditions' => array(
+						'work_id' => $work->id,
+						'class' => 'exhibition'
+					),
+				));
+			
+				//Send the retrieved data to the view
+				return compact('work', 'work_documents', 'collections', 'exhibitions', 'auth');
+			}
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -137,65 +140,76 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
+        
+        // If the user is not an Admin or Editor, redirect to the index
+        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        	return $this->redirect('Works::index');
+        }
 		
-		$work = Works::first(array(
-			'conditions' => array('slug' => $this->request->params['slug']),
-		));
+		if(isset($this->request->params['slug'])) {
 		
-		$collections = Collections::find('all', array(
-			'with' => 'CollectionsWorks',
-			'conditions' => array(
-				'work_id' => $work->id,
-				'class' => 'collection'
-			),
-		));
+			$work = Works::first(array(
+				'conditions' => array('slug' => $this->request->params['slug']),
+			));
+		
+			if($work) {
+		
+				$collections = Collections::find('all', array(
+					'with' => 'CollectionsWorks',
+					'conditions' => array(
+						'work_id' => $work->id,
+						'class' => 'collection'
+					),
+				));
 		
 		
-		$other_collections = Collections::find('all', array(
-			'with' => 'CollectionsWorks',
-			'conditions' => array('class' => 'collection')
-		));
+				$other_collections = Collections::find('all', array(
+					'with' => 'CollectionsWorks',
+					'conditions' => array('class' => 'collection')
+				));
 		
-		$exhibitions = Collections::find('all', array(
-			'with' => 'CollectionsWorks',
-			'conditions' => array(
-				'work_id' => $work->id,
-				'class' => 'exhibition'
-			),
-		));
+				$exhibitions = Collections::find('all', array(
+					'with' => 'CollectionsWorks',
+					'conditions' => array(
+						'work_id' => $work->id,
+						'class' => 'exhibition'
+					),
+				));
 		
-		$other_exhibitions = Collections::find('all', array(
-			'with' => array('CollectionsWorks', 'Dates', 'Exhibitions'),
-			'order' => 'start DESC',
-			'conditions' => array('class' => 'exhibition')
-			//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
-		));
+				$other_exhibitions = Collections::find('all', array(
+					'with' => array('CollectionsWorks', 'Dates', 'Exhibitions'),
+					'order' => 'start DESC',
+					'conditions' => array('class' => 'exhibition')
+					//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
+				));
 		
-		$work_documents = WorksDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Formats'
-			),
-			'conditions' => array('work_id' => $work->id)
-		));
-
-		if (!$work) {
-			return $this->redirect('Works::index');
-		}
-		if (($this->request->data) && $work->save($this->request->data)) {
-			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
-		}
+				$work_documents = WorksDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('work_id' => $work->id)
+				));
+			
+				if (($this->request->data) && $work->save($this->request->data)) {
+					return $this->redirect(array('Works::view', 'args' => array($work->slug)));
+				}
 		
-		// If the database times are zero, just show an empty string in the form
-		if($work->earliest_date == '0000-00-00 00:00:00') {
-			$work->earliest_date = '';
-		}
+				// If the database times are zero, just show an empty string in the form
+				if($work->earliest_date == '0000-00-00 00:00:00') {
+					$work->earliest_date = '';
+				}
 		
-		if($work->latest_date == '0000-00-00 00:00:00') {
-			$work->latest_date = '';
-		}
+				if($work->latest_date == '0000-00-00 00:00:00') {
+					$work->latest_date = '';
+				}
 		
-		return compact('work', 'work_documents', 'collections', 'other_collections', 'exhibitions', 'other_exhibitions');
+				return compact('work', 'work_documents', 'collections', 'other_collections', 'exhibitions', 'other_exhibitions');
+			}	
+		}																																		
+		
+		$this->redirect(array('Works::index'));
+		
 	}
 
 	public function delete() {

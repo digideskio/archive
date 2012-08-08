@@ -143,28 +143,35 @@ class CollectionsController extends \lithium\action\Controller {
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
+		
+		if(isset($this->request->params['slug'])) {
         
-		$collection = Collections::first(array(
+			$collection = Collections::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 				'class' => 'collection'
 			)));
-        
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Collections::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
-        
-        // For the following to work, the delete form must have an explicit 'method' => 'post'
-        // since the default method is PUT
-		if (!$this->request->is('post') && !$this->request->is('delete')) {
-			$msg = "Collections::delete can only be called with http:post or http:delete.";
-			throw new DispatchException($msg);
-		}
 		
-		$collection->delete();
+			if($collection) {
+		    
+				// If the user is not an Admin or Editor, redirect to the record view
+				if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+					return $this->redirect(array(
+						'Collections::view', 'args' => array($this->request->params['slug']))
+					);
+				}
+				
+				// For the following to work, the delete form must have an explicit 'method' => 'post'
+				// since the default method is PUT
+				if (!$this->request->is('post') && !$this->request->is('delete')) {
+					$msg = "Collections::delete can only be called with http:post or http:delete.";
+					throw new DispatchException($msg);
+				}
+		
+				$collection->delete();
+		
+			}
+		}
 		return $this->redirect('Collections::index');
 	}
 }
