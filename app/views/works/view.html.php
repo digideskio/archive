@@ -121,7 +121,7 @@ $this->title($work->title);
 					<td>
 						<ul class="unstyled" style="margin-bottom:0">
 						
-							<?php foreach($collection_works as $cw): ?>
+							<?php foreach($collections_works as $cw): ?>
 							<li><strong><?=$this->html->link(
 								$cw->collection->title,
 								'/collections/view/'.$cw->collection->slug
@@ -137,11 +137,11 @@ $this->title($work->title);
 					<td>
 						<ul class="unstyled" style="margin-bottom:0">
 						
-							<?php foreach($exhibition_works as $ew): ?>
+							<?php foreach($exhibitions_works as $ew): ?>
 							<li><strong><?=$this->html->link(
-								$ew->exhibition->title,
-								'/exhibitions/view/'.$ew->exhibition->slug
-							);?></strong> (<?=$ew->exhibition->years(); ?>)</li>
+								$ew->collection->title,
+								'/exhibitions/view/'.$ew->collection->slug
+							);?></strong></li>
 							<?php endforeach; ?>
 						
 						</ul>

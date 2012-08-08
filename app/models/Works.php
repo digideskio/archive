@@ -108,10 +108,6 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('work_id' => $work_id)
 	))->delete();
 	
-	ExhibitionsWorks::find('all', array(
-		'conditions' => array('work_id' => $work_id)
-	))->delete();
-	
 	WorksDocuments::find('all', array(
 		'conditions' => array('work_id' => $work_id)
 	))->delete();

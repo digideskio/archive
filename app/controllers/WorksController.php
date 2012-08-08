@@ -11,7 +11,6 @@ use app\models\WorksDocuments;
 use app\models\Collections;
 use app\models\CollectionsWorks;
 use app\models\Exhibitions;
-use app\models\ExhibitionsWorks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -76,19 +75,24 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => array('work_id' => $work->id),
 			));
 		
-			$collection_works = CollectionsWorks::find('all', array(
+			$collections_works = CollectionsWorks::find('all', array(
 				'with' => 'Collections',
-				'conditions' => array('work_id' => $work->id),
+				'conditions' => array(
+					'work_id' => $work->id,
+					'class' => 'collection'
+				),
 			));
 		
-			$exhibition_works = ExhibitionsWorks::find('all', array(
-				'with' => 'Exhibitions',
-				'conditions' => array('work_id' => $work->id),
-				'order' => 'earliest_date DESC'
+			$exhibitions_works = CollectionsWorks::find('all', array(
+				'with' => 'Collections',
+				'conditions' => array(
+					'work_id' => $work->id,
+					'class' => 'exhibition'
+				),
 			));
 			
 			//Send the retrieved data to the view
-			return compact('work', 'work_documents', 'collection_works', 'exhibition_works', 'auth');
+			return compact('work', 'work_documents', 'collections_works', 'exhibitions_works', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -140,21 +144,29 @@ class WorksController extends \lithium\action\Controller {
 		
 		$collection_works = CollectionsWorks::find('all', array(
 			'with' => 'Collections',
-			'conditions' => array('work_id' => $work->id),
+			'conditions' => array(
+				'work_id' => $work->id,
+				'class' => 'collection'
+			),
 		));
 		
 		$other_collections = Collections::find('all', array(
-			'with' => 'CollectionsWorks'
+			'with' => 'CollectionsWorks',
+			'conditions' => array('class' => 'collection')
 		));
 		
-		$exhibition_works = ExhibitionsWorks::find('all', array(
-			'with' => 'Exhibitions',
-			'conditions' => array('work_id' => $work->id),
+		$exhibition_works = CollectionsWorks::find('all', array(
+			'with' => 'Collections',
+			'conditions' => array(
+				'work_id' => $work->id,
+				'class' => 'exhibition'
+			),
 		));
 		
-		$other_exhibitions = Exhibitions::find('all', array(
-			'with' => 'ExhibitionsWorks',
-			'order' => 'earliest_date DESC',
+		$other_exhibitions = Collections::find('all', array(
+			'with' => array('CollectionsWorks', 'Dates', 'Exhibitions'),
+			'order' => 'start DESC',
+			'conditions' => array('class' => 'exhibition')
 			//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
 		));
 		

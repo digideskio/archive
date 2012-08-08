@@ -112,10 +112,10 @@ $this->form->config(
 			
 				<tr>
 					<td>
-						<a href="/exhibitions/view/<?=$ew->exhibition->slug ?>"><?=$ew->exhibition->title ?></a> <strong>(<?=$ew->exhibition->years(); ?>)</strong> 
+						<a href="/exhibitions/view/<?=$ew->collection->slug ?>"><?=$ew->collection->title ?></a> <strong></strong> 
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
+			<?=$this->form->create($ew, array('url' => "/collections_works/delete/$ew->id", 'method' => 'post')); ?>
 			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
@@ -223,12 +223,12 @@ $this->form->config(
 					<td>
 						<a href="/exhibitions/view/<?=$oe->slug ?>">
 							<strong><?=$oe->title ?></a></strong><br/>
-							<?=$oe->venue ?><br/>
-							<?=$oe->dates() ?>
+							<?=$oe->exhibition->venue ?><br/>
+							<?=$oe->date->dates() ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($oe, array('url' => "/exhibitions_works/add", 'method' => 'post')); ?>
-			<input type="hidden" name="exhibition_id" value="<?=$oe->id ?>" />
+			<?=$this->form->create($oe, array('url' => "/collections_works/add", 'method' => 'post')); ?>
+			<input type="hidden" name="collection_id" value="<?=$oe->id ?>" />
 			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
 			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
