@@ -71,11 +71,11 @@ $this->form->config(
 		<legend>Collections</legend>
 		<table class="table">
 		
-			<?php foreach($collection_works as $cw): ?>
-			
+			<?php foreach($collections as $collection): ?>
+			<?php $cw = $collection->collections_works[0]; ?> 
 				<tr>
 					<td>
-						<a href="/collections/view/<?=$cw->collection->slug ?>"><?=$cw->collection->title ?></a>
+						<a href="/collections/view/<?=$collection->slug ?>"><?=$collection->title ?></a>
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($cw, array('url' => "/collections_works/delete/$cw->id", 'method' => 'post')); ?>
@@ -108,14 +108,14 @@ $this->form->config(
 		<legend>Exhibitions</legend>
 		<table class="table">
 		
-			<?php foreach($exhibition_works as $ew): ?>
-			
+			<?php foreach($exhibitions as $collection): ?>
+			<?php $cw = $collection->collections_works[0]; ?>
 				<tr>
 					<td>
-						<a href="/exhibitions/view/<?=$ew->collection->slug ?>"><?=$ew->collection->title ?></a> <strong></strong> 
+						<a href="/exhibitions/view/<?=$collection->slug ?>"><?=$collection->title ?></a> <strong></strong> 
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($ew, array('url' => "/collections_works/delete/$ew->id", 'method' => 'post')); ?>
+			<?=$this->form->create($cw, array('url' => "/collections_works/delete/$cw->id", 'method' => 'post')); ?>
 			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>

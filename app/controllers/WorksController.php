@@ -75,16 +75,16 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => array('work_id' => $work->id),
 			));
 		
-			$collections_works = CollectionsWorks::find('all', array(
-				'with' => 'Collections',
+			$collections = Collections::find('all', array(
+				'with' => 'CollectionsWorks',
 				'conditions' => array(
 					'work_id' => $work->id,
 					'class' => 'collection'
 				),
 			));
 		
-			$exhibitions_works = CollectionsWorks::find('all', array(
-				'with' => 'Collections',
+			$exhibitions = Collections::find('all', array(
+				'with' => 'CollectionsWorks',
 				'conditions' => array(
 					'work_id' => $work->id,
 					'class' => 'exhibition'
@@ -92,7 +92,7 @@ class WorksController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('work', 'work_documents', 'collections_works', 'exhibitions_works', 'auth');
+			return compact('work', 'work_documents', 'collections', 'exhibitions', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -142,21 +142,22 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
 		
-		$collection_works = CollectionsWorks::find('all', array(
-			'with' => 'Collections',
+		$collections = Collections::find('all', array(
+			'with' => 'CollectionsWorks',
 			'conditions' => array(
 				'work_id' => $work->id,
 				'class' => 'collection'
 			),
 		));
 		
+		
 		$other_collections = Collections::find('all', array(
 			'with' => 'CollectionsWorks',
 			'conditions' => array('class' => 'collection')
 		));
 		
-		$exhibition_works = CollectionsWorks::find('all', array(
-			'with' => 'Collections',
+		$exhibitions = Collections::find('all', array(
+			'with' => 'CollectionsWorks',
 			'conditions' => array(
 				'work_id' => $work->id,
 				'class' => 'exhibition'
@@ -194,7 +195,7 @@ class WorksController extends \lithium\action\Controller {
 			$work->latest_date = '';
 		}
 		
-		return compact('work', 'work_documents', 'collection_works', 'other_collections', 'exhibition_works', 'other_exhibitions');
+		return compact('work', 'work_documents', 'collections', 'other_collections', 'exhibitions', 'other_exhibitions');
 	}
 
 	public function delete() {

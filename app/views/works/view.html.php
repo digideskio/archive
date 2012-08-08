@@ -121,10 +121,10 @@ $this->title($work->title);
 					<td>
 						<ul class="unstyled" style="margin-bottom:0">
 						
-							<?php foreach($collections_works as $cw): ?>
+							<?php foreach($collections as $collection): ?>
 							<li><strong><?=$this->html->link(
-								$cw->collection->title,
-								'/collections/view/'.$cw->collection->slug
+								$collection->title,
+								'/collections/view/'.$collection->slug
 							);?></strong></li>
 							<?php endforeach; ?>
 						
@@ -137,10 +137,10 @@ $this->title($work->title);
 					<td>
 						<ul class="unstyled" style="margin-bottom:0">
 						
-							<?php foreach($exhibitions_works as $ew): ?>
+							<?php foreach($exhibitions as $collection): ?>
 							<li><strong><?=$this->html->link(
-								$ew->collection->title,
-								'/exhibitions/view/'.$ew->collection->slug
+								$collection->title,
+								'/exhibitions/view/'.$collection->slug
 							);?></strong></li>
 							<?php endforeach; ?>
 						
