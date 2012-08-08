@@ -18,7 +18,7 @@ class ConvertExhibitionsToCollections extends Ruckusing_BaseMigration {
 			foreach($result as $row) {
 			
 				$exhibition_id = $row['id'];
-				$title = $row['title'];
+				$title = mysql_real_escape_string($row['title']);
 				$slug = $row['slug'];
 				$class = 'exhibition';
 				
@@ -84,7 +84,7 @@ class ConvertExhibitionsToCollections extends Ruckusing_BaseMigration {
 			
 				$collection_id = $row['id'];
 				$slug = $row['slug'];
-				$title = $row['title'];
+				$title = mysql_real_escape_string($row['title']);
 				
 				$date_id = $row['date_id'];
 				
