@@ -53,8 +53,6 @@ Collections::applyFilter('save', function($self, $params, $chain) {
 		$date->save();
 		
 		$params['data']['date_id'] = $date->id;
-		
-		$params['data']['class'] = 'collection'; //FIXME should check whether collection or exhibition
 	
 		//create a slug based on the title
 		$slug = Inflector::slug($params['data']['title']);

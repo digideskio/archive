@@ -32,6 +32,7 @@ $this->form->config(
 
 <div class="well">
 <?=$this->form->create($collection); ?>
+    <?=$this->form->hidden('class'); ?>
     <?=$this->form->field('title');?>
     <?=$this->form->field('curator');?>
     <?=$this->form->field('venue');?>

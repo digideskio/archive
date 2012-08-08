@@ -104,12 +104,9 @@ class ExhibitionsController extends \lithium\action\Controller {
         	return $this->redirect('Exhibitions::index');
         }
         
-		$collection = Collections::create();
+		$collection = Collections::create(array('class' => 'exhibition'));
 
 		if (($this->request->data) && $collection->save($this->request->data)) {
-		
-			$data = array('class' => 'exhibition');
-			$collection->save($data);
 		
 			$this->request->data['collection_id'] = $collection->id;
 			

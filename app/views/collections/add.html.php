@@ -34,6 +34,7 @@ $this->form->config(
 <?=$this->form->create($collection); ?>
     <?=$this->form->field('title');?>
     <?=$this->form->field('description', array('type' => 'textarea'));?>
+    <?=$this->form->hidden('class'); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/collections', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>

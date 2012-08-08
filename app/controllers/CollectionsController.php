@@ -95,7 +95,7 @@ class CollectionsController extends \lithium\action\Controller {
         	return $this->redirect('Collections::index');
         }
         
-		$collection = Collections::create();
+		$collection = Collections::create(array('class' => 'collection'));
 
 		if (($this->request->data) && $collection->save($this->request->data)) {
 			return $this->redirect(array('Collections::view', 'args' => array($collection->slug)));
