@@ -118,6 +118,15 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 			if(isset($exif_date) && $exif_date) {
 				$file_time = strtotime($exif_date);
 			} 
+			
+			exec("/usr/bin/exiftool -j -ImageHeight $file_path", $file_height);
+			exec("/usr/bin/exiftool -j -ImageWidth $file_path", $file_width);
+			
+			$height_info = json_decode(implode($file_height));
+			$width_info = json_decode(implode($file_width));
+			
+			$height = isset($height_info[0]->ImageHeight) ? $height_info[0]->ImageHeight : 0;
+			$width = isset($width_info[0]->ImageWidth) ? $width_info[0]->ImageWidth : 0;
 		} else if ($format == 'pdf') {
 			exec("/usr/bin/pdfinfo $file_path | grep CreationDate | cut -d ':' -f 2-", $file_info);
 
@@ -167,7 +176,7 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		
 		$format_id = $format->id;
 				
-		$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug');
+		$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height');
 
 		//Give the file a unique filename based on its md5sum
 		$hash_name = $hash . '.' . $format->extension;
