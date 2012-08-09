@@ -30,7 +30,7 @@ $this->title($document->title);
 		<a class="btn btn-inverse" href="/documents/edit/<?=$document->slug ?>">
 			<i class="icon-pencil icon-white"></i> Edit Document
 		</a>
-		<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
+		<!--<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
 			<span class="caret"></span>
 		</a>
 		<ul class="dropdown-menu">
@@ -44,7 +44,7 @@ $this->title($document->title);
 					<i class="icon-trash"></i> Delete
 				</a>
 			</li>
-		</ul>
+		</ul>-->
 
 	</div>
 	
