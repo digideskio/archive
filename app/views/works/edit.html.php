@@ -67,6 +67,23 @@ $this->form->config(
 	</div>
 	
 	<div class="span5">
+	
+	<div class="well">
+		<legend>Annotation</legend>
+		<?=$this->form->create($work); ?>
+			<?=$this->form->field('annotation', array(
+				'type' => 'textarea', 
+				'rows' => '10', 
+				'style' => 'width:90%;',
+				'label' => ''
+			));?>
+		
+			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
+			<?=$this->html->link('Cancel','/works/view/'.$work->slug, array('class' => 'btn')); ?>
+		<?=$this->form->end(); ?>
+		
+	</div>
+	
 	<div class="well">
 		<legend>Collections</legend>
 		<table class="table">

@@ -87,6 +87,21 @@ $this->title($work->title);
 	
 	<div class="span4">
 	
+		<?php if($work->annotation): ?>
+		
+		<div class="popover" style="display:block; position: static; margin-bottom:18px;">
+		<div class="popover-inner" style="width:100%">
+			<div class="popover-title">
+			<strong><?=$work->title ?></strong>
+			</div>
+			<div class="popover-content">
+			<p><?=$work->annotation ?></p>
+			</div>
+		</div>
+		</div>
+		
+		<?php endif; ?>
+	
 		<div class="alert alert-block">
     	<p>
     		<?php echo $work->caption(); ?>
