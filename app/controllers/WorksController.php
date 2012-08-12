@@ -18,42 +18,43 @@ use lithium\security\Auth;
 class WorksController extends \lithium\action\Controller {
 
 	public function index() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
+	
+		// Check authorization
+		$check = (Auth::check('default')) ?: null;
 	
 		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+	   	// Look up the current user with his or her role
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
 		
 		$limit = 50;
-        $page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
-        $order = array('earliest_date' => 'DESC');
-        $total = Works::count();
-        $works = Works::find('all', array(
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('earliest_date' => 'DESC');
+		$total = Works::count();
+		$works = Works::find('all', array(
 			'with' => 'WorksDocuments',
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
 		));
+		
 		return compact('works', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {
-    
-	    $check = (Auth::check('default')) ?: null;
 	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
@@ -103,23 +104,23 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-    
-	    $check = (Auth::check('default')) ?: null;
 	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Works::index');
-        }
-        
+		
+		// If the user is not an Admin or Editor, redirect to the index
+		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+			return $this->redirect('Works::index');
+		}
+		
 		$work = Works::create();
 
 		if (($this->request->data) && $work->save($this->request->data)) {
@@ -129,22 +130,22 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
 	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Works::index');
-        }
+		
+		// If the user is not an Admin or Editor, redirect to the index
+		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+			return $this->redirect('Works::index');
+		}
 		
 		if(isset($this->request->params['slug'])) {
 		
@@ -213,31 +214,31 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-    
-	    $check = (Auth::check('default')) ?: null;
 	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
-        
+		
 		$work = Works::first(array(
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
-        
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Works::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
-        
-        // For the following to work, the delete form must have an explicit 'method' => 'post'
-        // since the default method is PUT
+		
+		// If the user is not an Admin or Editor, redirect to the record view
+		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+			return $this->redirect(array(
+				'Works::view', 'args' => array($this->request->params['slug']))
+			);
+		}
+		
+		// For the following to work, the delete form must have an explicit 'method' => 'post'
+		// since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Works::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
