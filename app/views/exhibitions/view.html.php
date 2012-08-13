@@ -21,36 +21,18 @@ $this->title($collection->title);
 
 </div>
 
-<div id="tools" class="btn-toolbar">
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="#">View</a>
+	</li>
 
-<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
-
-	<div class="action btn-group">
-
-		<a class="btn btn-inverse" href="/exhibitions/edit/<?=$collection->slug ?>">
-			<i class="icon-pencil icon-white"></i> Edit Exhibition
-		</a>
-		<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
-			<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/exhibitions/edit/<?=$collection->slug ?>">
-					<i class="icon-pencil"></i> Edit
-				</a>
-			</li>
-			<li>
-				<a data-toggle="modal" href="#deleteModal">
-					<i class="icon-trash"></i> Delete
-				</a>
-			</li>
-		</ul>
-
-	</div>
+	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-<?php endif; ?>
+		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$collection->slug); ?></li>
+	
+	<?php endif; ?>
 
-</div>
+</ul>
 
 	<div class="alert alert-info">
 	<h1><?=$collection->title ?></h1>
@@ -120,20 +102,3 @@ $this->title($collection->title);
 </tbody>
 
 <?php endif; ?>
-
-
-<div class="modal fade hide" id="deleteModal">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete Exhibition</h3>
-		</div>
-		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>? This will not delete any of the artworks inside. It will only remove this Exhibition from the listings.</p>
-			</div>
-			<div class="modal-footer">
-			<?=$this->form->create($collection, array('url' => "/exhibitions/delete/$collection->slug", 'method' => 'post')); ?>
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
-			<?=$this->form->end(); ?>
-	</div>
-</div>

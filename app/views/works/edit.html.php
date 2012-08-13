@@ -285,10 +285,10 @@ $this->form->config(
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete <strong><?=$work->title; ?></strong></h3>
+			<h3>Delete Artwork</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$work->title; ?></strong>?
+			<p>Are you sure you want to permanently delete <strong><?=$work->title; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>

@@ -21,36 +21,18 @@ $this->title($publication->title);
 
 </div>
 
-<div id="tools" class="btn-toolbar">
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="#">View</a>
+	</li>
 
-<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
-
-	<div class="action btn-group">
-
-		<a class="btn btn-inverse" href="/publications/edit/<?=$publication->slug ?>">
-			<i class="icon-pencil icon-white"></i> Edit Publication
-		</a>
-		<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
-			<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/publications/edit/<?=$publication->slug ?>">
-					<i class="icon-pencil"></i> Edit
-				</a>
-			</li>
-			<li>
-				<a data-toggle="modal" href="#deleteModal">
-					<i class="icon-trash"></i> Delete
-				</a>
-			</li>
-		</ul>
-
-	</div>
+	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-<?php endif; ?>
+		<li><?=$this->html->link('Edit','/publications/edit/'.$publication->slug); ?></li>
+	
+	<?php endif; ?>
 
-</div>
+</ul>
 
 <div class="row">
 	<div class="span4">
@@ -123,23 +105,5 @@ $this->title($publication->title);
 		
 		</table>
 	
-	</div>
-</div>
-
-
-
-<div class="modal fade hide" id="deleteModal">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete Publication</h3>
-		</div>
-		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$publication->title; ?></strong>?</p>
-			</div>
-			<div class="modal-footer">
-			<?=$this->form->create($publication, array('url' => "/publications/delete/$publication->slug", 'method' => 'post')); ?>
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
-			<?=$this->form->end(); ?>
 	</div>
 </div>

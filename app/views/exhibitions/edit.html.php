@@ -35,6 +35,15 @@ $this->form->config(
 
 </div>
 
+<ul class="nav nav-tabs">
+	<li><?=$this->html->link('View','/exhibitions/view/'.$collection->slug); ?></li>
+	<li class="active">
+		<a href="#">
+			Edit
+		</a>
+	</li>
+</ul>
+
 
 <div class="well">
 <?=$this->form->create($collection); ?>
@@ -63,4 +72,37 @@ $this->form->config(
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/exhibitions/view/'.$collection->slug, array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
+</div>
+
+
+		
+<div class="well">
+
+	<legend>Edit</legend>
+
+	<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+		<i class="icon-white icon-trash"></i> Delete Exhibition
+	</a>
+
+</div>
+
+
+
+
+<div class="modal fade hide" id="deleteModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Delete Exhibition</h3>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>?</p>
+			
+			<p>By selecting <code>Delete</code>, you will remove this Exhibition from the listings. Are you sure you want to continue?</p>
+			</div>
+			<div class="modal-footer">
+			<?=$this->form->create($collection, array('url' => "/exhibitions/delete/$collection->slug", 'method' => 'post')); ?>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
+			<?=$this->form->end(); ?>
+	</div>
 </div>

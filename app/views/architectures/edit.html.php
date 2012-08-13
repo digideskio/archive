@@ -35,6 +35,15 @@ $this->form->config(
 
 </div>
 
+<ul class="nav nav-tabs">
+	<li><?=$this->html->link('View','/architectures/view/'.$publication->slug); ?></li>
+	<li class="active">
+		<a href="#">
+			Edit
+		</a>
+	</li>
+</ul>
+
 
 <div class="row">
 
@@ -99,4 +108,36 @@ $this->form->config(
 
 	</div>
 
+</div>
+
+
+		
+<div class="well">
+
+	<legend>Edit</legend>
+
+	<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+		<i class="icon-white icon-trash"></i> Delete Project
+	</a>
+
+</div>
+
+
+
+<div class="modal fade hide" id="deleteModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Delete Project</h3>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to permanently delete <strong><?=$architecture->title; ?></strong>?</p>
+			
+			<p>By selecting <code>Delete</code>, you will remove this Project from the listings. Are you sure you want to continue?</p>
+			</div>
+			<div class="modal-footer">
+			<?=$this->form->create($architecture, array('url' => "/architectures/delete/$architecture->slug", 'method' => 'post')); ?>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
+			<?=$this->form->end(); ?>
+	</div>
 </div>
