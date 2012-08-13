@@ -12,9 +12,9 @@ class ImportFromWebdav extends Ruckusing_BaseMigration {
   	
   	$grep_mimes = implode('|', $mimeTypes); // Format for grep
   
-  	$webdav = '';
+  	$webdav = '/srv/www/aiww.net/webdav/artworks-latest-2012-07-30';
   	
-  	$target = '';
+  	$target = '/srv/www/fakeweiwei.com/public/app/webroot/files';
   	
   	foreach (new DirectoryIterator($webdav) as $collection) {
   	
@@ -68,7 +68,7 @@ class ImportFromWebdav extends Ruckusing_BaseMigration {
 			
 				//echo getcwd() . ":\n";
 				//echo "find -type f -print0 | xargs -0 file -i | grep -i -E '($grep_mimes)'" . "\n\n";
-	
+
 				foreach($finds as $f) {
 					$fileName = substr($f, 2, strripos($f, ':')-2);
 					$fileType = substr($f, strripos($f, ':')+2);
@@ -147,8 +147,8 @@ class ImportFromWebdav extends Ruckusing_BaseMigration {
 					$finalPath = $target . DIRECTORY_SEPARATOR . $hashName;
 					copy($fileFullPath, $finalPath);
 					
-					$thumb = $target . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR . $hashName;
-					$small = $target . DIRECTORY_SEPARATOR . 'small' . DIRECTORY_SEPARATOR . $hashName;
+					$thumb = $target . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR . "$hash.jpeg";
+					$small = $target . DIRECTORY_SEPARATOR . 'small' . DIRECTORY_SEPARATOR . "$hash.jpeg";
 					
 					exec("/usr/bin/convert -define jpeg:size=260x260 $finalPath -thumbnail 260x260^ -gravity center -extent 260x260 $thumb");
 					exec("/usr/bin/convert -resize 560x560 $finalPath $small");
@@ -174,9 +174,9 @@ class ImportFromWebdav extends Ruckusing_BaseMigration {
 					if($slug) {
 						$works = $this->select_one("SELECT id FROM works WHERE slug = '$slug'");
 						$work_id = $works['id'];
-						$this->execute("INSERT INTO works SET annotation = '$annotation' WHERE slug = '$slug'");
+						$this->execute("UPDATE works SET annotation = '$annotation' WHERE slug = '$slug'");
 					} else {
-						$this->execute("INSERT INTO works (artist, title, materials, earliest_date, slug, date_created, date_modified, annotation) VALUES ('$artist', '$title', '$materials', '$date', '$file_title', NOW(), NOW(), '$annotation')");
+						$this->execute("INSERT INTO works (artist, title, materials, earliest_date, latest_date, slug, date_created, date_modified, annotation) VALUES ('$artist', '$title', '$materials', '$date', '0', '$file_title', NOW(), NOW(), '$annotation')");
 						
 						$work_id = mysql_insert_id();
 					}
