@@ -5,7 +5,7 @@ namespace app\models;
 use lithium\util\Inflector;
 use lithium\util\Validator;
 
-class Works extends \lithium\data\Model {
+class Works extends \app\models\Archives {
 
 	public $hasMany = array('CollectionsWorks', 'WorksDocuments');
 
@@ -22,25 +22,6 @@ class Works extends \lithium\data\Model {
     	$running_time = $entity->running_time ? $entity->running_time : '';
     	$dimensions = array_filter(array($measures, $diameter, $running_time));
     	return implode(', ', $dimensions);
-    }
-    
-    public function years($entity) {
-    
-    	$earliest_year = (
-    		$entity->earliest_date != '0000-00-00 00:00:00' &&
-    		$entity->earliest_date != '0000-00-00' &&
-    		$entity->earliest_date != NULL
-    		
-    	) ? date_format(date_create($entity->earliest_date), 'Y') : '0';
-    	$latest_year = (
-    		$entity->latest_date != '0000-00-00 00:00:00' &&
-    		$entity->latest_date != '0000-00-00' &&
-    		$entity->latest_date != NULL
-    	) ? date_format(date_create($entity->latest_date), 'Y') : 0;
-    	
-    	$years = array_unique(array_filter(array($earliest_year, $latest_year)));
-
-		return implode('–', $years);
     }
     
     public function caption($entity) {
