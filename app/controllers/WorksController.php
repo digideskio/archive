@@ -196,15 +196,6 @@ class WorksController extends \lithium\action\Controller {
 					return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 				}
 		
-				// If the database times are zero, just show an empty string in the form
-				if($work->earliest_date == '0000-00-00 00:00:00') {
-					$work->earliest_date = '';
-				}
-		
-				if($work->latest_date == '0000-00-00 00:00:00') {
-					$work->latest_date = '';
-				}
-		
 				return compact('work', 'work_documents', 'collections', 'other_collections', 'exhibitions', 'other_exhibitions');
 			}	
 		}																																		

@@ -55,8 +55,8 @@ $this->form->config(
 			<?=$this->form->field('artist');?>
 			<?=$this->form->field('title');?>
 			<?=$this->form->field('classification');?>
-			<?=$this->form->field('earliest_date');?>
-			<?=$this->form->field('latest_date');?>
+			<?=$this->form->field('earliest_date', array('value' => $work->start_date()));?>
+			<?=$this->form->field('latest_date', array('value' => $work->end_date()));?>
 			<?=$this->form->field('creation_number', array('label' => 'Artwork ID'));?>
 			<?=$this->form->field('materials', array('type' => 'textarea'));?>
 			<?=$this->form->field('quantity');?>

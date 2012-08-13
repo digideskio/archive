@@ -138,15 +138,6 @@ class ArchitecturesController extends \lithium\action\Controller {
 			return $this->redirect(array('Architectures::view', 'args' => array($architecture->slug)));
 		}
 		
-		// If the database times are zero, just show an empty string in the form
-		if($architecture->earliest_date == '0000-00-00 00:00:00') {
-			$architecture->earliest_date = '';
-		}
-		
-		if($architecture->latest_date == '0000-00-00 00:00:00') {
-			$architecture->latest_date = '';
-		}
-		
 		return compact('architecture', 'architecture_documents');
 	}
 

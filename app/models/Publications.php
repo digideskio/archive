@@ -6,12 +6,6 @@ use lithium\util\Inflector;
 use lithium\util\Validator;
 
 class Publications extends \app\models\Archives {
-
-	public $validates = array(
-		'title' => array(
-			array('notEmpty', 'message' => 'Please enter a title.'),
-		)
-    );
     
     public function citation($entity) {
     	$years = Publications::years($entity);
@@ -35,6 +29,7 @@ class Publications extends \app\models\Archives {
 
 Publications::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
+	date_default_timezone_set('UTC');
 
 	// Check if this is a new record
 	if(!$params['entity']->exists()) {
@@ -60,17 +55,15 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 		$params['data']['slug'] = $slug . ($count ? "-" . (++$count) : ''); //add slug-X only if $count > 0
 	}
 	
-	date_default_timezone_set('UTC');
-	
 	if( isset($params['data']['earliest_date']) && 
 		$params['data']['earliest_date'] &&
 		strtotime($params['data']['earliest_date'])
 	) {
 		if(preg_match('/^\d{4}$/', $params['data']['earliest_date'])) {
-			$params['data']['earliest_date'] .= '-01-01 00:00:00';
+			$params['data']['earliest_date'] .= '-01-01';
 		}
 		$time = strtotime($params['data']['earliest_date']);
-		$params['data']['earliest_date'] = date("Y-m-d H:i:s", $time);
+		$params['data']['earliest_date'] = date("Y-m-d", $time);
 	}
 	
 	if( isset($params['data']['latest_date']) && 
@@ -78,10 +71,10 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 		strtotime($params['data']['latest_date'])
 	) {
 		if(preg_match('/^\d{4}$/', $params['data']['latest_date'])) {
-			$params['data']['latest_date'] .= '-01-01 00:00:00';
+			$params['data']['latest_date'] .= '-01-01';
 		}
 		$time = strtotime($params['data']['latest_date']);
-		$params['data']['latest_date'] = date("Y-m-d H:i:s", $time);
+		$params['data']['latest_date'] = date("Y-m-d", $time);
 	}
 	
 	// Set the date modified

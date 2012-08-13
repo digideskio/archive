@@ -58,8 +58,8 @@ $this->form->config(
 	<?=$this->form->field('author');?>
 	<?=$this->form->field('title');?>
 	<?=$this->form->field('publisher');?>
-	<?=$this->form->field('earliest_date');?>
-	<?=$this->form->field('latest_date');?>
+	<?=$this->form->field('earliest_date', array('value' => $publication->start_date()));?>
+	<?=$this->form->field('latest_date', array('value' => $publication->end_date()));?>
 	<?=$this->form->field('pages');?>
 	<?=$this->form->field('url', array('label' => 'Website'));?>
 	<?=$this->form->field('subject');?>

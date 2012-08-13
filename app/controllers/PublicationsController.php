@@ -113,15 +113,6 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
 		
-		// If the database times are zero, just show an empty string in the form
-		if($publication->earliest_date == '0000-00-00 00:00:00') {
-			$publication->earliest_date = '';
-		}
-		
-		if($publication->latest_date == '0000-00-00 00:00:00') {
-			$publication->latest_date = '';
-		}
-		
 		return compact('publication');
 	}
 

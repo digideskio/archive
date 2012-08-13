@@ -54,8 +54,14 @@ $this->form->config(
 			<?=$this->form->field('client');?>
 			<?=$this->form->field('project_lead');?>
 			<?=$this->form->field('remarks');?>
-			<?=$this->form->field('earliest_date', array('label' => 'Design Date'));?>
-			<?=$this->form->field('latest_date', array('label' => 'Completion Date'));?>
+			<?=$this->form->field('earliest_date', array(
+				'label' => 'Design Date',
+				'value' => $architecture->start_date()
+			));?>
+			<?=$this->form->field('latest_date', array(
+				'label' => 'Completion Date',
+				'value' => $architecture->end_date()
+			));?>
 			<?=$this->form->field('status', array('label' => 'Project Status'));?>
 			<?=$this->form->field('location');?>
 			<?=$this->form->field('city');?>
@@ -64,6 +70,17 @@ $this->form->config(
 			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
+		
+		<div class="well">
+
+			<legend>Edit</legend>
+
+			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+				<i class="icon-white icon-trash"></i> Delete Project
+			</a>
+
+		</div>
+		
 	</div>
 	
 	<div class="span5">
@@ -107,18 +124,6 @@ $this->form->config(
 	</div>
 
 	</div>
-
-</div>
-
-
-		
-<div class="well">
-
-	<legend>Edit</legend>
-
-	<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-		<i class="icon-white icon-trash"></i> Delete Project
-	</a>
 
 </div>
 
