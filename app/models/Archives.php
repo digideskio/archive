@@ -13,31 +13,33 @@ class Archives extends \lithium\data\Model {
 		),
 		'latest_date' => array(
 			array('validDate',
-			'skipEmpty' => true,
-			'message' => 'Please enter a valid date.'),
+				'skipEmpty' => true,
+				'message' => 'Please enter a valid date.',
+				'format' => 'any'
+			)
 		),
 		'earliest_date' => array(
 			array('validDate',
-			'skipEmpty' => true,
-			'message' => 'Please enter a valid date.'),
+				'skipEmpty' => true,
+				'message' => 'Please enter a valid date.',
+				'format' => 'any'
+			)
 		)
     );
 	
     public function years($entity) {
     
-    	$earliest_year = (
-    		$entity->earliest_date != '0000-00-00 00:00:00' &&
-    		$entity->earliest_date != '0000-00-00' &&
-    		$entity->earliest_date != NULL
-    		
-    	) ? date_format(date_create($entity->earliest_date), 'Y') : '0';
-    	$latest_year = (
-    		$entity->latest_date != '0000-00-00 00:00:00' &&
-    		$entity->latest_date != '0000-00-00' &&
-    		$entity->latest_date != NULL
-    	) ? date_format(date_create($entity->latest_date), 'Y') : 0;
+    	$start_date = $entity->start_date();
+    	$end_date = $entity->end_date();
+    
+    	$start_year = (
+    		$start_date
+    	) ? date_format(date_create($start_date), 'Y') : '0';
+    	$end_year = (
+    		$end_date
+    	) ? date_format(date_create($end_date), 'Y') : 0;
     	
-    	$years = array_unique(array_filter(array($earliest_year, $latest_year)));
+    	$years = array_unique(array_filter(array($start_year, $end_year)));
 
 		return implode('–', $years);
     }
