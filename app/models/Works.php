@@ -9,12 +9,6 @@ class Works extends \app\models\Archives {
 
 	public $hasMany = array('CollectionsWorks', 'WorksDocuments');
 
-	public $validates = array(
-		'title' => array(
-			array('notEmpty', 'message' => 'Please enter a title.'),
-		)
-    );
-    
     public function dimensions($entity) {
     	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));
     	$measures = $hwd ? implode(' × ', $hwd) . ' cm' : '';
@@ -103,6 +97,14 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 Works::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 
+	// For validation to work, the dates can never be not set
+	if( !isset($params['data']['earliest_date']) ) {
+		$params['data']['earliest_date'] = '';
+	}
+	if( !isset($params['data']['latest_date']) ) {
+		$params['data']['latest_date'] = '';
+	}
+
 	// Check if this is a new record
 	if(!$params['entity']->exists()) {
 	
@@ -134,10 +136,10 @@ Works::applyFilter('save', function($self, $params, $chain) {
 		strtotime($params['data']['earliest_date'])
 	) {
 		if(preg_match('/^\d{4}$/', $params['data']['earliest_date'])) {
-			$params['data']['earliest_date'] .= '-01-01 00:00:00';
+			$params['data']['earliest_date'] .= '-01-01';
 		}
 		$time = strtotime($params['data']['earliest_date']);
-		$params['data']['earliest_date'] = date("Y-m-d H:i:s", $time);
+		$params['data']['earliest_date'] = date("Y-m-d", $time);
 	}
 	
 	if( isset($params['data']['latest_date']) && 
@@ -145,10 +147,10 @@ Works::applyFilter('save', function($self, $params, $chain) {
 		strtotime($params['data']['latest_date'])
 	) {
 		if(preg_match('/^\d{4}$/', $params['data']['latest_date'])) {
-			$params['data']['latest_date'] .= '-01-01 00:00:00';
+			$params['data']['latest_date'] .= '-01-01';
 		}
 		$time = strtotime($params['data']['latest_date']);
-		$params['data']['latest_date'] = date("Y-m-d H:i:s", $time);
+		$params['data']['latest_date'] = date("Y-m-d", $time);
 	}
 	
 	// Set the date modified

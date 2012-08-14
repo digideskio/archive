@@ -31,6 +31,14 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 	date_default_timezone_set('UTC');
 
+	// For validation to work, the dates can never be not set
+	if( !isset($params['data']['earliest_date']) ) {
+		$params['data']['earliest_date'] = '';
+	}
+	if( !isset($params['data']['latest_date']) ) {
+		$params['data']['latest_date'] = '';
+	}
+
 	// Check if this is a new record
 	if(!$params['entity']->exists()) {
 	

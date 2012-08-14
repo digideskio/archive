@@ -47,22 +47,22 @@ class WorksTest extends \lithium\test\Unit {
 		$later_date_complete = "2001-03-04 15:16:17";
 		
 		$early_date_Ymd_input = "1999-11-12";
-		$early_date_Ymd_expected = "1999-11-12 00:00:00";
+		$early_date_Ymd_expected = "1999-11-12";
 		
 		$later_date_Ymd_input = "2001-03-04";
-		$later_date_Ymd_expected = "2001-03-04 00:00:00";
+		$later_date_Ymd_expected = "2001-03-04";
 		
 		$early_date_Y_input = '1999';
-		$early_date_Y_expected = '1999-01-01 00:00:00';
+		$early_date_Y_expected = '1999-01-01';
 		
 		$later_date_Y_input = '2000';
-		$later_date_Y_expected = '2000-01-01 00:00:00';
+		$later_date_Y_expected = '2000-01-01';
 		
 		$early_date_FY_input = 'February 1999';
-		$early_date_FY_expected = '1999-02-01 00:00:00';
+		$early_date_FY_expected = '1999-02-01';
 		
 		$early_date_MY_input = 'Feb 2001';
-		$early_date_MY_expected = '2001-02-01 00:00:00';
+		$early_date_MY_expected = '2001-02-01';
 	
 		$work = Works::create();
 		$data = array (
@@ -75,8 +75,8 @@ class WorksTest extends \lithium\test\Unit {
 		
 		$work = Works::first();
 		
-		$this->assertEqual($early_date_complete, $work->earliest_date);
-		$this->assertEqual($later_date_complete, $work->latest_date);
+		$this->assertEqual($early_date_Ymd_input, $work->earliest_date);
+		$this->assertEqual($later_date_Ymd_input, $work->latest_date);
 		
 		$work->delete();
 		
