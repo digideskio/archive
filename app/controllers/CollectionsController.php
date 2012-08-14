@@ -29,10 +29,13 @@ class CollectionsController extends \lithium\action\Controller {
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
+
+		$order = array('title' => 'ASC'); 
 		
 		$collections = Collections::find('all', array(
 			'with' => 'CollectionsWorks',
-			'conditions' => array('class' => 'collection')
+			'conditions' => array('class' => 'collection'),
+			'order' => $order
 		));
 		return compact('collections', 'auth');
 	}
