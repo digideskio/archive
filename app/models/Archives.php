@@ -60,6 +60,36 @@ class Archives extends \lithium\data\Model {
 
 		});
 
+		static::applyFilter('save', function($self, $params, $chain) {
+
+			if(!$params['entity']->exists()) { 
+
+				$slug = Inflector::slug($params['data']['title']);
+
+				$conditions = array('slug' => $slug);
+
+				$conflicts = $self::count(compact('conditions'));
+
+				if($conflicts){
+					$i = 0;
+					$newSlug = '';
+					while($conflicts){
+						$i++;
+						$newSlug = "{$slug}-{$i}";
+						$conditions = array('slug' => $newSlug);
+						$conflicts = $self::count(compact('conditions'));
+					}
+					$slug = $newSlug;
+				}
+
+				$params['data']['slug'] = $slug;
+				
+			}
+
+			return $chain->next($self, $params, $chain);
+
+		});
+
 	}
 
 	public static function filterDate($date) {

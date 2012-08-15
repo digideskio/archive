@@ -11,6 +11,36 @@ class ArchitecturesTest extends \lithium\test\Unit {
 	public function tearDown() {}
 
 
+	public function testCreateArchitecture() {
+		$architecture = Architectures::create();
+		$data = array (
+			"title" => "Architecture Title",
+		);
+
+		$slug = "Architecture-Title";
+
+		$this->assertTrue($architecture->save($data));
+		$this->assertEqual($slug, $architecture->slug);
+
+		$second_arch = Architectures::create();
+		$second_slug = "Architecture-Title-1";
+
+		$this->assertTrue($second_arch->save($data));
+		$this->assertEqual($second_slug, $second_arch->slug);
+
+		$architecture->delete();
+		$second_arch->delete();
+	}
+
+	public function testCreateArchitectureWithNoTitle() {
+		$architecture = Architectures::create();
+		$data = array (
+			"title" => "",
+		);
+
+		$this->assertFalse($architecture->save($data));
+	}
+
 }
 
 ?>

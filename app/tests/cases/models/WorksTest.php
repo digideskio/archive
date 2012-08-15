@@ -23,7 +23,7 @@ class WorksTest extends \lithium\test\Unit {
 		$this->assertEqual($slug, $work->slug);
 		
 		$second_work = Works::create();
-		$second_slug = "Artwork-Title-2";
+		$second_slug = "Artwork-Title-1";
 		
 		$this->assertTrue($second_work->save($data));
 		$this->assertEqual($second_slug, $second_work->slug);

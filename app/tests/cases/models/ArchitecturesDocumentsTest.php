@@ -10,7 +10,6 @@ class ArchitecturesDocumentsTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
-
 }
 
 ?>

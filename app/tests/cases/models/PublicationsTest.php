@@ -22,7 +22,7 @@ class PublicationsTest extends \lithium\test\Unit {
 		$this->assertEqual($slug, $publication->slug);
 
 		$second_pub = Publications::create();
-		$second_slug = "Publication-Title-2";
+		$second_slug = "Publication-Title-1";
 
 		$this->assertTrue($second_pub->save($data));
 		$this->assertEqual($second_slug, $second_pub->slug);
@@ -39,7 +39,6 @@ class PublicationsTest extends \lithium\test\Unit {
 
 		$this->assertFalse($publication->save($data));
 	}
-
 
 }
 
