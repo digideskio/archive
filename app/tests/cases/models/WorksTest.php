@@ -43,9 +43,6 @@ class WorksTest extends \lithium\test\Unit {
 	}
 	
 	public function testValidDates() {
-		$early_date_complete = "1999-11-12 12:13:14";
-		$later_date_complete = "2001-03-04 15:16:17";
-		
 		$early_date_Ymd_input = "1999-11-12";
 		$early_date_Ymd_expected = "1999-11-12";
 		
@@ -64,22 +61,6 @@ class WorksTest extends \lithium\test\Unit {
 		$early_date_MY_input = 'Feb 2001';
 		$early_date_MY_expected = '2001-02-01';
 	
-		$work = Works::create();
-		$data = array (
-			"title" => "Artwork Title",
-			"earliest_date" => $early_date_complete,
-			"latest_date" => $later_date_complete
-		);
-		
-		$work->save($data);
-		
-		$work = Works::first();
-		
-		$this->assertEqual($early_date_Ymd_input, $work->earliest_date);
-		$this->assertEqual($later_date_Ymd_input, $work->latest_date);
-		
-		$work->delete();
-		
 		$work = Works::create();
 		$data = array (
 			"title" => "Artwork Title",

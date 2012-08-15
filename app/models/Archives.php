@@ -27,6 +27,56 @@ class Archives extends \lithium\data\Model {
 		)
     );
 	
+
+	public static function __init(array $options = array()) {
+
+		parent::__init($options);
+
+		static::applyFilter('save', function($self, $params, $chain) {
+			// Custom pre-dispatch logic goes here
+			date_default_timezone_set('UTC');
+
+			// Check if this is a new record
+			if(!$params['entity']->exists()) {
+
+				// Set the date created
+				$params['data']['date_created'] = date("Y-m-d H:i:s");
+
+			}
+
+			// Set the date modified
+			$params['data']['date_modified'] = date("Y-m-d H:i:s");
+
+			return $chain->next($self, $params, $chain);
+
+		});
+
+		static::applyFilter('save', function($self, $params, $chain) {
+
+			$params['data']['earliest_date'] = isset($params['data']['earliest_date']) ? Archives::filterDate($params['data']['earliest_date']) : '';
+			$params['data']['latest_date'] = isset($params['data']['latest_date']) ? Archives::filterDate($params['data']['latest_date']) : '';
+
+			return $chain->next($self, $params, $chain);
+
+		});
+
+	}
+
+	public static function filterDate($date) {
+
+		if(preg_match('/^\d{4}$/', $date)) {
+			 $date .= '-01-01';
+		}
+
+		if( Validator::isValidDate($date) ) {
+			$time = strtotime($date);
+			$date = date("Y-m-d", $time);
+		}
+
+		return $date;
+
+	}
+
     public function years($entity) {
     
     	$start_date = $entity->start_date();
