@@ -150,20 +150,22 @@ Documents::applyFilter('create', function($self, $params, $chain) {
 		
 		//create a slug based on the title
 		$slug = Inflector::slug($title);
-		
-		//Check if the slug ends with an iterated number such as Slug-1
-		if(preg_match_all("/.*?-(\d+)$/", $slug, $matches)) {
-			//Get the base of the iterated slug
-			$slug = substr($slug, 0, strripos($slug, '-'));
+	
+		$conditions = array('slug' => $slug);
+		$conflicts = Documents::count(compact('conditions'));
+
+		if($conflicts){
+			$i = 0;
+			$newSlug = '';
+			while($conflicts){
+				$i++;
+				$newSlug = "{$slug}-{$i}";
+				$conditions = array('slug' => $newSlug);
+				$conflicts = Documents::count(compact('conditions'));
+			}
+			// Out of conflict.
+			$slug = $newSlug;
 		}
-		
-		//Count the slugs that start with $slug
-		$count = Documents::find('count', array(
-		    'fields' => array('id'),
-		    'conditions' => array('slug' => array('like' => "$slug%"))
-		));
-		
-		$slug = $slug . ($count ? "-" . (++$count) : ''); //add slug-X only if $count > 0
 	
 		// Get the md5sum of the file
 		$hash = md5_file($file_path);
