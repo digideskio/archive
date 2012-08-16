@@ -158,14 +158,12 @@ class WorksController extends \lithium\action\Controller {
 					'with' => 'CollectionsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
-						'class' => 'collection'
 					),
 				));
 		
 		
 				$other_collections = Collections::find('all', array(
 					'with' => 'CollectionsWorks',
-					'conditions' => array('class' => 'collection')
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
