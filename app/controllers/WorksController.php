@@ -83,7 +83,6 @@ class WorksController extends \lithium\action\Controller {
 					'with' => 'CollectionsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
-						'class' => 'collection'
 					),
 				));
 		
