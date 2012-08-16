@@ -11,6 +11,7 @@ use app\models\WorksDocuments;
 use app\models\Collections;
 use app\models\CollectionsWorks;
 use app\models\Exhibitions;
+use app\models\ExhibitionsWorks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -86,11 +87,10 @@ class WorksController extends \lithium\action\Controller {
 					),
 				));
 		
-				$exhibitions = Collections::find('all', array(
-					'with' => 'CollectionsWorks',
+				$exhibitions = Exhibitions::find('all', array(
+					'with' => 'ExhibitionsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
-						'class' => 'exhibition'
 					),
 				));
 			
@@ -169,18 +169,16 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array('class' => 'collection')
 				));
 		
-				$exhibitions = Collections::find('all', array(
-					'with' => 'CollectionsWorks',
+				$exhibitions = Exhibitions::find('all', array(
+					'with' => 'ExhibitionsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
-						'class' => 'exhibition'
 					),
 				));
 		
-				$other_exhibitions = Collections::find('all', array(
-					'with' => array('CollectionsWorks', 'Dates', 'Exhibitions'),
-					'order' => 'start DESC',
-					'conditions' => array('class' => 'exhibition')
+				$other_exhibitions = Exhibitions::find('all', array(
+					'with' => array('ExhibitionsWorks'),
+					'order' => 'earliest_date DESC',
 					//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
 				));
 		

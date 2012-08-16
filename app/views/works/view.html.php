@@ -134,10 +134,10 @@ $this->title($work->title);
 					<td>
 						<ul class="unstyled" style="margin-bottom:0">
 						
-							<?php foreach($exhibitions as $collection): ?>
+							<?php foreach($exhibitions as $exhibition): ?>
 							<li><strong><?=$this->html->link(
-								$collection->title,
-								'/exhibitions/view/'.$collection->slug
+								$exhibition->title,
+								'/exhibitions/view/'.$exhibition->slug
 							);?></strong></li>
 							<?php endforeach; ?>
 						

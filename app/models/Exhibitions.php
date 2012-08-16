@@ -4,10 +4,10 @@ namespace app\models;
 
 use lithium\util\Inflector;
 
-class Exhibitions extends \lithium\data\Model {
+class Exhibitions extends \app\models\Archives {
 
-	public $belongsTo = array('Collections');
-	
+	public $hasMany = array('ExhibitionsWorks');
+
 	public function location($entity) {
 	
 		$venue = $entity->venue ? '<strong>' . $entity->venue . '</strong>' : '';

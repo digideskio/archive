@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($collection->title);
+$this->title($exhibition->title);
 
 ?>
 
@@ -14,7 +14,7 @@ $this->title($collection->title);
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($collection->title,'/exhibitions/view/'.$collection->slug); ?>
+	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?>
 	</li>
 
 	</ul>
@@ -28,30 +28,30 @@ $this->title($collection->title);
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$collection->slug); ?></li>
+		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$exhibition->slug); ?></li>
 	
 	<?php endif; ?>
 
 </ul>
 
 	<div class="alert alert-info">
-	<h1><?=$collection->title ?></h1>
+	<h1><?=$exhibition->title ?></h1>
 	
 	<?php 
 		date_default_timezone_set('UTC');
 		
-		$location = $collection->exhibition->location();
-		$dates = $collection->date->dates();
-		$curator = $collection->exhibition->curator;
+		$location = $exhibition->location();
+		$dates = $exhibition->dates();
+		$curator = $exhibition->curator;
 	?>
 	
 	<?php if($location) echo "<p>$location</p>"; ?>
 	<?php if($dates) echo "<p>$dates</p>"; ?>
 	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
 	
-	<p><?=$collection->exhibition->remarks ?></p>
+	<p><?=$exhibition->remarks ?></p>
 	
-	<p><span class="badge"><?=$collection->exhibition->type ?> Show</span></p>
+	<p><span class="badge"><?=$exhibition->type ?> Show</span></p>
 	</div>
 	
 <?php if($total > 0): ?>
@@ -71,14 +71,14 @@ $this->title($collection->title);
 		
 <tbody>
 
-<?php foreach($collections_works as $cw): ?>
+<?php foreach($exhibitions_works as $ew): ?>
 
 <tr>
-	<td><?=$cw->work->creation_number?></td>
+	<td><?=$ew->work->creation_number?></td>
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 	
-		<?php $thumbnail = $cw->work->preview(); $work_slug = $cw->work->slug;
+		<?php $thumbnail = $ew->work->preview(); $work_slug = $ew->work->slug;
 		
 			if($thumbnail) {
 				echo "<a href='/works/view/$work_slug'>";
@@ -91,10 +91,10 @@ $this->title($collection->title);
 		?>
 	
 	</td>
-    <td><?=$this->html->link($cw->work->title,'/works/view/'.$cw->work->slug); ?></td>
-    <td><?=$cw->work->years(); ?></td>
-    <td><?php echo $cw->work->notes(); ?></td>
-    <td><?=$cw->work->classification ?></td>
+    <td><?=$this->html->link($ew->work->title,'/works/view/'.$ew->work->slug); ?></td>
+    <td><?=$ew->work->years(); ?></td>
+    <td><?php echo $ew->work->notes(); ?></td>
+    <td><?=$ew->work->classification ?></td>
 </tr>
     
 <?php endforeach; ?>

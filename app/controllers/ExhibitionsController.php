@@ -2,11 +2,9 @@
 
 namespace app\controllers;
 
-use app\models\Collections;
-use app\models\CollectionsWorks;
 use app\models\Exhibitions;
+use app\models\ExhibitionsWorks;
 use app\models\Works;
-use app\models\Dates;
 
 use app\models\Users;
 use app\models\Roles;
@@ -32,15 +30,14 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-	 	$order = 'start DESC';
+	 	$order = 'earliest_date DESC';
 		
-		$collections = Collections::find('all', array(
-			'with' => array('CollectionsWorks', 'Dates', 'Exhibitions'),
+		$exhibitions = Exhibitions::find('all', array(
+			'with' => array('ExhibitionsWorks'),
 			'order' => $order,
-			'conditions' => array ('class' => 'exhibition')
 		));
 		
-		return compact('collections', 'auth');
+		return compact('exhibitions', 'auth');
 	}
 
 	public function view() {
@@ -60,26 +57,24 @@ class ExhibitionsController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$collection = Collections::find('first', array(
-				'with' => array('Dates', 'Exhibitions'),
+			$exhibition = Exhibitions::find('first', array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
-				'class' => 'exhibition'
 			)));
 		
-			$total = CollectionsWorks::find('count', array(
-				'conditions' => array('collection_id' => $collection->id)
+			$total = ExhibitionsWorks::find('count', array(
+				'conditions' => array('exhibition_id' => $exhibition->id)
 			));
 			$order = 'earliest_date DESC';
 			
-			$collections_works = CollectionsWorks::find('all', array(
+			$exhibitions_works = ExhibitionsWorks::find('all', array(
 				'with' => 'Works',
-				'conditions' => array('collection_id' => $collection->id),
+				'conditions' => array('exhibition_id' => $exhibition->id),
 				'order' => $order
 			));
 			
 			//Send the retrieved data to the view
-			return compact('collection', 'collections_works', 'total', 'auth');
+			return compact('exhibition', 'exhibitions_works', 'total', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -104,21 +99,18 @@ class ExhibitionsController extends \lithium\action\Controller {
         	return $this->redirect('Exhibitions::index');
         }
         
-		$collection = Collections::create(array('class' => 'exhibition'));
+		$exhibition = Exhibitions::create();
 
-		if (($this->request->data) && $collection->save($this->request->data)) {
+		if (($this->request->data) && $exhibition->save($this->request->data)) {
 		
-			$this->request->data['collection_id'] = $collection->id;
+			$this->request->data['exhibition_id'] = $exhibition->id;
 			
 			$exhibition = Exhibitions::create();
 			$exhibition->save($this->request->data);
 			
-			$date = Dates::create();
-			$date->save($this->request->data);
-			
-			return $this->redirect(array('Exhibitions::view', 'args' => array($collection->slug)));
+			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
-		return compact('collection');
+		return compact('exhibition');
 	}
 
 	public function edit() {
@@ -134,34 +126,22 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$collection = Collections::find('first', array(
-			'with' => array('Dates', 'Exhibitions'),
+		$exhibition = Exhibitions::find('first', array(
 			'conditions' => array(
-			'slug' => $this->request->params['slug'],
-			'class' => 'exhibition'
+				'slug' => $this->request->params['slug'],
 		)));
 
-		if (!$collection) {
+		if (!$exhibition) {
 			return $this->redirect('Exhibitions::index');
 		}
-		if (($this->request->data) && $collection->save($this->request->data)) {
+		if (($this->request->data) && $exhibition->save($this->request->data)) {
 		
-			$collection->exhibition->save($this->request->data);
-			$collection->date->save($this->request->data);
+			$exhibition->save($this->request->data);
 		
-			return $this->redirect(array('Exhibitions::view', 'args' => array($collection->slug)));
+			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
 		
-		// If the database times are zero, just show an empty string
-		if($collection->date->start == '0000-00-00 00:00:00') {
-			$collection->date->start = '';
-		}
-		
-		if($collection->date->end == '0000-00-00 00:00:00') {
-			$collection->date->end = '';
-		}
-		
-		return compact('collection');
+		return compact('exhibition');
 	}
 
 	public function delete() {
@@ -177,11 +157,9 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$collection = Collections::find('first', array(
-			'with' => array('Dates', 'Exhibitions'),
+		$exhibition = Exhibitions::find('first', array(
 			'conditions' => array(
 			'slug' => $this->request->params['slug'],
-			'class' => 'exhibition'
 		)));
         
         // If the user is not an Admin or Editor, redirect to the record view
@@ -198,8 +176,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 		
-		$collection->delete();
-		$collection->exhibition->delete();
+		$exhibition->delete();
 		return $this->redirect('Exhibitions::index');
 	}
 }

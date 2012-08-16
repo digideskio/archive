@@ -1,6 +1,6 @@
 <?php
 
-$this->title($collection->title);
+$this->title($exhibition->title);
 
 $this->form->config(
     array( 
@@ -23,7 +23,7 @@ $this->form->config(
 	</li>
 
 	<li>
-	<?=$this->html->link($collection->title,'/exhibitions/view/'.$collection->slug); ?>
+	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -36,7 +36,7 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/exhibitions/view/'.$collection->slug); ?></li>
+	<li><?=$this->html->link('View','/exhibitions/view/'.$exhibition->slug); ?></li>
 	<li class="active">
 		<a href="#">
 			Edit
@@ -46,31 +46,30 @@ $this->form->config(
 
 
 <div class="well">
-<?=$this->form->create($collection); ?>
+<?=$this->form->create($exhibition); ?>
     <?=$this->form->field('title');?>
-    <?=$this->form->field('curator', array('value' => $collection->exhibition->curator));?>
-    <?=$this->form->field('venue', array('value' => $collection->exhibition->venue));?>
-    <?=$this->form->field('city', array('value' => $collection->exhibition->city));?>
-    <?=$this->form->field('country', array('value' => $collection->exhibition->country));?>
-	<?=$this->form->field('start', array(
+    <?=$this->form->field('curator');?>
+    <?=$this->form->field('venue');?>
+    <?=$this->form->field('city');?>
+    <?=$this->form->field('country');?>
+	<?=$this->form->field('earliest_date', array(
 		'label' => 'Opening Date',
-		'value' => $collection->date->start
+		'value' => $exhibition->start_date()
 	));?>
-	<?=$this->form->field('end', array(
+	<?=$this->form->field('latest_date', array(
 		'label' => 'Closing Date',
-		'value' => $collection->date->end
+		'value' => $exhibition->end_date()
 	));?>
     <?=$this->form->label('Show Type');?>
     <select name="type">
-    	<option value="Solo" <?php if ($collection->exhibition->type == "Solo") { echo "selected"; }?>>Solo</option>
-    	<option value="Group" <?php if ($collection->exhibition->type == "Group") { echo "selected"; }?>>Group</option>
+    	<option value="Solo" <?php if ($exhibition->type == "Solo") { echo "selected"; }?>>Solo</option>
+    	<option value="Group" <?php if ($exhibition->type == "Group") { echo "selected"; }?>>Group</option>
     </select>
     <?=$this->form->field('remarks', array(
     	'type' => 'textarea',
-    	'value' => $collection->exhibition->remarks
     ));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/exhibitions/view/'.$collection->slug, array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel','/exhibitions/view/'.$exhibition->slug, array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
 
@@ -95,12 +94,12 @@ $this->form->config(
 			<h3>Delete Exhibition</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$exhibition->title; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Exhibition from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($collection, array('url' => "/exhibitions/delete/$collection->slug", 'method' => 'post')); ?>
+			<?=$this->form->create($exhibition, array('url' => "/exhibitions/delete/$exhibition->slug", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

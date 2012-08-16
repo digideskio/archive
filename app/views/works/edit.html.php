@@ -147,14 +147,14 @@ $this->form->config(
 		<legend>Exhibitions</legend>
 		<table class="table">
 		
-			<?php foreach($exhibitions as $collection): ?>
-			<?php $cw = $collection->collections_works[0]; ?>
+			<?php foreach($exhibitions as $exhibition): ?>
+			<?php $ew = $exhibition->exhibitions_works[0]; ?>
 				<tr>
 					<td>
-						<a href="/exhibitions/view/<?=$collection->slug ?>"><?=$collection->title ?></a> <strong></strong> 
+						<a href="/exhibitions/view/<?=$exhibition->slug ?>"><?=$exhibition->title ?></a> <strong></strong> 
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($cw, array('url' => "/collections_works/delete/$cw->id", 'method' => 'post')); ?>
+			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
 			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
@@ -262,12 +262,12 @@ $this->form->config(
 					<td>
 						<a href="/exhibitions/view/<?=$oe->slug ?>">
 							<strong><?=$oe->title ?></a></strong><br/>
-							<?=$oe->exhibition->venue ?><br/>
-							<?=$oe->date->dates() ?>
+							<?=$oe->venue ?><br/>
+							<?=$oe->dates() ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($oe, array('url' => "/collections_works/add", 'method' => 'post')); ?>
-			<input type="hidden" name="collection_id" value="<?=$oe->id ?>" />
+			<?=$this->form->create($oe, array('url' => "/exhibitions_works/add", 'method' => 'post')); ?>
+			<input type="hidden" name="exhibition_id" value="<?=$oe->id ?>" />
 			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
 			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>

@@ -123,6 +123,48 @@ class Archives extends \lithium\data\Model {
 
 		return implode('–', $years);
     }
+
+	public function dates($entity) {
+
+		$start_date = $entity->start_date();
+		$end_date = $entity->end_date();
+
+		// If the record has a start date, find the day, month, and year
+		if($start_date) {
+			$start_day = date('d', strtotime($start_date));
+			$start_month = date('M', strtotime($start_date));
+			$start_days = date('d M', strtotime($start_date));
+			$start_year = date('Y', strtotime($start_date));
+		}
+		
+		// If the record has a end, find the day, month and year
+		if($end_date) {
+			$end_days = date('d M', strtotime($end_date));
+			$end_month = date('M', strtotime($end_date));
+			$end_year = date('Y', strtotime($end_date));
+		}
+		
+		// If both start and end are set for the record
+		if(isset($start_year) && isset($end_year)) {
+		
+			// If the earliest year is equal to the latest year, don't output the earliest year
+			$start_year = ($start_year != $end_year) ? $start_year : '';
+			
+			// If the earliest year is no longer set, check the month
+			if(!$start_year) {
+				// If the months are also equal, unset the earlier month
+				$start_month = ($start_month != $end_month) ? $start_month : '';
+				
+				// Update the value of the earliest days variable
+				$start_days = $start_month ? $start_days : $start_day;
+			}		
+		}
+		
+		$starts = isset($start_year) ? implode(', ', array_filter(array($start_days, $start_year))) : '';
+		$ends = isset($end_year) ? implode(', ', array_filter(array($end_days, $end_year))) : '';
+		
+		return implode(' – ', array_filter(array($starts, $ends)));
+	}
     
     public function start_date($entity) {
     
