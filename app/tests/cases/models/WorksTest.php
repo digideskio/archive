@@ -132,11 +132,8 @@ class WorksTest extends \lithium\test\Unit {
 			"latest_date" => 'Y'
 		);
 		
-		//$this->assertFalse($work->save($data), "The artwork was able to be saved with an invalid date.");
+		$this->assertFalse($work->save($data), "The artwork was able to be saved with an invalid date.");
 		
-		//$work->delete();
-		
-	
 	}
 
 
