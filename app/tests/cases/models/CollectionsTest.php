@@ -23,7 +23,7 @@ class CollectionsTest extends \lithium\test\Unit {
 		$this->assertEqual($slug, $collection->slug);
 		
 		$second_collection = Collections::create();
-		$second_slug = "Collection-Title-2";
+		$second_slug = "Collection-Title-1";
 		
 		$this->assertTrue($second_collection->save($data));
 		$this->assertEqual($second_slug, $second_collection->slug);

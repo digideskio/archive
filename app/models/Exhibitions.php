@@ -17,4 +17,17 @@ class Exhibitions extends \app\models\Archives {
 	}
 }
 
+Exhibitions::applyFilter('delete', function($self, $params, $chain) {
+
+	$exhibition_id = $params['entity']->id;
+		
+	//Delete any relationships
+	ExhibitionsWorks::find('all', array(
+		'conditions' => array('exhibition_id' => $exhibition_id)
+	))->delete();
+	
+	return $chain->next($self, $params, $chain);
+
+});
+
 ?>

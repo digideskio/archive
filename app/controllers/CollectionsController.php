@@ -34,7 +34,6 @@ class CollectionsController extends \lithium\action\Controller {
 		
 		$collections = Collections::find('all', array(
 			'with' => 'CollectionsWorks',
-			'conditions' => array('class' => 'collection'),
 			'order' => $order
 		));
 		return compact('collections', 'auth');
@@ -60,7 +59,6 @@ class CollectionsController extends \lithium\action\Controller {
 			$collection = Collections::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
-				'class' => 'collection'
 			)));
 			
 			if($collection) {
@@ -98,7 +96,7 @@ class CollectionsController extends \lithium\action\Controller {
         	return $this->redirect('Collections::index');
         }
         
-		$collection = Collections::create(array('class' => 'collection'));
+		$collection = Collections::create();
 
 		if (($this->request->data) && $collection->save($this->request->data)) {
 			return $this->redirect(array('Collections::view', 'args' => array($collection->slug)));
@@ -122,7 +120,6 @@ class CollectionsController extends \lithium\action\Controller {
 		$collection = Collections::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
-				'class' => 'collection'
 			)));
 
 		if (!$collection) {
@@ -152,7 +149,6 @@ class CollectionsController extends \lithium\action\Controller {
 			$collection = Collections::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
-				'class' => 'collection'
 			)));
 		
 			if($collection) {
