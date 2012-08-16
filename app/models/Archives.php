@@ -64,7 +64,13 @@ class Archives extends \lithium\data\Model {
 
 			if(!$params['entity']->exists()) { 
 
-				$slug = Inflector::slug($params['data']['title']);
+				$title = $params['data']['title'];
+
+				if( isset($params['data']['venue']) ) {
+					$title = $title . " " . $params['data']['venue'];
+				}
+
+				$slug = Inflector::slug($title);
 
 				$conditions = array('slug' => $slug);
 

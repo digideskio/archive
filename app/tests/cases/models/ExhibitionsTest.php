@@ -10,10 +10,7 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 	
-	// FIXME These need to be integration tests. Exhibitions are no longer
-	// created separately from Collections
-	
-	/*public function testSlugs() {
+	public function testSlugs() {
 	
 		$exhibition = Exhibitions::create();
 		$data = array (
@@ -32,7 +29,7 @@ class ExhibitionsTest extends \lithium\test\Unit {
 			"venue" => "Exhibition Venue"
 		);
 		
-		$second_slug = "Exhibition-Title-Exhibition-Venue-2";
+		$second_slug = "Exhibition-Title-Exhibition-Venue-1";
 		
 		$this->assertTrue($second_exhibition->save($data));
 		$this->assertEqual($second_slug, $second_exhibition->slug);
@@ -63,7 +60,7 @@ class ExhibitionsTest extends \lithium\test\Unit {
 		);
 		
 		$this->assertFalse($exhibition->save($data));
-	}*/
+	}
 
 
 }
