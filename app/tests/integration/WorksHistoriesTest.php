@@ -28,7 +28,8 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 			'diameter' => '13',
 			'weight' => '14',
 			'running_time'=> '15 hours',
-			'measurement_remark' => 'It is big'
+			'measurement_remark' => 'It is big',
+			'annotation' => 'The Annotation'
 		);
 
 		$work->save($data);
@@ -62,6 +63,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 		$this->assertEqual($work->weight, $work_history->weight);
 		$this->assertEqual($work->running_time, $work_history->running_time);
 		$this->assertEqual($work->measurement_remarks, $work_history->measurement_remarks);
+		$this->assertEqual($work->annotation, $work_history->annotation);
 		$this->assertEqual($work->slug, $work_history->slug);
 
 		$this->assertNull($work_history->end_date);

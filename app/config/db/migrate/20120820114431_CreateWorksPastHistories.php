@@ -35,8 +35,9 @@ class CreateWorksPastHistories extends Ruckusing_BaseMigration {
 			$slug = $row['slug']; 
 			$date_created = $row['date_created'];
 			$date_modified = $row['date_modified'];
+			$annotation = mysql_real_escape_string($row['annotation']);
 
-			$this->execute("INSERT INTO works_histories (work_id, artist, title, classification, materials, quantity, location, lender, remarks, earliest_date, latest_date, creation_number, height, width, depth, diameter, weight, running_time, measurement_remarks, slug, date_created, date_modified, start_date, end_date) VALUES ('$work_id', '$artist', '$title', '$classification', '$materials', '$quantity', '$location', '$lender', '$remarks', '$earliest_date', '$latest_date', '$creation_number', '$height', '$width', '$depth', '$diameter', '$weight', '$running_time', '$measurement_remarks', '$slug', '$date_created', '$date_modified', '$date_created', NULL)");
+			$this->execute("INSERT INTO works_histories (work_id, artist, title, classification, materials, quantity, location, lender, remarks, earliest_date, latest_date, creation_number, height, width, depth, diameter, weight, running_time, measurement_remarks, annotation, slug, date_created, date_modified, start_date, end_date) VALUES ('$work_id', '$artist', '$title', '$classification', '$materials', '$quantity', '$location', '$lender', '$remarks', '$earliest_date', '$latest_date', '$creation_number', '$height', '$width', '$depth', '$diameter', '$weight', '$running_time', '$measurement_remarks', '$annotation', '$slug', '$date_created', '$date_modified', '$date_created', NULL)");
 
 		}
 

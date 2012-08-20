@@ -49,6 +49,13 @@ $this->title($work->title);
 
 			<tbody>
 
+				<?php if( $wh->annotation ): ?>
+					<tr>
+					<td><span class="label">Annotation</a></td>
+					<td><em><?=$wh->annotation ?></em></td>
+					</tr>
+				<?php endif; ?>
+
 				<?php if( $wh->artist ): ?>
 					<tr>
 					<td class="meta">Artist</td>
