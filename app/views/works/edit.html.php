@@ -42,6 +42,7 @@ $this->form->config(
 			Edit
 		</a>
 	</li>
+	<li><?=$this->html->link('History','/works/history/'.$work->slug); ?></li>
 </ul>
 
 

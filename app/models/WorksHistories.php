@@ -2,7 +2,9 @@
 
 namespace app\models;
 
-class WorksHistories extends \lithium\data\Model {
+class WorksHistories extends \app\models\Works {
+
+	public $belongsTo = array("Works");
 
 }
 

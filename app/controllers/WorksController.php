@@ -12,6 +12,7 @@ use app\models\Collections;
 use app\models\CollectionsWorks;
 use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
+use app\models\WorksHistories;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -199,6 +200,64 @@ class WorksController extends \lithium\action\Controller {
 		
 	}
 
+	public function history() {
+	
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$work = Works::first(array(
+				'conditions' => array('slug' => $this->request->params['slug']),
+			));
+			
+			if($work) {
+
+				$works_histories = WorksHistories::find('all', array(
+					'conditions' => array('work_id' => $work->id),
+					'order' => 'start_date DESC'
+				));
+		
+				$work_documents = WorksDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('work_id' => $work->id),
+				));
+		
+				$collections = Collections::find('all', array(
+					'with' => 'CollectionsWorks',
+					'conditions' => array(
+						'work_id' => $work->id,
+					),
+				));
+		
+				$exhibitions = Exhibitions::find('all', array(
+					'with' => 'ExhibitionsWorks',
+					'conditions' => array(
+						'work_id' => $work->id,
+					),
+				));
+			
+				//Send the retrieved data to the view
+				return compact('work', 'works_histories', 'work_documents', 'collections', 'exhibitions', 'auth');
+			}
+		}
+		
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Works::index'));
+	}
 	public function delete() {
 	
 		$check = (Auth::check('default')) ?: null;

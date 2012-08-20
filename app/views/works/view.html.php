@@ -32,6 +32,8 @@ $this->title($work->title);
 	
 	<?php endif; ?>
 
+		<li><?=$this->html->link('History','/works/history/'.$work->slug); ?></li>
+
 </ul>
 
 <div class="row">

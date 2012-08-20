@@ -51,6 +51,9 @@ class WorksControllerTest extends \lithium\test\Unit {
 		$response = $works->edit();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $works->history();
+		$this->assertEqual($response->headers["Location"], "/login");
+
 		$response = $works->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	
