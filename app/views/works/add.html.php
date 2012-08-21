@@ -30,8 +30,25 @@ $this->form->config(
 
 </div>
 
+
+<ul class="nav nav-tabs">
+	<li>
+		<?=$this->html->link('Index','/works'); ?>
+	</li>
+
+	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+
+	<span class="action">
+		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+	</span>
+	
+	<?php endif; ?>
+
+</ul>
+
 <div class="well">
 <?=$this->form->create($work); ?>
+	<legend>Artwork Info</legend>
     <?=$this->form->field('artist');?>
     <?=$this->form->field('title');?>
     <?=$this->form->field('classification');?>

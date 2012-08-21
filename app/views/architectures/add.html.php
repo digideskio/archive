@@ -30,8 +30,20 @@ $this->form->config(
 
 </div>
 
+<ul class="nav nav-tabs">
+	<li>
+		<?=$this->html->link('Index','/architectures'); ?>
+	</li>
+
+	<span class="action">
+		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Project</a>
+	</span>
+	
+</ul>
+
 <div class="well">
 <?=$this->form->create($architecture); ?>
+	<legend>Project Info</legend>
     <?=$this->form->field('title');?>
     <?=$this->form->field('client');?>
     <?=$this->form->field('project_lead');?>

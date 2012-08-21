@@ -14,7 +14,6 @@ $this->form->config(
 
 <div id="location" class="row-fluid">
 
-    
 	<ul class="breadcrumb">
 
 	<li>
@@ -30,8 +29,21 @@ $this->form->config(
 
 </div>
 
+    
+<ul class="nav nav-tabs">
+	<li>
+		<?=$this->html->link('Index','/exhibitions'); ?>
+	</li>
+
+	<span class="action">
+		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
+	</span>
+	
+</ul>
+
 <div class="well">
 <?=$this->form->create($collection); ?>
+	<legend>Exhibition Info</legend>
     <?=$this->form->hidden('class'); ?>
     <?=$this->form->field('title');?>
     <?=$this->form->field('curator');?>

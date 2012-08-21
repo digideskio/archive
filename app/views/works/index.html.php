@@ -16,21 +16,20 @@ $this->title('Artwork');
 
 </div>
 
-<div id="tools" class="btn-toolbar">
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="#">Index</a>
+	</li>
 
-<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-	<div class="action btn-group">
+	<span class="action">
+		<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+	</span>
+	
+	<?php endif; ?>
 
-		<a class="btn btn-inverse" href="/works/add/">
-			<i class="icon-plus-sign icon-white"></i> Add Artwork
-		</a>
-
-	</div>
-
-<?php endif; ?>
-
-</div>
+</ul>
 
 <?php if($total == 0): ?>
 

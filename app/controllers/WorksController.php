@@ -126,7 +126,7 @@ class WorksController extends \lithium\action\Controller {
 		if (($this->request->data) && $work->save($this->request->data)) {
 			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 		}
-		return compact('work');
+		return compact('work', 'auth');
 	}
 
 	public function edit() {

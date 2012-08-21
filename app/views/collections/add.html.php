@@ -30,8 +30,20 @@ $this->form->config(
 
 </div>
 
+<ul class="nav nav-tabs">
+	<li>
+		<?=$this->html->link('Index','/collections'); ?>
+	</li>
+
+	<span class="action">
+		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Collection</a>
+	</span>
+	
+</ul>
+
 <div class="well">
 <?=$this->form->create($collection); ?>
+	<legend>Collection Info</legend>
     <?=$this->form->field('title');?>
     <?=$this->form->field('description', array('type' => 'textarea'));?>
     <?=$this->form->hidden('class'); ?>

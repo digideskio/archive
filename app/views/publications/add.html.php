@@ -35,9 +35,20 @@ $this->form->config(array('templates' => array(
 </div>
 
 
+<ul class="nav nav-tabs">
+	<li>
+		<?=$this->html->link('Index','/publications'); ?>
+	</li>
+
+	<span class="action">
+		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
+	</span>
+	
+</ul>
+
 <div class="well">
 <?=$this->form->create($publication); ?>
-	<legend>Info</legend>
+	<legend>Publication Info</legend>
 	
 	 <span class="help-block">Is the publication an interview?</span>
 	

@@ -14,7 +14,7 @@ $this->title($work->title);
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($work->title,'/works/view/'.$work->slug); ?>
+		<?=$work->title ?>
 	</li>
 
 	</ul>
