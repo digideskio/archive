@@ -42,11 +42,13 @@ $this->form->config(
 			Edit
 		</a>
 	</li>
+	<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
 </ul>
 
 
 <div class="well">
 <?=$this->form->create($collection); ?>
+	<legend>Collection Info</legend>
     <?=$this->form->field('title',array('value'=>$collection->title)); ?>
 	<?=$this->form->field('slug', array('label' => 'Permalink', 'disabled' => 'disabled'));?>
     <?=$this->form->field('description',array(

@@ -132,6 +132,45 @@ class CollectionsController extends \lithium\action\Controller {
 		return compact('collection');
 	}
 
+	public function history() {
+
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$collection = Collections::first(array(
+				'conditions' => array(
+				'slug' => $this->request->params['slug'],
+			)));
+			
+			if($collection) {
+			
+				$works = Works::find('all', array(
+					'with' => array('CollectionsWorks', 'Users'),
+					'conditions' => array('collection_id' => $collection->id),
+					'order' => 'date_modified DESC'
+				));
+			
+				//Send the retrieved data to the view
+				return compact('collection', 'works', 'auth');
+				
+			}
+		}
+
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Collections::index'));
+	}
 	public function delete() {
     
 	    $check = (Auth::check('default')) ?: null;

@@ -52,6 +52,9 @@ class CollectionsControllerTest extends \lithium\test\Unit {
 		$response = $collections->edit();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $collections->history();
+		$this->assertEqual($response->headers["Location"], "/login");
+
 		$response = $collections->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	

@@ -32,6 +32,8 @@ $this->title($collection->title);
 	
 	<?php endif; ?>
 
+	<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
+
 </ul>
 
 <?php if($collection->description): ?>

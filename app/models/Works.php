@@ -8,7 +8,9 @@ use lithium\security\Auth;
 
 class Works extends \app\models\Archives {
 
-	public $hasMany = array('CollectionsWorks', 'WorksDocuments');
+	public $hasMany = array('CollectionsWorks', 'WorksDocuments', 'WorksHistories');
+
+	public $belongsTo = array('Users');
 
     public function dimensions($entity) {
     	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));
