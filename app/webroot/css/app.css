@@ -39,6 +39,13 @@ td.meta {
   }
 }
 
+@media (max-width: 768px) {
+	#sidebar .affix {
+		position: static;
+		width: auto;
+		top: 0;
+	}
+}
 
 .uploadWrapper #dropArea {
 min-height: 20px;
