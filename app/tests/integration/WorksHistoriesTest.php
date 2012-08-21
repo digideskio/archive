@@ -14,6 +14,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 
 		$work = Works::create();
 		$data = array (
+			'user_id' => '1',
 			'artist' => 'The Artist',
 			'title' => 'Artwork Title',
 			'classifiction' => 'An Object',
@@ -48,6 +49,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 
 		$work_history = WorksHistories::first();
 
+		$this->assertEqual($work->user_id, $work_history->user_id);
 		$this->assertEqual($work->artist, $work_history->artist);
 		$this->assertEqual($work->title, $work_history->title);
 		$this->assertEqual($work->classification, $work_history->classification);

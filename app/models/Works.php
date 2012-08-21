@@ -4,6 +4,7 @@ namespace app\models;
 
 use lithium\util\Inflector;
 use lithium\util\Validator;
+use lithium\security\Auth;
 
 class Works extends \app\models\Archives {
 
@@ -92,6 +93,21 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 
 	return $chain->next($self, $params, $chain);
 
+});
+
+Works::applyFilter('save', function($self, $params, $chain) {
+
+
+	$check = (Auth::check('default')) ?: null;
+
+	if($check) {
+
+		$user_id = $check['id'];
+		$params['data']['user_id'] = $user_id;
+		
+	}
+
+	return $chain->next($self, $params, $chain);
 });
 
 ?>

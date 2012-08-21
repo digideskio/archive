@@ -225,33 +225,12 @@ class WorksController extends \lithium\action\Controller {
 
 				$works_histories = WorksHistories::find('all', array(
 					'conditions' => array('work_id' => $work->id),
-					'order' => 'start_date DESC'
+					'order' => 'start_date DESC',
+					'with' => 'Users'
 				));
 		
-				$work_documents = WorksDocuments::find('all', array(
-					'with' => array(
-						'Documents',
-						'Formats'
-					),
-					'conditions' => array('work_id' => $work->id),
-				));
-		
-				$collections = Collections::find('all', array(
-					'with' => 'CollectionsWorks',
-					'conditions' => array(
-						'work_id' => $work->id,
-					),
-				));
-		
-				$exhibitions = Exhibitions::find('all', array(
-					'with' => 'ExhibitionsWorks',
-					'conditions' => array(
-						'work_id' => $work->id,
-					),
-				));
-			
 				//Send the retrieved data to the view
-				return compact('work', 'works_histories', 'work_documents', 'collections', 'exhibitions', 'auth');
+				return compact('work', 'works_histories', 'auth');
 			}
 		}
 		

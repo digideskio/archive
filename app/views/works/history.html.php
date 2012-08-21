@@ -43,7 +43,12 @@ $this->title($work->title);
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
-					<td style="width:200px"><strong><?=$wh->start_date ?></strong></td>
+					<td colspan="2">
+						<strong><?=$wh->start_date ?></strong> 
+						<?php if( $wh->user->id ): ?>
+						<small style="font-size: smaller;">by <?=$this->html->link($wh->user->name,'/users/view/'.$wh->user->username); ?></small>
+						<?php endif; ?>
+					</td>
 				</tr>
 			</thead>
 
@@ -51,7 +56,7 @@ $this->title($work->title);
 
 				<?php if( $wh->annotation ): ?>
 					<tr>
-					<td><span class="label">Annotation</a></td>
+					<td style="width:200px"><span class="label">Annotation</a></td>
 					<td><em><?=$wh->annotation ?></em></td>
 					</tr>
 				<?php endif; ?>
