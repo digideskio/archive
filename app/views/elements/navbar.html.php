@@ -1,4 +1,4 @@
-<div class="navbar navbar-fixed-top" >
+<div class="navbar navbar-fixed-top navbar-inverse" >
 	<div class="navbar-inner">
 		<div class="container">
 			<a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
@@ -19,7 +19,7 @@
 					</li>
 				</ul>
 
-				<form class="navbar-search pull-right" action="/search" method="get">
+				<form class="navbar-search pull-right form-search" action="/search" method="get">
 					<input type="text" class="search-query span3" placeholder="Search" name="query">
 				</form>
 			</div>

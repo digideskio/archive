@@ -73,8 +73,8 @@ $this->title($work->title);
 	
 		<?php if($work->annotation): ?>
 		
-		<div class="popover" style="display:block; position: static; margin-bottom:18px;">
-		<div class="popover-inner" style="width:100%">
+		<div class="popover" style="display:block; position: static; margin-bottom:18px; width:100%">
+		<div class="popover-inner">
 			<div class="popover-title">
 			<strong><?=$work->title ?></strong>
 			</div>
