@@ -36,6 +36,10 @@ $this->form->config(
 		<?=$this->html->link('Index','/works'); ?>
 	</li>
 
+	<li>
+		<?=$this->html->link('History','/works/histories'); ?>
+	</li>
+
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
 	<span class="action">

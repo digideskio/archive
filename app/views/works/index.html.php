@@ -21,11 +21,14 @@ $this->title('Artwork');
 		<a href="#">Index</a>
 	</li>
 
+	<li>
+		<?=$this->html->link('History','/works/histories'); ?>
+	</li>
+
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
 	<span class="action">
 		<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-	</span>
 	
 	<?php endif; ?>
 

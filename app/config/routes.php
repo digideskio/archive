@@ -84,6 +84,7 @@ Router::connect('/works/pages/{:page:[0-9]+}', array('Works::index'));
 Router::connect('/works/view/{:slug}', array('Works::view'));
 Router::connect('/works/edit/{:slug}', array('Works::edit'));
 Router::connect('/works/history/{:slug}', array('Works::history'));
+Router::connect('/works/histories/{:page:[0-9]+}', array('Works::histories'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
 Router::connect('/architectures/view/{:slug}', array('Architectures::view'));

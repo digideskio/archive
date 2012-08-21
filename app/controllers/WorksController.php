@@ -49,6 +49,33 @@ class WorksController extends \lithium\action\Controller {
 		return compact('works', 'total', 'page', 'limit', 'auth');
 	}
 
+	public function histories() {
+
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('start_date' => 'DESC');
+		$total = WorksHistories::count();
+		$works_histories = WorksHistories::find('all', array(
+			'with' => 'Users',
+			'limit' => $limit,
+			'order' => $order,
+			'page' => $page
+		));
+		
+		return compact('works_histories', 'total', 'page', 'limit', 'auth');
+	}
+
 	public function view() {
 	
 		$check = (Auth::check('default')) ?: null;
@@ -237,6 +264,7 @@ class WorksController extends \lithium\action\Controller {
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Works::index'));
 	}
+
 	public function delete() {
 	
 		$check = (Auth::check('default')) ?: null;
