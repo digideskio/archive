@@ -110,11 +110,22 @@ class UsersTest extends \lithium\test\Unit {
 	
 		$user = MockUsers::find('first');
 		
-		$this->assertEqual($user['username'], "user1");
+		$this->assertEqual("user1", $user['username']);
 	
 	}
 
+	public function testInitials() {
+		
+		$data = array (
+			"username" => "user1",
+			"name" => "User One"
+		);
 
+		$user = Users::create($data);
+	
+		$this->assertEqual('UO', $user->initials());
+
+	}
 }
 
 ?>

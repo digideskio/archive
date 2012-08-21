@@ -26,6 +26,13 @@ class Users extends \lithium\data\Model {
             array('email', 'skipEmpty' => true, 'message' => 'The email address must be valid.')
         ),
     );
+
+	public function initials($entity) {
+		
+		$initials = preg_replace('~\b(\w)|.~', '$1', $entity->name);
+
+		return $initials;
+	}
 }
 
 Validator::add('uniqueUsername', function($value, $rule, $options) {
