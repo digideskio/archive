@@ -65,7 +65,8 @@ class CollectionsController extends \lithium\action\Controller {
 			
 				$collection_works = CollectionsWorks::find('all', array(
 					'with' => 'Works',
-					'conditions' => array('collection_id' => $collection->id)
+					'conditions' => array('collection_id' => $collection->id),
+					'order' => 'earliest_date ASC'
 				));
 			
 				//Send the retrieved data to the view

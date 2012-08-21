@@ -44,12 +44,9 @@ $this->title($collection->title);
 
 <thead>
 	<tr>
-		<th>ID</th>
-		<th>Image</th>
-		<th>Title</th>
 		<th>Year</th>
+		<th>Image</th>
 		<th>Notes</th>
-		<th>Classification</th>
 	</tr>
 </thead>
 		
@@ -58,15 +55,14 @@ $this->title($collection->title);
 <?php foreach($collection_works as $cw): ?>
 
 <tr>
-	<td><?=$cw->work->creation_number?></td>
-	
+	<td class="meta"><?=$cw->work->years(); ?> </td>
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 	
 		<?php $thumbnail = $cw->work->preview(); $work_slug = $cw->work->slug;
 		
 			if($thumbnail) {
 				echo "<a href='/works/view/$work_slug'>";
-				echo "<img width='125' height='125' src='/files/thumb/$thumbnail' />";
+				echo "<img class='img-rounded' width='125' height='125' src='/files/thumb/$thumbnail' />";
 				echo "</a>";
 			} else {
 				echo '<span class="label label-warning">No Image</span>';
@@ -75,10 +71,10 @@ $this->title($collection->title);
 		?>
 	
 	</td>
-    <td><?=$this->html->link($cw->work->title,'/works/view/'.$cw->work->slug); ?></td>
-    <td><?=$cw->work->years(); ?></td>
-    <td><?php echo $cw->work->notes(); ?></td>
-    <td><?=$cw->work->classification ?></td>
+    <td>
+		<h5><?=$this->html->link($cw->work->title,'/works/view/'.$cw->work->slug); ?></h5>
+		<p><small><?php echo $cw->work->caption(); ?></small></p>
+		<blockquote class="pull-right"><?=$cw->work->annotation ?></blockquote>
 </tr>
     
 <?php endforeach; ?>
