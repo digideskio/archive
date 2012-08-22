@@ -56,4 +56,8 @@ Collection::formats('lithium\net\http\Media');
 // 	return $chain->next($self, $params, $chain);
 // });
 
+use lithium\net\http\Media;
+
+Media::type('pdf', 'application/pdf', array());
+
 ?>
