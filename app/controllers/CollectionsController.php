@@ -11,6 +11,7 @@ use app\models\Roles;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\template\View;
 
 class CollectionsController extends \lithium\action\Controller {
 
@@ -171,6 +172,62 @@ class CollectionsController extends \lithium\action\Controller {
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Collections::index'));
 	}
+
+	public function publish() {
+    
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$collection = Collections::first(array(
+				'conditions' => array(
+				'slug' => $this->request->params['slug'],
+			)));
+			
+			if($collection) {
+			
+				$collections_works = CollectionsWorks::find('all', array(
+					'with' => 'Works',
+					'conditions' => array('collection_id' => $collection->id),
+					'order' => 'earliest_date ASC'
+				));
+
+				$view  = new View(array(
+					'paths' => array(
+						'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
+						'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
+					)
+				));
+
+				echo $view->render(
+					'all',
+					array('content' => compact('collection','collections_works')),
+					array(
+						'controller' => 'collections',
+						'template'=>'view',
+						'type' => 'pdf',
+						'layout' =>'default'
+					)
+				);
+				
+			}
+		}
+		
+		//since no record was specified, redirect to the index page
+		//$this->redirect(array('Collections::index'));
+	}
+
 	public function delete() {
     
 	    $check = (Auth::check('default')) ?: null;
@@ -213,6 +270,7 @@ class CollectionsController extends \lithium\action\Controller {
 		}
 		return $this->redirect('Collections::index');
 	}
+
 }
 
 ?>
