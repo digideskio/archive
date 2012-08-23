@@ -61,7 +61,7 @@ class Works extends \app\models\Archives {
 		return implode('<br/>', $info);
 	}
 	
-	public function preview($entity) {
+	public function preview($entity, $options = NULL) {
 	
 		$work_documents = WorksDocuments::first('all', array(
 			'with' => array(
@@ -73,7 +73,7 @@ class Works extends \app\models\Archives {
 		
 		if($work_documents) {
 		
-			return $work_documents->document->thumbnail();
+			return $work_documents->document->thumbnail($options);
 		}
 	
 	}

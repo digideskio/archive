@@ -19,32 +19,70 @@ $this->Pdf->setCustomLayout(array(
 		$pdf->SetY(-20); 
 		$pdf->SetTextColor(0, 0, 0); 
 		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8); 
-		$pdf->Cell(0,8, $footertext,'T',1,'C');
+		//$pdf->Cell(0,8, $footertext,'T',1,'C');
 	}
 ));
 $this->Pdf->setMargins(10,30,10);
 $this->Pdf->SetAuthor('Archive');
 $this->Pdf->SetAutoPageBreak(true);
 
-$this->Pdf->AddPage();
+$this->Pdf->AddPage('L', 'A4');
 $this->Pdf->SetTextColor(0, 0, 0);
 //$this->Pdf->SetFont($textfont,'B',20); 
+$pdf->SetFont('kozminproregular', '', 12);
+$html = <<<EOD
 
-$html = "<table class='table table-bordered'>";
+	<style>
+		table {
+			font-size: 12pt;
+		}
+	</style>
+EOD;
 
 $html .= <<<EOD
 
-<thead>
-	<tr>
-		<th>Year</th>
-		<th>Image</th>
-		<th>Notes</th>
-	</tr>
-</thead>
+<table cellpadding="5" cellspacing="1" style="width:100%;">
+
+<tbody>
 
 EOD;
 
-$html .= "</table";
+foreach( $collections_works as $cw) {
 
-$this->Pdf->writeHTML($html);
+$work = $cw->work;
+$years = $work->years();
+$caption = $work->caption();
+$annotation = $work->annotation;
+$notes = $work->notes();
+
+$thumbnail = $work->preview(array('hash' => true));
+
+if( $thumbnail ) {
+	$img_path = 'files/thumb/'.$thumbnail;
+	$thumb_img = '<img width="100" height="100" src="'.$img_path.'" />';
+}
+
+$html .= <<<EOD
+
+	<tr style="page-break-inside: avoid;">
+		<td style="width:150px">
+			$thumb_img	
+		</td>
+		<td>
+			<p style="color:#08C"><strong>$caption</strong></p>
+			<p style="color: #888888"><small>$annotation</small></p>
+		</td>
+		<td style="width:380px">
+			<p><small>$notes</small></p>
+		</td>
+	</tr>
+
+EOD;
+
+}
+
+$html .= "</tbody></table>";
+
+$this->Pdf->writeHTML($html, true, false, true, false, '');
+
 ?>

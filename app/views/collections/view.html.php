@@ -34,9 +34,14 @@ $this->title($collection->title);
 
 	<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
 
+	<?php if($li3_pdf): ?>
+
 	<span class="action">
 		<a class="btn btn-inverse" href="/collections/publish/<?=$collection->slug ?>"><i class="icon-print icon-white"></i> Print</a>
 	</span>
+
+	<?php endif; ?>
+
 </ul>
 
 <?php if($collection->description): ?>

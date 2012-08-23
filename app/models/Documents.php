@@ -28,13 +28,18 @@ class Documents extends \lithium\data\Model {
 		
 	}
 	
-	public function thumbnail($entity) {
+	public function thumbnail($entity, $options) {
 	
+		$hash = isset($options['hash']) ? true : false;
+
 		$format = Formats::find('first', array(
 			'conditions' => array('id' => $entity->format_id),
 		));
-	
-		return $entity->slug . '.' . $format->extension;
+
+		$file = $hash ? $entity->hash : $entity->slug;
+		$format = $hash ? 'jpeg' : $format->extension;
+
+		return $file . '.' . $format;
 	
 	}
 	

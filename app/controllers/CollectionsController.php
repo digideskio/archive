@@ -13,6 +13,8 @@ use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\template\View;
 
+use lithium\core\Libraries;
+
 class CollectionsController extends \lithium\action\Controller {
 
 	public function index() {
@@ -41,7 +43,7 @@ class CollectionsController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-    
+
 	    $check = (Auth::check('default')) ?: null;
 	
         if (!$check) {
@@ -69,9 +71,11 @@ class CollectionsController extends \lithium\action\Controller {
 					'conditions' => array('collection_id' => $collection->id),
 					'order' => 'earliest_date ASC'
 				));
+
+				$li3_pdf = Libraries::get("li3_pdf");
 			
 				//Send the retrieved data to the view
-				return compact('collection', 'collection_works', 'auth');
+				return compact('collection', 'collection_works', 'auth', 'li3_pdf');
 				
 			}
 		}
@@ -196,6 +200,8 @@ class CollectionsController extends \lithium\action\Controller {
 			)));
 			
 			if($collection) {
+				
+				$filename = $collection->slug;
 			
 				$collections_works = CollectionsWorks::find('all', array(
 					'with' => 'Works',
@@ -209,18 +215,16 @@ class CollectionsController extends \lithium\action\Controller {
 						'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
 					)
 				));
-
 				echo $view->render(
 					'all',
-					array('content' => compact('collection','collections_works')),
+					array('content' => compact('filename', 'collection','collections_works')),
 					array(
 						'controller' => 'collections',
 						'template'=>'view',
 						'type' => 'pdf',
-						'layout' =>'default'
+						'layout' =>'download'
 					)
 				);
-				
 			}
 		}
 		
