@@ -1,5 +1,7 @@
 <?php 
 
+$options = $content['options'];
+
 $collection = $content['collection'];
 $title = $collection->title;
 
@@ -55,6 +57,45 @@ $caption = $work->caption();
 $annotation = $work->annotation;
 $notes = $work->notes();
 
+if(isset($options['view']) && $options['view'] == 'images') {
+
+	$documents = $work->documents();
+
+	foreach($documents as $doc) {
+
+	$thumbnail = $doc->thumbnail(array('hash' => true));
+
+	$img_path = 'files/small/'.$thumbnail;
+	$thumb_img = '<img width="100" src="'.$img_path.'" />';
+
+	
+	$dpi = 300;
+	$width = number_format($doc->width * 2.54 / $dpi, 2);
+	$height = number_format($doc->height * 2.54 / $dpi, 2);
+
+
+$html .= <<<EOD
+
+	<tr style="page-break-inside: avoid;">
+		<td style="width:150px">
+			$thumb_img	
+		</td>
+		<td>
+			<p style="color:#08C"><strong>$caption</strong></p>
+		</td>
+		<td style="width:380px; font-family:monospaced;">
+			$doc->width × $doc->height px<br/>
+			$width × $height cm @ $dpi dpi
+		</td>
+	</tr>
+EOD;
+
+	}
+
+}
+
+if(!isset($options['view']) || $options['view'] == 'artwork') {
+
 $thumbnail = $work->preview(array('hash' => true));
 
 if( $thumbnail ) {
@@ -79,8 +120,10 @@ $html .= <<<EOD
 
 EOD;
 
+
 }
 
+}
 $html .= "</tbody></table>";
 
 $this->Pdf->writeHTML($html, true, false, true, false, '');

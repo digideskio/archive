@@ -77,6 +77,19 @@ class Works extends \app\models\Archives {
 		}
 	
 	}
+
+	public function documents($entity) {
+		
+		$documents = Documents::find('all', array(
+			'with' => array(
+				'WorksDocuments',
+				'Formats'
+			),
+			'conditions' => array('work_id' => $entity->id),
+		));
+
+		return $documents;
+	}
     
 }
 

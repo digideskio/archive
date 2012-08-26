@@ -192,6 +192,10 @@ class CollectionsController extends \lithium\action\Controller {
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
+
+			$options = $this->request->query;
+
+			$layout = isset($options['layout']) ? $options['layout'] : 'download';
 		
 			//Get single record from the database where the slug matches the URL
 			$collection = Collections::first(array(
@@ -201,8 +205,8 @@ class CollectionsController extends \lithium\action\Controller {
 			
 			if($collection) {
 				
-				$filename = $collection->slug;
-			
+				$filename = $collection->slug . '-' . $options['view'];
+
 				$collections_works = CollectionsWorks::find('all', array(
 					'with' => 'Works',
 					'conditions' => array('collection_id' => $collection->id),
@@ -217,12 +221,12 @@ class CollectionsController extends \lithium\action\Controller {
 				));
 				echo $view->render(
 					'all',
-					array('content' => compact('filename', 'collection','collections_works')),
+					array('content' => compact('filename', 'collection','collections_works', 'options')),
 					array(
 						'controller' => 'collections',
 						'template'=>'view',
 						'type' => 'pdf',
-						'layout' =>'download'
+						'layout' => $layout
 					)
 				);
 			}

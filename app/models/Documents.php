@@ -15,6 +15,8 @@ class Documents extends \lithium\data\Model {
 		),
 	);
 
+	public $hasMany = array("WorksDocuments");
+
 	public $validates = array();
 	
 	public function year($entity) {
@@ -27,7 +29,7 @@ class Documents extends \lithium\data\Model {
 	return $year;
 		
 	}
-	
+
 	public function thumbnail($entity, $options) {
 	
 		$hash = isset($options['hash']) ? true : false;

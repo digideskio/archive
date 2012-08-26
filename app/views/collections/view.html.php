@@ -36,9 +36,15 @@ $this->title($collection->title);
 
 	<?php if($li3_pdf): ?>
 
-	<span class="action">
-		<a class="btn btn-inverse" href="/collections/publish/<?=$collection->slug ?>"><i class="icon-print icon-white"></i> Print</a>
-	</span>
+	<div class="action">
+	<div class="btn-group">
+	<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret" style="border-top-color: white; border-bottom-color: white;"></span></button>
+	<ul class="dropdown-menu">
+	<li><a href="/collections/publish/<?=$collection->slug ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
+	<li><a href="/collections/publish/<?=$collection->slug ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>
+	</ul>
+	</div>
+	</div>
 
 	<?php endif; ?>
 
