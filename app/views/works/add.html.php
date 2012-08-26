@@ -61,7 +61,6 @@ $this->form->config(
     <?=$this->form->field('creation_number', array('label' => 'Artwork ID'));?>
 	<?=$this->form->field('materials', array('type' => 'textarea'));?>
     <?=$this->form->field('quantity');?>
-    <?=$this->form->field('location');?>
     <?=$this->form->field('lender');?>
     <?=$this->form->field('remarks', array('type' => 'textarea'));?>
     <?=$this->form->field('height');?>

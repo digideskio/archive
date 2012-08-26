@@ -44,7 +44,6 @@ class Works extends \app\models\Archives {
 		$dimensions = $dimensions ? $dimensions : '';
 		$measurement_remarks = $entity->measurement_remarks ? $entity->measurement_remarks : '';
 		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
-		$location = $entity->location ? 'Location: ' . $entity->location : '';
 		$lender = $entity->lender ? 'Lender: ' . $entity->lender : '';
 		$remarks =  $entity->remarks ? $entity->remarks : '';
 		
@@ -53,7 +52,6 @@ class Works extends \app\models\Archives {
 			$dimensions,
 			$measurement_remarks,
 			$quantity,
-			$location,
 			$lender,
 			$remarks,
 		));
