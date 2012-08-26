@@ -97,14 +97,6 @@ $this->title($work->title);
 				<?php endif; ?>
 
 
-				<?php if( $wh->location ): ?>
-					<tr>
-					<td class="meta">Location</td>
-					<td><?=$wh->location ?></td>
-					</tr>
-				<?php endif; ?>
-
-
 				<?php if( $wh->remarks ): ?>
 					<tr>
 					<td class="meta">Remarks</td>
