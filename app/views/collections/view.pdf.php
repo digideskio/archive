@@ -68,11 +68,8 @@ if(isset($options['view']) && $options['view'] == 'images') {
 	$img_path = 'files/small/'.$thumbnail;
 	$thumb_img = '<img width="100" src="'.$img_path.'" />';
 
-	
-	$dpi = 300;
-	$width = number_format($doc->width * 2.54 / $dpi, 2);
-	$height = number_format($doc->height * 2.54 / $dpi, 2);
-
+	$resolution = $doc->resolution();
+	$size = $doc->size();
 
 $html .= <<<EOD
 
@@ -84,8 +81,8 @@ $html .= <<<EOD
 			<p style="color:#08C"><strong>$caption</strong></p>
 		</td>
 		<td style="width:380px; font-family:monospaced;">
-			$doc->width × $doc->height px<br/>
-			$width × $height cm @ $dpi dpi
+			$resolution<br/>
+			$size
 		</td>
 	</tr>
 EOD;

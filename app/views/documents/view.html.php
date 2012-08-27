@@ -52,15 +52,9 @@ $this->title($document->title);
 	
 		<?php if($document->width && $document->height): ?>
 		
-		<?php 
-			$dpi = 300;
-			$width = number_format($document->width * 2.54 / $dpi, 2);
-			$height = number_format($document->height * 2.54 / $dpi, 2);
-		?>
-	
 		<div class="alert alert-block alert-success" style="font-family:monospace">
-			<p><?=$document->width ?> × <?=$document->height ?> px</p>
-			<p><?=$width ?> × <?=$height ?> cm @ <?=$dpi ?> dpi</p>
+			<p><?=$document->resolution(); ?></p>
+			<p><?=$document->size(); ?></p>
 		</div>
 		
 		<?php endif; ?>

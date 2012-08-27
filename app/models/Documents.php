@@ -44,6 +44,37 @@ class Documents extends \lithium\data\Model {
 		return $file . '.' . $format;
 	
 	}
+
+	public function resolution($entity) {
+
+		if( $entity->width && $entity->height ) {
+
+			return "$entity->width × $entity->height px";
+	
+		} else {
+
+			return "No resolution is set on this document";
+	
+		}
+
+	}
+
+	public function size($entity, $options = null) {
+
+		if($entity->width && $entity->height) {
+
+			$dpi = isset($options['dpi']) ? (int) $options['dpi'] : 300;
+			$width = number_format($entity->width * 2.54 / $dpi, 2);
+			$height = number_format($entity->height * 2.54 / $dpi, 2);
+
+			return "$width × $height cm @ $dpi dpi";
+
+		} else {
+
+			return "No print size is set on this document";
+
+		}
+	}
 	
 }
 
