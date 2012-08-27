@@ -34,8 +34,6 @@ $this->title($architecture->title);
 
 </ul>
 
-</div>
-
 <div class="row">
 	<div class="span6">
 	
