@@ -136,6 +136,83 @@ class WorksTest extends \lithium\test\Unit {
 		
 	}
 
+	public function testDimensions() {
+
+		$work = Works::create();
+
+		$this->assertFalse($work->dimensions());
+
+		$data = array(
+			'height' => 40,
+			'width' => 50
+		);
+
+		$work = Works::create($data);
+
+		$this->assertEqual("40 × 50 cm", $work->dimensions());
+
+		$data['depth'] = '25';
+
+		$work = Works::create($data);
+
+		$this->assertEqual("40 × 50 × 25 cm", $work->dimensions());
+
+		unset($data['width']);
+		unset($data['depth']);
+
+		$data['diameter'] = 30;
+
+		$work = Works::create($data);
+
+		$this->assertEqual("40 cm, Ø 30 cm", $work->dimensions());
+
+		$data = array(
+			'running_time' => '1 hour 50 minutes'
+		);
+
+		$work = Works::create($data);
+
+		$this->assertEqual("1 hour 50 minutes", $work->dimensions());
+
+	}
+
+	public function testCaptions() {
+
+		$data = array(
+			'title' => 'Artwork Title'
+		);
+
+		$work = Works::create($data);
+
+		$this->assertEqual('<em>Artwork Title</em>.', $work->caption());
+
+		$data['artist'] = 'Artist Name';
+
+		$work = Works::create($data);
+
+		$this->assertEqual('Artist Name, <em>Artwork Title</em>.', $work->caption());
+
+		$data['earliest_date'] = '2004-05-15';
+
+		$work = Works::create($data);
+
+		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004.', $work->caption()); 
+
+		$data['latest_date'] = '2005-02-20';
+
+		$work = Works::create($data);
+
+		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004–2005.', $work->caption()); 
+
+		$data['height'] = 40;
+		$data['width'] = 50;
+
+		$work = Works::create($data);
+
+		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004–2005, 40 × 50 cm.', $work->caption());
+	
+	}
+
 
 }
 
