@@ -375,8 +375,8 @@ class DocumentsController extends \lithium\action\Controller {
 			
 			$data = compact('file_name', 'file_path');
 			
-			$document = Documents::create($data);
-			$document->save();
+			$document = Documents::create();
+			$document->save($data);
 		}
 
 
