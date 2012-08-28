@@ -127,5 +127,5 @@ Libraries::add('li3_flash_message');
 Libraries::add('li3_access');
 Libraries::add('Imagine');
 Libraries::add('li3_pdf');
-
+Libraries::add('li3_filesystem');
 ?>
