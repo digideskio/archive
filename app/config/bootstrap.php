@@ -57,6 +57,11 @@ if (PHP_SAPI !== 'cli') {
 require __DIR__ . '/bootstrap/connections.php';
 
 /**
+ * This file contains filesystem configurations
+ */
+require __DIR__ . '/bootstrap/filesystems.php';
+
+/**
  * This file defines bindings between classes which are triggered during the request cycle, and
  * allow the framework to automatically configure its environmental settings. You can add your own
  * behavior and modify the dispatch cycle to suit your needs.
