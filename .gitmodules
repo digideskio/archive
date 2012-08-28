@@ -10,3 +10,6 @@
 [submodule "libraries/li3_access"]
 	path = libraries/li3_access
 	url = https://github.com/tmaiaroto/li3_access.git
+[submodule "libraries/li3_filesystem"]
+	path = libraries/li3_filesystem
+	url = git://github.com/hans-d/li3_filesystem.git
