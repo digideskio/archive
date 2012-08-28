@@ -24,19 +24,6 @@ class ArchitecturesDocuments extends \lithium\data\Model {
 
 	public $validates = array();
 	
-	public function preview($entity) {
-		
-		$document = Documents::find('first', array(
-			'conditions' => array('id' => $entity->document_id),
-		));
-		
-		if($document) {
-		
-			return $document->thumbnail();
-		
-		}
-		
-	}
 }
 
 ?>

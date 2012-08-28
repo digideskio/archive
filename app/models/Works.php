@@ -58,27 +58,10 @@ class Works extends \app\models\Archives {
 		
 		return implode('<br/>', $info);
 	}
-	
-	public function preview($entity, $options = NULL) {
-	
-		$work_documents = WorksDocuments::first('all', array(
-			'with' => array(
-				'Documents',
-				'Formats'
-			),
-			'conditions' => array('work_id' => $entity->id),
-		));
-		
-		if($work_documents) {
-		
-			return $work_documents->document->thumbnail($options);
-		}
-	
-	}
 
-	public function documents($entity) {
+	public function documents($entity,  $type = 'all') {
 		
-		$documents = Documents::find('all', array(
+		$documents = Documents::find($type, array(
 			'with' => array(
 				'WorksDocuments',
 				'Formats'

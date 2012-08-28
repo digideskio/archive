@@ -41,7 +41,7 @@ $this->title($document->title);
 		<?php $span = 'span6'; ?>
 		<li class="<?=$span?>" >
 		<div class="thumbnail">
-		<img src="/files/small/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
+		<img src="/files/<?=$document->view(array('action' => 'small')); ?>" alt="<?=$document->title ?>">
 		</div>
 		</li>
 		</ul>

@@ -27,24 +27,20 @@ class Architectures extends \app\models\Archives {
     	return implode(', ', $caption) . '.';
     
     }
-	
-	public function preview($entity) {
-	
-		$architecture_documents = ArchitecturesDocuments::first('all', array(
+
+	public function documents($entity,  $type = 'all') {
+		
+		$documents = Documents::find($type, array(
 			'with' => array(
-				'Documents',
+				'ArchitecturesDocuments',
 				'Formats'
 			),
 			'conditions' => array('architecture_id' => $entity->id),
 		));
-		
-		if($architecture_documents) {
-		
-			return $architecture_documents->document->thumbnail();
-		}
-	
+
+		return $documents;
 	}
-    
+	
 }
 
 Architectures::applyFilter('delete', function($self, $params, $chain) {

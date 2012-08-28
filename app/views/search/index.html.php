@@ -42,9 +42,9 @@ $this->title('Search');
 	<td><?=$work->creation_number?></td>
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $wd = $work->works_documents[0]; if($wd->id) { ?>	
+		<?php $document = $work->documents('first'); if($document->id) { ?>	
 			<a href="/works/view/<?=$work->slug?>">
-			<img width="125" height="125" src="/files/thumb/<?=$wd->preview(); ?>" />
+			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
 			<span class="label label-warning">No Image</span>

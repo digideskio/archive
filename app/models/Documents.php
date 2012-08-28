@@ -15,7 +15,7 @@ class Documents extends \lithium\data\Model {
 		),
 	);
 
-	public $hasMany = array("WorksDocuments");
+	public $hasMany = array("WorksDocuments", "ArchitecturesDocuments");
 
 	public $validates = array();
 	
@@ -28,23 +28,6 @@ class Documents extends \lithium\data\Model {
 	
 	return $year;
 		
-	}
-
-	public function thumbnail($entity, array $options = null) {
-	
-		$hash = isset($options['hash']) ? true : false;
-
-		if ( !$hash ) { 
-			$format = Formats::find('first', array(
-				'conditions' => array('id' => $entity->format_id),
-			));
-		}
-
-		$file = $hash ? $entity->hash : $entity->slug;
-		$format = $hash ? 'jpeg' : $format->extension;
-
-		return $file . '.' . $format;
-	
 	}
 
 	public function view($entity, array $options = null) {

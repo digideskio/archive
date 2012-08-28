@@ -51,7 +51,7 @@ $this->title($work->title);
 			
 				<li class="<?=$span?>">
 					<a href="/documents/view/<?=$wd->document->slug?>" class="thumbnail">
-						<img src="/files/<?=$size?>/<?=$wd->document->slug?>.jpeg" alt="<?=$wd->document->title ?>">
+						<img src="/files/<?=$wd->document->view(array('action' => $size)); ?>" alt="<?=$wd->document->title ?>">
 					</a>
 				</li>
 			

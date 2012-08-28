@@ -60,9 +60,9 @@ $this->title('Architecture');
 <tr>
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $wd = $architecture->architectures_documents[0]; if($wd->id) { ?>	
+		<?php $document = $architecture->documents('first'); if($document->id) { ?>	
 			<a href="/architectures/view/<?=$architecture->slug?>">
-			<img width="125" height="125" src="/files/thumb/<?=$wd->preview(); ?>" />
+			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
 			<span class="label label-warning">No Image</span>

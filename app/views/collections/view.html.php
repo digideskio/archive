@@ -74,11 +74,14 @@ $this->title($collection->title);
 	<td class="meta"><?=$cw->work->years(); ?> </td>
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 	
-		<?php $thumbnail = $cw->work->preview(); $work_slug = $cw->work->slug;
+		<?php 
+			$document = $cw->work->documents('first');
 		
-			if($thumbnail) {
+			if($document->id) {
+				$thumbnail = $document->view();
+				$work_slug = $cw->work->slug;
 				echo "<a href='/works/view/$work_slug'>";
-				echo "<img class='img-rounded' width='125' height='125' src='/files/thumb/$thumbnail' />";
+				echo "<img width='125' height='125' src='/files/$thumbnail' />";
 				echo "</a>";
 			} else {
 				echo '<span class="label label-warning">No Image</span>';

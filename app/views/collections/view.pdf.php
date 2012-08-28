@@ -63,9 +63,9 @@ if(isset($options['view']) && $options['view'] == 'images') {
 
 	foreach($documents as $doc) {
 
-	$thumbnail = $doc->thumbnail(array('hash' => true));
+	$thumbnail = $doc->file(array('size' => 'small'));
 
-	$img_path = 'files/small/'.$thumbnail;
+	$img_path = 'files/'.$thumbnail;
 	$thumb_img = '<img width="100" src="'.$img_path.'" />';
 
 	$resolution = $doc->resolution();
@@ -93,10 +93,12 @@ EOD;
 
 if(!isset($options['view']) || $options['view'] == 'artwork') {
 
-$thumbnail = $work->preview(array('hash' => true));
+$document = $work->documents('first');
+
+$thumbnail = $document->file(array('size' => 'thumb'));
 
 if( $thumbnail ) {
-	$img_path = 'files/thumb/'.$thumbnail;
+	$img_path = 'files/'.$thumbnail;
 	$thumb_img = '<img width="100" height="100" src="'.$img_path.'" />';
 }
 

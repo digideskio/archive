@@ -95,7 +95,7 @@ $this->form->config(
 					<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 						<?php $px = '260'; ?>
 						<a href="/documents/view/<?=$ad->document->slug ?>" title="<?=$ad->document->title ?>">
-						<img width="125" height="125" src="/files/thumb/<?=$ad->document->slug?>.jpeg" alt="<?=$ad->document->title ?>">
+						<img width="125" height="125" src="/files/<?=$ad->document->view(); ?>" alt="<?=$ad->document->title ?>">
 						</a>
 					</td>
 					<td align="right" style="text-align:right">

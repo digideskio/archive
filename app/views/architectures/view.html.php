@@ -49,7 +49,7 @@ $this->title($architecture->title);
 			
 				<li class="<?=$span?>">
 					<a href="/documents/view/<?=$ad->document->slug?>" class="thumbnail">
-						<img src="/files/<?=$size?>/<?=$ad->document->slug?>.jpeg" alt="<?=$ad->document->title ?>">
+						<img src="/files/<?=$ad->document->view(array('action' => $size)); ?>" alt="<?=$ad->document->title ?>">
 					</a>
 				</li>
 			

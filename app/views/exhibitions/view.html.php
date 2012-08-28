@@ -78,11 +78,14 @@ $this->title($exhibition->title);
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 	
-		<?php $thumbnail = $ew->work->preview(); $work_slug = $ew->work->slug;
+		<?php 
+			$document = $ew->work->documents('first');
 		
-			if($thumbnail) {
+			if($document->id) {
+				$thumbnail = $document->view();
+				$work_slug = $ew->work->slug;
 				echo "<a href='/works/view/$work_slug'>";
-				echo "<img width='125' height='125' src='/files/thumb/$thumbnail' />";
+				echo "<img width='125' height='125' src='/files/$thumbnail' />";
 				echo "</a>";
 			} else {
 				echo '<span class="label label-warning">No Image</span>';
