@@ -4,6 +4,8 @@ namespace app\controllers;
  
 use app\models\Documents;
 
+use li3_filesystem\extensions\storage\FileSystem;
+
 use lithium\action\DispatchException;
 use lithium\security\Auth;
  
@@ -23,7 +25,7 @@ class FilesController extends \lithium\action\Controller {
         }
         
         //Don't run the query if no slug is provided
-		if(isset($this->request->params['file'])) {
+		if (isset($this->request->params['file'])) {
  
 			$file = $this->request->params['file'];
 	
@@ -35,13 +37,13 @@ class FilesController extends \lithium\action\Controller {
 				'with' => array('Formats')
 			));
 			
-			if($document) {
-		
-				$path = LITHIUM_APP_PATH.'/webroot/files/' . $document->hash . '.' . $document->format->extension;
+			if ($document) {
+
+				$filename = $document->file();
 				
-				if(file_exists($path)){
+				if (FileSystem::exists('documents', $filename)) {
 					$this->response->headers(array('Content-type' => $document->format->mime_type));
-					$this->response->body = file_get_contents($path);
+					$this->response->body = FileSystem::read('documents', $filename);
 		 
 					return compact('file');
 			
@@ -65,7 +67,7 @@ class FilesController extends \lithium\action\Controller {
         }
         
         //Don't run the query if no slug is provided
-		if(isset($this->request->params['file'])) {
+		if (isset($this->request->params['file'])) {
  
 			$file = $this->request->params['file'];
 	
@@ -75,16 +77,15 @@ class FilesController extends \lithium\action\Controller {
 		
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $slug),
-				'with' => array('Formats')
 			));
 			
-			if($document) {
-		
-				$path = LITHIUM_APP_PATH . '/webroot/files/small/' . $document->hash . '.jpeg';
-				
-				if(file_exists($path)){
+			if ($document) {
+
+				$filename = $document->file(array('size' => 'small'));
+
+				if ( FileSystem::exists('documents', $filename) ) {
 					$this->response->headers(array('Content-type' => 'image/jpeg'));
-					$this->response->body = file_get_contents($path);
+					$this->response->body = FileSystem::read('documents', $filename);
 		 
 					return compact('file');
 			
@@ -108,24 +109,24 @@ class FilesController extends \lithium\action\Controller {
         }
         
         //Don't run the query if no slug is provided
-		if(isset($this->request->params['file'])) {
+		if (isset($this->request->params['file'])) {
  
 			$file = $this->request->params['file'];
 	
 			$ext = strrpos($file, '.');
 			$slug = substr($file, 0, $ext);
+
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $slug),
-				'with' => array('Formats')
 			));
 			
-			if($document) {
-		
-				$path = LITHIUM_APP_PATH . '/webroot/files/thumb/' . $document->hash . '.jpeg';
+			if ($document) {
 				
-				if(file_exists($path)){
+				$filename = $document->file(array('size' => 'thumb'));
+
+				if ( FileSystem::exists('documents', $filename) ) {
 					$this->response->headers(array('Content-type' => 'image/jpeg'));
-					$this->response->body = file_get_contents($path);
+					$this->response->body = FileSystem::read('documents', $filename);
 		 
 					return compact('file');
 			
@@ -149,7 +150,7 @@ class FilesController extends \lithium\action\Controller {
         }
         
         //Don't run the query if no slug is provided
-		if(isset($this->request->params['file'])) {
+		if (isset($this->request->params['file'])) {
  
 			$file = $this->request->params['file'];
 	
@@ -161,14 +162,18 @@ class FilesController extends \lithium\action\Controller {
 				'with' => array('Formats')
 			));
 			
-			if($document) {
-		
-				$path = LITHIUM_APP_PATH.'/webroot/files/' . $document->hash . '.' . $document->format->extension;
-				
-				if(file_exists($path)){
+			if ($document) {
+
+				$filename = $document->file();
+
+				$config = FileSystem::config('documents');
+
+				$send_file = LITHIUM_APP_PATH .'/webroot/' . $config['path'] . DIRECTORY_SEPARATOR . $filename;
+
+				if (FileSystem::exists('documents', $filename)) {
 				
 					$this->response->headers(array(
-						'X-Sendfile' => $path,
+						'X-Sendfile' => $send_file,
 						'Content-type' => 'application/octet-stream',
 						'Content-Disposition' => 'attachment; filename="' . $file . '"'
 					));
