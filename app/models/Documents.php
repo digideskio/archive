@@ -113,26 +113,6 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('document_id' => $document_id)
 	))->delete();
 	
-	//Delete all files
-	$target_dir = 'files';
-
-	$hash = $params['entity']->hash;
-	$format_id = $params['entity']->format_id;
-
-	// Look up the format
-	$format = Formats::first(array(
-		'conditions' => array('id' => $format_id)
-	));
-
-	$file_path = $target_dir . DIRECTORY_SEPARATOR . $hash . '.' . $format->extension;
-	$small = $target_dir . DIRECTORY_SEPARATOR . 'small' . DIRECTORY_SEPARATOR . $hash . '.jpeg';
-	$thumb = $target_dir . DIRECTORY_SEPARATOR . 'thumb' . DIRECTORY_SEPARATOR . $hash . '.jpeg';
-
-	unlink($file_path);
-	unlink($small);
-	unlink($thumb);
-
-
 	return $chain->next($self, $params, $chain);
 
 });

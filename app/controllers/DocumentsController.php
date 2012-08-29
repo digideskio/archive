@@ -9,6 +9,8 @@ use app\models\ArchitecturesDocuments;
 use app\models\Users;
 use app\models\Roles;
 
+use li3_filesystem\extensions\storage\FileSystem;
+
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
@@ -173,11 +175,15 @@ class DocumentsController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 		
-		$target_dir = 'files';
-		
-		$data = compact('target_dir');
-		
-		$document->delete($data);
+		$file = $document->file();
+		$small = $document->file(array('size' => 'small'));
+		$thumb = $document->file(array('size' => 'thumb'));
+
+		FileSystem::delete('documents', $file);
+		FileSystem::delete('documents', $small);
+		FileSystem::delete('documents', $thumb);
+
+		$document->delete();
 		return $this->redirect('Documents::index');
 	}
 	
@@ -207,8 +213,8 @@ class DocumentsController extends \lithium\action\Controller {
 		header("Pragma: no-cache");
 		
 		// Settings
-		$targetDir = ini_get("upload_tmp_dir") . DIRECTORY_SEPARATOR . "plupload";
-		$targetDir = 'files';
+		$config = FileSystem::config('documents'); 
+		$targetDir = $config['path'];
 
 		$cleanupTargetDir = true; // Remove old files
 		$maxFileAge = 5 * 3600; // Temp file age in seconds
@@ -246,8 +252,9 @@ class DocumentsController extends \lithium\action\Controller {
 		$filePath = $targetDir . DIRECTORY_SEPARATOR . $fileName;
 
 		// Create target dir
-		if (!file_exists($targetDir))
-			@mkdir($targetDir);
+		if (!file_exists($targetDir)) {
+			@mkdir($targetDir, 0775, true);
+		}
 
 		// Remove old temp files	
 		if ($cleanupTargetDir && is_dir($targetDir) && ($dir = opendir($targetDir))) {
