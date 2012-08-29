@@ -24,7 +24,7 @@ $this->title('Collection History');
 
 <ul class="nav nav-tabs">
 	<li>
-		<a href="/collections">Index</a>
+		<?=$this->html->link('View','/collections/view/'.$collection->slug); ?>
 	</li>
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
