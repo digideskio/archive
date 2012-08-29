@@ -168,7 +168,7 @@ class FilesController extends \lithium\action\Controller {
 
 				$config = FileSystem::config('documents');
 
-				$send_file = LITHIUM_APP_PATH .'/webroot/' . $config['path'] . DIRECTORY_SEPARATOR . $filename;
+				$send_file = $config['path'] . DIRECTORY_SEPARATOR . $filename;
 
 				if (FileSystem::exists('documents', $filename)) {
 				

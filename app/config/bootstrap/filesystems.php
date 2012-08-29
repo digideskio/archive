@@ -12,12 +12,13 @@
  *
  */
 
+use lithium\core\Libraries;
 use li3_filesystem\extensions\storage\FileSystem;
 
 Filesystem::config(array(
 	'documents' => array(
 		'adapter' => 'File',
-		'path' => 'files'
+		'path' => Libraries::get(true, 'path') . '/webroot/files'
 	)
 ));
 
