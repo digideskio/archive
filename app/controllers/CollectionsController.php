@@ -242,6 +242,28 @@ class CollectionsController extends \lithium\action\Controller {
 		//$this->redirect(array('Collections::index'));
 	}
 
+	public function package() {
+
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+		}
+
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Collections::index'));
+	}
+
 	public function delete() {
     
 	    $check = (Auth::check('default')) ?: null;

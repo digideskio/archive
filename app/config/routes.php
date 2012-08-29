@@ -78,6 +78,7 @@ Router::connect('/collections/view/{:slug}', array('Collections::view'));
 Router::connect('/collections/edit/{:slug}', array('Collections::edit'));
 Router::connect('/collections/history/{:slug}', array('Collections::history'));
 Router::connect('/collections/publish/{:slug}', array('Collections::publish'));
+Router::connect('/collections/package/{:slug}', array('Collections::package'));
 Router::connect('/collections/delete/{:slug}', array('Collections::delete'));
 
 Router::connect('/collections_works/delete/{:id}', array('CollectionsWorks::delete'));
