@@ -23,7 +23,11 @@ Filesystem::config(array(
 	'documents' => array(
 		'adapter' => 'File',
 		'path' => Libraries::get(true, 'resources') . '/archive/files'
-	)
+	),
+	'packages' => array(
+		'adapter' => 'File',
+		'path' => Libraries::get(true, 'resources') . '/archive/packages'
+	),
 ));
 
 ?>
