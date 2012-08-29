@@ -9,6 +9,8 @@ use app\models\Works;
 use app\models\Users;
 use app\models\Roles;
 
+use li3_filesystem\extensions\storage\FileSystem;
+
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\template\View;
@@ -196,6 +198,9 @@ class CollectionsController extends \lithium\action\Controller {
 			$options = $this->request->query;
 
 			$layout = isset($options['layout']) ? $options['layout'] : 'download';
+
+			$config = FileSystem::config('documents'); 
+			$options['path'] = $config['path'];
 		
 			//Get single record from the database where the slug matches the URL
 			$collection = Collections::first(array(
@@ -212,6 +217,7 @@ class CollectionsController extends \lithium\action\Controller {
 					'conditions' => array('collection_id' => $collection->id),
 					'order' => 'earliest_date ASC'
 				));
+
 
 				$view  = new View(array(
 					'paths' => array(
