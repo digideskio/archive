@@ -257,6 +257,34 @@ class CollectionsController extends \lithium\action\Controller {
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
+			
+			//Get single record from the database where the slug matches the URL
+			$collection = Collections::first(array(
+				'conditions' => array(
+				'slug' => $this->request->params['slug'],
+			)));
+			
+			if($collection) {
+
+				$package = $collection->slug.'.zip';
+
+				$config = FileSystem::config('packages'); 
+				$path = $config['path'];
+
+				$collection_works = CollectionsWorks::find('all', array(
+					'with' => 'Works',
+					'conditions' => array('collection_id' => $collection->id),
+					'order' => 'earliest_date ASC'
+				));
+
+				foreach ($collection_works as $cw) {
+					$documents = $cw->work->documents();
+					;
+				}
+
+				//Send the retrieved data to the view
+				return compact('collection', 'path', 'package');
+			}
 		
 		}
 
