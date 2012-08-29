@@ -72,19 +72,23 @@ class DocumentsController extends \lithium\action\Controller {
 				'conditions' => array('slug' => $this->request->params['slug']),
 				'with' => array('Formats')
 			));
+
+			if ($document) {
 		
-			$works_documents = WorksDocuments::find('all', array(
-				'with' => 'Works',
-				'conditions' => array('document_id' => $document->id)
-			));
-		
-			$architectures_documents = ArchitecturesDocuments::find('all', array(
-				'with' => 'Architectures',
-				'conditions' => array('document_id' => $document->id)
-			));
+				$works_documents = WorksDocuments::find('all', array(
+					'with' => 'Works',
+					'conditions' => array('document_id' => $document->id)
+				));
 			
-			//Send the retrieved data to the view
-			return compact('document', 'works_documents', 'architectures_documents', 'auth');
+				$architectures_documents = ArchitecturesDocuments::find('all', array(
+					'with' => 'Architectures',
+					'conditions' => array('document_id' => $document->id)
+				));
+				
+				//Send the retrieved data to the view
+				return compact('document', 'works_documents', 'architectures_documents', 'auth');
+
+			}
 		}
 		
 		//since no record was specified, redirect to the index page
