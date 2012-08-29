@@ -10,6 +10,10 @@
 /**
  * The filesystems file configures the li3_filesystem plugin and adds our local filesystem and stream based locations
  *
+ * Some useful paths are:
+ *	Libraries::get(true, 'path') . '/webroot'
+ *	Libraries::get(true, 'resources') . '/tmp'
+ *
  */
 
 use lithium\core\Libraries;
@@ -18,7 +22,7 @@ use li3_filesystem\extensions\storage\FileSystem;
 Filesystem::config(array(
 	'documents' => array(
 		'adapter' => 'File',
-		'path' => Libraries::get(true, 'path') . '/webroot/files'
+		'path' => Libraries::get(true, 'resources') . '/archive/files'
 	)
 ));
 
