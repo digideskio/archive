@@ -30,25 +30,25 @@ $this->form->config(
 
 </div>
 
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li>
+			<?=$this->html->link('Index','/works'); ?>
+		</li>
 
-<ul class="nav nav-tabs">
-	<li>
-		<?=$this->html->link('Index','/works'); ?>
-	</li>
+		<li>
+			<?=$this->html->link('History','/works/histories'); ?>
+		</li>
 
-	<li>
-		<?=$this->html->link('History','/works/histories'); ?>
-	</li>
+	</ul>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
-
-	<span class="action">
-		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-	</span>
-	
-	<?php endif; ?>
-
-</ul>
+			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+		
+		<?php endif; ?>
+	</div>
+</div>
 
 <div class="well">
 <?=$this->form->create($work); ?>

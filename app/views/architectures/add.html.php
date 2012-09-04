@@ -30,16 +30,18 @@ $this->form->config(
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li>
-		<?=$this->html->link('Index','/architectures'); ?>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li>
+			<?=$this->html->link('Index','/architectures'); ?>
+		</li>
 
-	<span class="action">
-		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Project</a>
-	</span>
-	
-</ul>
+	</ul>
+
+	<div class="btn-toolbar">
+			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Project</a>
+	</div>
+</div>
 
 <div class="well">
 <?=$this->form->create($architecture); ?>

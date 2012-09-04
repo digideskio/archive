@@ -16,19 +16,22 @@ $this->title('Publications');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<?=$this->html->link('Index','/publications'); ?>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('Index','/publications'); ?>
+		</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	</ul>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-		<span class="action">
-			<a class="btn btn-inverse" href="/publications/add"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
-		</span>
-	
-	<?php endif; ?>
-</ul>
+				<a class="btn btn-inverse" href="/publications/add"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
+		
+		<?php endif; ?>
+
+	</div>
+<div>
 
 <?php if(sizeof($publications) == 0): ?>
 

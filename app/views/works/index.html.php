@@ -16,23 +16,27 @@ $this->title('Artwork');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<a href="#">Index</a>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#">Index</a>
+		</li>
 
-	<li>
-		<?=$this->html->link('History','/works/histories'); ?>
-	</li>
+		<li>
+			<?=$this->html->link('History','/works/histories'); ?>
+		</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	</ul>
 
-	<span class="action">
-		<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-	
-	<?php endif; ?>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-</ul>
+			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+		
+		<?php endif; ?>
+
+	</div>
+</div>
 
 <?php if($total == 0): ?>
 

@@ -21,35 +21,37 @@ $this->title($collection->title);
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<a href="#">View</a>
-	</li>
+<div class="actions">
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
-	
-		<li><?=$this->html->link('Edit','/collections/edit/'.$collection->slug); ?></li>
-	
-	<?php endif; ?>
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#">View</a>
+		</li>
 
-	<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		
+			<li><?=$this->html->link('Edit','/collections/edit/'.$collection->slug); ?></li>
+		
+		<?php endif; ?>
+
+		<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
+
+	</ul>
 
 	<?php if($li3_pdf): ?>
 
-	<div class="action">
-	<div class="btn-group">
-	<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret" style="border-top-color: white; border-bottom-color: white;"></span></button>
-	<ul class="dropdown-menu">
-	<li><a href="/collections/publish/<?=$collection->slug ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
-	<li><a href="/collections/publish/<?=$collection->slug ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>
-	</ul>
+	<div class="btn-toolbar">
+		<div class="btn-group">
+			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret" style="border-top-color: white; border-bottom-color: white;"></span></button>
+			<ul class="dropdown-menu">
+				<li><a href="/collections/publish/<?=$collection->slug ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
+				<li><a href="/collections/publish/<?=$collection->slug ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>
+			</ul>
+		</div>
 	</div>
-	</div>
+</div>
 
 	<?php endif; ?>
-
-</ul>
-
 <?php if($collection->description): ?>
 	<div class="alert alert-info">
 	<p><?=$collection->description ?></p>

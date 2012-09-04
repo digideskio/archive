@@ -29,17 +29,17 @@ $this->form->config(
 
 </div>
 
-    
-<ul class="nav nav-tabs">
-	<li>
-		<?=$this->html->link('Index','/exhibitions'); ?>
-	</li>
-
-	<span class="action">
-		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
-	</span>
-	
-</ul>
+<div class="actions">    
+	<ul class="nav nav-tabs">
+		<li>
+			<?=$this->html->link('Index','/exhibitions'); ?>
+		</li>
+		
+	</ul>
+	<div class="btn-toolbar">
+			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
+	</div>
+</div>
 
 <div class="well">
 <?=$this->form->create($collection); ?>

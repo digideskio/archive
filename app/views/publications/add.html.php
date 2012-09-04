@@ -34,17 +34,17 @@ $this->form->config(array('templates' => array(
 
 </div>
 
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li>
+			<?=$this->html->link('Index','/publications'); ?>
+		</li>
 
-<ul class="nav nav-tabs">
-	<li>
-		<?=$this->html->link('Index','/publications'); ?>
-	</li>
-
-	<span class="action">
-		<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
-	</span>
-	
-</ul>
+	</ul>
+	<div class="btn-toolbar">
+			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
+	</div>
+</div>
 
 <div class="well">
 <?=$this->form->create($publication); ?>

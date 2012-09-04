@@ -22,46 +22,19 @@ $this->title($user->username);
 
 </div>
 
-<div id="tools" class="btn-toolbar">
+<div class="actions">
 
-<?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('View','/users/view/'.$user->username); ?>
+		</li>
 
-	<div class="action btn-group">
-
-		<a class="btn btn-inverse" href="/users/edit/<?=$user->username ?>">
-			<i class="icon-pencil icon-white"></i> Edit User
-		</a>
-		<a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown" href="">
-			<span class="caret"></span>
-		</a>
-		<ul class="dropdown-menu">
-			<li>
-				<a href="/users/edit/<?=$user->username ?>">
-					<i class="icon-pencil"></i> Edit
-				</a>
-			</li>
-			<li>
-				<a data-toggle="modal" href="#deleteModal">
-					<i class="icon-trash"></i> Delete
-				</a>
-			</li>
-		</ul>
-
-	</div>
-	
-<?php endif; ?>
-
-<?php if($auth->username == $user->username): ?>
-
-	<div class="action btn-group">
-
-		<a class="btn btn-inverse" href="/users/edit/<?=$user->username ?>">
-			<i class="icon-pencil icon-white"></i> Edit Profile
-		</a>
-
-	</div>
-
-<?php endif; ?>
+		<?php if($auth->role->name == 'Admin' || $auth->username == $user->username): ?>
+		<li>
+			<?=$this->html->link('Edit','/users/edit/'.$user->username); ?>
+		</li>
+		<?php endif; ?>
+	</ul>
 
 </div>
 

@@ -16,19 +16,23 @@ $this->title('Architecture');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<?=$this->html->link('Index','/architectures'); ?>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('Index','/architectures'); ?>
+		</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	</ul>
 
-		<span class="action">
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+
 			<a class="btn btn-inverse" href="/architectures/add"><i class="icon-plus-sign icon-white"></i> Add a Project</a>
-		</span>
-	
-	<?php endif; ?>
-</ul>
+		
+		<?php endif; ?>
+
+	</div>
+<div>
 
 <?php if(sizeof($architectures) == 0): ?>
 

@@ -16,19 +16,21 @@ $this->title('Exhibitions');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<?=$this->html->link('Index','/exhibitions'); ?>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('Index','/exhibitions'); ?>
+		</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	</ul>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-		<span class="action">
-			<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
-		</span>
-	
-	<?php endif; ?>
-</ul>
+				<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
+		
+		<?php endif; ?>
+	</div>
+</div>
 
 <?php if(sizeof($exhibitions) == 0): ?>
 

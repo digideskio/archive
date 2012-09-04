@@ -30,6 +30,27 @@ $this->form->config(
 
 </div>
 
+<div class="actions">
+		
+	<ul class="nav nav-tabs">
+		<li>
+			<?=$this->html->link('Index','/users'); ?> 
+		</li>
+	</ul>
+
+	<div class="btn-toolbar">
+
+		<div class="action btn-group">
+
+			<a class="btn btn-inverse btn-disabled" disabled="disabled" href="/users/add/">
+				<i class="icon-plus-sign icon-white"></i> Add User
+			</a>
+
+		</div>
+
+	</div>
+</div>
+
 <div class="well">
 <?=$this->form->create($user); ?>
     <?=$this->form->field('username', array('autocomplete' => 'off'));?>

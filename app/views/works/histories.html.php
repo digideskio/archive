@@ -22,23 +22,26 @@ $this->title('Artwork History');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li>
-		<a href="/works">Index</a>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li>
+			<a href="/works">Index</a>
+		</li>
 
-	<li class="active">
-		<?=$this->html->link('History','/works/histories'); ?>
-	</li>
+		<li class="active">
+			<?=$this->html->link('History','/works/histories'); ?>
+		</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
-
-	<span class="action">
-		<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+	</ul>
 	
-	<?php endif; ?>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-</ul>
+			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+		
+		<?php endif; ?>
+	</div>
+</div>
 
 <table class="table">
 

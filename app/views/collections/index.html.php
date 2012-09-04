@@ -16,19 +16,21 @@ $this->title('Collections');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<?=$this->html->link('Index','/collections'); ?>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('Index','/collections'); ?>
+		</li>
+	</ul>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
-		<span class="action">
-			<a class="btn btn-inverse" href="/collections/add"><i class="icon-plus-sign icon-white"></i> Add a Collection</a>
-		</span>
-	
-	<?php endif; ?>
-</ul>
+				<a class="btn btn-inverse" href="/collections/add"><i class="icon-plus-sign icon-white"></i> Add a Collection</a>
+		
+		<?php endif; ?>
+	</div>
+</div>
 
 <?php if(sizeof($collections) == 0): ?>
 

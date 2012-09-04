@@ -16,19 +16,23 @@ $this->title('Documents');
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li class="active">
-		<?=$this->html->link('Index','/documents'); ?>
-	</li>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('Index','/documents'); ?>
+		</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	</ul>
 
-		<span class="action">
-			<a class="btn btn-inverse" href="/documents/add"><i class="icon-plus-sign icon-white"></i> Add a Document</a>
-		</span>
-	
-	<?php endif; ?>
-</ul>
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+
+				<a class="btn btn-inverse" href="/documents/add"><i class="icon-plus-sign icon-white"></i> Add a Document</a>
+		
+		<?php endif; ?>
+
+	</div>
+</div>
 
 <?php if($total == 0): ?>
 

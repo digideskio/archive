@@ -16,23 +16,30 @@
 </div>
 
 
+<div class="actions">
+		
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#">Index</a>
+		</li>
+	</ul>
 
-<div id="tools" class="btn-toolbar">
+	<div class="btn-toolbar">
 
-<?php if($auth->role->name == 'Admin'): ?>
+	<?php if($auth->role->name == 'Admin'): ?>
 
-	<div class="action btn-group">
+		<div class="action btn-group">
 
-		<a class="btn btn-inverse" href="/users/add/">
-			<i class="icon-plus-sign icon-white"></i> Add User
-		</a>
+			<a class="btn btn-inverse" href="/users/add/">
+				<i class="icon-plus-sign icon-white"></i> Add User
+			</a>
+
+		</div>
+
+	<?php endif; ?>
 
 	</div>
-
-<?php endif; ?>
-
 </div>
-
 
 <table class="table table-striped table-bordered">
 
