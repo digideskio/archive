@@ -42,7 +42,11 @@ $this->title($collection->title);
 
 	<div class="btn-toolbar">
 		<div class="btn-group">
-			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret" style="border-top-color: white; border-bottom-color: white;"></span></button>
+			<a class="btn btn-inverse" href="/collections/package/<?=$collection->slug?>"><i class="icon-gift icon-white"></i> Package</a>
+		</div>
+	
+		<div class="btn-group">
+			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret"</span></button>
 			<ul class="dropdown-menu">
 				<li><a href="/collections/publish/<?=$collection->slug ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
 				<li><a href="/collections/publish/<?=$collection->slug ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>

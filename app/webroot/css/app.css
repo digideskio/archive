@@ -26,10 +26,6 @@ body {
 	margin-top: 0;
 }
 
-.actions > .btn-toolbar > .btn-group {
-  float: right;
-}
-
 blockquote {
 	color: #808080;
 }

@@ -30,6 +30,6 @@ $this->title($collection->title);
 
 <p>Your package for <strong><?=$collection->title ?></strong> will be available at:</p>
 
-<code><?=$path ?>/<?=$package ?></code>
+<code><?=$packages_path ?>/<?=$package ?></code>
 
 </div>

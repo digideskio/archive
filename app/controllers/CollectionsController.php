@@ -266,24 +266,75 @@ class CollectionsController extends \lithium\action\Controller {
 			
 			if($collection) {
 
-				$package = $collection->slug.'.zip';
+				$package = $collection->slug . '.zip';
 
-				$config = FileSystem::config('packages'); 
-				$path = $config['path'];
+				$documents_config = FileSystem::config('documents');
+				$documents_path = $documents_config['path'];
 
-				$collection_works = CollectionsWorks::find('all', array(
+				$packages_config = FileSystem::config('packages'); 
+				$packages_path = $packages_config['path'];
+
+				if (!file_exists($packages_path))
+					@mkdir($packages_path);
+
+				$package_path = $packages_path . DIRECTORY_SEPARATOR . $package;
+
+				if (file_exists($package_path))
+					unlink($package_path);
+
+				$zip = new \ZipArchive();
+				$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
+				
+				$collections_works = CollectionsWorks::find('all', array(
 					'with' => 'Works',
 					'conditions' => array('collection_id' => $collection->id),
 					'order' => 'earliest_date ASC'
 				));
 
-				foreach ($collection_works as $cw) {
-					$documents = $cw->work->documents();
-					;
+				foreach ($collections_works as $cw) {
+					$work = $cw->work;
+					$documents = $work->documents();
+
+					foreach ($documents as $document) {
+						$slug = $document->slug;
+						$extension = $document->format->extension;
+						$document_file = $document->file();
+						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
+
+						$document_localname = $cw->work->years() . '-' . $work->slug . '-' . $slug . '.' . $extension;
+
+						$zip->addFile($document_path, $document_localname);
+					}
 				}
 
+				$layout = 'file';
+				$options['path'] = $documents_path;
+				$options['view'] = 'artwork';
+				$filename = $packages_path . DIRECTORY_SEPARATOR . $collection->slug;
+				
+				$view  = new View(array(
+					'paths' => array(
+						'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
+						'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
+					)
+				));
+				$view->render(
+					'all',
+					array('content' => compact('filename', 'collection','collections_works', 'options')),
+					array(
+						'controller' => 'collections',
+						'template'=>'view',
+						'type' => 'pdf',
+						'layout' => $layout
+					)
+				);
+
+				$zip->addFile("$filename.pdf", $collection->slug . '.pdf');
+
+				$zip->close();
+
 				//Send the retrieved data to the view
-				return compact('collection', 'path', 'package');
+				return compact('collection', 'packages_path', 'package');
 			}
 		
 		}
