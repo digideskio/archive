@@ -95,11 +95,15 @@ if(!isset($options['view']) || $options['view'] == 'artwork') {
 
 $document = $work->documents('first');
 
-$thumbnail = $document->file(array('size' => 'thumb'));
+if ($document) {
+	$thumbnail = $document->file(array('size' => 'thumb'));
+}
 
 if( $thumbnail ) {
 	$img_path = $options['path'] . '/'  . $thumbnail;
 	$thumb_img = '<img width="100" height="100" src="'.$img_path.'" />';
+} else {
+	$thumb_img = 'No Image';
 }
 
 $html .= <<<EOD
