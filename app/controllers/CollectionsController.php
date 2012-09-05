@@ -273,11 +273,13 @@ class CollectionsController extends \lithium\action\Controller {
 
 				$packages_config = FileSystem::config('public'); 
 				$packages_path = $packages_config['path'];
+				$packages_url = $packages_config['url'];
 
 				if (!file_exists($packages_path))
 					@mkdir($packages_path);
 
 				$package_path = $packages_path . DIRECTORY_SEPARATOR . $package;
+				$package_url = $packages_url . '/' . $package;
 
 				if (file_exists($package_path))
 					unlink($package_path);
@@ -334,7 +336,7 @@ class CollectionsController extends \lithium\action\Controller {
 				$zip->close();
 
 				//Send the retrieved data to the view
-				return compact('collection', 'packages_path', 'package');
+				return compact('collection', 'packages_path', 'package_url', 'package');
 			}
 		
 		}

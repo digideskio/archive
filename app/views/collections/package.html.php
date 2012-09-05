@@ -28,8 +28,9 @@ $this->title($collection->title);
 
 <div class="well">
 
-<p>Your package for <strong><?=$collection->title ?></strong> will be available at:</p>
+<p>Your package for <strong><?=$collection->title ?></strong> is now available!</p>
 
-<code><?=$packages_path ?>/<?=$package ?></code>
+<?=$this->html->link("Download Package", $package_url, array('class' => 'btn btn-success')); ?>
 
 </div>
+
