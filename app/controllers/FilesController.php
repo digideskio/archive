@@ -140,7 +140,7 @@ class FilesController extends \lithium\action\Controller {
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Documents::index'));
 	}
-	
+
 	public function download() {
     
 	    $check = (Auth::check('default')) ?: null;
@@ -185,6 +185,35 @@ class FilesController extends \lithium\action\Controller {
 			
 			$this->redirect(array('Documents::index'));
 		
+		}
+		
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Documents::index'));
+	}
+
+	public function package() {
+    
+		if (isset($this->request->params['file'])) {
+ 
+			$filename = $this->request->params['file'];
+	
+			$config = FileSystem::config('packages');
+
+			$send_file = $config['path'] . DIRECTORY_SEPARATOR . $filename;
+
+			if (FileSystem::exists('packages', $filename)) {
+			
+				$this->response->headers(array(
+					'X-Sendfile' => $send_file,
+					'Content-type' => 'application/octet-stream',
+					'Content-Disposition' => 'attachment; filename="' . $file . '"'
+				));
+			
+				return compact('file');
+		
+			}
+
+			$this->redirect(array('Documents::index')); 
 		}
 		
 		//since no record was specified, redirect to the index page

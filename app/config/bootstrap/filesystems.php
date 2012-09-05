@@ -24,10 +24,10 @@ Filesystem::config(array(
 		'adapter' => 'File',
 		'path' => Libraries::get(true, 'resources') . '/archive/files'
 	),
-	'public' => array(
+	'packages' => array(
 		'adapter' => 'File',
-		'path' => Libraries::get(true, 'resources') . '/archive/public',
-		'url' => '/public'
+		'path' => Libraries::get(true, 'resources') . '/archive/packages',
+		'url' => '/files/package'
 	),
 ));
 
