@@ -271,7 +271,7 @@ class CollectionsController extends \lithium\action\Controller {
 				$documents_config = FileSystem::config('documents');
 				$documents_path = $documents_config['path'];
 
-				$packages_config = FileSystem::config('packages'); 
+				$packages_config = FileSystem::config('public'); 
 				$packages_path = $packages_config['path'];
 
 				if (!file_exists($packages_path))

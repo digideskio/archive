@@ -24,9 +24,9 @@ Filesystem::config(array(
 		'adapter' => 'File',
 		'path' => Libraries::get(true, 'resources') . '/archive/files'
 	),
-	'packages' => array(
+	'public' => array(
 		'adapter' => 'File',
-		'path' => Libraries::get(true, 'resources') . '/archive/packages'
+		'path' => Libraries::get(true, 'resources') . '/archive/public'
 	),
 ));
 
