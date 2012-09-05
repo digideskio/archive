@@ -210,7 +210,7 @@ class CollectionsController extends \lithium\action\Controller {
 			
 			if($collection) {
 				
-				$filename = $collection->slug . '-' . $options['view'];
+				$pdf = $collection->slug . '-' . $options['view'] . '.pdf';
 
 				$collections_works = CollectionsWorks::find('all', array(
 					'with' => 'Works',
@@ -227,7 +227,7 @@ class CollectionsController extends \lithium\action\Controller {
 				));
 				echo $view->render(
 					'all',
-					array('content' => compact('filename', 'collection','collections_works', 'options')),
+					array('content' => compact('pdf', 'collection','collections_works', 'options')),
 					array(
 						'controller' => 'collections',
 						'template'=>'view',
@@ -310,7 +310,7 @@ class CollectionsController extends \lithium\action\Controller {
 				$layout = 'file';
 				$options['path'] = $documents_path;
 				$options['view'] = 'artwork';
-				$filename = $packages_path . DIRECTORY_SEPARATOR . $collection->slug;
+				$pdf = $packages_path . DIRECTORY_SEPARATOR . $collection->slug . '.pdf';
 				
 				$view  = new View(array(
 					'paths' => array(
@@ -320,7 +320,7 @@ class CollectionsController extends \lithium\action\Controller {
 				));
 				$view->render(
 					'all',
-					array('content' => compact('filename', 'collection','collections_works', 'options')),
+					array('content' => compact('pdf', 'collection','collections_works', 'options')),
 					array(
 						'controller' => 'collections',
 						'template'=>'view',
@@ -329,7 +329,7 @@ class CollectionsController extends \lithium\action\Controller {
 					)
 				);
 
-				$zip->addFile("$filename.pdf", $collection->slug . '.pdf');
+				$zip->addFile($pdf, $collection->slug . '.pdf');
 
 				$zip->close();
 

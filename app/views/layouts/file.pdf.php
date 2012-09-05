@@ -1,4 +1,4 @@
 <?php
-$filename = $content['filename'];
-echo $this->Pdf->Output("$filename.pdf", 'F');
+$filename = $content['pdf'];
+echo $this->Pdf->Output("$filename", 'F');
 ?>

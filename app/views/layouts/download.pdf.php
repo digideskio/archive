@@ -1,5 +1,5 @@
 <?php
-$filename = $content['filename'];
+$filename = $content['pdf'];
 header("Content-type: application/pdf");
-echo $this->Pdf->Output("$filename.pdf", 'D');
+echo $this->Pdf->Output("$filename", 'D');
 ?>
