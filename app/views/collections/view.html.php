@@ -42,7 +42,11 @@ $this->title($collection->title);
 
 	<div class="btn-toolbar">
 		<div class="btn-group">
-			<a class="btn btn-inverse" href="/collections/package/<?=$collection->slug?>"><i class="icon-gift icon-white"></i> Package</a>
+			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-gift icon-white"></i> Package <span class="caret"</span></button>
+			<ul class="dropdown-menu">
+				<li><a href="/collections/package/<?=$collection->slug ?>?filesystem=secure"><i class="icon-lock"></i> Secure Package</a></li>
+				<li><a href="/collections/package/<?=$collection->slug ?>?filesystem=packages"><i class="icon-download-alt"></i> Public Package</a></li>
+			</ul>
 		</div>
 	
 		<div class="btn-group">

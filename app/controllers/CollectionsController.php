@@ -257,6 +257,10 @@ class CollectionsController extends \lithium\action\Controller {
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
+
+			$options = $this->request->query;
+
+			$filesystem = isset($options['filesystem']) ? $options['filesystem'] : 'secure'; 
 			
 			//Get single record from the database where the slug matches the URL
 			$collection = Collections::first(array(
@@ -271,7 +275,7 @@ class CollectionsController extends \lithium\action\Controller {
 				$documents_config = FileSystem::config('documents');
 				$documents_path = $documents_config['path'];
 
-				$packages_config = FileSystem::config('packages'); 
+				$packages_config = FileSystem::config($filesystem); 
 				$packages_path = $packages_config['path'];
 				$packages_url = $packages_config['url'];
 

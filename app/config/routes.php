@@ -118,6 +118,7 @@ Router::connect('/files/thumb/{:file}', array('Files::thumb'));
 Router::connect('/files/download/{:file}', array('Files::download'));
 
 Router::connect('/files/package/{:file}', array('Files::package'));
+Router::connect('/files/secure/{:file}', array('Files::secure'));
 
 //Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
 

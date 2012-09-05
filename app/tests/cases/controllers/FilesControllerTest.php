@@ -50,6 +50,9 @@ class FilesControllerTest extends \lithium\test\Unit {
 		
 		$response = $files->download();
 		$this->assertEqual($response->headers["Location"], "/login");
+
+		$response = $files->secure();
+		$this->assertEqual($response->headers["Location"], "/login");
 	
 	}
 }

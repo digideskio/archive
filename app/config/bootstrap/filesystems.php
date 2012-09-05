@@ -29,6 +29,11 @@ Filesystem::config(array(
 		'path' => Libraries::get(true, 'resources') . '/archive/packages',
 		'url' => '/files/package'
 	),
+	'secure' => array(
+		'adapter' => 'File',
+		'path' => Libraries::get(true, 'resources') . '/archive/secure',
+		'url' => '/files/secure'
+	),
 ));
 
 ?>

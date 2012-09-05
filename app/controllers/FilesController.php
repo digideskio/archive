@@ -219,6 +219,41 @@ class FilesController extends \lithium\action\Controller {
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Documents::index'));
 	}
+
+	public function secure() {
+
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+    
+		if (isset($this->request->params['file'])) {
+ 
+			$filename = $this->request->params['file'];
+	
+			$config = FileSystem::config('secure');
+
+			$send_file = $config['path'] . DIRECTORY_SEPARATOR . $filename;
+
+			if (FileSystem::exists('secure', $filename)) {
+			
+				$this->response->headers(array(
+					'X-Sendfile' => $send_file,
+					'Content-type' => 'application/octet-stream',
+					'Content-Disposition' => 'attachment; filename="' . $file . '"'
+				));
+			
+				return compact('file');
+		
+			}
+
+			$this->redirect(array('Documents::index')); 
+		}
+		
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Documents::index'));
+	}
 }
  
 ?>
