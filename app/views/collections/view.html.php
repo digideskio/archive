@@ -36,19 +36,13 @@ $this->title($collection->title);
 
 		<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
 
+		<li><?=$this->html->link('Packages','/collections/package/'.$collection->slug); ?></li>
+
 	</ul>
 
 	<?php if($li3_pdf): ?>
 
 	<div class="btn-toolbar">
-		<div class="btn-group">
-			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-gift icon-white"></i> Package <span class="caret"</span></button>
-			<ul class="dropdown-menu">
-				<li><a href="/collections/package/<?=$collection->slug ?>?filesystem=secure"><i class="icon-lock"></i> Secure Package</a></li>
-				<li><a href="/collections/package/<?=$collection->slug ?>?filesystem=packages"><i class="icon-download-alt"></i> Public Package</a></li>
-			</ul>
-		</div>
-	
 		<div class="btn-group">
 			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret"</span></button>
 			<ul class="dropdown-menu">

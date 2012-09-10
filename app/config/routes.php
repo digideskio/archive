@@ -120,6 +120,9 @@ Router::connect('/files/download/{:file}', array('Files::download'));
 Router::connect('/files/package/{:file}', array('Files::package'));
 Router::connect('/files/secure/{:file}', array('Files::secure'));
 
+Router::connect('/packages/add', array('Packages::add'));
+Router::connect('/packages/delete/{:id}', array('Packages::delete'));
+
 //Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
 
 

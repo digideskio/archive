@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Collections;
 use app\models\CollectionsWorks;
 use app\models\Works;
+use app\models\Packages;
 
 use app\models\Users;
 use app\models\Roles;
@@ -270,77 +271,30 @@ class CollectionsController extends \lithium\action\Controller {
 			
 			if($collection) {
 
-				$package = $collection->slug . '.zip';
+				$test_packages = Packages::find('all', array(
+					'conditions' => array(
+					'collection_id' => $collection->id
+				)));
 
-				$documents_config = FileSystem::config('documents');
-				$documents_path = $documents_config['path'];
+				// Some packages may be removed from disk from time to time
+				// Therefore, first check if the actual file exists on disk
+				// If it does not, remove the record from the database
+				foreach ($test_packages as $package) {
+					$exists = FileSystem::exists($package->filesystem, $package->name);
 
-				$packages_config = FileSystem::config($filesystem); 
-				$packages_path = $packages_config['path'];
-				$packages_url = $packages_config['url'];
-
-				if (!file_exists($packages_path))
-					@mkdir($packages_path);
-
-				$package_path = $packages_path . DIRECTORY_SEPARATOR . $package;
-				$package_url = $packages_url . '/' . $package;
-
-				if (file_exists($package_path))
-					unlink($package_path);
-
-				$zip = new \ZipArchive();
-				$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
-				
-				$collections_works = CollectionsWorks::find('all', array(
-					'with' => 'Works',
-					'conditions' => array('collection_id' => $collection->id),
-					'order' => 'earliest_date ASC'
-				));
-
-				foreach ($collections_works as $cw) {
-					$work = $cw->work;
-					$documents = $work->documents();
-
-					foreach ($documents as $document) {
-						$slug = $document->slug;
-						$extension = $document->format->extension;
-						$document_file = $document->file();
-						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
-
-						$document_localname = $cw->work->years() . '-' . $work->slug . '-' . $slug . '.' . $extension;
-
-						$zip->addFile($document_path, $document_localname);
+					if (!$exists) {
+						$package->delete();
 					}
 				}
 
-				$layout = 'file';
-				$options['path'] = $documents_path;
-				$options['view'] = 'artwork';
-				$pdf = $packages_path . DIRECTORY_SEPARATOR . $collection->slug . '.pdf';
-				
-				$view  = new View(array(
-					'paths' => array(
-						'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
-						'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
-					)
-				));
-				$view->render(
-					'all',
-					array('content' => compact('pdf', 'collection','collections_works', 'options')),
-					array(
-						'controller' => 'collections',
-						'template'=>'view',
-						'type' => 'pdf',
-						'layout' => $layout
-					)
-				);
-
-				$zip->addFile($pdf, $collection->slug . '.pdf');
-
-				$zip->close();
+				// Find whatever packages are left
+				$packages = Packages::find('all', array(
+					'conditions' => array(
+					'collection_id' => $collection->id
+				)));
 
 				//Send the retrieved data to the view
-				return compact('collection', 'packages_path', 'package_url', 'package');
+				return compact('collection', 'packages', 'auth');
 			}
 		
 		}

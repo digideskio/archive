@@ -11,6 +11,7 @@ class CreatePackagesTable extends Ruckusing_BaseMigration {
 			"null" => false
 		));
 
+		$t->column("name", "string", array("null" => false));
 		$t->column("filesystem", "string", array("null" => false));
 
 		$t->column("date_created", "datetime", array("null" => false));
@@ -21,7 +22,7 @@ class CreatePackagesTable extends Ruckusing_BaseMigration {
 	}//up()
 
 	public function down() {
-		$this->drop_table("works_histories");
+		$this->drop_table("packages");
 	}//down()
 }
 ?>

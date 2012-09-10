@@ -43,6 +43,7 @@ $this->form->config(
 		</a>
 	</li>
 	<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
+	<li><?=$this->html->link('Packages','/collections/package/'.$collection->slug); ?></li>
 </ul>
 
 

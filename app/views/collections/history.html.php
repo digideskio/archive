@@ -10,7 +10,12 @@ $this->title('Collection History');
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Collection','/collection'); ?>
+	<?=$this->html->link('Collections','/collections'); ?>
+	<span class="divider">/</span>
+	</li>
+
+	<li>
+	<?=$this->html->link($collection->title,'/collections/view/'.$collection->slug); ?>
 	<span class="divider">/</span>
 	</li>
 
@@ -37,6 +42,7 @@ $this->title('Collection History');
 		<a href="#">History</a>
 	</li>
 
+	<li><?=$this->html->link('Packages','/collections/package/'.$collection->slug); ?></li>
 </ul>
 
 <table class="table">
