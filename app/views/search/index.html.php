@@ -21,6 +21,14 @@ $this->title('Search');
 
 </div>
 
+<div class="navbar">
+	<div class="navbar-inner">
+	<ul class="nav">
+		<li class="meta"><a href="#">Artwork</a></li>
+	</ul>
+	</div>
+</div>
+
 <table class="table table-bordered">
 
 <thead>
@@ -60,3 +68,27 @@ $this->title('Search');
 
 </tbody>
 </table>
+
+<div class="navbar">
+	<div class="navbar-inner">
+	<ul class="nav">
+		<li class="meta"><a href="#">Documents</a></li>
+	</ul>
+	</div>
+</div>
+
+<ul class="thumbnails">
+<?php foreach ($documents as $document): ?>
+
+	<?php
+		$span = 'span2';
+	?>
+	
+	<li class="<?=$span?>">
+		<a href="/documents/view/<?=$document->slug?>"  class="thumbnail" title="<?=$document->slug?>">
+			<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
+		</a>
+	</li>
+
+<?php endforeach; ?>
+</ul>

@@ -38,8 +38,15 @@ class SearchController extends \lithium\action\Controller {
 					'LIKE' => "%$query%"
 			))
 		));
+
+		$documents = Documents::find('all', array(
+			'conditions' => array(
+				'slug' => array(
+					'LIKE' => "%$query%"
+			))
+		));
         
-        return compact('works', 'query', 'auth');
+        return compact('works', 'documents', 'query', 'auth');
         
 	}
 	
