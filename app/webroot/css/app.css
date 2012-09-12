@@ -40,6 +40,16 @@ blockquote {
 	margin-bottom: 0px;
 }
 
+.thumbnail {
+	position: relative;
+}
+
+.thumbnail .label {
+	position: absolute;
+	top: 12px;
+	left: 12px;
+}
+
 @media (max-width: 979px) {
   body {
     padding-top: 0;

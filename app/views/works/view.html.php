@@ -51,6 +51,14 @@ $this->title($work->title);
 			
 				<li class="<?=$span?>">
 					<a href="/documents/view/<?=$wd->document->slug?>" class="thumbnail">
+						
+						<?php if ($wd->document->published): ?>
+							<span class="label label-success">Published</span>
+						<?php endif; ?>
+						<?php if (!$wd->document->published): ?>
+							<span class="label label-important">Private</span>
+						<?php endif; ?>
+
 						<img src="/files/<?=$wd->document->view(array('action' => $size)); ?>" alt="<?=$wd->document->title ?>">
 					</a>
 				</li>
@@ -103,7 +111,7 @@ $this->title($work->title);
 						if($work->creation_number) {
 							echo $work->creation_number;
 						} else {
-							echo '<span class="label label-important">Missing</span>';
+							echo '<span class="label label-warning">Missing</span>';
 						}
 						
 						?>
