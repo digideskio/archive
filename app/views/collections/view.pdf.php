@@ -59,17 +59,24 @@ $notes = $work->notes();
 
 if(isset($options['view']) && $options['view'] == 'images') {
 
-	$documents = $work->documents();
+	$documents = $work->documents('all', array('published' => 1));
 
-	foreach($documents as $doc) {
+	foreach ($documents as $doc) {
 
-	$thumbnail = $doc->file(array('size' => 'small'));
+		if ($doc->published) {
 
-	$img_path = $options['path'] . '/' . $thumbnail;
-	$thumb_img = '<img width="100" src="'.$img_path.'" />';
+			$thumbnail = $doc->file(array('size' => 'small'));
 
-	$resolution = $doc->resolution();
-	$size = $doc->size();
+			$img_path = $options['path'] . '/' . $thumbnail;
+			$thumb_img = '<img width="100" src="'.$img_path.'" />';
+
+			$resolution = $doc->resolution();
+			$size = $doc->size();
+		} else {
+			$thumb_img = "Private Image";
+			$resolution = "";
+			$size = "";
+		}
 
 $html .= <<<EOD
 
@@ -93,7 +100,7 @@ EOD;
 
 if(!isset($options['view']) || $options['view'] == 'artwork') {
 
-$document = $work->documents('first');
+$document = $work->documents('first', array('published' => 1));
 
 if ($document) {
 	$thumbnail = $document->file(array('size' => 'thumb'));
@@ -123,6 +130,7 @@ $html .= <<<EOD
 
 EOD;
 
+unset($thumbnail);
 
 }
 

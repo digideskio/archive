@@ -59,19 +59,21 @@ class Works extends \app\models\Archives {
 		return implode('<br/>', $info);
 	}
 
-	public function documents($entity,  $type = 'all') {
+	public function documents($entity,  $type = 'all', $conditions = null) {
 		
+		$conditions['work_id'] = $entity->id;
+
 		$documents = Documents::find($type, array(
 			'with' => array(
 				'WorksDocuments',
 				'Formats'
 			),
-			'conditions' => array('work_id' => $entity->id),
+			'conditions' => $conditions,
 		));
 
 		return $documents;
 	}
-    
+
 }
 
 Works::applyFilter('delete', function($self, $params, $chain) {

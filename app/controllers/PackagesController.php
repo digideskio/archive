@@ -72,14 +72,16 @@ class PackagesController extends \lithium\action\Controller {
 				$documents = $work->documents();
 
 				foreach ($documents as $document) {
-					$slug = $document->slug;
-					$extension = $document->format->extension;
-					$document_file = $document->file();
-					$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
+					if ($document->published) {
+						$slug = $document->slug;
+						$extension = $document->format->extension;
+						$document_file = $document->file();
+						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
 
-					$document_localname = $cw->work->years() . '-' . $work->slug . '-' . $slug . '.' . $extension;
+						$document_localname = $cw->work->years() . '-' . $work->slug . '-' . $slug . '.' . $extension;
 
-					$zip->addFile($document_path, $document_localname);
+						$zip->addFile($document_path, $document_localname);
+					}
 				}
 			}
 
