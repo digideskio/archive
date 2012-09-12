@@ -43,8 +43,8 @@ $this->title($work->title);
 			
 				<?php
 					$num_thumbs = sizeof($work_documents);
-					$span = $num_thumbs > 1 ? 'span3' : 'span6';
-					$size = $num_thumbs > 1 ? 'thumb' : 'small';
+					$span = 'span3';// $span = $num_thumbs > 1 ? 'span3' : 'span6';
+					$size = 'thumb';// $size = $num_thumbs > 1 ? 'thumb' : 'small';
 				?>
 		
 			<?php foreach($work_documents as $wd): ?>
