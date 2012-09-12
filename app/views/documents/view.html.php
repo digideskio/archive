@@ -92,7 +92,25 @@ $this->title($document->title);
 	
 		<table class="table">
 			<tbody>
+
+				<?php if ($document->published): ?>
+					<tr>
+						<td><i class="icon-eye-close"></i></td>
+						<td class="meta">Status</td>
+						<td><span class="label label-success">Published</span</td>
+					</tr>
+
+				<?php endif; ?>
 				
+				<?php if (!$document->published): ?>
+					<tr>
+						<td><i class="icon-eye-close"></i></td>
+						<td class="meta">Status</td>
+						<td><span class="label label-important">Private</span</td>
+					</tr>
+
+				<?php endif; ?>
+
 				<?php if (sizeof($works_documents) > 0) : ?> 
 			
 				<tr>

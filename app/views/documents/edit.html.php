@@ -55,6 +55,11 @@ $this->form->config(
 	<?=$this->form->field('repository', array('label' => 'Image Repository'));?>
 	<?=$this->form->field('credit', array('label' => 'Photo Credit'));?>
 	<?=$this->form->field('remarks', array('type' => 'textarea'));?>
+	
+	<label class="checkbox">
+    <?=$this->form->checkbox('published');?> <strong>Approved for Publication</strong>
+    </label><br/>
+
 	<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 	<?=$this->html->link('Cancel','/documents/view/' . $document->slug, array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
