@@ -1,4 +1,4 @@
-<?php $c = $this->request()->params['controller']; ?>
+<?php $c = strtolower($this->request()->params['controller']); ?>
 
 <div id="sidebar"  class="span2">
 <div class="row">
