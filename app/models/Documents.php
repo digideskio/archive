@@ -15,7 +15,12 @@ class Documents extends \lithium\data\Model {
 		),
 	);
 
-	public $hasMany = array("WorksDocuments", "ArchitecturesDocuments", "PublicationsDocuments");
+	public $hasMany = array(
+		"WorksDocuments", 
+		"ArchitecturesDocuments", 
+		"ExhibitionsDocuments", 
+		"PublicationsDocuments"
+	);
 
 	public $validates = array();
 	
@@ -117,6 +122,10 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('document_id' => $document_id)
 	))->delete();
 	
+	ExhibitionsDocuments::find('all', array(
+		'conditions' => array('document_id' => $document_id)
+	))->delete();
+
 	PublicationsDocuments::find('all', array(
 		'conditions' => array('document_id' => $document_id)
 	))->delete();

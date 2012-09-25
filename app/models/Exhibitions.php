@@ -6,7 +6,7 @@ use lithium\util\Inflector;
 
 class Exhibitions extends \app\models\Archives {
 
-	public $hasMany = array('ExhibitionsWorks');
+	public $hasMany = array('ExhibitionsWorks', 'ExhibitionsDocuments');
 
 	public function location($entity) {
 	
@@ -26,6 +26,10 @@ Exhibitions::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('exhibition_id' => $exhibition_id)
 	))->delete();
 	
+	ExhibitionsDocuments::find('all', array(
+		'conditions' => array('exhibition_id' => $exhibition_id)
+	))->delete();
+
 	return $chain->next($self, $params, $chain);
 
 });

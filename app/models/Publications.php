@@ -44,4 +44,17 @@ class Publications extends \app\models\Archives {
     
 }
 
+Publications::applyFilter('delete', function($self, $params, $chain) {
+
+	$publication_id = $params['entity']->id;
+		
+	//Delete any relationships
+	PublicationsDocuments::find('all', array(
+		'conditions' => array('publication_id' => $publication_id)
+	))->delete();
+
+	return $chain->next($self, $params, $chain);
+
+});
+
 ?>

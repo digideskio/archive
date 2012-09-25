@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
 use app\models\Works;
+use app\models\ExhibitionsDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -72,9 +73,17 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'conditions' => array('exhibition_id' => $exhibition->id),
 				'order' => $order
 			));
+
+			$exhibition_documents = ExhibitionsDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Formats'
+				),
+				'conditions' => array('exhibition_id' => $exhibition->id)
+			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'exhibitions_works', 'total', 'auth');
+			return compact('exhibition', 'exhibitions_works', 'total', 'exhibition_documents', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -134,6 +143,15 @@ class ExhibitionsController extends \lithium\action\Controller {
 		if (!$exhibition) {
 			return $this->redirect('Exhibitions::index');
 		}
+
+		$exhibition_documents = ExhibitionsDocuments::find('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('exhibition_id' => $exhibition->id)
+		));
+
 		if (($this->request->data) && $exhibition->save($this->request->data)) {
 		
 			$exhibition->save($this->request->data);
@@ -141,7 +159,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
 		
-		return compact('exhibition');
+		return compact('exhibition', "exhibition_documents");
 	}
 
 	public function delete() {

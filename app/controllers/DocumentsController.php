@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Documents;
 use app\models\WorksDocuments;
 use app\models\ArchitecturesDocuments;
+use app\models\ExhibitionsDocuments;
 use app\models\PublicationsDocuments;
 
 use app\models\Users;
@@ -86,13 +87,25 @@ class DocumentsController extends \lithium\action\Controller {
 					'conditions' => array('document_id' => $document->id)
 				));
 
+				$exhibitions_documents = ExhibitionsDocuments::find('all', array(
+					'with' => 'Exhibitions',
+					'conditions' => array('document_id' => $document->id)
+				));
+
 				$publications_documents = PublicationsDocuments::find('all', array(
 					'with' => 'Publications',
 					'conditions' => array('document_id' => $document->id)
 				));
 				
 				//Send the retrieved data to the view
-				return compact('document', 'works_documents', 'architectures_documents', 'publications_documents', 'auth');
+				return compact(
+					'document', 
+					'works_documents', 
+					'architectures_documents',
+					'exhibitions_documents',
+					'publications_documents', 
+					'auth'
+				);
 
 			}
 		}

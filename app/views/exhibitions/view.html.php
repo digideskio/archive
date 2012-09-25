@@ -53,8 +53,59 @@ $this->title($exhibition->title);
 	
 	<p><span class="badge"><?=$exhibition->type ?> Show</span></p>
 	</div>
+
+<?php if(sizeof($exhibition_documents) > 0): ?>
+
+	<div class="navbar">
+		<div class="navbar-inner">
+			<ul class="nav">
+				<li class="meta"><a href="#">Documents</a></li>
+			</ul>
+		</div>
+	</div>
+
+	<ul class="thumbnails">
 	
+		<?php
+			$span = 'span3';
+			$size = 'thumb';
+		?>
+
+		<?php foreach($exhibition_documents as $ed): ?>
+
+			<li class="<?$span?>">
+				<a href="/documents/view/<?=$ed->document->slug?>" class="thumbnail">
+					
+					<?php if ($ed->document->published): ?>
+						<span class="label label-success">Published</span>
+					<?php endif; ?>
+					<?php if (!$ed->document->published): ?>
+						<span class="label label-important">Private</span>
+					<?php endif; ?>
+
+					<img src="/files/<?=$ed->document->view(array('action' => $size)); ?>" alt="<?=$ed->document->title ?>">
+				</a>
+			</li>
+
+		<?php endforeach; ?>
+
+	</ul>
+
+<?php endif; ?>
+
 <?php if($total > 0): ?>
+
+<?php if(sizeof($exhibition_documents) > 0): ?>
+
+	<div class="navbar">
+		<div class="navbar-inner">
+			<ul class="nav">
+				<li class="meta"><a href="#">Artwork</a></li>
+			</ul>
+		</div>
+	</div>
+
+<?php endif; ?>
 
 <table class="table table-bordered">
 

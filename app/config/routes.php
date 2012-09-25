@@ -112,6 +112,7 @@ Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
 Router::connect('/works_documents/delete/{:id}', array('WorksDocuments::delete'));
 Router::connect('/architectures_documents/delete/{:id}', array('ArchitecturesDocuments::delete'));
 Router::connect('/publications_documents/delete/{:id}', array('PublicationsDocuments::delete'));
+Router::connect('/exhibitions_documents/delete/{:id}', array('ExhibitionsDocuments::delete'));
 
 Router::connect('/files/view/{:file}', array('Files::view'));
 Router::connect('/files/small/{:file}', array('Files::small'));

@@ -90,6 +90,23 @@ $this->title($document->title);
 		
 		<?php endforeach; ?>
 	
+		<?php foreach($exhibitions_documents as $ed): ?>
+	
+			<div class="alert alert-block alert-info">
+			<p>
+				<?php echo $ed->exhibition->title . ', '; ?>
+					
+					<?php if($ed->exhibition->venue) { echo $ed->exhibition->venue; } ?>
+
+					<?php
+							echo "(Photo &copy; ";
+							if($document->credit) { echo $document->credit . ', '; }
+							echo $document->year() . ').';
+					?>
+			</p>
+			</div>
+		
+		<?php endforeach; ?>
 		<?php foreach($publications_documents as $pd): ?>
 	
 			<div class="alert alert-block alert-info">
@@ -153,6 +170,25 @@ $this->title($document->title);
 							<li><strong><?=$this->html->link(
 								$ad->architecture->title,
 								'/architectures/view/'.$ad->architecture->slug
+							);?></strong></li>
+							<?php endforeach; ?>
+						
+						</ul>
+					</td>
+				</tr>
+				<?php endif; ?>
+				
+				<?php if (sizeof($exhibitions_documents) > 0) : ?> 
+				<tr>
+					<td><i class="icon-eye-open"></i></td>
+					<td class="meta">Exhibitions</td>
+					<td>
+						<ul class="unstyled" style="margin-bottom:0">
+						
+							<?php foreach($exhibitions_documents as $ed): ?>
+							<li><strong><?=$this->html->link(
+								$ed->exhibition->title,
+								'/exhibitions/view/'.$ed->exhibition->slug
 							);?></strong></li>
 							<?php endforeach; ?>
 						

@@ -42,7 +42,7 @@ $this->title($publication->title);
 				<?php
 					$num_thumbs = sizeof($publication_documents);
 					$span = 'span4';
-					$size = 'thumb';// $
+					$size = 'thumb';
 				?>
 		
 			<?php foreach($publication_documents as $pd): ?>
