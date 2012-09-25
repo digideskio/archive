@@ -112,7 +112,15 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 	WorksDocuments::find('all', array(
 		'conditions' => array('document_id' => $document_id)
 	))->delete();
+
+	ArchitecturesDocuments::find('all', array(
+		'conditions' => array('document_id' => $document_id)
+	))->delete();
 	
+	PublicationsDocuments::find('all', array(
+		'conditions' => array('document_id' => $document_id)
+	))->delete();
+
 	return $chain->next($self, $params, $chain);
 
 });
