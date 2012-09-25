@@ -222,9 +222,9 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			$image_path = $final_path;
 			
 			//create a preview for pdf
-			if ($format == 'pdf') {
-				$image_path = $targetDir . DIRECTORY_SEPARATOR . $hash . '.jpeg';
-				exec("/usr/bin/convert ".$final_path."[0] $preview", $preview_info);
+			if ($format->extension == 'pdf') {
+				$image_path = $target_dir . DIRECTORY_SEPARATOR . $hash . '.jpeg';
+				exec("/usr/bin/convert ".$final_path."[0] $image_path", $preview_info);
 			}
 			
 			//Make paths for the image previews
