@@ -74,14 +74,14 @@ $this->title($publication->title);
 				</tr>
 				<tr>
 					<td><i class="icon-globe"></i></td>
-					<td class="meta">Location</td>
+					<td class="meta">Storage</td>
 					<td>
 						<?php 
-							if($publication->location_code) {
-								echo "<span class='label label-success'>$publication->location_code</span>\n";
+							if($publication->storage_number) {
+								echo "<span class='label label-success'>$publication->storage_number</span>\n";
 							}
-							if($publication->location) {
-								echo "<span class='label'>$publication->location</span>";
+							if($publication->storage_location) {
+								echo "<span class='label'>$publication->storage_location</span>";
 							}
 						?>
 					</td>

@@ -66,11 +66,11 @@ $this->title('Publications');
 	<td>
 		<?=$publication->publication_number?>
 			<?php 
-				if($publication->location_code) {
-					echo "<br/><span class='label label-success'>$publication->location_code</span>";
+				if($publication->storage_number) {
+					echo "<br/><span class='label label-success'>$publication->storage_number</span>";
 				}
-				if($publication->location) {
-					echo "<br/><span class='label'>$publication->location</span>";
+				if($publication->storage_location) {
+					echo "<br/><span class='label'>$publication->storage_location</span>";
 				}
 			?>
 	
