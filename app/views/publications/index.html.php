@@ -82,8 +82,8 @@ $this->title('Publications');
 	
 	</td>
 	<!--<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $publication->documents('first'); if($document->id) { ?>	
-			<a href="/works/view/<?=$work->slug?>">
+		<?php $document = $publication->documents('first'); if(isset($document->id)) { ?>	
+			<a href="/publications/view/<?=$publication->slug?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
