@@ -57,6 +57,15 @@ $this->title($publication->title);
 	
 		<table class="table">
 			<tbody>
+				<?php
+					if($publication->type):
+				?>
+				<tr>
+					<td><i class="icon-tag"></i></td>
+					<td class="meta">Category</td>
+					<td><?=$publication->type ?></td>
+				</tr>
+				<?php endif; ?>
 				<tr>
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">Publication&nbsp;ID</td>
@@ -87,7 +96,7 @@ $this->title($publication->title);
 					</td>
 				</tr>
 				<tr>
-					<td><i class="icon-tag"></i></td>
+					<td><i class="icon-tags"></i></td>
 					<td class="meta">Subjects</td>
 					<td><?=$publication->subject ?></td>
 				</tr>

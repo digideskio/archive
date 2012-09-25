@@ -49,12 +49,22 @@ $this->form->config(
 <?=$this->form->create($publication); ?>
 	<legend>Info</legend>
 	
+    <?=$this->form->label('type', 'Category'); ?>
+	<select name="type">
+		<option value=''>Choose one...</option>
+		<?php foreach($publication_types as $type): ?>
+		<option value="<?=$type ?>" <?php if ($publication->type == $type) { echo 'selected="selected"'; } ?>>
+			<?=$type ?>
+		</option>
+		<?php endforeach; ?>
+	</select>
+    
 	 <span class="help-block">Is the publication an interview?</span>
 	
 	<label class="checkbox">
     <?=$this->form->checkbox('interview');?> Interview
     </label>
-    
+
 	<?=$this->form->field('author');?>
 	<?=$this->form->field('title');?>
 	<?=$this->form->field('publisher');?>

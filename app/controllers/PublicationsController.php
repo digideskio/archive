@@ -106,6 +106,8 @@ class PublicationsController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug'])
 		));
 
+		$publication_types = array("Newspaper", "Magazine", "Catalogue");
+
 		if (!$publication) {
 			return $this->redirect('Publications::index');
 		}
@@ -113,7 +115,7 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
 		
-		return compact('publication');
+		return compact('publication', 'publication_types');
 	}
 
 	public function delete() {
