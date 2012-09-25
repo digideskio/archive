@@ -15,7 +15,7 @@ class Documents extends \lithium\data\Model {
 		),
 	);
 
-	public $hasMany = array("WorksDocuments", "ArchitecturesDocuments");
+	public $hasMany = array("WorksDocuments", "ArchitecturesDocuments", "PublicationsDocuments");
 
 	public $validates = array();
 	

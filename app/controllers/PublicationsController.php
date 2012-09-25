@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Publications;
+use app\models\PublicationsDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -29,6 +30,7 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 		
 		$publications = Publications::find('all', array(
+			'with' => 'PublicationsDocuments',
 			'order' => array('earliest_date' => 'DESC')
 		));
 		return compact('publications', 'auth');
@@ -54,9 +56,21 @@ class PublicationsController extends \lithium\action\Controller {
 			$publication = Publications::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
-			
-			//Send the retrieved data to the view
-			return compact('publication', 'auth');
+
+			if($publication) {
+		
+				$publication_documents = PublicationsDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('publication_id' => $publication->id)
+				));
+
+				//Send the retrieved data to the view
+				return compact('publication', 'publication_documents', 'auth');
+
+			}
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -111,11 +125,20 @@ class PublicationsController extends \lithium\action\Controller {
 		if (!$publication) {
 			return $this->redirect('Publications::index');
 		}
+
+		$publication_documents = PublicationsDocuments::find('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('publication_id' => $publication->id)
+		));
+
 		if (($this->request->data) && $publication->save($this->request->data)) {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
 		
-		return compact('publication', 'publication_types');
+		return compact('publication', 'publication_types', 'publication_documents');
 	}
 
 	public function delete() {

@@ -51,6 +51,7 @@ $this->title('Publications');
 <thead>
 	<tr>
 		<th><i class="icon-barcode"></i></th>
+		<!--<td>Preview</td>-->
 		<th>Author</th>
 		<th>Title</th>
 		<th>Year</th>
@@ -72,9 +73,23 @@ $this->title('Publications');
 				if($publication->storage_location) {
 					echo "<br/><span class='label'>$publication->storage_location</span>";
 				}
+
+				$documents = $publication->documents('all');
+				if(sizeof($documents) > 0) {
+					echo "<br/><span class='badge badge-info'>" . sizeof($documents) . "</span>";
+				}
 			?>
 	
 	</td>
+	<!--<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
+		<?php $document = $publication->documents('first'); if($document->id) { ?>	
+			<a href="/works/view/<?=$work->slug?>">
+			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
+			</a>
+		<?php } else { ?>
+			<span class="label label-warning">No Image</span>
+		<?php } ?>
+	</td>-->
 	<td><?=$publication->author?></td>
 	
     <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>

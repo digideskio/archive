@@ -6,7 +6,9 @@ use lithium\util\Inflector;
 use lithium\util\Validator;
 
 class Publications extends \app\models\Archives {
-    
+
+	public $hasMany = array('PublicationsDocuments');
+
     public function citation($entity) {
     	$years = Publications::years($entity);
     	
@@ -24,6 +26,21 @@ class Publications extends \app\models\Archives {
     	
     	return implode('. ', $citation) . '.';
     }
+
+	public function documents($entity,  $type = 'all', $conditions = null) {
+		
+		$conditions['publication_id'] = $entity->id;
+
+		$documents = Documents::find($type, array(
+			'with' => array(
+				'PublicationsDocuments',
+				'Formats'
+			),
+			'conditions' => $conditions,
+		));
+
+		return $documents;
+	}
     
 }
 

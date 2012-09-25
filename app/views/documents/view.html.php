@@ -90,6 +90,16 @@ $this->title($document->title);
 		
 		<?php endforeach; ?>
 	
+		<?php foreach($publications_documents as $pd): ?>
+	
+			<div class="alert alert-block alert-info">
+			<p>
+				<?php echo $pd->publication->citation(); ?>
+			</p>
+			</div>
+		
+		<?php endforeach; ?>
+
 		<table class="table">
 			<tbody>
 
@@ -143,6 +153,25 @@ $this->title($document->title);
 							<li><strong><?=$this->html->link(
 								$ad->architecture->title,
 								'/architectures/view/'.$ad->architecture->slug
+							);?></strong></li>
+							<?php endforeach; ?>
+						
+						</ul>
+					</td>
+				</tr>
+				<?php endif; ?>
+				
+				<?php if (sizeof($publications_documents) > 0) : ?> 
+				<tr>
+					<td><i class="icon-book"></i></td>
+					<td class="meta">Publications</td>
+					<td>
+						<ul class="unstyled" style="margin-bottom:0">
+						
+							<?php foreach($publications_documents as $pd): ?>
+							<li><strong><?=$this->html->link(
+								$pd->publication->title,
+								'/publications/view/'.$pd->publication->slug
 							);?></strong></li>
 							<?php endforeach; ?>
 						

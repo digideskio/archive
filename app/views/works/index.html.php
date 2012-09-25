@@ -78,7 +78,7 @@ $this->title('Artwork');
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
-			<span class="label label-warning">No Image</span>
+			<span class="label">No Preview</span>
 		<?php } ?>
 	</td>
     <td><?=$this->html->link($work->title,'/works/view/'.$work->slug); ?></td>
