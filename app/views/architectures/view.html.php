@@ -76,6 +76,13 @@ $this->title($architecture->title);
 		</div>
 	
 		<table class="table">
+			<thead>
+				<tr>
+					<th><i class="icon-road"></i></th>
+					<th class="meta"></th>
+					<th></th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr>
 					<td><i class="icon-user"></i></td>

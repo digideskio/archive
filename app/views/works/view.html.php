@@ -101,6 +101,13 @@ $this->title($work->title);
 		</div>
 	
 		<table class="table">
+			<thead>
+				<tr>
+					<th><i class="icon-picture"></i></th>
+					<th class="meta"></th>
+					<th></th>
+				</tr>
+			</thead>
 			<tbody>
 				<tr>
 					<td><i class="icon-barcode"></i></td>
@@ -123,38 +130,6 @@ $this->title($work->title);
 					<td><?=$work->classification ?></td>
 				</tr>
 				<tr>
-					<td><i class="icon-book"></i></td>
-					<td class="meta">Collections</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-						
-							<?php foreach($collections as $collection): ?>
-							<li><strong><?=$this->html->link(
-								$collection->title,
-								'/collections/view/'.$collection->slug
-							);?></strong></li>
-							<?php endforeach; ?>
-						
-						</ul>
-					</td>
-				</tr>
-				<tr>
-					<td><i class="icon-eye-open"></i></td>
-					<td class="meta">Exhibitions</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-						
-							<?php foreach($exhibitions as $exhibition): ?>
-							<li><strong><?=$this->html->link(
-								$exhibition->title,
-								'/exhibitions/view/'.$exhibition->slug
-							);?></strong></li>
-							<?php endforeach; ?>
-						
-						</ul>
-					</td>
-				</tr>
-				<tr>
 					<td><i class=" icon-info-sign"></i></td>
 					<td class="meta">Info</td>
 					<td>
@@ -165,26 +140,88 @@ $this->title($work->title);
 						?>
 					
 				</tr>
-				<tr>
-					<td><i class="icon-folder-open"></i></td>
-					<td class="meta">Documents</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-					
-		
-					<?php foreach($work_documents as $wd): ?>
-			
-							<li><a href="/documents/view/<?=$wd->document->slug?>">
-								<strong><?=$wd->document->slug?>.<?=$wd->format->extension?></strong>
-							</a></li>
-			
-					<?php endforeach; ?>
-					</ul>
-					<td>
-				</tr>
 			</tbody>
 		
 		</table>
-	
+
+		<?php 
+			$hasCollections = sizeof($collections) > 0;
+			$hasExhibitions = sizeof($exhibitions) > 0;
+			$hasDocuments = sizeof($work_documents) > 0;
+		?>
+
+		<?php if ($hasCollections || $hasExhibitions || $hasDocuments) : ?>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th><i class="icon-random"></i></th>
+						<th class="meta"></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				
+					<?php if ($hasCollections) : ?>
+					<tr>
+						<td><i class="icon-book"></i></td>
+						<td class="meta">Collections</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($collections as $collection): ?>
+								<li><strong><?=$this->html->link(
+									$collection->title,
+									'/collections/view/'.$collection->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
+
+					<?php if ($hasExhibitions) : ?>
+					<tr>
+						<td><i class="icon-eye-open"></i></td>
+						<td class="meta">Exhibitions</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($exhibitions as $exhibition): ?>
+								<li><strong><?=$this->html->link(
+									$exhibition->title,
+									'/exhibitions/view/'.$exhibition->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
+
+					<?php if ($hasDocuments) : ?>
+					<tr>
+						<td><i class="icon-folder-open"></i></td>
+						<td class="meta">Documents</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+						
+			
+						<?php foreach($work_documents as $wd): ?>
+				
+								<li><a href="/documents/view/<?=$wd->document->slug?>">
+									<strong><?=$wd->document->slug?>.<?=$wd->format->extension?></strong>
+								</a></li>
+				
+						<?php endforeach; ?>
+						</ul>
+						<td>
+					</tr>
+					<?php endif; ?>
+					
+				</tbody>
+			</table>
+		<?php endif; ?>	
 	</div>
 </div>

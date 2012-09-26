@@ -42,6 +42,7 @@ blockquote {
 
 .thumbnail {
 	position: relative;
+	min-height: 33px;
 }
 
 .thumbnail .label {

@@ -118,6 +118,13 @@ $this->title($document->title);
 		<?php endforeach; ?>
 
 		<table class="table">
+			<thead>
+				<tr>
+					<th><i class="icon-hdd"></i></th>
+					<th class="meta"></th>
+					<th></th>
+				</tr>
+			</thead>
 			<tbody>
 
 				<?php if ($document->published): ?>
@@ -137,85 +144,7 @@ $this->title($document->title);
 					</tr>
 
 				<?php endif; ?>
-
-				<?php if (sizeof($works_documents) > 0) : ?> 
-			
-				<tr>
-					<td><i class="icon-picture"></i></td>
-					<td class="meta">Artwork</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-						
-							<?php foreach($works_documents as $wd): ?>
-							<li><strong><?=$this->html->link(
-								$wd->work->title,
-								'/works/view/'.$wd->work->slug
-							);?></strong></li>
-							<?php endforeach; ?>
-						
-						</ul>
-					</td>
-				</tr>
-				
-				<?php endif; ?>
-				
-				<?php if (sizeof($architectures_documents) > 0) : ?> 
-				<tr>
-					<td><i class="icon-road"></i></td>
-					<td class="meta">Architecture</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-						
-							<?php foreach($architectures_documents as $ad): ?>
-							<li><strong><?=$this->html->link(
-								$ad->architecture->title,
-								'/architectures/view/'.$ad->architecture->slug
-							);?></strong></li>
-							<?php endforeach; ?>
-						
-						</ul>
-					</td>
-				</tr>
-				<?php endif; ?>
-				
-				<?php if (sizeof($exhibitions_documents) > 0) : ?> 
-				<tr>
-					<td><i class="icon-eye-open"></i></td>
-					<td class="meta">Exhibitions</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-						
-							<?php foreach($exhibitions_documents as $ed): ?>
-							<li><strong><?=$this->html->link(
-								$ed->exhibition->title,
-								'/exhibitions/view/'.$ed->exhibition->slug
-							);?></strong></li>
-							<?php endforeach; ?>
-						
-						</ul>
-					</td>
-				</tr>
-				<?php endif; ?>
-				
-				<?php if (sizeof($publications_documents) > 0) : ?> 
-				<tr>
-					<td><i class="icon-book"></i></td>
-					<td class="meta">Publications</td>
-					<td>
-						<ul class="unstyled" style="margin-bottom:0">
-						
-							<?php foreach($publications_documents as $pd): ?>
-							<li><strong><?=$this->html->link(
-								$pd->publication->title,
-								'/publications/view/'.$pd->publication->slug
-							);?></strong></li>
-							<?php endforeach; ?>
-						
-						</ul>
-					</td>
-				</tr>
-				<?php endif; ?>
-				
+	
 				<tr>
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">File Type</td>
@@ -257,12 +186,107 @@ $this->title($document->title);
 					</td>
 				</tr>
 				
-				
-				
-				
 			</tbody>
 		
 		</table>
-	
+
+		<?php
+			$hasArtwork = sizeof($works_documents) > 0;
+			$hasArchitecture = sizeof($architectures_documents) > 0;
+			$hasExhibitions = sizeof($exhibitions_documents) > 0;
+			$hasPublications = sizeof($publications_documents) > 0;
+		?>
+
+		<?php if ($hasArtwork || $hasArchitecture || $hasExhibitions || $hasPublications): ?>
+
+			<table class="table">
+				<thead>
+					<tr>
+						<th><i class="icon-random"></i></th>
+						<th class="meta"></th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php if ($hasArtwork) : ?> 
+				
+					<tr>
+						<td><i class="icon-picture"></i></td>
+						<td class="meta">Artwork</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($works_documents as $wd): ?>
+								<li><strong><?=$this->html->link(
+									$wd->work->title,
+									'/works/view/'.$wd->work->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					
+					<?php endif; ?>
+
+					<?php if ($hasArchitecture) : ?> 
+					<tr>
+						<td><i class="icon-road"></i></td>
+						<td class="meta">Architecture</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($architectures_documents as $ad): ?>
+								<li><strong><?=$this->html->link(
+									$ad->architecture->title,
+									'/architectures/view/'.$ad->architecture->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
+					
+					<?php if ($hasExhibitions) : ?> 
+					<tr>
+						<td><i class="icon-eye-open"></i></td>
+						<td class="meta">Exhibitions</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($exhibitions_documents as $ed): ?>
+								<li><strong><?=$this->html->link(
+									$ed->exhibition->title,
+									'/exhibitions/view/'.$ed->exhibition->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
+					
+					<?php if ($hasPublications) : ?> 
+					<tr>
+						<td><i class="icon-book"></i></td>
+						<td class="meta">Publications</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($publications_documents as $pd): ?>
+								<li><strong><?=$this->html->link(
+									$pd->publication->title,
+									'/publications/view/'.$pd->publication->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
+				</tbody>
+			</table>
+		<?php endif; ?>
 	</div>
 </div>

@@ -84,6 +84,13 @@ $this->title($publication->title);
 		</div>
 	
 		<table class="table">
+			<thead>
+				<tr>
+					<th><i class="icon-book"></i></th>
+					<th class="meta"></th>
+					<th></th>
+				</tr>
+			</thead>
 			<tbody>
 				<?php
 					if($publication->type):
