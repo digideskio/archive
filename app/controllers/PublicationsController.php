@@ -28,12 +28,25 @@ class PublicationsController extends \lithium\action\Controller {
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
+
+		$conditions = array();
+
+		$options = $this->request->query;
+
+		if (isset($options['type'])) {
+			$type = $options['type'];
+			$conditions = compact('type');
+		}
 		
 		$publications = Publications::find('all', array(
 			'with' => 'PublicationsDocuments',
-			'order' => array('earliest_date' => 'DESC')
+			'order' => array('earliest_date' => 'DESC'),
+			'conditions' => $conditions
 		));
-		return compact('publications', 'auth');
+
+		$publications_types = Publications::types();
+
+		return compact('publications', 'publications_types', 'auth', 'options');
 	}
 
 	public function view() {
@@ -120,7 +133,7 @@ class PublicationsController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug'])
 		));
 
-		$publication_types = array("Newspaper", "Magazine", "Catalogue");
+		$publications_types = Publications::types();
 
 		if (!$publication) {
 			return $this->redirect('Publications::index');
@@ -138,7 +151,7 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
 		
-		return compact('publication', 'publication_types', 'publication_documents');
+		return compact('publication', 'publications_types', 'publication_documents');
 	}
 
 	public function delete() {

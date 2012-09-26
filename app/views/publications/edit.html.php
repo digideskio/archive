@@ -54,9 +54,9 @@ $this->form->config(
 			<?=$this->form->label('type', 'Category'); ?>
 			<select name="type">
 				<option value=''>Choose one...</option>
-				<?php foreach($publication_types as $type): ?>
-				<option value="<?=$type ?>" <?php if ($publication->type == $type) { echo 'selected="selected"'; } ?>>
-					<?=$type ?>
+				<?php foreach($publications_types as $pt): ?>
+				<option value="<?=$pt ?>" <?php if ($publication->type == $pt) { echo 'selected="selected"'; } ?>>
+					<?=$pt ?>
 				</option>
 				<?php endforeach; ?>
 			</select>

@@ -1,5 +1,7 @@
 <?php 
 
+$type = $options['type'];
+
 $this->title('Publications');
 
 ?>
@@ -18,9 +20,16 @@ $this->title('Publications');
 
 <div class="actions">
 	<ul class="nav nav-tabs">
-		<li class="active">
+
+		<li <?php if (!$type) { echo 'class="active"'; } ?>>
 			<?=$this->html->link('Index','/publications'); ?>
 		</li>
+
+		<?php foreach($publications_types as $pt): ?>
+			<li <?php if ($pt == $type) { echo 'class="active"'; } ?>>
+				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+			</li>
+		<?php endforeach; ?>
 
 	</ul>
 	<div class="btn-toolbar">
@@ -33,7 +42,7 @@ $this->title('Publications');
 	</div>
 <div>
 
-<?php if(sizeof($publications) == 0): ?>
+<?php if(sizeof($publications) == 0 && !$type): ?>
 
 	<div class="alert alert-danger">There are no Publications in the Archive.</div>
 
