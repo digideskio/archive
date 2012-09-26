@@ -407,6 +407,41 @@ class DocumentsController extends \lithium\action\Controller {
 			
 			$document = Documents::create();
 			$document->save($data);
+
+			$options = $this->request->query;
+
+			if (isset($options['controller']) && isset($options['id'])) {
+				$controller = $options['controller'];
+				$id = $options['id'];
+				$document_id = $document->id;
+
+				switch ($controller) {
+					case "works":
+						$work_id = $id;
+						$data = compact('document_id', 'work_id');
+						$wd = WorksDocuments::create();
+						$wd->save($data);
+					break;
+					case "architectures":
+						$architecture_id = $id;
+						$data = compact('document_id', 'architecture_id');
+						$ad = ArchitecturesDocuments::create();
+						$ad->save($data);
+					case "exhibitions":
+						$exhibition_id = $id;
+						$data = compact('document_id', 'exhibition_id');
+						$ed = ExhibitionsDocuments::create();
+						$ed->save($data);
+					break;
+					case "publications":
+						$publication_id = $id;
+						$data = compact('document_id', 'publication_id');
+						$pd = PublicationsDocuments::create();
+						$pd->save($data);
+					break;
+				}
+
+			}
 		}
 
 

@@ -237,6 +237,4 @@ $this->form->config(array('templates' => array(
                
             });
           
-    </script>​
-
-​
+    </script>
