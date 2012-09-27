@@ -1,7 +1,5 @@
 <?php 
 
-$type = $options['type'];
-
 $this->title('Publications');
 
 ?>
@@ -21,17 +19,17 @@ $this->title('Publications');
 <div class="actions">
 	<ul class="nav nav-tabs">
 
-		<li <?php if (!$type) { echo 'class="active"'; } ?>>
+		<li>
 			<?=$this->html->link('Index','/publications'); ?>
 		</li>
 
 		<?php foreach($publications_types as $pt): ?>
-			<li <?php if ($pt == $type) { echo 'class="active"'; } ?>>
+			<li>
 				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
 			</li>
 		<?php endforeach; ?>
 
-		<li>
+		<li class="active">
 			<?=$this->html->link('Search','/publications/search'); ?>
 		</li>
 
@@ -46,26 +44,38 @@ $this->title('Publications');
 	</div>
 <div>
 
-<?php if($total == 0 && !$type): ?>
+<div class="well">
 
-	<div class="alert alert-danger">There are no Publications in the Archive.</div>
+	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+		<legend>Search Publications</legend>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<input type="text" name="query" value="<?=$query?>" placeholder="Search…">
 
-		<div class="alert alert-success">You can add the first Publication by clicking the <strong><?=$this->html->link('Add a Publication','/publications/add/'); ?></strong> button.</div>
+		<?php $selected = 'selected="selected"'; ?>
 
-	<?php endif; ?>
+		<select name="conditions">
+			<option value='title'>Title</option>
+			<option value='author' <?php if ($condition == 'author') { echo $selected; } ?>>Author</option>
+			<option value='publisher' <?php if ($condition == 'publisher') { echo $selected; } ?>>Publisher</option>
+			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
+			<option value='subject' <?php if ($condition == 'subject') { echo $selected; } ?>>Subject</option>
+			<option value='language' <?php if ($condition == 'language') { echo $selected; } ?>>Language</option>
+			<option value='storage_location' <?php if ($condition == 'storage_location') { echo $selected; } ?>>Storage Location</option>
+			<option value='storage_number' <?php if ($condition == 'storage_number') { echo $selected; } ?>>Storage Number</option>
+			<option value='publication_number' <?php if ($condition == 'publication_number') { echo $selected; } ?>>Publication Number</option>
+		</select>
 
-<?php endif; ?>
+		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
-<?php if($total > 0): ?>
+	<?=$this->form->end(); ?>
+	
+</div>
 
 <table class="table table-bordered">
 
 <thead>
 	<tr>
 		<th><i class="icon-barcode"></i></th>
-		<!--<td>Preview</td>-->
 		<th>Author</th>
 		<th>Title</th>
 		<th>Year</th>
@@ -95,37 +105,14 @@ $this->title('Publications');
 			?>
 	
 	</td>
-	<!--<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $publication->documents('first'); if(isset($document->id)) { ?>	
-			<a href="/publications/view/<?=$publication->slug?>">
-			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
-			</a>
-		<?php } else { ?>
-			<span class="label label-warning">No Image</span>
-		<?php } ?>
-	</td>-->
 	<td><?=$publication->author?></td>
 	
     <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>
     <td><?=$publication->years(); ?></td>
     <td><?=$publication->publisher ?></td>
 </tr>
-    
+
 <?php endforeach; ?>
-    
+
 </tbody>
 </table>
-
-<div class="pagination">
-    <ul>
-    <?php if($page > 1):?>
-    <li><?=$this->html->link('«', array('Publications::index', 'page'=> $page - 1));?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-     <li><?=$this->html->link('»', array('Publications::index', 'page'=> $page + 1));?></li>
-     <?php endif;?> 
-    </ul>
-</div>
-
-<?php endif; ?>

@@ -58,6 +58,56 @@ class PublicationsController extends \lithium\action\Controller {
 
 		return compact('publications', 'publications_types', 'total', 'page', 'limit', 'auth', 'options');
 	}
+	
+	public function search() {
+
+    	// Check authorization
+	    $check = (Auth::check('default')) ?: null;
+	
+		// If the user is not authorized, redirect to the login screen
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+        // Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+		
+		$publications = array();
+
+		$order = array('earliest_date' => 'DESC');
+
+		$conditions = array();
+
+		$data = $this->request->data;
+
+		if (isset($data['conditions'])) {
+			$condition = $data['conditions'];
+
+			if ($condition == 'year') {
+				$condition = 'earliest_date';
+			}
+
+			$query = $data['query'];
+			$conditions = array("$condition" => array('LIKE' => "%$query%"));
+
+			$publications = Publications::find('all', array(
+				'with' => 'PublicationsDocuments',
+				'order' => $order,
+				'conditions' => $conditions,
+			));
+
+			if ($condition == 'earliest_date') {
+				$condition = 'year';
+			}
+		}
+
+		$publications_types = Publications::types();
+
+		return compact('publications', 'publications_types', 'condition', 'query', 'auth');
+	}
 
 	public function view() {
     
