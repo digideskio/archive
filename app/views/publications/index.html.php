@@ -42,7 +42,7 @@ $this->title('Publications');
 	</div>
 <div>
 
-<?php if(sizeof($publications) == 0 && !$type): ?>
+<?php if($total == 0 && !$type): ?>
 
 	<div class="alert alert-danger">There are no Publications in the Archive.</div>
 
@@ -54,8 +54,9 @@ $this->title('Publications');
 
 <?php endif; ?>
 
-<table class="table table-bordered">
+<?php if($total > 0): ?>
 
+<table class="table table-bordered">
 
 <thead>
 	<tr>
@@ -110,3 +111,17 @@ $this->title('Publications');
     
 </tbody>
 </table>
+
+<div class="pagination">
+    <ul>
+    <?php if($page > 1):?>
+    <li><?=$this->html->link('«', array('Publications::index', 'page'=> $page - 1));?></li> 
+    <?php endif;?> 
+        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
+     <?php if($total > ($limit * $page)):?>
+     <li><?=$this->html->link('»', array('Publications::index', 'page'=> $page + 1));?></li>
+     <?php endif;?> 
+    </ul>
+</div>
+
+<?php endif; ?>

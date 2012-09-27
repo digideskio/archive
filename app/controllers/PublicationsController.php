@@ -29,6 +29,10 @@ class PublicationsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('earliest_date' => 'DESC');
+
 		$conditions = array();
 
 		$options = $this->request->query;
@@ -37,16 +41,22 @@ class PublicationsController extends \lithium\action\Controller {
 			$type = $options['type'];
 			$conditions = compact('type');
 		}
+
+		$total = Publications::count('all', array(
+			'conditions' => $conditions
+		));
 		
 		$publications = Publications::find('all', array(
 			'with' => 'PublicationsDocuments',
-			'order' => array('earliest_date' => 'DESC'),
-			'conditions' => $conditions
+			'limit' => $limit,
+			'order' => $order,
+			'conditions' => $conditions,
+			'page' => $page
 		));
 
 		$publications_types = Publications::types();
 
-		return compact('publications', 'publications_types', 'auth', 'options');
+		return compact('publications', 'publications_types', 'total', 'page', 'limit', 'auth', 'options');
 	}
 
 	public function view() {

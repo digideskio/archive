@@ -100,6 +100,7 @@ Router::connect('/exhibitions/delete/{:slug}', array('Exhibitions::delete'));
 
 Router::connect('/exhibitions_works/delete/{:id}', array('ExhibitionsWorks::delete'));
 
+Router::connect('/publications/pages/{:page:[0-9]+}', array('Publications::index'));
 Router::connect('/publications/view/{:slug}', array('Publications::view'));
 Router::connect('/publications/edit/{:slug}', array('Publications::edit'));
 Router::connect('/publications/delete/{:slug}', array('Publications::delete'));
