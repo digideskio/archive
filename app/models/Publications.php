@@ -14,7 +14,7 @@ class Publications extends \app\models\Archives {
 	}
 
     public function citation($entity) {
-    	$years = Publications::years($entity);
+    	$years = Publications::dates($entity);
     	
     	$author = $entity->author;
     	$author_years = $years ? $author . ' (' . $years . ')' : $author;
