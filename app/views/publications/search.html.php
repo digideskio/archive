@@ -78,7 +78,7 @@ $this->title('Publications');
 		<th><i class="icon-barcode"></i></th>
 		<th>Author</th>
 		<th>Title</th>
-		<th>Year</th>
+		<th>Date</th>
 		<th>Publisher</th>
 	</tr>
 </thead>
@@ -108,7 +108,7 @@ $this->title('Publications');
 	<td><?=$publication->author?></td>
 	
     <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>
-    <td><?=$publication->years(); ?></td>
+    <td><?=$publication->dates(); ?></td>
     <td><?=$publication->publisher ?></td>
 </tr>
 
