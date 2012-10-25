@@ -55,11 +55,11 @@ $this->form->config(
 			<?=$this->form->field('country');?>
 			<?=$this->form->field('earliest_date', array(
 				'label' => 'Opening Date',
-				'value' => $exhibition->start_date()
+				'value' => $exhibition->start_date_formatted()
 			));?>
 			<?=$this->form->field('latest_date', array(
 				'label' => 'Closing Date',
-				'value' => $exhibition->end_date()
+				'value' => $exhibition->end_date_formatted()
 			));?>
 			<?=$this->form->label('Show Type');?>
 			<select name="type">

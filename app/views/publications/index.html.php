@@ -1,6 +1,6 @@
 <?php 
 
-$type = $options['type'];
+$type = isset($options['type']) ? $options['type'] : NULL;
 
 $this->title('Publications');
 
@@ -65,10 +65,9 @@ $this->title('Publications');
 <thead>
 	<tr>
 		<th><i class="icon-barcode"></i></th>
-		<!--<td>Preview</td>-->
 		<th>Author</th>
 		<th>Title</th>
-		<th>Date</th>
+		<th style="width: 100px;">Date</th>
 		<th>Publisher</th>
 	</tr>
 </thead>

@@ -56,11 +56,11 @@ $this->form->config(
 			<?=$this->form->field('remarks');?>
 			<?=$this->form->field('earliest_date', array(
 				'label' => 'Design Date',
-				'value' => $architecture->start_date()
+				'value' => $architecture->start_date_formatted()
 			));?>
 			<?=$this->form->field('latest_date', array(
 				'label' => 'Completion Date',
-				'value' => $architecture->end_date()
+				'value' => $architecture->end_date_formatted()
 			));?>
 			<?=$this->form->field('status', array('label' => 'Project Status'));?>
 			<?=$this->form->field('location');?>

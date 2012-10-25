@@ -22,6 +22,8 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 			'quantity'=> 'Many',
 			'earliest_date' => '2012-01-10', 
 			'latest_date' => '2012-02-28', 
+			'earliest_date_format' => 'Y-m-d',
+			'latest_date_format' => 'Y-m-d',
 			'creation_number' => 'ARTWORK001',
 			'height' => '10',
 			'width' => '11',
@@ -57,6 +59,8 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 		$this->assertEqual($work->quantity, $work_history->quantity);
 		$this->assertEqual($work->earliest_date, $work_history->earliest_date);
 		$this->assertEqual($work->latest_date, $work_history->latest_date);
+		$this->assertEqual($work->earliest_date_format, $work_history->earliest_date_format);
+		$this->assertEqual($work->latest_date_format, $work_history->latest_date_format);
 		$this->assertEqual($work->creation_number, $work_history->creation_number);
 		$this->assertEqual($work->height, $work_history->height);
 		$this->assertEqual($work->width, $work_history->width);

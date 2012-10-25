@@ -108,7 +108,7 @@ $this->title($work->title);
 				<?php if( $wh->start_date() ): ?>
 					<tr>
 					<td class="meta">Earliest Date</td>
-					<td><?=$wh->start_date() ?></td>
+					<td><?=$wh->start_date_formatted() ?></td>
 					</tr>
 				<?php endif; ?>
 

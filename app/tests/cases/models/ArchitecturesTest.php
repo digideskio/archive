@@ -8,7 +8,11 @@ class ArchitecturesTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
-	public function tearDown() {}
+	public function tearDown() {
+	
+		Architectures::all()->delete();
+		
+	}
 
 
 	public function testCreateArchitecture() {
@@ -28,8 +32,6 @@ class ArchitecturesTest extends \lithium\test\Unit {
 		$this->assertTrue($second_arch->save($data));
 		$this->assertEqual($second_slug, $second_arch->slug);
 
-		$architecture->delete();
-		$second_arch->delete();
 	}
 
 	public function testCreateArchitectureWithNoTitle() {

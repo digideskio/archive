@@ -3,12 +3,18 @@
 namespace app\tests\cases\models;
 
 use app\models\Works;
+use app\models\WorksHistories;
 
 class WorksTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
-	public function tearDown() {}
+	public function tearDown() {
+	
+		Works::all()->delete();
+		WorksHistories::all()->delete();
+
+	}
 	
 	public function testCreateArtwork() {
 		$work = Works::create();
