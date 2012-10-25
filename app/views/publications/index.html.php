@@ -117,12 +117,15 @@ $this->title('Publications');
 
 <div class="pagination">
     <ul>
+	<?php $query = $type ? "?type=$type" : ''; ?>
     <?php if($page > 1):?>
-    <li><?=$this->html->link('«', array('Publications::index', 'page'=> $page - 1));?></li> 
+	 <?php $prev = $page - 1; ?>
+    <li><?=$this->html->link('«', "/publications/pages/$prev$query");?></li> 
     <?php endif;?> 
         <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
      <?php if($total > ($limit * $page)):?>
-     <li><?=$this->html->link('»', array('Publications::index', 'page'=> $page + 1));?></li>
+	 <?php $next = $page + 1; ?>
+     <li><?=$this->html->link('»', "/publications/pages/$next$query");?></li>
      <?php endif;?> 
     </ul>
 </div>
