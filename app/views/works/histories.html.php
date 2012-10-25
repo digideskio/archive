@@ -32,6 +32,10 @@ $this->title('Artwork History');
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>
 
+		<li>
+			<?=$this->html->link('Search','/works/search'); ?>
+		</li>
+
 	</ul>
 	
 	<div class="btn-toolbar">

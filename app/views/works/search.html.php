@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Artwork');
 
@@ -10,6 +10,11 @@ $this->title('Artwork');
 
 	<li>
 	<?=$this->html->link('Artwork','/works'); ?>
+	<span class="divider">/</span>
+	</li>
+
+	<li class="active">
+		Search
 	</li>
 
 	</ul>
@@ -18,42 +23,56 @@ $this->title('Artwork');
 
 <div class="actions">
 	<ul class="nav nav-tabs">
-		<li class="active">
-			<a href="#">Index</a>
+		<li>
+			<a href="/works">Index</a>
 		</li>
 
 		<li>
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>
-		<li>
+
+		<li class="active">
 			<?=$this->html->link('Search','/works/search'); ?>
 		</li>
 
 	</ul>
-
+	
 	<div class="btn-toolbar">
 		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
 			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
 		
 		<?php endif; ?>
-
 	</div>
 </div>
 
-<?php if($total == 0): ?>
 
-	<div class="alert alert-danger">There is no Artwork in the Archive.</div>
+<div class="well">
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+		<legend>Search Artwork</legend>
 
-		<div class="alert alert-success">You can add the first Artwork by clicking the <strong><?=$this->html->link('Add Artwork','/works/add/'); ?></strong> button.</div>
+		<input type="text" name="query" value="<?=$query?>" placeholder="Search…">
 
-	<?php endif; ?>
+		<?php $selected = 'selected="selected"'; ?>
 
-<?php endif; ?>
+		<select name="conditions">
+			<option value='title'>Title</option>
+			<option value='artist' <?php if ($condition == 'artist') { echo $selected; } ?>>Artist</option>
+			<option value='classification' <?php if ($condition == 'classification') { echo $selected; } ?>>Classification</option>
+			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
+			<option value='materials' <?php if ($condition == 'materials') { echo $selected; } ?>>Materials</option>
+			<option value='lender' <?php if ($condition == 'lender') { echo $selected; } ?>>Lender</option>
+			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
+			<option value='creation_number' <?php if ($condition == 'creation_number') { echo $selected; } ?>>Artwork ID</option>
+			<option value='annotation' <?php if ($condition == 'annotation') { echo $selected; } ?>>Annotation</option>
+		</select>
 
-<?php if($total > 0): ?>
+		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
+
+	<?=$this->form->end(); ?>
+	
+</div>
 
 <table class="table table-bordered">
 
@@ -94,17 +113,3 @@ $this->title('Artwork');
     
 </tbody>
 </table>
-
-<div class="pagination">
-    <ul>
-    <?php if($page > 1):?>
-    <li><?=$this->html->link('«', array('Works::index', 'page'=> $page - 1));?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-     <li><?=$this->html->link('»', array('Works::index', 'page'=> $page + 1));?></li>
-     <?php endif;?> 
-    </ul>
-</div>
-
-<?php endif; ?>
