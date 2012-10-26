@@ -42,6 +42,9 @@ class ExhibitionsControllerTest extends \lithium\test\Unit {
 		$response = $exhibitions->index();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $exhibitions->search();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
 		$response = $exhibitions->view();
 		$this->assertEqual($response->headers["Location"], "/login");
 		

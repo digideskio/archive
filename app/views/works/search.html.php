@@ -1,6 +1,6 @@
 <?php
 
-$this->title('Artwork');
+$this->title('Search Artwork');
 
 ?>
 

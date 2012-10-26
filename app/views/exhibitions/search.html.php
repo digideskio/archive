@@ -1,6 +1,6 @@
 <?php 
 
-$this->title('Exhibitions');
+$this->title('Search Exhibitions');
 
 ?>
 
@@ -10,6 +10,11 @@ $this->title('Exhibitions');
 
 	<li>
 	<?=$this->html->link('Exhibitions','/exhibitions'); ?>
+	<span class="divider">/</span>
+	</li>
+
+	<li class="active">
+		Search
 	</li>
 
 	</ul>
@@ -18,10 +23,10 @@ $this->title('Exhibitions');
 
 <div class="actions">
 	<ul class="nav nav-tabs">
-		<li class="active">
+		<li>
 			<?=$this->html->link('Index','/exhibitions'); ?>
 		</li>
-		<li>
+		<li class="active">
 			<?=$this->html->link('Search','/exhibitions/search'); ?>
 		</li>
 
@@ -35,17 +40,30 @@ $this->title('Exhibitions');
 	</div>
 </div>
 
-<?php if(sizeof($exhibitions) == 0): ?>
+<div class="well">
 
-	<div class="alert alert-danger">There are no Exhibitions in the Archive.</div>
+	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+		<legend>Search Exhibitions</legend>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<input type="text" name="query" value="<?=$query?>" placeholder="Search…">
 
-		<div class="alert alert-success">You can create the first Exhibition by clicking the <strong><?=$this->html->link('Add a Exhibition','/exhibitions/add/'); ?></strong> button.</div>
+		<?php $selected = 'selected="selected"'; ?>
 
-	<?php endif; ?>
+		<select name="conditions">
+			<option value='title'>Title</option>
+			<option value='venue' <?php if ($condition == 'venue') { echo $selected; } ?>>Venue</option>
+			<option value='city' <?php if ($condition == 'city') { echo $selected; } ?>>City</option>
+			<option value='country' <?php if ($condition == 'country') { echo $selected; } ?>>Country</option>
+			<option value='curator' <?php if ($condition == 'curator') { echo $selected; } ?>>Curator</option>
+			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Opening Year</option>
+			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
+		</select>
 
-<?php endif; ?>
+		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
+
+	<?=$this->form->end(); ?>
+	
+</div>
 
 <?php foreach($exhibitions as $exhibition): ?>
 <article>

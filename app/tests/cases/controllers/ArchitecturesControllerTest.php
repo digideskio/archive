@@ -42,6 +42,9 @@ class ArchitecturesControllerTest extends \lithium\test\Unit {
 		$response = $architectures->index();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $architectures->search();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
 		$response = $architectures->view();
 		$this->assertEqual($response->headers["Location"], "/login");
 		

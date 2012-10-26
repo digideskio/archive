@@ -55,7 +55,7 @@ class WorksController extends \lithium\action\Controller {
 		$check = (Auth::check('default')) ?: null;
 
 		// If the user is not authorized, redirect to the login screen
-		if (!check) {
+		if (!$check) {
 			return $this->redirect('Sessions::add');
 		}
 

@@ -42,6 +42,9 @@ class DocumentsControllerTest extends \lithium\test\Unit {
 		$response = $documents->index();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $documents->search();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
 		$response = $documents->view();
 		$this->assertEqual($response->headers["Location"], "/login");
 		

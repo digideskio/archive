@@ -21,6 +21,9 @@ $this->title('Documents');
 		<li class="active">
 			<?=$this->html->link('Index','/documents'); ?>
 		</li>
+		<li>
+			<?=$this->html->link('Search ','/documents/search'); ?>
+		</li>
 
 	</ul>
 

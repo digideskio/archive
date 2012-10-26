@@ -1,6 +1,6 @@
 <?php 
 
-$this->title('Architecture');
+$this->title('Search Architecture');
 
 ?>
 
@@ -10,6 +10,11 @@ $this->title('Architecture');
 
 	<li>
 	<?=$this->html->link('Architecture','/architectures'); ?>
+	<span class="divider">/</span>
+	</li>
+
+	<li class="active">
+		Search
 	</li>
 
 	</ul>
@@ -18,10 +23,10 @@ $this->title('Architecture');
 
 <div class="actions">
 	<ul class="nav nav-tabs">
-		<li class="active">
+		<li>
 			<?=$this->html->link('Index','/architectures'); ?>
 		</li>
-		<li>
+		<li class="active">
 			<?=$this->html->link('Search','/architectures/search'); ?>
 		</li>
 
@@ -37,17 +42,32 @@ $this->title('Architecture');
 	</div>
 <div>
 
-<?php if(sizeof($architectures) == 0): ?>
+<div class="well">
 
-	<div class="alert alert-danger">There is no Architecture in the Archive.</div>
+	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+		<legend>Search Architecture</legend>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<input type="text" name="query" value="<?=$query?>" placeholder="Search…">
 
-		<div class="alert alert-success">You can add the first Project by clicking the <strong><?=$this->html->link('Add a Project','/architectures/add/'); ?></strong> button.</div>
+		<?php $selected = 'selected="selected"'; ?>
 
-	<?php endif; ?>
+		<select name="conditions">
+			<option value='title'>Title</option>
+			<option value='client' <?php if ($condition == 'client') { echo $selected; } ?>>Client</option>
+			<option value='project_lead' <?php if ($condition == 'project_lead') { echo $selected; } ?>>Project Lead</option>
+			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
+			<option value='status' <?php if ($condition == 'status') { echo $selected; } ?>>Status</option>
+			<option value='location' <?php if ($condition == 'location') { echo $selected; } ?>>Location</option>
+			<option value='city' <?php if ($condition == 'city') { echo $selected; } ?>>City</option>
+			<option value='country' <?php if ($condition == 'country') { echo $selected; } ?>>Country</option>
+			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
+		</select>
 
-<?php endif; ?>
+		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
+
+	<?=$this->form->end(); ?>
+	
+</div>
 
 <table class="table table-bordered">
 
