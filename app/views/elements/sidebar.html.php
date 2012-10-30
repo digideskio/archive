@@ -21,6 +21,8 @@
 			<li class="divider"></li>
 			<li <?php if ($c == 'users') echo 'class="active"'; ?> >
 				<a href="/users"><i class="icon-user"></i> Users</a></li>
+			<li <?php if ($c == 'notices') echo 'class="active"'; ?> >
+				<a href="/notices"><i class="icon-bell"></i> Notices</a></li>
 		</ul>
 	</div>
 	</div>

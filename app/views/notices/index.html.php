@@ -1,13 +1,19 @@
 <?php
 
-$this->title('Home');
+$this->title('Notices');
 
 ?>
 
-<div class="hero-unit">
-	<h1>Welcome to the Archive.</h1>
-	<p>All of our Artworks, Architectural projects, and Exhibitions are collected here. Use the sidebar to navigate through the archive.</p>
-	<p><a class="btn btn-inverse btn-large" href="/collections">Browse the Collections »</a></p>
+<div id="location" class="row-fluid">
+    
+	<ul class="breadcrumb">
+
+	<li>
+	<?=$this->html->link('Notices','/notices'); ?>
+	</li>
+
+	</ul>
+
 </div>
 
 <div class="accordion" id="notices">

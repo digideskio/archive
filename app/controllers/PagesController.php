@@ -8,6 +8,8 @@
 
 namespace app\controllers;
 
+use app\models\Notices;
+
 use lithium\security\Auth;
 
 /**
@@ -47,6 +49,20 @@ class PagesController extends \lithium\action\Controller {
 
 		$options['template'] = join('/', $path);
 		return $this->render($options);
+	}
+
+	public function home() {
+
+		$path = 'home';
+
+		$conditions = compact('path');
+
+		$notices = Notices::find('all', array(
+			'conditions' => $conditions
+		));
+
+		return compact('notices');
+
 	}
 	
 	public function blank() {

@@ -28,7 +28,7 @@ use lithium\core\Environment;
  * @see app\controllers\PagesController
  */
 Router::connect('/', 'Pages::blank');
-Router::connect('/home', 'Pages::view');
+Router::connect('/home', 'Pages::home');
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
@@ -125,6 +125,10 @@ Router::connect('/files/secure/{:file}', array('Files::secure'));
 
 Router::connect('/packages/add', array('Packages::add'));
 Router::connect('/packages/delete/{:id}', array('Packages::delete'));
+
+Router::connect('/notices/view/{:id}', array('Notices::view'));
+Router::connect('/notices/edit/{:id}', array('Notices::edit'));
+Router::connect('/notices/delete/{:id}', array('Notices::delete'));
 
 //Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
 
