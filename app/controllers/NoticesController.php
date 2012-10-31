@@ -26,8 +26,12 @@ class NoticesController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 
-		$notices = Notices::all();
-		return compact('notices');
+		$order = array('date_modified' => 'DESC');
+
+		$notices = Notices::all(array(
+			'order' => $order
+		));
+		return compact('notices', 'auth');
 	}
 
 	public function view() {
@@ -65,14 +69,14 @@ class NoticesController extends \lithium\action\Controller {
 		));
 
         // If the user is not an Admin, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        if($auth->role->name != 'Admin') {
         	return $this->redirect('Notices::index');
         }
 
 		$notice = Notices::create();
 
 		if (($this->request->data) && $notice->save($this->request->data)) {
-			return $this->redirect(array('Notices::view', 'args' => array($notice->id)));
+			return $this->redirect(array('Notices::index'));
 		}
 		return compact('notice');
 	}
@@ -93,7 +97,7 @@ class NoticesController extends \lithium\action\Controller {
 		));
 
         // If the user is not an Admin, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        if($auth->role->name != 'Admin') {
         	return $this->redirect('Notices::index');
         }
 
@@ -103,9 +107,9 @@ class NoticesController extends \lithium\action\Controller {
 			return $this->redirect('Notices::index');
 		}
 		if (($this->request->data) && $notice->save($this->request->data)) {
-			return $this->redirect(array('Notices::view', 'args' => array($notice->id)));
+			return $this->redirect(array('Notices::index'));
 		}
-		return compact('notice');
+		return compact('notice', 'auth');
 	}
 
 	public function delete() {
@@ -124,7 +128,7 @@ class NoticesController extends \lithium\action\Controller {
 		));
 
         // If the user is not an Admin, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        if($auth->role->name != 'Admin') {
         	return $this->redirect('Notices::index');
         }
 

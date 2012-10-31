@@ -16,8 +16,22 @@ $this->title('Notices');
 
 </div>
 
-<div class="accordion" id="notices">
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('Index','/notices'); ?>
+		</li>
+	</ul>
 
+	<div class="btn-toolbar">
+		<?php if($auth->role->name == 'Admin'): ?>
+
+				<a class="btn btn-inverse" href="/notices/add"><i class="icon-plus-sign icon-white"></i> Write a Notice</a>
+		
+		<?php endif; ?>
+	</div>
+</div>
+<div class="accordion" id="notices">
 
 	<?php $count = 0; ?>
 
@@ -39,7 +53,15 @@ $this->title('Notices');
 
 			<div class="accordion-inner">
 
-				<p><small style="font-size: smaller;">2012-10-29 23:44:21</small></p>
+				<p>
+					<small style="font-size: smaller;"><?=$notice->date_modified ?></small>
+
+					<?php if($auth->role->name == 'Admin'): ?>
+
+					<a href="/notices/edit/<?=$notice->id ?>" title="Edit Notice"><i class="icon icon-edit"></i></a>
+			
+					<?php endif; ?>
+				</p>
 				<?=$notice->body ?>
 
 			</div>

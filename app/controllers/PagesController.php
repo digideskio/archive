@@ -56,9 +56,11 @@ class PagesController extends \lithium\action\Controller {
 		$path = 'home';
 
 		$conditions = compact('path');
+		$order = array('date_modified' => 'DESC');
 
 		$notices = Notices::find('all', array(
-			'conditions' => $conditions
+			'conditions' => $conditions,
+			'order' => $order
 		));
 
 		return compact('notices');

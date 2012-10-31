@@ -15,8 +15,6 @@ class AddNoticesTable extends Ruckusing_BaseMigration {
 	
 	$t->finish();
 
-	$this->execute("INSERT INTO notices (path, date_created) VALUES ('home', NOW())");
-
   }//up()
 
   public function down() {
