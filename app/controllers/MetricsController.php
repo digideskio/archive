@@ -17,6 +17,8 @@ use app\models\Documents;
 use app\models\Users;
 use app\models\Roles;
 
+use lithium\data\Model;
+
 use lithium\security\Auth;
 use lithium\action\DispatchException;
 
@@ -55,6 +57,23 @@ class MetricsController extends \lithium\action\Controller {
 		$publications = Publications::count();
 		$publications_documents = PublicationsDocuments::count();
 
+		$no_date = array('earliest_date' => '0000-00-00');
+
+		$works_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM works WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$works_no_year = Works::count('all', array(
+			'conditions' => $no_date
+		));
+
+		$architectures_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM architectures WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+
+		$exhibitions_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM exhibitions WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+
+		$publications_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM publications WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+
+		$publications_languages = Model::connection()->read(
+			"select count(*) as records, language from publications where language != '' group by language order by records desc"
+		);
+
 		return compact(
 			'collections', 
 			'collections_works', 
@@ -69,6 +88,16 @@ class MetricsController extends \lithium\action\Controller {
 			'documents',
 			'publications',
 			'publications_documents',
+
+			'works_years',
+			'works_no_year',
+
+			'architectures_years',
+			'exhibitions_years',
+
+			'publications_years',
+			'publications_languages',
+
 			'auth'
 		);
 	}
