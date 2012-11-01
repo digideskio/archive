@@ -23,6 +23,8 @@
 				<a href="/users"><i class="icon-user"></i> Users</a></li>
 			<li <?php if ($c == 'notices') echo 'class="active"'; ?> >
 				<a href="/notices"><i class="icon-bell"></i> Notices</a></li>
+			<li <?php if ($c == 'metrics') echo 'class="active"'; ?> >
+				<a href="/metrics"><i class="icon-signal"></i> Metrics</a></li>
 		</ul>
 	</div>
 	</div>
