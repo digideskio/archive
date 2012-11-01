@@ -8,6 +8,12 @@
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 	
 	<?php echo $this->html->script(array('jquery.min.js')); ?>
+
+	<?php echo $this->html->script(array(
+		'jquery.flot.js',
+		'jquery.flot.resize.js',
+		'jquery.flot.pie.js'
+	)); ?>
 	
 		<?php echo $this->html->script(array(
 			'plupload.js',
