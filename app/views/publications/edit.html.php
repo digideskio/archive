@@ -69,6 +69,7 @@ $this->form->config(
 
 			<?=$this->form->field('author');?>
 			<?=$this->form->field('title');?>
+			<?=$this->form->field('editor');?>
 			<?=$this->form->field('publisher');?>
 			<?=$this->form->field('earliest_date', array('value' => $publication->start_date_formatted()));?>
 			<?=$this->form->field('latest_date', array('value' => $publication->end_date_formatted()));?>

@@ -103,7 +103,7 @@ $this->title('Publications');
 			<span class="label label-warning">No Image</span>
 		<?php } ?>
 	</td>-->
-	<td><?=$publication->author?></td>
+	<td><?=$publication->byline(); ?></td>
 	
     <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>
     <td><?=$publication->dates(); ?></td>

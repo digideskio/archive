@@ -13,11 +13,21 @@ class Publications extends \app\models\Archives {
 		return array("Newspaper", "Magazine", "Catalogue", "Monograph");	
 	}
 
+	public function byline($entity) {
+		
+    	$author = $entity->author;
+		$editor = $entity->editor ? $entity->editor . ' (ed.)' : '';
+
+		$byline = array_filter(array($author, $editor));
+
+		return implode(', ', $byline);
+	}
+
     public function citation($entity) {
     	$years = Publications::dates($entity);
     	
-    	$author = $entity->author;
-    	$author_years = $years ? $author . ' (' . $years . ')' : $author;
+		$byline = $entity->byline();
+    	$author_years = $years ? $byline . ' (' . $years . ')' : $byline;
     	$title = '<em>' . $entity->title . '</em>';
     	$title = $entity->url ? "<a href='$entity->url'>$title</a>" : $title;
 		$publication = $entity->pages ? $entity->publisher . ', ' . $entity->pages : $entity->publisher;
