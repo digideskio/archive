@@ -63,11 +63,21 @@ $this->form->config(
 			<?=$this->form->field('quantity');?>
 			<?=$this->form->field('lender');?>
 			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-			<?=$this->form->field('height');?>
-			<?=$this->form->field('width');?>
-			<?=$this->form->field('depth');?>
-			<?=$this->form->field('diameter');?>
-			<?=$this->form->field('weight');?>
+			<?=$this->form->field('height', array(
+				'label' => "Height (cm)"
+			));?>
+			<?=$this->form->field('width', array(
+				'label' => "Width (cm)"
+			));?>
+			<?=$this->form->field('depth', array(
+				'label' => "Depth (cm)"
+			));?>
+			<?=$this->form->field('diameter', array(
+				'label' => "Diameter (cm)"
+			));?>
+			<?=$this->form->field('weight', array(
+				'label' => "Weight (kg)"
+			));?>
 			<?=$this->form->field('running_time');?>
 			<?=$this->form->field('measurement_remarks', array('type' => 'textarea'));?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
