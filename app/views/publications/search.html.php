@@ -57,6 +57,7 @@ $this->title('Publications');
 			<option value='title'>Title</option>
 			<option value='author' <?php if ($condition == 'author') { echo $selected; } ?>>Author</option>
 			<option value='publisher' <?php if ($condition == 'publisher') { echo $selected; } ?>>Publisher</option>
+			<option value='editor' <?php if ($condition == 'editor') { echo $selected; } ?>>Editor</option>
 			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
 			<option value='subject' <?php if ($condition == 'subject') { echo $selected; } ?>>Subject</option>
 			<option value='language' <?php if ($condition == 'language') { echo $selected; } ?>>Language</option>
@@ -105,7 +106,7 @@ $this->title('Publications');
 			?>
 	
 	</td>
-	<td><?=$publication->author?></td>
+	<td><?=$publication->byline(); ?></td>
 	
     <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>
     <td><?=$publication->dates(); ?></td>
