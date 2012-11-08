@@ -35,7 +35,7 @@ Make the resources folder writeable:
 
 Set up three databases: test, dev, and production
 
-Create a new file <code>app/config/bootstrap.connections.php</code>:
+Create a new file <code>app/config/bootstrap/connections.php</code>:
 
 	<?php
 
