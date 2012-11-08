@@ -10,7 +10,7 @@ class Publications extends \app\models\Archives {
 	public $hasMany = array('PublicationsDocuments');
 
 	public static function types() {
-		return array("Newspaper", "Magazine", "Catalogue");	
+		return array("Newspaper", "Magazine", "Catalogue", "Monograph");	
 	}
 
     public function citation($entity) {
