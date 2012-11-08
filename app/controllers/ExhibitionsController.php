@@ -160,11 +160,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		if (($this->request->data) && $exhibition->save($this->request->data)) {
 		
-			$this->request->data['exhibition_id'] = $exhibition->id;
-			
-			$exhibition = Exhibitions::create();
-			$exhibition->save($this->request->data);
-			
 			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
 		return compact('exhibition');

@@ -42,7 +42,7 @@ $this->form->config(
 </div>
 
 <div class="well">
-<?=$this->form->create($collection); ?>
+<?=$this->form->create($exhibition); ?>
 	<legend>Exhibition Info</legend>
     <?=$this->form->hidden('class'); ?>
     <?=$this->form->field('title');?>
@@ -50,8 +50,8 @@ $this->form->config(
     <?=$this->form->field('venue');?>
     <?=$this->form->field('city');?>
     <?=$this->form->field('country');?>
-	<?=$this->form->field('start', array('label' => 'Opening Date'));?>
-	<?=$this->form->field('end', array('label' => 'Closing Date'));?>
+	<?=$this->form->field('earliest_date', array('label' => 'Opening Date'));?>
+	<?=$this->form->field('latest_date', array('label' => 'Closing Date'));?>
     <?=$this->form->label('Show Type');?>
     <select name="type">
     	<option value="Solo">Solo</option>
