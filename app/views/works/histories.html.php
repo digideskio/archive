@@ -58,6 +58,8 @@ $this->title('Artwork History');
 	</thead>
 	<tbody>
 
+	<?php if (sizeof($works_histories) > 0 ): ?>
+
 	<?php foreach( $works_histories as $wh ): ?>
 		<tr>
 			<td style="text-align:center">
@@ -73,6 +75,8 @@ $this->title('Artwork History');
 			</td>
 		</tr>
 	<?php endforeach; ?>
+
+	<?php endif; ?>
 
 	</tbody>
 

@@ -18,27 +18,26 @@ $this->title('Metrics');
 
 <div class="hero-unit">
 
-<h1>The Archive holds:</h1>
+	<h1>The Archive holds:</h1>
 
-<hr/>
+	<hr/>
 
-<!--<p><strong><?=$collections ?></strong> collections comprising <strong><?=$collections_works ?></strong> artworks.</p>-->
+	<!--<p><strong><?=$collections ?></strong> collections comprising <strong><?=$collections_works ?></strong> artworks.</p>-->
 
-<p><strong><?=$works ?></strong> artworks and <strong><?=$architectures ?></strong> architecture projects.</p>
+	<p><strong><?=$works ?></strong> artworks and <strong><?=$architectures ?></strong> architecture projects.</p>
 
-<p><strong><?=$exhibitions ?></strong> exhibitions which featured <strong><?=$exhibitions_works ?></strong> artworks, including <strong><?=$solo_shows ?></strong> solo shows and <strong><?=$group_shows ?></strong> group shows.</p>
+	<p><strong><?=$exhibitions ?></strong> exhibitions which featured <strong><?=$exhibitions_works ?></strong> artworks, including <strong><?=$solo_shows ?></strong> solo shows and <strong><?=$group_shows ?></strong> group shows.</p>
 
-<p><strong><?=$publications ?></strong> publications with <strong><?=$publications_documents ?></strong> attachments.</p>
+	<p><strong><?=$publications ?></strong> publications with <strong><?=$publications_documents ?></strong> attachments.</p>
 
-<p>The total number of uploaded files is  <strong><?=$documents ?></strong>.</p>
+	<p>The total number of uploaded files is  <strong><?=$documents ?></strong>.</p>
 
 
 </div>
 
+<?php if(sizeof($works_years) > 0): ?>
 
 <div class="hero-unit">
-
-<?php if(sizeof($works_years) > 0): ?>
 
 <h1>Artworks</h1>
 
@@ -49,32 +48,32 @@ $this->title('Metrics');
 <div id="worksYears" style="width:100%;height:300px"></div>
 
 <script type="text/javascript">
-$(function () {
+	$(function () {
 
-var recordsYears = [<?php foreach ($works_years as $years): echo '[' . $years['year'] . ', ' . $years['records'] . '], '; endforeach; ?>];
+	var recordsYears = [<?php foreach ($works_years as $years): echo '[' . $years['year'] . ', ' . $years['records'] . '], '; endforeach; ?>];
 
-$.plot($("#worksYears"), [
+	$.plot($("#worksYears"), [
 
-{
-	data: recordsYears,
-	bars: { show: true }
-},
+	{
+		data: recordsYears,
+		bars: { show: true }
+	},
 
-]);
+	]);
 
-});
+	});
 
 </script>
 
-<!--<p>There are <?=$works_no_year ?> artworks with no year recorded.</p>-->
+	<!--<p>There are <?=$works_no_year ?> artworks with no year recorded.</p>-->
 
 </div>
 
 <?php endif; ?>
 
-<div class="hero-unit">
-
 <?php if(sizeof($architectures_years) > 0): ?>
+
+<div class="hero-unit">
 
 <h1>Architecture</h1>
 
@@ -85,20 +84,20 @@ $.plot($("#worksYears"), [
 <div id="architecturesYears" style="width:100%;height:300px"></div>
 
 <script type="text/javascript">
-$(function () {
+	$(function () {
 
-var recordsYears = [<?php foreach ($architectures_years as $years): echo '[' . $years['year'] . ', ' . $years['records'] . '], '; endforeach; ?>];
+	var recordsYears = [<?php foreach ($architectures_years as $years): echo '[' . $years['year'] . ', ' . $years['records'] . '], '; endforeach; ?>];
 
-$.plot($("#architecturesYears"), [
+	$.plot($("#architecturesYears"), [
 
-{
-	data: recordsYears,
-	bars: { show: true }
-},
+	{
+		data: recordsYears,
+		bars: { show: true }
+	},
 
-]);
+	]);
 
-});
+	});
 
 </script>
 
@@ -106,9 +105,9 @@ $.plot($("#architecturesYears"), [
 
 <?php endif; ?>
 
-<div class="hero-unit">
-
 <?php if(sizeof($exhibitions_years) > 0): ?>
+
+<div class="hero-unit">
 
 <h1>Exhibitions</h1>
 
@@ -119,18 +118,18 @@ $.plot($("#architecturesYears"), [
 <div id="exhibitionsYears" style="width:100%;height:300px"></div>
 
 <script type="text/javascript">
-$(function () {
+	$(function () {
 
-var recordsYears = [<?php foreach ($exhibitions_years as $years): echo '[' . $years['year'] . ', ' . $years['records'] . '], '; endforeach; ?>];
+	var recordsYears = [<?php foreach ($exhibitions_years as $years): echo '[' . $years['year'] . ', ' . $years['records'] . '], '; endforeach; ?>];
 
-$.plot($("#exhibitionsYears"), [
+	$.plot($("#exhibitionsYears"), [
 
-{
-	data: recordsYears,
-	bars: { show: true }
-},
+	{
+		data: recordsYears,
+		bars: { show: true }
+	},
 
-]);
+	]);
 
 });
 
@@ -140,9 +139,9 @@ $.plot($("#exhibitionsYears"), [
 
 <?php endif; ?>
 
-<div class="hero-unit">
-
 <?php if(sizeof($publications_years) > 0): ?>
+
+<div class="hero-unit">
 
 <h1>Publications</h1>
 
