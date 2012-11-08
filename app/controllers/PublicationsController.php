@@ -79,9 +79,10 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$order = array('earliest_date' => 'DESC');
 
-		$conditions = array();
-
 		$data = $this->request->data;
+
+		$query = '';
+		$condition = '';
 
 		if (isset($data['conditions'])) {
 			$condition = $data['conditions'];

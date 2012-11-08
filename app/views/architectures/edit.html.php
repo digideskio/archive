@@ -36,7 +36,7 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/architectures/view/'.$publication->slug); ?></li>
+	<li><?=$this->html->link('View','/architectures/view/'.$architecture->slug); ?></li>
 	<li class="active">
 		<a href="#">
 			Edit

@@ -69,7 +69,8 @@ class WorksController extends \lithium\action\Controller {
 
 		$order = array('earliest_date' => 'DESC');
 
-		$conditions = array();
+		$query = '';
+		$condition = '';
 
 		$data = $this->request->data;
 

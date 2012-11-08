@@ -78,7 +78,7 @@ $this->title('Publications');
 		<th><i class="icon-barcode"></i></th>
 		<th>Author</th>
 		<th>Title</th>
-		<th>Date</th>
+		<th style="width: 100px;">Date</th>
 		<th>Publisher</th>
 	</tr>
 </thead>

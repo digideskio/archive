@@ -87,7 +87,7 @@ $this->title('Search Architecture');
 <tr>
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $architecture->documents('first'); if($document->id) { ?>	
+		<?php $document = $architecture->documents('first'); if($document && $document->id) { ?>	
 			<a href="/architectures/view/<?=$architecture->slug?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
