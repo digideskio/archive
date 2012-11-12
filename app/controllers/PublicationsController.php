@@ -168,13 +168,15 @@ class PublicationsController extends \lithium\action\Controller {
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
         	return $this->redirect('Publications::index');
         }
+
+		$publications_types = Publications::types();
         
 		$publication = Publications::create();
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
-		return compact('publication');
+		return compact('publication', 'publications_types');
 	}
 
 	public function edit() {

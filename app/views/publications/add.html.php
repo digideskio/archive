@@ -50,6 +50,15 @@ $this->form->config(array('templates' => array(
 <?=$this->form->create($publication); ?>
 	<legend>Publication Info</legend>
 	
+	<?=$this->form->label('type', 'Category'); ?>
+	<select name="type">
+		<option value=''>Choose one...</option>
+		<?php foreach($publications_types as $pt): ?>
+		<option value="<?=$pt ?>" <?php if ($publication->type == $pt) { echo 'selected="selected"'; } ?>>
+			<?=$pt ?>
+		</option>
+		<?php endforeach; ?>
+	</select>
 	 <span class="help-block">Is the publication an interview?</span>
 	
 	<label class="checkbox">
@@ -58,6 +67,7 @@ $this->form->config(array('templates' => array(
 	
 	<?=$this->form->field('author');?>
 	<?=$this->form->field('title');?>
+	<?=$this->form->field('editor');?>
 	<?=$this->form->field('publisher');?>
 	<?=$this->form->field('earliest_date');?>
 	<?=$this->form->field('latest_date');?>
