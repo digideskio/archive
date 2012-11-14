@@ -116,6 +116,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 						'Formats'
 					),
 					'conditions' => array('architecture_id' => $architecture->id),
+					'order' => array('slug' => 'ASC')
 				));
 			
 				//Send the retrieved data to the view
@@ -177,6 +178,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 				'Formats'
 			),
 			'conditions' => array('architecture_id' => $architecture->id),
+			'order' => array('slug' => 'ASC')
 		));
 
 		if (!$architecture) {
