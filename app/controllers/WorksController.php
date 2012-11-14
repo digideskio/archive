@@ -157,7 +157,7 @@ class WorksController extends \lithium\action\Controller {
 						'Formats'
 					),
 					'conditions' => array('work_id' => $work->id),
-					'order' => $order
+					'order' => array('slug' => 'ASC')
 				));
 		
 				$collections = Collections::find('all', array(
@@ -273,7 +273,7 @@ class WorksController extends \lithium\action\Controller {
 						'Formats'
 					),
 					'conditions' => array('work_id' => $work->id),
-					'order' => $order
+					'order' => array('slug' => 'ASC')
 				));
 			
 				if (($this->request->data) && $work->save($this->request->data)) {

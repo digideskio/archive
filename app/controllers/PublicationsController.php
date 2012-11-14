@@ -139,7 +139,7 @@ class PublicationsController extends \lithium\action\Controller {
 						'Formats'
 					),
 					'conditions' => array('publication_id' => $publication->id),
-					'order' => array('title' => 'ASC')
+					'order' => array('slug' => 'ASC')
 				));
 
 				//Send the retrieved data to the view
@@ -209,7 +209,7 @@ class PublicationsController extends \lithium\action\Controller {
 				'Formats'
 			),
 			'conditions' => array('publication_id' => $publication->id),
-			'order' => array('title' => 'ASC')
+			'order' => array('slug' => 'ASC')
 		));
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
