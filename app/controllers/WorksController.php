@@ -148,13 +148,16 @@ class WorksController extends \lithium\action\Controller {
 			));
 			
 			if($work) {
-		
+	
+				$order = array('title' => 'ASC');
+
 				$work_documents = WorksDocuments::find('all', array(
 					'with' => array(
 						'Documents',
 						'Formats'
 					),
 					'conditions' => array('work_id' => $work->id),
+					'order' => $order
 				));
 		
 				$collections = Collections::find('all', array(
@@ -162,6 +165,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
+					'order' => $order
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
@@ -169,6 +173,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
+					'order' => $order
 				));
 			
 				//Send the retrieved data to the view
@@ -232,16 +237,20 @@ class WorksController extends \lithium\action\Controller {
 		
 			if($work) {
 		
+				$order = array('title' => 'ASC');
+
 				$collections = Collections::find('all', array(
 					'with' => 'CollectionsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
+					'order' => $order
 				));
 		
 		
 				$other_collections = Collections::find('all', array(
 					'with' => 'CollectionsWorks',
+					'order' => $order
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
@@ -249,11 +258,12 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
+					'order' => $order
 				));
 		
 				$other_exhibitions = Exhibitions::find('all', array(
 					'with' => array('ExhibitionsWorks'),
-					'order' => 'earliest_date DESC',
+					'order' => array('earliest_date' => 'DESC'),
 					//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
 				));
 		
@@ -262,7 +272,8 @@ class WorksController extends \lithium\action\Controller {
 						'Documents',
 						'Formats'
 					),
-					'conditions' => array('work_id' => $work->id)
+					'conditions' => array('work_id' => $work->id),
+					'order' => $order
 				));
 			
 				if (($this->request->data) && $work->save($this->request->data)) {
