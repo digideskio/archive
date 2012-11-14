@@ -127,7 +127,8 @@ class ExhibitionsController extends \lithium\action\Controller {
 					'Documents',
 					'Formats'
 				),
-				'conditions' => array('exhibition_id' => $exhibition->id)
+				'conditions' => array('exhibition_id' => $exhibition->id),
+				'order' => array('title' => 'ASC')
 			));
 			
 			//Send the retrieved data to the view
@@ -192,7 +193,8 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'Documents',
 				'Formats'
 			),
-			'conditions' => array('exhibition_id' => $exhibition->id)
+			'conditions' => array('exhibition_id' => $exhibition->id),
+			'order' => array('title' => 'ASC')
 		));
 
 		if (($this->request->data) && $exhibition->save($this->request->data)) {

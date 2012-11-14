@@ -138,7 +138,8 @@ class PublicationsController extends \lithium\action\Controller {
 						'Documents',
 						'Formats'
 					),
-					'conditions' => array('publication_id' => $publication->id)
+					'conditions' => array('publication_id' => $publication->id),
+					'order' => array('title' => 'ASC')
 				));
 
 				//Send the retrieved data to the view
@@ -207,7 +208,8 @@ class PublicationsController extends \lithium\action\Controller {
 				'Documents',
 				'Formats'
 			),
-			'conditions' => array('publication_id' => $publication->id)
+			'conditions' => array('publication_id' => $publication->id),
+			'order' => array('title' => 'ASC')
 		));
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
