@@ -131,6 +131,8 @@ Router::connect('/links/view/{:id}', array('Links::view'));
 Router::connect('/links/edit/{:id}', array('Links::edit'));
 Router::connect('/links/delete/{:id}', array('Links::delete'));
 
+Router::connect('/works_links/delete/{:id}', array('WorksLinks::delete'));
+
 Router::connect('/notices/view/{:id}', array('Notices::view'));
 Router::connect('/notices/edit/{:id}', array('Notices::edit'));
 Router::connect('/notices/delete/{:id}', array('Notices::delete'));

@@ -13,6 +13,8 @@ use app\models\CollectionsWorks;
 use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
 use app\models\WorksHistories;
+use app\models\Links;
+use app\models\WorksLinks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -206,6 +208,35 @@ class WorksController extends \lithium\action\Controller {
 		$work = Works::create();
 
 		if (($this->request->data) && $work->save($this->request->data)) {
+
+			//If we are adding a link to this record
+			if (isset($this->request->data['url'])) {
+				$url = $this->request->data['url'];
+
+				$link = Links::first(array(
+					'conditions' => array('url' => $url)
+				));
+
+				if ($link) {
+					$sucesss = true;
+				}
+
+				if (!$link) {
+					$link = Links::create();
+					$success = $link->save($this->request->data);
+				}
+
+				if ($success) {
+
+					$work_id = $work->id;
+					$link_id = $link->id;
+
+					$works_links = WorksLinks::create();
+					$data = compact('work_id', 'link_id');
+					$works_links->save($data);
+				}
+			}
+
 			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 		}
 		return compact('work', 'auth');
@@ -275,12 +306,28 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array('work_id' => $work->id),
 					'order' => array('slug' => 'ASC')
 				));
-			
+
+				$work_links = WorksLinks::find('all', array(
+					'with' => array(
+						'Links'
+					),
+					'conditions' => array('work_id' => $work->id),
+					'order' => array('date_modified' =>  'ASC')
+				));
+
 				if (($this->request->data) && $work->save($this->request->data)) {
 					return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 				}
 		
-				return compact('work', 'work_documents', 'collections', 'other_collections', 'exhibitions', 'other_exhibitions');
+				return compact(
+					'work', 
+					'work_documents', 
+					'collections', 
+					'other_collections', 
+					'exhibitions', 
+					'other_exhibitions',
+					'work_links'
+				);
 			}	
 		}																																		
 		

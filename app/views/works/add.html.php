@@ -70,6 +70,7 @@ $this->form->config(
     <?=$this->form->field('weight');?>
     <?=$this->form->field('running_time');?>
     <?=$this->form->field('measurement_remarks', array('type' => 'textarea'));?>
+    <?=$this->form->field('url', array('label' => 'URL'));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/works', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>

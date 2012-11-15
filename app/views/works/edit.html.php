@@ -115,7 +115,22 @@ $this->form->config(
 		<?=$this->form->end(); ?>
 		
 	</div>
-	
+
+	<div class="well">
+		<legend>Links</legend>
+		<table class="table">
+			<?php foreach ($work_links as $wl): ?>
+			
+				<tr>
+					<td>
+						<?=$wl->link->url ?>
+					</td>
+				</tr>
+
+			<?php endforeach; ?>
+		</table>
+	</div>
+
 	<div class="well">
 		<legend>Collections</legend>
 		<table class="table">
