@@ -27,12 +27,20 @@ class LinksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 
+		$saved = $this->request->query['saved'];
+
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('date_modified' => 'DESC');
 
+		$total = Links::count();
+
 		$links = Links::all(array(
-			'order' => $order
+			'limit' => $limit,
+			'order' => $order,
+			'page' => $page
 		));
-		return compact('links', 'auth');
+		return compact('links', 'total', 'page', 'limit', 'auth', 'saved');
 	}
 
 	public function view() {
@@ -76,7 +84,8 @@ class LinksController extends \lithium\action\Controller {
 		$link = Links::create();
 
 		if (($this->request->data) && $link->save($this->request->data)) {
-			return $this->redirect(array('Links::view', 'args' => array($link->id)));
+			//return $this->redirect(array('Links::view', 'args' => array($link->id)));
+        	return $this->redirect("/links?saved=$link->id");
 		}
 		return compact('link');
 	}
@@ -108,7 +117,8 @@ class LinksController extends \lithium\action\Controller {
 			return $this->redirect('Links::index');
 		}
 		if (($this->request->data) && $link->save($this->request->data)) {
-			return $this->redirect(array('Links::view', 'args' => array($link->id)));
+			//return $this->redirect(array('Links::view', 'args' => array($link->id)));
+        	return $this->redirect("/links?saved=$link->id");
 		}
 		return compact('link', 'auth');
 	}
