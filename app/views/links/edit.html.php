@@ -1,6 +1,8 @@
 <?php 
 
-$this->title('Edit Notice');
+$title = $link->title ?: "Link";
+
+$this->title('Edit Link');
 
 $this->form->config(
     array( 
@@ -18,10 +20,15 @@ $this->form->config(
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Notices','/Notices'); ?>
+	<?=$this->html->link('Links','/links'); ?>
 	<span class="divider">/</span>
 	</li>
 	
+	<li class="active">
+	<?=$this->html->link($title,'/links/view/'.$link->id); ?>
+	<span class="divider">/</span>
+	</li>
+
 	<li class="active">
 		Edit
 	</li>
@@ -31,26 +38,26 @@ $this->form->config(
 </div>
 
 <div class="actions">
+
 	<ul class="nav nav-tabs">
 		<li>
-			<?=$this->html->link('Index','/notices'); ?>
+			<?=$this->html->link('View','/links/view/'.$link->id); ?>
 		</li>
 
+		<li class="active">
+			<?=$this->html->link('Edit','/links/edit/'.$id->id); ?>
+		</li>
 	</ul>
 
-	<div class="btn-toolbar">
-			<a class="btn btn-inverse" href="/notices/add"><i class="icon-plus-sign icon-white"></i> Write a Notice</a>
-	</div>
 </div>
-
 <div class="well">
-<?=$this->form->create($notice); ?>
-	<legend>Notice</legend>
-    <?=$this->form->field('subject');?>
-    <?=$this->form->field('body', array('type' => 'textarea'));?>
-    <?=$this->form->hidden('path', array('value' => 'home'));?>
+<?=$this->form->create($link); ?>
+	<legend>Link</legend>
+    <?=$this->form->field('title');?>
+    <?=$this->form->field('url', array('label' => 'URL'));?>
+    <?=$this->form->field('description', array('type' => 'textarea'));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/notices', array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel','/links', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
 
@@ -60,7 +67,7 @@ $this->form->config(
 	<legend>Edit</legend>
 
 	<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-		<i class="icon-white icon-trash"></i> Delete Notice
+		<i class="icon-white icon-trash"></i> Delete Link
 	</a>
 
 </div>
@@ -69,15 +76,15 @@ $this->form->config(
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete Notice</h3>
+			<h3>Delete Link</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong>this notice</strong>?</p>
+			<p>Are you sure you want to permanently delete <strong>this link</strong>?</p>
 			
-			<p>By selecting <code>Delete</code>, you will remove this Notice from the listings. Are you sure you want to continue?</p>
+			<p>By selecting <code>Delete</code>, you will remove this Link from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($notice, array('url' => "/notices/delete/$notice->id", 'method' => 'post')); ?>
+			<?=$this->form->create($link, array('url' => "/links/delete/$link->id", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

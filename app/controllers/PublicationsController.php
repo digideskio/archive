@@ -193,6 +193,13 @@ class PublicationsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
+        // If the user is not an Admin or Editor, redirect to the record view
+        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        	return $this->redirect(array(
+        		'Publications::view', 'args' => array($this->request->params['slug']))
+        	);
+        }
+
 		$publication = Publications::first(array(
 			'conditions' => array('slug' => $this->request->params['slug'])
 		));

@@ -18,6 +18,8 @@
 			<li class="divider"></li>
 			<li <?php if ($c == 'documents') echo 'class="active"'; ?> >
 				<a href="/documents"><i class="icon-hdd"></i> Documents</a></li>
+			<li <?php if ($c == 'links') echo 'class="active"'; ?> >
+				<a href="/links"><i class="icon-bookmark"></i> Links</a></li>
 			<li class="divider"></li>
 			<li <?php if ($c == 'users') echo 'class="active"'; ?> >
 				<a href="/users"><i class="icon-user"></i> Users</a></li>

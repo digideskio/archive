@@ -126,6 +126,10 @@ Router::connect('/files/secure/{:file}', array('Files::secure'));
 Router::connect('/packages/add', array('Packages::add'));
 Router::connect('/packages/delete/{:id}', array('Packages::delete'));
 
+Router::connect('/links/view/{:id}', array('Links::view'));
+Router::connect('/links/edit/{:id}', array('Links::edit'));
+Router::connect('/links/delete/{:id}', array('Links::delete'));
+
 Router::connect('/notices/view/{:id}', array('Notices::view'));
 Router::connect('/notices/edit/{:id}', array('Notices::edit'));
 Router::connect('/notices/delete/{:id}', array('Notices::delete'));
