@@ -48,7 +48,12 @@ $this->title($title);
 
 <p><?=$link->description ?></p>
 
-<p>Added <?=$link->date_created ?></p>
+<p>
+<small style="font-size: smaller;">
+	Added <?=$link->date_created ?>
+</small>
+</p>
+
 
 </div>
 

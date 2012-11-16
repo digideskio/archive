@@ -45,6 +45,24 @@ $this->title('Links');
 
 <tbody>
 
+<script>
+$(document).ready(function() {
+	$('.model-tip').tooltip();
+});
+</script>
+
+<style>
+
+	.edit-link {
+		color:#D14;
+	}
+
+	.view-link {
+		color: gray;
+	}
+
+</style>
+
 <?php foreach ($links as $link): ?>
 
 <tr <?php if ($link->id == $saved) { echo 'class="success"'; } ?>>
@@ -53,10 +71,19 @@ $this->title('Links');
 
 		<p>
 			<?=$this->html->link($title, $link->url); ?>
-			<a href="/links/view/<?=$link->id ?>" title="View Link"><i class="icon-share"></i></a>
-				<?php if($auth->role->name == 'Admin'): ?>
 
-				<a href="/links/edit/<?=$link->id ?>" title="Edit Link"><i class="icon-edit"></i></a>
+				<?php 
+					$has_works = isset($link->works_links[0]->id) ? true : false; 
+				?>
+				<?php if($has_works): ?>
+				<?php foreach($link->works_links as $wl): ?>
+					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has artwork" class="model-tip">
+					<i class="icon-picture"></i>
+					</a>
+				<?php endforeach; ?>
+				<?php endif; ?>
+
+				<?php if($auth->role->name == 'Admin'): ?>
 
 				<?php if ($link->id == $saved): ?>
 					<span class="label">Saved</span>
@@ -64,14 +91,6 @@ $this->title('Links');
 
 				<?php endif; ?>
 
-				<?php 
-					$has_works = isset($link->works_links[0]->id) ? true : false; 
-				?>
-				<?php if($has_works): ?>
-				<?php foreach($link->works_links as $wl): ?>
-					<i title="This link has artwork" class="icon-picture"></i>
-				<?php endforeach; ?>
-				<?php endif; ?>
 		</p>
 
 		<p>
@@ -80,7 +99,13 @@ $this->title('Links');
 
 		<blockquote><?=$link->description ?></blockquote>
 
-		<p><small style="font-size: smaller;"><?=$link->date_modified ?></small></p>
+		<p>
+			<small style="font-size: smaller;">
+				<?php $date = date('Y-m-d', strtotime($link->date_created)); ?>
+				<a class="view-link" href="/links/view/<?=$link->id ?>">Added <?=$date ?></a>
+			<!--	<a class="edit-link" href="/links/edit/<?=$link->id ?>">Edit</a> -->
+			</small>
+		</p>
 
 	</td>
 </tr>
