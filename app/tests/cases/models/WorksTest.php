@@ -4,6 +4,8 @@ namespace app\tests\cases\models;
 
 use app\models\Works;
 use app\models\WorksHistories;
+use app\models\WorksLinks;
+use app\models\Links;
 
 class WorksTest extends \lithium\test\Unit {
 
@@ -13,6 +15,8 @@ class WorksTest extends \lithium\test\Unit {
 	
 		Works::all()->delete();
 		WorksHistories::all()->delete();
+		Links::all()->delete();
+		WorksLinks::all()->delete();
 
 	}
 	
@@ -217,6 +221,81 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004–2005, 40 × 50 cm.', $work->caption());
 	
+	}
+
+	public function testLinks() {
+		
+		$data = array(
+			'title' => 'Artwork Title',
+			'url' => 'http://example.com'
+		);
+
+		$work = Works::create();
+
+		$success = $work->save($data);
+
+		$this->assertTrue($success);
+
+		$link = Links::first();
+		$link_count = Links::count();
+
+		$this->assertTrue($link);
+		$this->assertEqual(1, $link_count);
+
+		$work_link = WorksLinks::first();
+		$work_link_count = WorksLinks::count();
+
+		$this->assertTrue($work_link);
+		$this->assertEqual(1, $work_link_count);
+
+		$this->assertEqual($work->id, $work_link->work_id);
+		$this->assertEqual($link->id, $work_link->link_id);
+
+		$new_data = array(
+			'title' => 'Another Titlte',
+			'url' => 'http://example.com'
+		);
+
+		$new_work = Works::create();
+
+		$success = $new_work->save($new_data);
+
+		$this->assertTrue($success);
+
+		$new_link_count = Links::count();
+
+		$this->assertEqual(1, $new_link_count);
+
+		$new_works_links_count = WorksLinks::count();
+
+		$this->assertEqual(2, $new_works_links_count);
+
+		$new_work_link = WorksLinks::find('first', array(
+			'conditions' => array('work_id' => $new_work->id)
+		));
+
+		$this->assertEqual($new_work_link->link_id, $link->id);
+
+		$new_work->delete();
+	
+		$after_delete_links_count = Links::count();
+
+		$this->assertEqual(1, $after_delete_links_count);
+
+		$after_delete_works_links_count = WorksLinks::count();
+
+		$this->assertEqual(1, $after_delete_works_links_count);
+
+		$work->delete();
+
+		$final_delete_links_count = Links::count();
+
+		$this->assertEqual(1, $final_delete_links_count);
+
+		$final_delete_works_links_count = WorksLinks::count();
+
+		$this->assertEqual(0, $final_delete_works_links_count);
+
 	}
 
 

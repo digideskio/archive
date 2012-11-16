@@ -89,12 +89,15 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('work_id' => $work_id)
 	))->delete();
 
+	WorksLinks::find('all', array(
+		'conditions' => array('work_id' => $work_id)
+	))->delete();
+
 	return $chain->next($self, $params, $chain);
 
 });
 
 Works::applyFilter('save', function($self, $params, $chain) {
-
 
 	$check = (Auth::check('default')) ?: null;
 
@@ -106,6 +109,41 @@ Works::applyFilter('save', function($self, $params, $chain) {
 	}
 
 	return $chain->next($self, $params, $chain);
+});
+
+Works::applyFilter('save', function($self, $params, $chain) {
+
+	$result = $chain->next($self, $params, $chain);
+
+	$work_id = $params['entity']->id;
+	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
+
+	if ($work_id && $url) {
+		
+		$link = Links::first(array(
+			'conditions' => array('url' => $url)
+		));
+
+		if ($link) {
+			$success = true;
+		}
+
+		if (!$link) {
+			$link = Links::create();
+			$success = $link->save($params['data']);
+		}
+
+		if ($success) {
+			$link_id = $link->id;
+
+			$works_links = WorksLinks::create();
+			$data = compact('work_id', 'link_id');
+			$works_links->save($data);
+		}
+		
+	}
+
+	return $result;
 });
 
 ?>
