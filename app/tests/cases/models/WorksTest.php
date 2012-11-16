@@ -223,6 +223,27 @@ class WorksTest extends \lithium\test\Unit {
 	
 	}
 
+	public function testBadLink() {
+		$data = array(
+			'title' => 'Bad Artwork',
+			'url' => 'http:// bad url'
+		);
+
+		$work = Works::create();
+
+		$success = $work->save($data);
+
+		$this->assertTrue($success);
+
+		$link_count = Links::count();
+
+		$this->assertEqual(0, $link_count);
+
+		$work_link_count = WorksLinks::count();
+
+		$this->assertEqual(0, $work_link_count);
+	}
+
 	public function testLinks() {
 		
 		$data = array(
@@ -241,6 +262,8 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertTrue($link);
 		$this->assertEqual(1, $link_count);
+
+		$this->assertEqual($work->title, $link->title);
 
 		$work_link = WorksLinks::first();
 		$work_link_count = WorksLinks::count();

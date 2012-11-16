@@ -123,7 +123,14 @@ $this->form->config(
 			
 				<tr>
 					<td>
-						<?=$wl->link->url ?>
+						<?=$this->html->link($wl->link->url, $wl->link->url); ?>
+					</td>
+					<td align="right" style="text-align:right">
+			<?=$this->form->create($cw, array('url' => "/works_links/delete/$wl->id", 'method' => 'post')); ?>
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<?=$this->html->link('Edit','/links/edit/'.$wl->link->id.'?work='.$work->slug, array('class' => 'btn btn-mini')); ?>
+			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
+			<?=$this->form->end(); ?>
 					</td>
 				</tr>
 

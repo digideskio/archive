@@ -117,30 +117,12 @@ Works::applyFilter('save', function($self, $params, $chain) {
 
 	$work_id = $params['entity']->id;
 	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
+	$title = isset($params['data']['title']) ? $params['data']['title'] : null;
 
 	if ($work_id && $url) {
-		
-		$link = Links::first(array(
-			'conditions' => array('url' => $url)
-		));
-
-		if ($link) {
-			$success = true;
-		}
-
-		if (!$link) {
-			$link = Links::create();
-			$success = $link->save($params['data']);
-		}
-
-		if ($success) {
-			$link_id = $link->id;
-
-			$works_links = WorksLinks::create();
-			$data = compact('work_id', 'link_id');
-			$works_links->save($data);
-		}
-		
+		$works_links = WorksLinks::create();
+		$data = compact('work_id', 'url', 'title');
+		$works_links->save($data);
 	}
 
 	return $result;
