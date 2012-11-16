@@ -123,10 +123,10 @@ $this->form->config(
 			
 				<tr>
 					<td>
-						<?=$this->html->link($wl->link->url, $wl->link->url); ?>
+						<?=$this->html->link($wl->link->elision(), $wl->link->url); ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($cw, array('url' => "/works_links/delete/$wl->id", 'method' => 'post')); ?>
+			<?=$this->form->create($wl, array('url' => "/works_links/delete/$wl->id", 'method' => 'post')); ?>
 			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
 			<?=$this->html->link('Edit','/links/edit/'.$wl->link->id.'?work='.$work->slug, array('class' => 'btn btn-mini')); ?>
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
@@ -136,6 +136,17 @@ $this->form->config(
 
 			<?php endforeach; ?>
 		</table>
+
+		<?=$this->form->create(null, array('url' => "/works_links/add/", 'method' => 'post')); ?>
+			<legend>Add a Link</legend>
+			<?=$this->form->field('url', array('label' => 'URL'));?>
+			
+			<input type="hidden" name="title" value="<?=$work->title ?>?" />
+			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
+		
+		<?=$this->form->submit('Add Link', array('class' => 'btn btn-inverse')); ?>
+		<?=$this->form->end(); ?>
 	</div>
 
 	<div class="well">

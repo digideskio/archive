@@ -4,6 +4,8 @@ namespace app\models;
 
 class Links extends \lithium\data\Model {
 
+	public $hasMany = array('WorksLinks');
+
 	public $validates = array(
 		'url' => array(
 			array('notEmpty', 'message' => 'Please enter a URL.'),
@@ -34,6 +36,35 @@ class Links extends \lithium\data\Model {
 
 		});
 	}
+
+	public function elision($entity) {
+
+		$url = $entity->url;
+		$url = substr($url, 7);
+		$len = strlen($url);
+		
+		if ($len > 30) {
+			$start = substr($url, 0, 15);
+			$end = substr($url, -10);
+
+		 	$url = $start . '...' . $end;
+		}
+		return $url;
+
+	}
 }
+
+Links::applyFilter('delete', function($self, $params, $chain) {
+
+	$link_id = $params['entity']->id;
+
+	//Delete any relationships
+	WorksLinks::find('all', array(
+		'conditions' => array('link_id' => $link_id)
+	))->delete();
+
+	return $chain->next($self, $params, $chain);
+
+});
 
 ?>

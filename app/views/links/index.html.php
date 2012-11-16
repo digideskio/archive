@@ -53,15 +53,29 @@ $this->title('Links');
 
 		<p>
 			<?=$this->html->link($title, $link->url); ?>
+			<a href="/links/view/<?=$link->id ?>" title="View Link"><i class="icon-share"></i></a>
 				<?php if($auth->role->name == 'Admin'): ?>
 
-				<a href="/links/edit/<?=$link->id ?>" title="Edit Link"><i class="icon icon-edit"></i></a>
+				<a href="/links/edit/<?=$link->id ?>" title="Edit Link"><i class="icon-edit"></i></a>
 
 				<?php if ($link->id == $saved): ?>
 					<span class="label">Saved</span>
 				<?php endif; ?>
 
 				<?php endif; ?>
+
+				<?php 
+					$has_works = isset($link->works_links[0]->id) ? true : false; 
+				?>
+				<?php if($has_works): ?>
+				<?php foreach($link->works_links as $wl): ?>
+					<i title="This link has artwork" class="icon-picture"></i>
+				<?php endforeach; ?>
+				<?php endif; ?>
+		</p>
+
+		<p>
+			<?=$link->url ?>
 		</p>
 
 		<blockquote><?=$link->description ?></blockquote>

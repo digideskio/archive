@@ -51,3 +51,55 @@ $this->title($title);
 <p>Added <?=$link->date_created ?></p>
 
 </div>
+
+	<?php 
+		$has_works = sizeof($works_links) > 0 ? true : false; 
+	?>
+
+	<?php if ($has_works): ?>
+
+		<div class="navbar">
+			<div class="navbar-inner">
+			<ul class="nav">
+				<li class="meta"><a href="#">Artwork</a></li>
+			</ul>
+			</div>
+		</div>
+
+<table class="table table-bordered">
+
+<thead>
+	<tr>
+		<th>ID</th>
+		<th>Image</th>
+		<th>Title</th>
+		<th>Year</th>
+		<th>Notes</th>
+		<th>Classification</th>
+	</tr>
+</thead>
+		
+<tbody>
+
+<?php foreach($works_links as $wl): ?>
+
+<tr>
+	<td><?=$wl->work->creation_number?></td>
+	
+	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
+		<?php $document = $wl->work->documents('first'); if($document->id) { ?>	
+			<a href="/works/view/<?=$work->slug?>">
+			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
+			</a>
+		<?php } else { ?>
+			<span class="label label-warning">No Image</span>
+		<?php } ?>
+	</td>
+    <td><?=$this->html->link($wl->work->title,'/works/view/'.$wl->work->slug); ?></td>
+    <td><?=$wl->work->years(); ?></td>
+    <td><?php echo $wl->work->notes(); ?></td>
+    <td><?=$wl->work->classification ?></td>
+</tr>
+
+<?php endforeach; ?>
+	<?php endif; ?>

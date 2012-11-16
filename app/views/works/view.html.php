@@ -148,9 +148,10 @@ $this->title($work->title);
 			$hasCollections = sizeof($collections) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasDocuments = sizeof($work_documents) > 0;
+			$hasLinks = sizeof($work_links) > 0;
 		?>
 
-		<?php if ($hasCollections || $hasExhibitions || $hasDocuments) : ?>
+		<?php if ($hasCollections || $hasExhibitions || $hasDocuments || $hasLinks) : ?>
 
 			<table class="table">
 				<thead>
@@ -212,6 +213,26 @@ $this->title($work->title);
 				
 								<li><a href="/documents/view/<?=$wd->document->slug?>">
 									<strong><?=$wd->document->slug?>.<?=$wd->format->extension?></strong>
+								</a></li>
+				
+						<?php endforeach; ?>
+						</ul>
+						<td>
+					</tr>
+					<?php endif; ?>
+					
+					<?php if ($hasLinks) : ?>
+					<tr>
+						<td><i class="icon-bookmark"></i></td>
+						<td class="meta">Links</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+						
+			
+						<?php foreach($work_links as $wl): ?>
+				
+								<li><a href="/links/view/<?=$wl->link->id?>">
+									<strong><?=$wl->link->elision()?></strong>
 								</a></li>
 				
 						<?php endforeach; ?>

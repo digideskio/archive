@@ -34,7 +34,7 @@ WorksLinks::applyFilter('save', function($self, $params, $chain) {
 		}
 	}
 
-	if ($success) {
+	if (!$url || $success) {
 		return $chain->next($self, $params, $chain);
 	} else {
 		return false;

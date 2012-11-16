@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Links;
 
+use app\models\WorksLinks;
+
 use app\models\Users;
 use app\models\Roles;
 
@@ -27,7 +29,7 @@ class LinksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 
-		$saved = $this->request->query['saved'];
+		$saved = isset($this->request->query['saved']) ? $this->request->query['saved'] : '';
 
 		$limit = 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -36,6 +38,7 @@ class LinksController extends \lithium\action\Controller {
 		$total = Links::count();
 
 		$links = Links::all(array(
+			'with' => array('WorksLinks'),
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
@@ -59,7 +62,14 @@ class LinksController extends \lithium\action\Controller {
 		));
 
 		$link = Links::first($this->request->id);
-		return compact('link', 'auth');
+
+		$works_links = WorksLinks::find('all', array(
+			'with' => array('Works'),
+			'conditions' => array('link_id' => $link->id),
+			'order' => array('earliest_date' => 'DESC')
+		));
+
+		return compact('link', 'works_links', 'auth');
 	}
 
 	public function add() {
@@ -112,15 +122,21 @@ class LinksController extends \lithium\action\Controller {
         }
 
 		$link = Links::find($this->request->id);
+		$redirect = isset($this->request->query['work']) ? '/works/edit/'.$this->request->query['work'] : '';
 
 		if (!$link) {
 			return $this->redirect('Links::index');
 		}
 		if (($this->request->data) && $link->save($this->request->data)) {
 			//return $this->redirect(array('Links::view', 'args' => array($link->id)));
-        	return $this->redirect("/links?saved=$link->id");
+
+			if ($this->request->data['redirect']) {
+				return $this->redirect($this->request->data['redirect']);
+			} else {
+	      		return $this->redirect("/links?saved=$link->id");
+			}
 		}
-		return compact('link', 'auth');
+		return compact('link', 'auth', 'redirect');
 	}
 
 	public function delete() {

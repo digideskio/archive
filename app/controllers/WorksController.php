@@ -177,9 +177,17 @@ class WorksController extends \lithium\action\Controller {
 					),
 					'order' => $order
 				));
+
+				$work_links = WorksLinks::find('all', array(
+					'with' => array(
+						'Links'
+					),
+					'conditions' => array('work_id' => $work->id),
+					'order' => array('date_modified' =>  'DESC')
+				));
 			
 				//Send the retrieved data to the view
-				return compact('work', 'work_documents', 'collections', 'exhibitions', 'auth');
+				return compact('work', 'work_documents', 'work_links', 'collections', 'exhibitions', 'auth');
 			}
 		}
 		
@@ -283,7 +291,7 @@ class WorksController extends \lithium\action\Controller {
 						'Links'
 					),
 					'conditions' => array('work_id' => $work->id),
-					'order' => array('date_modified' =>  'ASC')
+					'order' => array('date_modified' =>  'DESC')
 				));
 
 				if (($this->request->data) && $work->save($this->request->data)) {

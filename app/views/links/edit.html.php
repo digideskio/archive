@@ -45,7 +45,7 @@ $this->form->config(
 		</li>
 
 		<li class="active">
-			<?=$this->html->link('Edit','/links/edit/'.$id->id); ?>
+			<?=$this->html->link('Edit','/links/edit/'.$link->id); ?>
 		</li>
 	</ul>
 
@@ -56,8 +56,14 @@ $this->form->config(
     <?=$this->form->field('title');?>
     <?=$this->form->field('url', array('label' => 'URL'));?>
     <?=$this->form->field('description', array('type' => 'textarea'));?>
+
+	<?=$this->form->hidden('redirect', array('value' => $redirect)); ?>
+
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/links', array('class' => 'btn')); ?>
+
+	<?php $cancel = $redirect ?: '/links' ?>
+
+    <?=$this->html->link('Cancel',$cancel, array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
 

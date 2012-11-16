@@ -8,7 +8,7 @@ use lithium\security\Auth;
 
 class Works extends \app\models\Archives {
 
-	public $hasMany = array('CollectionsWorks', 'WorksDocuments', 'WorksHistories');
+	public $hasMany = array('CollectionsWorks', 'WorksDocuments', 'WorksHistories', 'WorksLinks');
 
 	public $belongsTo = array('Users');
 
