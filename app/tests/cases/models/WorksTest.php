@@ -233,7 +233,7 @@ class WorksTest extends \lithium\test\Unit {
 
 		$success = $work->save($data);
 
-		$this->assertTrue($success);
+		$this->assertFalse($success, 'The work could be saved with a bad URL.');
 
 		$link_count = Links::count();
 
