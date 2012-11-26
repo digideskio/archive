@@ -538,27 +538,23 @@ $this->form->config(
 
 $(document).ready(function() {
 
-	var source = $("#add-document-item").html();
-	var template = Handlebars.compile(source);
-
-	$.ajax({
-		url: '/documents/pages/1.json?limit=5',
-		dataType: 'json',
-		success: function(data) {
-			var context = data;
-			var html = template(context);
-			$("#add-document-list").html(html);
-		}
-	});
+	docHandles('/documents/pages/1.json');
 
 	$('#documentModal').on("click", ".paging", function(event) {
 		event.preventDefault();
 
+		docHandles(this.href);
+
+		return false;
+	});
+
+	function docHandles(href) {
+		
 		var source = $("#add-document-item").html();
 		var template = Handlebars.compile(source);
 
 		$.ajax({
-			url: this.href + '?limit=5',
+			url: href + '?limit=5',
 			dataType: 'json',
 			success: function(data) {
 				var context = data;
@@ -567,8 +563,7 @@ $(document).ready(function() {
 			}
 		});
 
-		return false;
-	});
+	}
 
 });
 
