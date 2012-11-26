@@ -8,6 +8,7 @@
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
 	
 	<?php echo $this->html->script(array('jquery.min.js')); ?>
+	<?php echo $this->html->script(array('handlebars-1.0.0.beta.6.js')); ?>
 
 	<?php echo $this->html->script(array(
 		'jquery.flot.js',
