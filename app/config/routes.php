@@ -105,7 +105,9 @@ Router::connect('/publications/view/{:slug}', array('Publications::view'));
 Router::connect('/publications/edit/{:slug}', array('Publications::edit'));
 Router::connect('/publications/delete/{:slug}', array('Publications::delete'));
 
+Router::connect('/documents/index.{:type}', array('Documents::index'));
 Router::connect('/documents/pages/{:page:[0-9]+}', array('Documents::index'));
+Router::connect('/documents/pages/{:page:[0-9]+}.{:type}', array('Documents::index'));
 Router::connect('/documents/view/{:slug}', array('Documents::view'));
 Router::connect('/documents/edit/{:slug}', array('Documents::edit'));
 Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
