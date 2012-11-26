@@ -39,18 +39,24 @@ class DocumentsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
+		$conditions = isset($this->request->query['search']) ? array('title' => array('LIKE' => '%' . $this->request->query['search'] . '%')) : null;
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 20;
         $page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
         $order = array('date_modified' => 'DESC');
-        $total = Documents::count();
+        $total = Documents::find('count', array(
+			'conditions' => $conditions
+		));
         $documents = Documents::find('all', array(
 			'with' => array('Formats'),
+			'conditions' => $conditions,
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
 		));
+
+		$search = isset($this->request->query['search']) ? $this->request->query['search'] : '';
 		
-		return compact('documents', 'page', 'limit', 'total', 'auth');
+		return compact('documents', 'page', 'limit', 'total', 'search', 'auth');
 	}
 
 	public function search() {
