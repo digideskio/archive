@@ -538,7 +538,11 @@ $this->form->config(
 
 $(document).ready(function() {
 
-	docHandles('/documents/pages/1.json');
+	$('#documentModal').on('shown', function() {
+		$('#add-document-search-title').focus();
+	});
+
+	docHandles('/documents/pages/1.json?');
 
 	$('#documentModal').on("click", ".paging", function(event) {
 		event.preventDefault();
@@ -548,13 +552,24 @@ $(document).ready(function() {
 		return false;
 	});
 
+	$('#documentModal').on("submit", "form#add-document-search", function(event) {
+		event.preventDefault();
+
+		var title = $('#add-document-search-title').val();
+	
+		docHandles('/documents/pages/1.json?search=' + title);
+
+		return false;
+
+	});
+
 	function docHandles(href) {
-		
-		var source = $("#add-document-item").html();
+	
+		var source = $("#add-document-items").html();
 		var template = Handlebars.compile(source);
 
 		$.ajax({
-			url: href + '?limit=5',
+			url: href + '&limit=5',
 			dataType: 'json',
 			success: function(data) {
 				var context = data;
@@ -562,7 +577,6 @@ $(document).ready(function() {
 				$("#add-document-list").html(html);
 			}
 		});
-
 	}
 
 });
@@ -570,7 +584,7 @@ $(document).ready(function() {
 Handlebars.registerHelper('previous_page', function() {
 	if (this.page > 1) {
 		return new Handlebars.SafeString(
-			"<li><a id='page-left' class='paging' href='/documents/pages/" + (parseInt(this.page) - 1) + ".json'>«</a></li>"
+			"<li><a id='page-left' class='paging' href='/documents/pages/" + (parseInt(this.page) - 1) + ".json?search=" + this.search + "'>«</a></li>"
 		);
 	} else {
 		return new Handlebars.SafeString(
@@ -582,7 +596,7 @@ Handlebars.registerHelper('previous_page', function() {
 Handlebars.registerHelper('next_page', function() {
 	if (this.total > (this.limit * this.page)) {
 		return new Handlebars.SafeString(
-			"<li><a class='paging' href='/documents/pages/" + (parseInt(this.page) + 1) + ".json'>»</a></li>"
+			"<li><a class='paging' href='/documents/pages/" + (parseInt(this.page) + 1) + ".json?search=" + this.search + "'>»</a></li>"
 		);
 	}
 });
@@ -619,8 +633,7 @@ Handlebars.registerHelper('document_rows', function() {
 
 </script>
 
-<script id="add-document-item" type="text/x-handlebars">
-
+<script id="add-document-items" type="text/x-handlebars">
 	<table class="table">
 	
 		<tbody>
@@ -631,7 +644,7 @@ Handlebars.registerHelper('document_rows', function() {
 		</tbody>
 	
 	</table>
-	<div class="pagination">
+	<div class="pagination" style="margin-top: 0">
 		<ul>
 			{{previous_page}}
 			<li class="active"><a href="#">{{page}}</a></li>
@@ -647,6 +660,9 @@ Handlebars.registerHelper('document_rows', function() {
 			<h3>Add a Document</h3>
 		</div>
 		<div class="modal-body">
+			<form id="add-document-search" class="form-search">
+			  <input type="text" id="add-document-search-title" name="title" class="input-medium search-query" placeholder="Search..." style="width: 90%">
+			</form>
 			<div id="add-document-list"></div>
 			</div>
 			<div class="modal-footer">
