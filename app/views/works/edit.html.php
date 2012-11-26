@@ -251,18 +251,6 @@ $this->form->config(
 			</tr>
 			
 			</table>
-	<!--	
-		<?=$this->form->create(null, array('url' => "/works_documents/add/", 'method' => 'post')); ?>
-			<legend>Add a Document</legend>
-			<span class="help-block">Find the document you want to add, click the <code>Edit</code> button, copy the text in the <code>Permalink</code> field, and paste it here.</span>
-			<?=$this->form->field('document_slug', array('label' => 'Document Permalink'));?>
-			
-			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
-			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-		
-		<?=$this->form->submit('Add Document', array('class' => 'btn btn-inverse')); ?>
-		<?=$this->form->end(); ?>
-		-->
 	</div>
 
      <div id="filelink"></div>
@@ -669,6 +657,7 @@ Handlebars.registerHelper('document_rows', function() {
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 	</div>
 </div>
+
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>

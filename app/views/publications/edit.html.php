@@ -124,18 +124,14 @@ $this->form->config(
 				
 				<?php endforeach; ?>
 				
+				<tr>
+					<td></td>
+					<td align="right" style="text-align:right">
+						<a data-toggle="modal" href="#documentModal" class="btn btn-mini btn-inverse">Add a Document</a>
+					</td>
+				</tr>
+
 				</table>
-			
-			<?=$this->form->create(null, array('url' => "/publications_documents/add/", 'method' => 'post')); ?>
-				<legend>Add a Document</legend>
-				<span class="help-block">Find the document you want to add, click the <code>Edit</code> button, copy the text in the <code>Permalink</code> field, and paste it here.</span>
-				<?=$this->form->field('document_slug', array('label' => 'Document Permalink'));?>
-				
-				<input type="hidden" name="publication_slug" value="<?=$publication->slug ?>" />
-				<input type="hidden" name="publication_id" value="<?=$publication->id ?>" />
-			
-			<?=$this->form->submit('Add Document', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->form->end(); ?>
 			
 		</div>
      <div id="filelink"></div>
@@ -345,7 +341,141 @@ $this->form->config(
 	</div>
 </div>
 
+<script type="text/javascript">
 
+$(document).ready(function() {
+
+	$('#documentModal').on('shown', function() {
+		$('#add-document-search-title').focus();
+	});
+
+	docHandles('/documents/pages/1.json?');
+
+	$('#documentModal').on("click", ".paging", function(event) {
+		event.preventDefault();
+
+		docHandles(this.href);
+
+		return false;
+	});
+
+	$('#documentModal').on("submit", "form#add-document-search", function(event) {
+		event.preventDefault();
+
+		var title = $('#add-document-search-title').val();
+	
+		docHandles('/documents/pages/1.json?search=' + title);
+
+		return false;
+
+	});
+
+	function docHandles(href) {
+	
+		var source = $("#add-document-items").html();
+		var template = Handlebars.compile(source);
+
+		$.ajax({
+			url: href + '&limit=5',
+			dataType: 'json',
+			success: function(data) {
+				var context = data;
+				var html = template(context);
+				$("#add-document-list").html(html);
+			}
+		});
+	}
+
+});
+
+Handlebars.registerHelper('previous_page', function() {
+	if (this.page > 1) {
+		return new Handlebars.SafeString(
+			"<li><a id='page-left' class='paging' href='/documents/pages/" + (parseInt(this.page) - 1) + ".json?search=" + this.search + "'>«</a></li>"
+		);
+	} else {
+		return new Handlebars.SafeString(
+			"<li class='active'><a href='#' disabled='disabled'>«</a></li>"
+		);
+	}
+});
+
+Handlebars.registerHelper('next_page', function() {
+	if (this.total > (this.limit * this.page)) {
+		return new Handlebars.SafeString(
+			"<li><a class='paging' href='/documents/pages/" + (parseInt(this.page) + 1) + ".json?search=" + this.search + "'>»</a></li>"
+		);
+	}
+});
+
+Handlebars.registerHelper('document_rows', function() {
+	var out = '';
+
+	var docs = this.documents;
+
+	for (key in docs) {
+		var doc = docs[key];
+		out += 
+			"<tr><td width='30px'>" 
+			+ "<img src='/files/thumb/" 
+			+ doc['slug'] 
+			+ ".jpeg'/>" 
+			+ '</td><td>' 
+			+ doc['title'] 
+			+ '</td>'
+			+ '<td>'
+			+ "<td align='right' style='text-align:right'>"
+			+ "<form action='/publications_documents/add' method='post'>"
+			+ "<input type='hidden' name='document_slug' value='" + doc['slug'] + "'>"
+			+ "<input type='hidden' name='publication_id' value='<?=$publication->id ?>'>"
+			+ "<input type='hidden' name='publication_slug' value='<?=$publication->slug ?>'>"
+			+ "<input type='submit' value='Add' class='btn btn-mini btn-success'>"
+			+ '</form>'
+			+ '</td>'
+			+ '</tr>';
+	}
+
+	return new Handlebars.SafeString(out);
+});
+
+</script>
+
+<script id="add-document-items" type="text/x-handlebars">
+	<table class="table">
+	
+		<tbody>
+			{{document_rows}}
+			{{#each documents}}
+				<tr><td>{{title}}</td></tr>
+			{{/each}}
+		</tbody>
+	
+	</table>
+	<div class="pagination" style="margin-top: 0">
+		<ul>
+			{{previous_page}}
+			<li class="active"><a href="#">{{page}}</a></li>
+			{{next_page}}
+		</ul>
+	</div>
+
+</script>
+
+<div class="modal fade hide" id="documentModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Add a Document</h3>
+		</div>
+		<div class="modal-body">
+			<form id="add-document-search" class="form-search">
+			  <input type="text" id="add-document-search-title" name="title" class="input-medium search-query" placeholder="Search..." style="width: 90%">
+			</form>
+			<div id="add-document-list"></div>
+			</div>
+			<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+	</div>
+</div>
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
