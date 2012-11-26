@@ -243,9 +243,15 @@ $this->form->config(
 				</tr>
 			
 			<?php endforeach; ?>
+			<tr>
+				<td></td>
+				<td align="right" style="text-align:right">
+					<a data-toggle="modal" href="#documentModal" class="btn btn-mini btn-inverse">Add a Document</a>
+				</td>
+			</tr>
 			
 			</table>
-		
+	<!--	
 		<?=$this->form->create(null, array('url' => "/works_documents/add/", 'method' => 'post')); ?>
 			<legend>Add a Document</legend>
 			<span class="help-block">Find the document you want to add, click the <code>Edit</code> button, copy the text in the <code>Permalink</code> field, and paste it here.</span>
@@ -256,7 +262,7 @@ $this->form->config(
 		
 		<?=$this->form->submit('Add Document', array('class' => 'btn btn-inverse')); ?>
 		<?=$this->form->end(); ?>
-		
+		-->
 	</div>
 
      <div id="filelink"></div>
@@ -528,6 +534,130 @@ $this->form->config(
 	</div>
 </div>
 
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+	var source = $("#add-document-item").html();
+	var template = Handlebars.compile(source);
+
+	$.ajax({
+		url: '/documents/pages/1.json?limit=5',
+		dataType: 'json',
+		success: function(data) {
+			var context = data;
+			var html = template(context);
+			$("#add-document-list").html(html);
+		}
+	});
+
+	$('#documentModal').on("click", ".paging", function(event) {
+		event.preventDefault();
+
+		var source = $("#add-document-item").html();
+		var template = Handlebars.compile(source);
+
+		$.ajax({
+			url: this.href + '?limit=5',
+			dataType: 'json',
+			success: function(data) {
+				var context = data;
+				var html = template(context);
+				$("#add-document-list").html(html);
+			}
+		});
+
+		return false;
+	});
+
+});
+
+Handlebars.registerHelper('previous_page', function() {
+	if (this.page > 1) {
+		return new Handlebars.SafeString(
+			"<li><a id='page-left' class='paging' href='/documents/pages/" + (parseInt(this.page) - 1) + ".json'>«</a></li>"
+		);
+	} else {
+		return new Handlebars.SafeString(
+			"<li class='active'><a href='#' disabled='disabled'>«</a></li>"
+		);
+	}
+});
+
+Handlebars.registerHelper('next_page', function() {
+	if (this.total > (this.limit * this.page)) {
+		return new Handlebars.SafeString(
+			"<li><a class='paging' href='/documents/pages/" + (parseInt(this.page) + 1) + ".json'>»</a></li>"
+		);
+	}
+});
+
+Handlebars.registerHelper('document_rows', function() {
+	var out = '';
+
+	var docs = this.documents;
+
+	for (key in docs) {
+		var doc = docs[key];
+		out += 
+			"<tr><td width='30px'>" 
+			+ "<img src='/files/thumb/" 
+			+ doc['slug'] 
+			+ ".jpeg'/>" 
+			+ '</td><td>' 
+			+ doc['title'] 
+			+ '</td>'
+			+ '<td>'
+			+ "<td align='right' style='text-align:right'>"
+			+ "<form action='/works_documents/add' method='post'>"
+			+ "<input type='hidden' name='document_slug' value='" + doc['slug'] + "'>"
+			+ "<input type='hidden' name='work_id' value='<?=$work->id ?>'>"
+			+ "<input type='hidden' name='work_slug' value='<?=$work->slug ?>'>"
+			+ "<input type='submit' value='Add' class='btn btn-mini btn-success'>"
+			+ '</form>'
+			+ '</td>'
+			+ '</tr>';
+	}
+
+	return new Handlebars.SafeString(out);
+});
+
+</script>
+
+<script id="add-document-item" type="text/x-handlebars">
+
+	<table class="table">
+	
+		<tbody>
+			{{document_rows}}
+			{{#each documents}}
+				<tr><td>{{title}}</td></tr>
+			{{/each}}
+		</tbody>
+	
+	</table>
+	<div class="pagination">
+		<ul>
+			{{previous_page}}
+			<li class="active"><a href="#">{{page}}</a></li>
+			{{next_page}}
+		</ul>
+	</div>
+
+</script>
+
+<div class="modal fade hide" id="documentModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Add a Document</h3>
+		</div>
+		<div class="modal-body">
+			<div id="add-document-list"></div>
+			</div>
+			<div class="modal-footer">
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+	</div>
+</div>
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
