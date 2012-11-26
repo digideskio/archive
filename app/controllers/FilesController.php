@@ -92,12 +92,11 @@ class FilesController extends \lithium\action\Controller {
 				}
 			}
 			
-			$this->redirect(array('Documents::index'));
+			$this->redirect('/', array('status' => '404'));
 		
 		}
 		
-		//since no record was specified, redirect to the index page
-		$this->redirect(array('Documents::index'));
+		$this->redirect('/', array('status' => '404'));
 	}
  
 	public function thumb() {
@@ -133,12 +132,11 @@ class FilesController extends \lithium\action\Controller {
 				}
 			}
 			
-			$this->redirect(array('Documents::index'));
+			$this->redirect('/', array('status' => '404'));
 		
 		}
 		
-		//since no record was specified, redirect to the index page
-		$this->redirect(array('Documents::index'));
+		$this->redirect('/', array('status' => '404'));
 	}
 
 	public function download() {
