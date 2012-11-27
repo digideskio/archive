@@ -74,7 +74,6 @@ $this->form->config(
 			<?=$this->form->field('earliest_date', array('value' => $publication->start_date_formatted()));?>
 			<?=$this->form->field('latest_date', array('value' => $publication->end_date_formatted()));?>
 			<?=$this->form->field('pages');?>
-			<?=$this->form->field('url', array('label' => 'Website'));?>
 			<?=$this->form->field('subject');?>
 			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
 			<?=$this->form->field('language');?>
@@ -100,6 +99,39 @@ $this->form->config(
 	</div>
 
 	<div class="span5">
+
+		<div class="well">
+			<legend>Links</legend>
+			<table class="table">
+				<?php foreach ($publication_links as $pl): ?>
+				
+					<tr>
+						<td>
+							<?=$this->html->link($pl->link->elision(), $pl->link->url); ?>
+						</td>
+						<td align="right" style="text-align:right">
+				<?=$this->form->create($pl, array('url' => "/publications_links/delete/$pl->id", 'method' => 'post')); ?>
+				<input type="hidden" name="publication_slug" value="<?=$publication->slug ?>" />
+				<?=$this->html->link('Edit','/links/edit/'.$pl->link->id.'?publication='.$publication->slug, array('class' => 'btn btn-mini')); ?>
+				<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
+				<?=$this->form->end(); ?>
+						</td>
+					</tr>
+
+				<?php endforeach; ?>
+			</table>
+
+			<?=$this->form->create(null, array('url' => "/publications_links/add/", 'method' => 'post')); ?>
+				<legend>Add a Link</legend>
+				<?=$this->form->field('url', array('label' => 'URL'));?>
+				
+				<input type="hidden" name="title" value="<?=$publication->title ?>?" />
+				<input type="hidden" name="publication_slug" value="<?=$publication->slug ?>" />
+				<input type="hidden" name="publication_id" value="<?=$publication->id ?>" />
+			
+			<?=$this->form->submit('Add Link', array('class' => 'btn btn-inverse')); ?>
+			<?=$this->form->end(); ?>
+		</div>
 
 		<div class="well">
 			<legend>Documents</legend>

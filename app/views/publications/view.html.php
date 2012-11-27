@@ -151,9 +151,10 @@ $this->title($publication->title);
 	
 		<?php
 			$hasDocuments = sizeof($publication_documents) > 0;
+			$hasLinks = sizeof($publication_links) > 0;
 		?>
 
-		<?php if ($hasDocuments): ?>
+		<?php if ($hasDocuments || $hasLinks): ?>
 
 			<table class="table">
 				<thead>
@@ -177,6 +178,26 @@ $this->title($publication->title);
 				
 								<li><a href="/documents/view/<?=$pd->document->slug?>">
 									<strong><?=$pd->document->slug?>.<?=$pd->format->extension?></strong>
+								</a></li>
+				
+						<?php endforeach; ?>
+						</ul>
+						<td>
+					</tr>
+					<?php endif; ?>
+
+					<?php if ($hasLinks) : ?>
+					<tr>
+						<td><i class="icon-bookmark"></i></td>
+						<td class="meta">Links</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+						
+			
+						<?php foreach($publication_links as $pl): ?>
+				
+								<li><a href="/links/view/<?=$pl->link->id?>">
+									<strong><?=$pl->link->elision()?></strong>
 								</a></li>
 				
 						<?php endforeach; ?>

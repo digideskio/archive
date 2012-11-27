@@ -7,7 +7,7 @@ use lithium\util\Validator;
 
 class Publications extends \app\models\Archives {
 
-	public $hasMany = array('PublicationsDocuments');
+	public $hasMany = array('PublicationsDocuments', 'PublicationsLinks');
 
 	public static function types() {
 		return array("Newspaper", "Magazine", "Catalogue", "Monograph");	
@@ -67,8 +67,29 @@ Publications::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('publication_id' => $publication_id)
 	))->delete();
 
+	PublicationsLinks::find('all', array(
+		'conditions' => array('publication_id' => $publication_id)
+	))->delete();
+
 	return $chain->next($self, $params, $chain);
 
+});
+
+Publications::applyFilter('save', function($self, $params, $chain) {
+
+	$result = $chain->next($self, $params, $chain);
+
+	$publication_id = $params['entity']->id;
+	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
+	$title = isset($params['data']['title']) ? $params['data']['title'] : null;
+
+	if ($publication_id && $url) {
+		$publications_links = PublicationsLinks::create();
+		$data = compact('publication_id', 'url', 'title');
+		$publications_links->save($data);
+	}
+
+	return $result;
 });
 
 ?>

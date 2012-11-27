@@ -74,13 +74,18 @@ $(document).ready(function() {
 
 				<?php 
 					$has_works = isset($link->works_links[0]->id) ? true : false; 
+					$has_publications = isset($link->publications_links[0]->id) ? true : false; 
 				?>
 				<?php if($has_works): ?>
-				<?php foreach($link->works_links as $wl): ?>
 					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has artwork" class="model-tip">
 					<i class="icon-picture"></i>
 					</a>
-				<?php endforeach; ?>
+				<?php endif; ?>
+
+				<?php if($has_publications): ?>
+					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has publications" class="model-tip">
+					<i class="icon-book"></i>
+					</a>
 				<?php endif; ?>
 
 				<?php if($auth->role->name == 'Admin'): ?>

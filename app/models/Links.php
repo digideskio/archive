@@ -4,7 +4,7 @@ namespace app\models;
 
 class Links extends \lithium\data\Model {
 
-	public $hasMany = array('WorksLinks');
+	public $hasMany = array('WorksLinks', 'PublicationsLinks');
 
 	public $validates = array(
 		'url' => array(
@@ -60,6 +60,10 @@ Links::applyFilter('delete', function($self, $params, $chain) {
 
 	//Delete any relationships
 	WorksLinks::find('all', array(
+		'conditions' => array('link_id' => $link_id)
+	))->delete();
+
+	PublicationsLinks::find('all', array(
 		'conditions' => array('link_id' => $link_id)
 	))->delete();
 

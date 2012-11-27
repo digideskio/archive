@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Links;
 
 use app\models\WorksLinks;
+use app\models\PublicationsLinks;
 
 use app\models\Users;
 use app\models\Roles;
@@ -38,7 +39,7 @@ class LinksController extends \lithium\action\Controller {
 		$total = Links::count();
 
 		$links = Links::all(array(
-			'with' => array('WorksLinks'),
+			'with' => array('WorksLinks', 'PublicationsLinks'),
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
@@ -69,7 +70,13 @@ class LinksController extends \lithium\action\Controller {
 			'order' => array('earliest_date' => 'DESC')
 		));
 
-		return compact('link', 'works_links', 'auth');
+		$publications_links = PublicationsLinks::find('all', array(
+			'with' => array('Publications'),
+			'conditions' => array('link_id' => $link->id),
+			'order' => array('earliest_date' => 'DESC')
+		));
+
+		return compact('link', 'works_links', 'publications_links', 'auth');
 	}
 
 	public function add() {
@@ -123,6 +130,7 @@ class LinksController extends \lithium\action\Controller {
 
 		$link = Links::find($this->request->id);
 		$redirect = isset($this->request->query['work']) ? '/works/edit/'.$this->request->query['work'] : '';
+		$redirect = isset($this->request->query['publication']) ? '/publications/edit/'.$this->request->query['publication'] : $redirect;
 
 		if (!$link) {
 			return $this->redirect('Links::index');

@@ -134,6 +134,7 @@ Router::connect('/links/edit/{:id}', array('Links::edit'));
 Router::connect('/links/delete/{:id}', array('Links::delete'));
 
 Router::connect('/works_links/delete/{:id}', array('WorksLinks::delete'));
+Router::connect('/publications_links/delete/{:id}', array('PublicationsLinks::delete'));
 
 Router::connect('/notices/view/{:id}', array('Notices::view'));
 Router::connect('/notices/edit/{:id}', array('Notices::edit'));

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Publications;
 use app\models\PublicationsDocuments;
+use app\models\PublicationsLinks;
 
 use app\models\Users;
 use app\models\Roles;
@@ -142,8 +143,16 @@ class PublicationsController extends \lithium\action\Controller {
 					'order' => array('slug' => 'ASC')
 				));
 
+				$publication_links = PublicationsLinks::find('all', array(
+					'with' => array(
+						'Links'
+					),
+					'conditions' => array('publication_id' => $publication->id),
+					'order' => array('date_modified' =>  'DESC')
+				));
+			
 				//Send the retrieved data to the view
-				return compact('publication', 'publication_documents', 'auth');
+				return compact('publication', 'publication_documents', 'publication_links','auth');
 
 			}
 		}
@@ -219,11 +228,19 @@ class PublicationsController extends \lithium\action\Controller {
 			'order' => array('slug' => 'ASC')
 		));
 
+		$publication_links = PublicationsLinks::find('all', array(
+			'with' => array(
+				'Links'
+			),
+			'conditions' => array('publication_id' => $publication->id),
+			'order' => array('date_modified' =>  'DESC')
+		));
+
 		if (($this->request->data) && $publication->save($this->request->data)) {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
 		
-		return compact('publication', 'publications_types', 'publication_documents');
+		return compact('publication', 'publications_types', 'publication_documents', 'publication_links');
 	}
 
 	public function delete() {
