@@ -17,6 +17,22 @@ class LinksTest extends \lithium\test\Unit {
 		WorksLinks::all()->delete();
 	}
 
+	public function testDuplicateLinks() {
+
+		$data = array(
+			'url' => 'http://example.com'
+		);
+
+		$link = Links::create();
+
+		$this->assertTrue($link->save($data));
+
+		$new_link = Links::create();
+
+		$this->assertFalse($new_link->save($data), 'A duplicate link could be saved.');
+
+	}
+
 	public function testCreateLinksWithNoUrl() {
 		$link = Links::create();
 		$data = array (

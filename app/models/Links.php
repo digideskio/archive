@@ -2,6 +2,9 @@
 
 namespace app\models;
 
+use lithium\util\Inflector;
+use lithium\util\Validator;
+
 class Links extends \lithium\data\Model {
 
 	public $hasMany = array('WorksLinks', 'PublicationsLinks');
@@ -9,7 +12,8 @@ class Links extends \lithium\data\Model {
 	public $validates = array(
 		'url' => array(
 			array('notEmpty', 'message' => 'Please enter a URL.'),
-			array('url', 'message' => 'The URL is not valid.')
+			array('url', 'message' => 'The URL is not valid.'),
+			array('urlUnique', 'message' => 'The URL is already in use.')
 		),
 	);
 
@@ -53,6 +57,11 @@ class Links extends \lithium\data\Model {
 
 	}
 }
+
+Validator::add('urlUnique', function($value) {
+	$result = Links::findByUrl($value);
+	return count($result) == 0;
+});
 
 Links::applyFilter('delete', function($self, $params, $chain) {
 
