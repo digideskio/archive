@@ -59,8 +59,44 @@ $this->title($title);
 
 	<?php 
 		$has_works = sizeof($works_links) > 0 ? true : false; 
+		$has_exhibitions = sizeof($exhibitions_links) > 0 ? true : false; 
 		$has_publications = sizeof($publications_links) > 0 ? true : false; 
 	?>
+
+	<?php if ($has_exhibitions): ?>
+
+		<div class="navbar">
+			<div class="navbar-inner">
+			<ul class="nav">
+				<li class="meta"><a href="#">Exhibitions</a></li>
+			</ul>
+			</div>
+		</div>
+
+<?php foreach($exhibitions_links as $el): ?>
+<article>
+	<div class="alert">
+	<h1><?=$this->html->link($el->exhibition->title,'/exhibitions/view/'.$el->exhibition->slug); ?></h1>
+	
+	<?php 
+		date_default_timezone_set('UTC');
+		
+		$location = $el->exhibition->location();
+		$dates = $el->exhibition->dates();
+		$curator = $el->exhibition->curator;
+	?>
+	
+	<?php if($location) echo "<p>$location</p>"; ?>
+	<?php if($dates) echo "<p>$dates</p>"; ?>
+	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
+	
+	<span class="badge"><?=$el->exhibition->type ?> Show</span>
+	
+	</div>
+</article>
+<?php endforeach; ?>
+
+	<?php endif;?>
 
 	<?php if ($has_works): ?>
 

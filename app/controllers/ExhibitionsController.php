@@ -6,6 +6,7 @@ use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
 use app\models\Works;
 use app\models\ExhibitionsDocuments;
+use app\models\ExhibitionsLinks;
 
 use app\models\Users;
 use app\models\Roles;
@@ -122,6 +123,12 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'order' => $order
 			));
 
+			$exhibitions_links = ExhibitionsLinks::find('all', array(
+				'with' => 'Links',
+				'conditions' => array('exhibition_id' => $exhibition->id),
+				'order' => array('date_modified' =>  'DESC')
+			));
+
 			$exhibition_documents = ExhibitionsDocuments::find('all', array(
 				'with' => array(
 					'Documents',
@@ -132,7 +139,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'exhibitions_works', 'total', 'exhibition_documents', 'auth');
+			return compact('exhibition', 'exhibitions_works', 'total', 'exhibition_documents', 'exhibitions_links', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -188,6 +195,12 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $this->redirect('Exhibitions::index');
 		}
 
+		$exhibition_links = ExhibitionsLinks::find('all', array(
+			'with' => 'Links',
+			'conditions' => array('exhibition_id' => $exhibition->id),
+			'order' => array('date_modified' =>  'DESC')
+		));
+
 		$exhibition_documents = ExhibitionsDocuments::find('all', array(
 			'with' => array(
 				'Documents',
@@ -204,7 +217,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
 		}
 		
-		return compact('exhibition', "exhibition_documents");
+		return compact('exhibition', 'exhibition_documents', 'exhibition_links');
 	}
 
 	public function delete() {

@@ -74,11 +74,18 @@ $(document).ready(function() {
 
 				<?php 
 					$has_works = isset($link->works_links[0]->id) ? true : false; 
+					$has_exhibitions = isset($link->exhibitions_links[0]->id) ? true : false; 
 					$has_publications = isset($link->publications_links[0]->id) ? true : false; 
 				?>
 				<?php if($has_works): ?>
 					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has artwork" class="model-tip">
 					<i class="icon-picture"></i>
+					</a>
+				<?php endif; ?>
+
+				<?php if($has_exhibitions): ?>
+					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has exhibitions" class="model-tip">
+					<i class="icon-eye-open"></i>
 					</a>
 				<?php endif; ?>
 

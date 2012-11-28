@@ -58,6 +58,7 @@ $this->form->config(
     	<option value="Group">Group</option>
     </select>
     <?=$this->form->field('remarks', array('type' => 'textarea'));?>
+    <?=$this->form->field('url', array('label' => 'URL'));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/exhibitions', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>

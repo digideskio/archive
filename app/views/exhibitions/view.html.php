@@ -50,6 +50,13 @@ $this->title($exhibition->title);
 	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
 	
 	<p><?=$exhibition->remarks ?></p>
+
+	<?php if(sizeof($exhibitions_links) > 0): ?>
+
+		<?php foreach($exhibitions_links as $el): ?>
+			<p><?=$this->html->link($el->link->url, $el->link->url); ?></p>
+		<?php endforeach; ?>
+	<?php endif; ?>
 	
 	<p><span class="badge"><?=$exhibition->type ?> Show</span></p>
 	</div>
