@@ -108,6 +108,8 @@ $this->title($title);
 </tr>
 
 <?php endforeach; ?>
+</tbody>
+</table>
 	<?php endif; ?>
 
 	<?php if ($has_publications): ?>
@@ -119,7 +121,6 @@ $this->title($title);
 			</ul>
 			</div>
 		</div>
-	<?php endif; ?>
 
 <table class="table table-bordered">
 
@@ -142,10 +143,10 @@ $this->title($title);
 		<?=$pl->publication->publication_number?>
 			<?php 
 				if($pl->publication->storage_number) {
-					echo "<br/><span class='label label-success'>$pl->publication->storage_number</span>";
+					echo "<br/><span class='label label-success'>" . $pl->publication->storage_number. "</span>";
 				}
 				if($pl->publication->storage_location) {
-					echo "<br/><span class='label'>$pl->publication->storage_location</span>";
+					echo "<br/><span class='label'>" . $pl->publication->storage_location ."</span>";
 				}
 
 				$documents = $pl->publication->documents('all');
@@ -172,6 +173,7 @@ $this->title($title);
 </tr>
     
 <?php endforeach; ?>
-    
+	<?php endif; ?>
+
 </tbody>
 </table>
