@@ -10,7 +10,7 @@ class Publications extends \app\models\Archives {
 	public $hasMany = array('PublicationsDocuments', 'PublicationsLinks');
 
 	public static function types() {
-		return array("Newspaper", "Magazine", "Catalogue", "Monograph");	
+		return array("Newspaper", "Magazine", "Catalogue", "Monograph", "Book", "Website");
 	}
 
 	public function byline($entity) {
