@@ -2,6 +2,9 @@
 
 $this->title($publication->title);
 
+$hasDocuments = sizeof($publication_documents) > 0;
+$hasLinks = sizeof($publication_links) > 0;
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -81,6 +84,19 @@ $this->title($publication->title);
     	<p>
     		<?php echo $publication->citation(); ?>
     	</p>
+		
+		<?php if ($hasLinks): ?>
+
+			<?php foreach ($publication_links as $pl): ?>
+
+				<p><a href="<?=$pl->link->url ?>" target="_blank">
+					<strong><?=$pl->link->elision()?></strong>
+				</a></p>
+
+			<? endforeach; ?>
+
+		<? endif; ?>
+
 		</div>
 	
 		<table class="table">
@@ -149,11 +165,6 @@ $this->title($publication->title);
 		
 		</table>
 	
-		<?php
-			$hasDocuments = sizeof($publication_documents) > 0;
-			$hasLinks = sizeof($publication_links) > 0;
-		?>
-
 		<?php if ($hasDocuments || $hasLinks): ?>
 
 			<table class="table">
