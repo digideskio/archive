@@ -25,11 +25,16 @@ $this->title('Publications');
 			<?=$this->html->link('Index','/publications'); ?>
 		</li>
 
+		<li class="dropdown <?php if ($type) { echo 'active'; } ?>">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter <b class="caret"></b></a>
+			<ul class="dropdown-menu">
 		<?php foreach($publications_types as $pt): ?>
 			<li <?php if ($pt == $type) { echo 'class="active"'; } ?>>
 				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
 			</li>
 		<?php endforeach; ?>
+			</ul>
+		</li>
 
 		<li>
 			<?=$this->html->link('Search','/publications/search'); ?>

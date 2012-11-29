@@ -23,11 +23,16 @@ $this->title('Publications');
 			<?=$this->html->link('Index','/publications'); ?>
 		</li>
 
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter <b class="caret"></b></a>
+			<ul class="dropdown-menu">
 		<?php foreach($publications_types as $pt): ?>
 			<li>
 				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
 			</li>
 		<?php endforeach; ?>
+			</ul>
+		</li>
 
 		<li class="active">
 			<?=$this->html->link('Search','/publications/search'); ?>
