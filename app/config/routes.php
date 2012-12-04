@@ -74,14 +74,16 @@ Router::connect('/users/view/{:username}', array('Users::view'));
 Router::connect('/users/edit/{:username}', array('Users::edit'));
 Router::connect('/users/delete/{:username}', array('Users::delete'));
 
-Router::connect('/collections/view/{:slug}', array('Collections::view'));
-Router::connect('/collections/edit/{:slug}', array('Collections::edit'));
-Router::connect('/collections/history/{:slug}', array('Collections::history'));
-Router::connect('/collections/publish/{:slug}', array('Collections::publish'));
-Router::connect('/collections/package/{:slug}', array('Collections::package'));
-Router::connect('/collections/delete/{:slug}', array('Collections::delete'));
+Router::connect('/albums', array('Collections::index'));
+Router::connect('/albums/add', array('Collections::add'));
+Router::connect('/albums/view/{:slug}', array('Collections::view'));
+Router::connect('/albums/edit/{:slug}', array('Collections::edit'));
+Router::connect('/albums/history/{:slug}', array('Collections::history'));
+Router::connect('/albums/publish/{:slug}', array('Collections::publish'));
+Router::connect('/albums/package/{:slug}', array('Collections::package'));
+Router::connect('/albums/delete/{:slug}', array('Collections::delete'));
 
-Router::connect('/collections_works/delete/{:id}', array('CollectionsWorks::delete'));
+Router::connect('/albums_works/delete/{:id}', array('CollectionsWorks::delete'));
 
 Router::connect('/works/pages/{:page:[0-9]+}', array('Works::index'));
 Router::connect('/works/view/{:slug}', array('Works::view'));

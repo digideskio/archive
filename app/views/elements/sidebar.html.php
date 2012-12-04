@@ -5,8 +5,6 @@
 	<div class="span2 affix">
 	<div class="well" style="padding: 8px 0;">
 		<ul class="nav nav-list">
-			<li <?php if ($c == 'collections') echo 'class="active"'; ?> >
-				<a href="/collections"><i class="icon-briefcase"></i> Collections</a></li>
 			<li <?php if ($c == 'works') echo 'class="active"'; ?> >
 				<a href="/works"><i class="icon-picture"></i> Artwork</a></li>
 			<li <?php if ($c == 'architectures') echo 'class="active"'; ?> >
@@ -16,6 +14,8 @@
 			<li <?php if ($c == 'publications') echo 'class="active"'; ?> >
 				<a href="/publications"><i class="icon-book"></i> Publications</a></li>
 			<li class="divider"></li>
+			<li <?php if ($c == 'collections') echo 'class="active"'; ?> >
+				<a href="/albums"><i class="icon-briefcase"></i> Albums</a></li>
 			<li <?php if ($c == 'documents') echo 'class="active"'; ?> >
 				<a href="/documents"><i class="icon-hdd"></i> Documents</a></li>
 			<li <?php if ($c == 'links') echo 'class="active"'; ?> >

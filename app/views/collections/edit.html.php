@@ -18,12 +18,12 @@ $this->form->config(
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Collections','/collections'); ?>
+	<?=$this->html->link('Albums', $this->url(array('Collections::index'))); ?>
 	<span class="divider">/</span>
 	</li>
 
 	<li>
-	<?=$this->html->link($collection->title,'/collections/view/'.$collection->slug); ?>
+	<?=$this->html->link($collection->title, $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -36,20 +36,20 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/collections/view/'.$collection->slug); ?></li>
+	<li><?=$this->html->link('View', $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
 	<li class="active">
 		<a href="#">
 			Edit
 		</a>
 	</li>
-	<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
-	<li><?=$this->html->link('Packages','/collections/package/'.$collection->slug); ?></li>
+	<li><?=$this->html->link('History', $this->url(array('Collections::history', 'slug' => $collection->slug))); ?></li>
+	<li><?=$this->html->link('Packages', $this->url(array('Collections::package', 'slug' => $collection->slug))); ?></li>
 </ul>
 
 
 <div class="well">
 <?=$this->form->create($collection); ?>
-	<legend>Collection Info</legend>
+	<legend>Album Info</legend>
     <?=$this->form->field('title',array('value'=>$collection->title)); ?>
 	<?=$this->form->field('slug', array('label' => 'Permalink', 'disabled' => 'disabled'));?>
     <?=$this->form->field('description',array(
@@ -57,7 +57,7 @@ $this->form->config(
     	'value'=>$collection->description
     )); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/collections/view/'.$collection->slug, array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel', $this->url(array('Collections::view', 'slug' => $collection->slug)), array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
 
@@ -68,7 +68,7 @@ $this->form->config(
 	<legend>Edit</legend>
 
 	<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-		<i class="icon-white icon-trash"></i> Delete Collection
+		<i class="icon-white icon-trash"></i> Delete Album
 	</a>
 
 </div>
@@ -77,15 +77,15 @@ $this->form->config(
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete Collection</h3>
+			<h3>Delete Album</h3>
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>?</p>
 			
-			<p>By selecting <code>Delete</code>, you will remove this Collection from the listings. Are you sure you want to continue?</p>
+			<p>By selecting <code>Delete</code>, you will remove this Album from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($collection, array('url' => "/collections/delete/$collection->slug", 'method' => 'post')); ?>
+			<?=$this->form->create($collection, array('url' => $this->url(array('Collections::delete', 'slug' => $collection->slug)), 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

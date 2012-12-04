@@ -9,12 +9,12 @@ $this->title($collection->title);
 	<ul class="breadcrumb">
 
 	<li>
-		<?=$this->html->link('Collections','/collections'); ?>
+		<?=$this->html->link('Albums', $this->url(array('Collections::index'))); ?>
 		<span class="divider">/</span>
 	</li>
 
 	<li>
-		<?=$this->html->link($collection->title,'/collections/view/'.$collection->slug); ?>
+		<?=$this->html->link($collection->title, $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
 		<span class="divider">/</span>
 	</li>
 	
@@ -29,31 +29,20 @@ $this->title($collection->title);
 <div class="actions">
 
 	<ul class="nav nav-tabs">
-		<li><?=$this->html->link('View','/collections/view/'.$collection->slug); ?></li>
+		<li><?=$this->html->link('View', $this->url(array('Collections::view', 'slug' => $collection->slug))); ?></li>
 
 		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 		
-			<li><?=$this->html->link('Edit','/collections/edit/'.$collection->slug); ?></li>
+			<li><?=$this->html->link('Edit', $this->url(array('Collections::edit', 'slug' => $collection->slug))); ?></li>
 		
 		<?php endif; ?>
 
-		<li><?=$this->html->link('History','/collections/history/'.$collection->slug); ?></li>
+		<li><?=$this->html->link('History', $this->url(array('Collections::history', 'slug' => $collection->slug))); ?></li>
 
-		<li class="active"><?=$this->html->link('Packages','/collections/package/'.$collection->slug); ?></li>
+		<li class="active"><?=$this->html->link('Packages', $this->url(array('Collections::package', 'slug' => $collection->slug))); ?></li>
 
 	</ul>
 
-<!--	<div class="btn-toolbar">
-
-			<div class="btn-group">
-				<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-gift icon-white"></i> Add Package <span class="caret"</span></button>
-				<ul class="dropdown-menu">
-					<li><a href="/packages/add"><i class="icon-lock"></i> Secure Package</a></li>
-					<li><a href="/packages/add"><i class="icon-download-alt"></i> Public Package</a></li>
-				</ul>
-			</div>
-	</div>
--->
 </div>
 
 

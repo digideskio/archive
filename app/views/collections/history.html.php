@@ -1,7 +1,7 @@
 
 <?php 
 
-$this->title('Collection History');
+$this->title('Album History');
 
 ?>
 
@@ -10,12 +10,12 @@ $this->title('Collection History');
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Collections','/collections'); ?>
+	<?=$this->html->link('Albums', $this->url(array('Collections::index'))); ?>
 	<span class="divider">/</span>
 	</li>
 
 	<li>
-	<?=$this->html->link($collection->title,'/collections/view/'.$collection->slug); ?>
+	<?=$this->html->link($collection->title, $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
 	<span class="divider">/</span>
 	</li>
 
@@ -29,12 +29,12 @@ $this->title('Collection History');
 
 <ul class="nav nav-tabs">
 	<li>
-		<?=$this->html->link('View','/collections/view/'.$collection->slug); ?>
+		<?=$this->html->link('View', $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
 	</li>
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit','/collections/edit/'.$collection->slug); ?></li>
+		<li><?=$this->html->link('Edit', $this->url(array('Collections::edit', 'slug' => $collection->slug))); ?></li>
 	
 	<?php endif; ?>
 
@@ -42,7 +42,7 @@ $this->title('Collection History');
 		<a href="#">History</a>
 	</li>
 
-	<li><?=$this->html->link('Packages','/collections/package/'.$collection->slug); ?></li>
+	<li><?=$this->html->link('Packages', $this->url(array('Collections::package', 'slug' => $collection->slug))); ?></li>
 </ul>
 
 <table class="table">

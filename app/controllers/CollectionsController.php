@@ -108,7 +108,7 @@ class CollectionsController extends \lithium\action\Controller {
 		$collection = Collections::create();
 
 		if (($this->request->data) && $collection->save($this->request->data)) {
-			return $this->redirect(array('Collections::view', 'args' => array($collection->slug)));
+			return $this->redirect(array('Collections::view', 'slug' => $collection->slug));
 		}
 		return compact('collection');
 	}
@@ -135,7 +135,7 @@ class CollectionsController extends \lithium\action\Controller {
 			return $this->redirect('Collections::index');
 		}
 		if (($this->request->data) && $collection->save($this->request->data)) {
-			return $this->redirect(array('Collections::view', 'args' => array($collection->slug)));
+			return $this->redirect(array('Collections::view', 'slug' => $collection->slug));
 		}
 		return compact('collection');
 	}

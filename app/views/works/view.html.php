@@ -165,15 +165,15 @@ $this->title($work->title);
 				
 					<?php if ($hasCollections) : ?>
 					<tr>
-						<td><i class="icon-book"></i></td>
-						<td class="meta">Collections</td>
+						<td><i class="icon-briefcase"></i></td>
+						<td class="meta">Albums</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
 							
 								<?php foreach($collections as $collection): ?>
 								<li><strong><?=$this->html->link(
 									$collection->title,
-									'/collections/view/'.$collection->slug
+									$this->url(array('Collections::view', 'slug' => $collection->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
 							

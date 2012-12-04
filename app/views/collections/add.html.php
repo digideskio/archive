@@ -1,6 +1,6 @@
 <?php 
 
-$this->title('Add a Collection');
+$this->title('Add an Album');
 
 $this->form->config(
     array( 
@@ -18,7 +18,7 @@ $this->form->config(
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Collections','/collections'); ?>
+	<?=$this->html->link('Albums',$this->url('Collections::index')); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -33,23 +33,23 @@ $this->form->config(
 <div class="actions">
 	<ul class="nav nav-tabs">
 		<li>
-			<?=$this->html->link('Index','/collections'); ?>
+			<?=$this->html->link('Index',$this->url('Collections::index')); ?>
 		</li>
 
 	</ul>
 
 	<div class="btn-toolbar">
-			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Collection</a>
+			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add an Album</a>
 	</div>
 </div>
 
 <div class="well">
 <?=$this->form->create($collection); ?>
-	<legend>Collection Info</legend>
+	<legend>Album Info</legend>
     <?=$this->form->field('title');?>
     <?=$this->form->field('description', array('type' => 'textarea'));?>
     <?=$this->form->hidden('class'); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/collections', array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel',$this->url('Collections::index'), array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
