@@ -58,9 +58,30 @@ class Links extends \lithium\data\Model {
 	}
 }
 
-Validator::add('urlUnique', function($value) {
-	$result = Links::findByUrl($value);
-	return count($result) == 0;
+Validator::add('urlUnique', function($value, $rule, $options) {
+
+	// Get the submitted values
+	$id = isset($options["values"]["id"]) ? $options["values"]["id"] : NULL;
+	
+	// Check event, set during the call to Model::save()
+	$event = $options["events"];  // 'update' OR 'create'
+	
+	// If the id is set, look up what it belongs to
+	if($id) {
+		$links = Links::first($id);
+	}
+	
+	// Check for conflicts if the record is new, or if the stored value is
+	// different from the submitted one
+	if
+	(
+		($event == 'create') ||
+		($event == 'update' && $id && $links->url != $value)
+	) {
+		$conflicts = Links::count(array('url' => $value));
+		if($conflicts) return false;
+	}
+	return true;
 });
 
 Links::applyFilter('delete', function($self, $params, $chain) {

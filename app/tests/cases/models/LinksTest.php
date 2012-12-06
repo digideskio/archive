@@ -33,6 +33,19 @@ class LinksTest extends \lithium\test\Unit {
 
 	}
 
+	public function testResavingLink() {
+		
+		$data = array(
+			'url' => 'http://example.org'
+		);
+
+		$link = Links::create();
+
+		$this->assertTrue($link->save($data));
+
+		$this->assertTrue($link->save($data), 'Could not save an existing link.');
+	}
+
 	public function testCreateLinksWithNoUrl() {
 		$link = Links::create();
 		$data = array (
