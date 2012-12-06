@@ -40,7 +40,7 @@ $hasLinks = sizeof($publication_links) > 0;
 <div class="row">
 	<div class="span6">
 
-		<?=$this->partial->models_documents(array('models_documents' =>  $publication_documents)); ?>	
+		<?=$this->partial->archives_documents(array('archives_documents' =>  $publication_documents)); ?>	
 		
 	</div>
 	

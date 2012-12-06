@@ -37,7 +37,7 @@ $this->title($architecture->title);
 <div class="row">
 	<div class="span6">
 	
-		<?=$this->partial->models_documents(array('models_documents' => $architecture_documents)); ?>
+		<?=$this->partial->archives_documents(array('archives_documents' => $architecture_documents)); ?>
 
 	</div>
 	

@@ -63,7 +63,7 @@ $this->title($exhibition->title);
 
 <?php if(sizeof($exhibition_documents) > 0): ?>
 
-	<?=$this->partial->models_documents(array('models_documents' => $exhibition_documents, 'showBar' => true)); ?>
+	<?=$this->partial->archives_documents(array('archives_documents' => $exhibition_documents, 'showBar' => true)); ?>
 
 <?php endif; ?>
 
