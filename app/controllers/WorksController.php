@@ -37,10 +37,13 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$limit = 50;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('earliest_date' => 'DESC');
 		$total = Works::count();
+
+		$limit = ($limit == 'all') ? $total : $limit;
+
 		$works = Works::find('all', array(
 			'with' => 'WorksDocuments',
 			'limit' => $limit,
