@@ -89,38 +89,12 @@ $this->form->config(
 
 	<div class="span5">
 
-		<div class="well">
-			<legend>Links</legend>
-			<table class="table">
-				<?php foreach ($exhibition_links as $el): ?>
-				
-					<tr>
-						<td>
-							<?=$this->html->link($el->link->elision(), $el->link->url); ?>
-						</td>
-						<td align="right" style="text-align:right">
-				<?=$this->form->create($el, array('url' => "/exhibitions_links/delete/$el->id", 'method' => 'post')); ?>
-				<input type="hidden" name="exhibition_slug" value="<?=$exhibition->slug ?>" />
-				<?=$this->html->link('Edit','/links/edit/'.$el->link->id.'?exhibition='.$exhibition->slug, array('class' => 'btn btn-mini')); ?>
-				<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
-				<?=$this->form->end(); ?>
-						</td>
-					</tr>
-
-				<?php endforeach; ?>
-			</table>
-
-			<?=$this->form->create(null, array('url' => "/exhibitions_links/add/", 'method' => 'post')); ?>
-				<legend>Add a Link</legend>
-				<?=$this->form->field('url', array('label' => 'URL'));?>
-				
-				<input type="hidden" name="title" value="<?=$exhibition->title ?>?" />
-				<input type="hidden" name="exhibition_slug" value="<?=$exhibition->slug ?>" />
-				<input type="hidden" name="exhibition_id" value="<?=$exhibition->id ?>" />
-			
-			<?=$this->form->submit('Add Link', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->form->end(); ?>
-		</div>
+	<?=$this->partial->archives_links_edit(array(
+		'archive' => $exhibition,
+		'archives_links' => $exhibition_links,
+		'controller' => 'exhibitions_links',
+		'model' => 'exhibition'
+	)); ?>		
 
 		<div class="well">
 			<legend>Documents</legend>
