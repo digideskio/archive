@@ -13,3 +13,6 @@
 [submodule "libraries/li3_filesystem"]
 	path = libraries/li3_filesystem
 	url = git://github.com/hans-d/li3_filesystem.git
+[submodule "libraries/li3_partials"]
+	path = libraries/li3_partials
+	url = git://github.com/dmondark/li3_partials.git

@@ -128,4 +128,5 @@ Libraries::add('li3_access');
 Libraries::add('Imagine');
 Libraries::add('li3_pdf');
 Libraries::add('li3_filesystem');
+Libraries::add('li3_partials');
 ?>
