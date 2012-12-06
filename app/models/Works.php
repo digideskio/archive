@@ -8,7 +8,7 @@ use lithium\security\Auth;
 
 class Works extends \app\models\Archives {
 
-	public $hasMany = array('CollectionsWorks', 'WorksDocuments', 'WorksHistories', 'WorksLinks');
+	public $hasMany = array('CollectionsWorks', 'ExhibitionsWorks', 'WorksDocuments', 'WorksHistories', 'WorksLinks');
 
 	public $belongsTo = array('Users');
 
@@ -38,19 +38,13 @@ class Works extends \app\models\Archives {
     
     public function notes($entity) {
 						
-		$dimensions = $entity->dimensions();
-		
 		$materials = $entity->materials ? $entity->materials : '';
-		$dimensions = $dimensions ? $dimensions : '';
-		$measurement_remarks = $entity->measurement_remarks ? $entity->measurement_remarks : '';
 		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
 		$lender = $entity->lender ? 'Lender: ' . $entity->lender : '';
 		$remarks =  $entity->remarks ? $entity->remarks : '';
 		
 		$info = array_filter(array(
 			$materials,
-			$dimensions,
-			$measurement_remarks,
 			$quantity,
 			$lender,
 			$remarks,

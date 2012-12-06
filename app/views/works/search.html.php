@@ -46,7 +46,6 @@ $this->title('Search Artwork');
 	</div>
 </div>
 
-
 <div class="well">
 
 	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
@@ -74,42 +73,4 @@ $this->title('Search Artwork');
 	
 </div>
 
-<table class="table table-bordered">
-
-<thead>
-	<tr>
-		<th>ID</th>
-		<th>Image</th>
-		<th>Title</th>
-		<th>Year</th>
-		<th>Notes</th>
-		<th>Classification</th>
-	</tr>
-</thead>
-		
-<tbody>
-
-<?php foreach($works as $work): ?>
-
-<tr>
-	<td><?=$work->creation_number?></td>
-	
-	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $work->documents('first'); if($document->id) { ?>	
-			<a href="/works/view/<?=$work->slug?>">
-			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
-			</a>
-		<?php } else { ?>
-			<span class="label">No Preview</span>
-		<?php } ?>
-	</td>
-    <td><?=$this->html->link($work->title,'/works/view/'.$work->slug); ?></td>
-    <td><?=$work->years(); ?></td>
-    <td><?php echo $work->notes(); ?></td>
-    <td><?=$work->classification ?></td>
-</tr>
-    
-<?php endforeach; ?>
-    
-</tbody>
-</table>
+<?=$this->partial->works(compact('works')); ?>

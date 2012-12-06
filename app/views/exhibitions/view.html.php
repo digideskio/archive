@@ -102,64 +102,6 @@ $this->title($exhibition->title);
 
 <?php if($total > 0): ?>
 
-<?php if(sizeof($exhibition_documents) > 0): ?>
-
-	<div class="navbar">
-		<div class="navbar-inner">
-			<ul class="nav">
-				<li class="meta"><a href="#">Artwork</a></li>
-			</ul>
-		</div>
-	</div>
-
-<?php endif; ?>
-
-<table class="table table-bordered">
-
-<thead>
-	<tr>
-		<th>ID</th>
-		<th>Image</th>
-		<th>Title</th>
-		<th>Year</th>
-		<th>Notes</th>
-		<th>Classification</th>
-	</tr>
-</thead>
-		
-<tbody>
-
-<?php foreach($exhibitions_works as $ew): ?>
-
-<tr>
-	<td><?=$ew->work->creation_number?></td>
-	
-	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-	
-		<?php 
-			$document = $ew->work->documents('first');
-		
-			if($document->id) {
-				$thumbnail = $document->view();
-				$work_slug = $ew->work->slug;
-				echo "<a href='/works/view/$work_slug'>";
-				echo "<img width='125' height='125' src='/files/$thumbnail' />";
-				echo "</a>";
-			} else {
-				echo '<span class="label label-warning">No Image</span>';
-			}
-		
-		?>
-	
-	</td>
-    <td><?=$this->html->link($ew->work->title,'/works/view/'.$ew->work->slug); ?></td>
-    <td><?=$ew->work->years(); ?></td>
-    <td><?php echo $ew->work->notes(); ?></td>
-    <td><?=$ew->work->classification ?></td>
-</tr>
-    
-<?php endforeach; ?>
-
-</tbody>
+<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
 
 <?php endif; ?>

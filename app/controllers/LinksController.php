@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Links;
 
+use app\models\Works;
 use app\models\WorksLinks;
 use app\models\ExhibitionsLinks;
 use app\models\PublicationsLinks;
@@ -65,8 +66,8 @@ class LinksController extends \lithium\action\Controller {
 
 		$link = Links::first($this->request->id);
 
-		$works_links = WorksLinks::find('all', array(
-			'with' => array('Works'),
+		$works = Works::find('all', array(
+			'with' => array('WorksLinks'),
 			'conditions' => array('link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
@@ -83,7 +84,7 @@ class LinksController extends \lithium\action\Controller {
 			'order' => array('earliest_date' => 'DESC')
 		));
 
-		return compact('link', 'works_links', 'exhibitions_links', 'publications_links', 'auth');
+		return compact('link', 'works', 'exhibitions_links', 'publications_links', 'auth');
 	}
 
 	public function add() {

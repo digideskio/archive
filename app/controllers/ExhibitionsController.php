@@ -117,8 +117,8 @@ class ExhibitionsController extends \lithium\action\Controller {
 			));
 			$order = 'earliest_date DESC';
 			
-			$exhibitions_works = ExhibitionsWorks::find('all', array(
-				'with' => 'Works',
+			$works = Works::find('all', array(
+				'with' => 'ExhibitionsWorks',
 				'conditions' => array('exhibition_id' => $exhibition->id),
 				'order' => $order
 			));
@@ -139,7 +139,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'exhibitions_works', 'total', 'exhibition_documents', 'exhibitions_links', 'auth');
+			return compact('exhibition', 'works', 'total', 'exhibition_documents', 'exhibitions_links', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
