@@ -23,7 +23,16 @@ $this->title('Search');
 
 	<?php 
 		$has_works = sizeof($works) > 0 ? true : false; 
+		$has_documents = sizeof($documents) > 0 ? true : false; 
 	?>
+
+	<?php if (!$has_works && !$has_documents): ?>
+
+		<div class="alert alert-error">
+			<p>We could find nothing in the archive called <strong><?=$query ?></strong>.</p>
+		</div>
+
+	<?php endif; ?>
 
 	<?php if ($has_works): ?>
 
@@ -31,26 +40,8 @@ $this->title('Search');
 
 	<? endif; ?>
 
-<div class="navbar">
-	<div class="navbar-inner">
-	<ul class="nav">
-		<li class="meta"><a href="#">Documents</a></li>
-	</ul>
-	</div>
-</div>
+	<?php if ($has_documents): ?>
 
-<ul class="thumbnails">
-<?php foreach ($documents as $document): ?>
+		<?=$this->partial->documents(array('documents' => $documents, 'showBar' => true)); ?>
 
-	<?php
-		$span = 'span2';
-	?>
-	
-	<li class="<?=$span?>">
-		<a href="/documents/view/<?=$document->slug?>"  class="thumbnail" title="<?=$document->slug?>">
-			<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
-		</a>
-	</li>
-
-<?php endforeach; ?>
-</ul>
+	<? endif; ?>

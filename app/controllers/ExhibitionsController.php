@@ -62,7 +62,8 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		$order = array('earliest_date' => 'DESC');
 
-		$conditions = array();
+		$condition = '';
+		$query = '';
 
 		$data = $this->request->data;
 

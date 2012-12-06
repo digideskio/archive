@@ -77,48 +77,4 @@ $this->title('Publications');
 	
 </div>
 
-<table class="table table-bordered">
-
-<thead>
-	<tr>
-		<th><i class="icon-barcode"></i></th>
-		<th>Author</th>
-		<th>Title</th>
-		<th style="width: 100px;">Date</th>
-		<th>Publisher</th>
-	</tr>
-</thead>
-		
-<tbody>
-
-<?php foreach($publications as $publication): ?>
-
-<tr>
-	<td>
-		<?=$publication->publication_number?>
-			<?php 
-				if($publication->storage_number) {
-					echo "<br/><span class='label label-success'>$publication->storage_number</span>";
-				}
-				if($publication->storage_location) {
-					echo "<br/><span class='label'>$publication->storage_location</span>";
-				}
-
-				$documents = $publication->documents('all');
-				if(sizeof($documents) > 0) {
-					echo "<br/><span class='badge badge-info'>" . sizeof($documents) . "</span>";
-				}
-			?>
-	
-	</td>
-	<td><?=$publication->byline(); ?></td>
-	
-    <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>
-    <td><?=$publication->dates(); ?></td>
-    <td><?=$publication->publisher ?></td>
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-</table>
+<?=$this->partial->publications(compact('publications')); ?>

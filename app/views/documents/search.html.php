@@ -65,20 +65,4 @@ $this->title('Search Documents');
 	
 </div>
 
-<ul class="thumbnails">
-
-<?php foreach($documents as $document): ?>
-
-	<?php
-		$span = 'span2';
-	?>
-	
-	<li class="<?=$span?>">
-		<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
-			<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
-		</a>
-	</li>
-
-<?php endforeach; ?>
-
-</ul>
+<?=$this->partial->documents(compact('documents')); ?>
