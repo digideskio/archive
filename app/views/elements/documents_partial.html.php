@@ -1,4 +1,3 @@
-
 <?php if (isset($showBar) && $showBar): ?>
 
 <div class="navbar">

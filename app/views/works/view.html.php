@@ -38,42 +38,8 @@ $this->title($work->title);
 
 <div class="row">
 	<div class="span6">
-	
-		<ul class="thumbnails">
-			
-				<?php
-					$num_thumbs = sizeof($work_documents);
-					$span = 'span3';// $span = $num_thumbs > 1 ? 'span3' : 'span6';
-					$size = 'thumb';// $size = $num_thumbs > 1 ? 'thumb' : 'small';
-				?>
-		
-			<?php foreach($work_documents as $wd): ?>
-			
-				<li class="<?=$span?>">
-					<a href="/documents/view/<?=$wd->document->slug?>" class="thumbnail">
-						
-						<?php if ($wd->document->published): ?>
-							<span class="label label-success">Published</span>
-						<?php endif; ?>
-						<?php if (!$wd->document->published): ?>
-							<span class="label label-important">Private</span>
-						<?php endif; ?>
 
-						<img src="/files/<?=$wd->document->view(array('action' => $size)); ?>" alt="<?=$wd->document->title ?>">
-					</a>
-				</li>
-			
-			<?php endforeach; ?>
-			
-			<?php if(sizeof($work_documents) == 0): ?>
-				<li class="<?=$span?>">
-				<div class="thumbnail">
-				<span class="label label-warning">No Image</span>
-				</div>
-				</li>
-			<?php endif; ?>
-		
-		</ul>
+		<?=$this->partial->models_documents(array('models_documents' => $work_documents)); ?>
 		
 	</div>
 	

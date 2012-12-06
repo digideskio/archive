@@ -37,34 +37,8 @@ $this->title($architecture->title);
 <div class="row">
 	<div class="span6">
 	
-		<ul class="thumbnails">
-			
-				<?php
-					$num_thumbs = sizeof($architecture_documents);
-					$span = $num_thumbs > 1 ? 'span3' : 'span6';
-					$size = $num_thumbs > 1 ? 'thumb' : 'small';
-				?>
-		
-			<?php foreach($architecture_documents as $ad): ?>
-			
-				<li class="<?=$span?>">
-					<a href="/documents/view/<?=$ad->document->slug?>" class="thumbnail">
-						<img src="/files/<?=$ad->document->view(array('action' => $size)); ?>" alt="<?=$ad->document->title ?>">
-					</a>
-				</li>
-			
-			<?php endforeach; ?>
-			
-			<?php if(sizeof($architecture_documents) == 0): ?>
-				<li class="<?=$span?>">
-				<div class="thumbnail">
-				<span class="label label-warning">No Image</span>
-				</div>
-				</li>
-			<?php endif; ?>
-		
-		</ul>
-		
+		<?=$this->partial->models_documents(array('models_documents' => $architecture_documents)); ?>
+
 	</div>
 	
 	<div class="span4">

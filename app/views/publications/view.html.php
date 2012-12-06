@@ -38,47 +38,13 @@ $hasLinks = sizeof($publication_links) > 0;
 </ul>
 
 <div class="row">
-	<div class="span4">
+	<div class="span6">
 
-		<ul class="thumbnails">
-			
-				<?php
-					$num_thumbs = sizeof($publication_documents);
-					$span = 'span4';
-					$size = 'thumb';
-				?>
-		
-			<?php foreach($publication_documents as $pd): ?>
-			
-				<li class="<?=$span?>">
-					<a href="/documents/view/<?=$pd->document->slug?>" class="thumbnail">
-						
-						<?php if ($pd->document->published): ?>
-							<span class="label label-success">Published</span>
-						<?php endif; ?>
-						<?php if (!$pd->document->published): ?>
-							<span class="label label-important">Private</span>
-						<?php endif; ?>
-
-						<img src="/files/<?=$pd->document->view(array('action' => $size)); ?>" alt="<?=$pd->document->title ?>">
-					</a>
-				</li>
-			
-			<?php endforeach; ?>
-			
-			<?php if(sizeof($publication_documents) == 0): ?>
-				<li class="<?=$span?>">
-				<div class="thumbnail">
-				<span class="label label-warning">No Image</span>
-				</div>
-				</li>
-			<?php endif; ?>
-		
-		</ul>
+		<?=$this->partial->models_documents(array('models_documents' =>  $publication_documents)); ?>	
 		
 	</div>
 	
-	<div class="span6">
+	<div class="span4">
 	
 		<div class="alert alert-block">
     	<p>
