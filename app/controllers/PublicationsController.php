@@ -180,13 +180,14 @@ class PublicationsController extends \lithium\action\Controller {
         }
 
 		$publications_types = Publications::types();
-        
+		$pub_types_list = array_combine($publications_types, $publications_types);
+
 		$publication = Publications::create();
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
-		return compact('publication', 'publications_types');
+		return compact('publication', 'pub_types_list');
 	}
 
 	public function edit() {
@@ -214,6 +215,7 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 
 		$publications_types = Publications::types();
+		$pub_types_list = array_combine($publications_types, $publications_types);
 
 		if (!$publication) {
 			return $this->redirect('Publications::index');
@@ -240,7 +242,7 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
 		}
 		
-		return compact('publication', 'publications_types', 'publication_documents', 'publication_links');
+		return compact('publication', 'pub_types_list', 'publication_documents', 'publication_links');
 	}
 
 	public function delete() {

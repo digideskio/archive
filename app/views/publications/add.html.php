@@ -49,17 +49,13 @@ $this->form->config(array('templates' => array(
 <div class="well">
 <?=$this->form->create($publication); ?>
 	<legend>Publication Info</legend>
-	
+
+	<?php $pub_types_list = array_merge(array('' => 'Choose one...'), $pub_types_list); ?>
+
 	<?=$this->form->label('type', 'Category'); ?>
-	<select name="type">
-		<option value=''>Choose one...</option>
-		<?php foreach($publications_types as $pt): ?>
-		<option value="<?=$pt ?>" <?php if ($publication->type == $pt) { echo 'selected="selected"'; } ?>>
-			<?=$pt ?>
-		</option>
-		<?php endforeach; ?>
-	</select>
-	 <span class="help-block">Is the publication an interview?</span>
+	<?=$this->form->select('type', $pub_types_list); ?>
+	
+	<span class="help-block">Is the publication an interview?</span>
 	
 	<label class="checkbox">
     <?=$this->form->checkbox('interview');?> Interview

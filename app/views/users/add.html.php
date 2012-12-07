@@ -57,14 +57,7 @@ $this->form->config(
     <?=$this->form->field('password', array('type' => 'password')); ?>
     <?=$this->form->field('name', array('autocomplete' => 'off'));?>
     <?=$this->form->field('email', array('autocomplete' => 'off'));?>
-    
-    <?=$this->form->label('role', 'Role'); ?>
-    
-		<select name="role_id">
-			<?php foreach($roles as $role): ?>
-			<option value="<?=$role->id ?>"><?=$role->name ?></option>
-			<?php endforeach; ?>
-		</select>
+	<?= $this->form->select('role_id', $role_list) ?>
     
     <fieldset>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>

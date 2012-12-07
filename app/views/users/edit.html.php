@@ -58,16 +58,8 @@ $this->form->config(
     
     <?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
     
-    <?=$this->form->label('role_id', 'Role'); ?>
-    
-		<select name="role_id">
-			<?php foreach($roles as $role): ?>
-			<option value="<?=$role->id ?>" <?php if ($user->role->id == $role->id) { echo 'selected="selected"'; } ?>>
-				<?=$role->name ?>
-			</option>
-			<?php endforeach; ?>
-		</select>
-		
+		<?=$this->form->select('role_id', $role_list); ?>
+
 	<?php endif; ?>
 	
 	<?php if($auth->role->name != 'Admin' || $auth->username == $user->username): ?>

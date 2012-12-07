@@ -62,10 +62,7 @@ $this->form->config(
 				'value' => $exhibition->end_date_formatted()
 			));?>
 			<?=$this->form->label('Show Type');?>
-			<select name="type">
-				<option value="Solo" <?php if ($exhibition->type == "Solo") { echo "selected"; }?>>Solo</option>
-				<option value="Group" <?php if ($exhibition->type == "Group") { echo "selected"; }?>>Group</option>
-			</select>
+			<?=$this->form->select('type', array('Solo' => 'Solo', 'Group' => 'Group')); ?>
 			<?=$this->form->field('remarks', array(
 				'type' => 'textarea',
 			));?>
