@@ -260,12 +260,17 @@ class WorksController extends \lithium\action\Controller {
 					'order' => $order
 				));
 		
-		
+				$collection_ids = array();
+
+				foreach ($collections as $collection) {
+					array_push($collection_ids, $collection->id);
+				}
+
 				$other_collections = Collections::find('all', array(
-					'with' => 'CollectionsWorks',
-					'order' => $order
+					'order' => $order,
+					'conditions' => array('id' => array('!=' => $collection_ids)) 
 				));
-		
+	
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => 'ExhibitionsWorks',
 					'conditions' => array(
@@ -273,11 +278,16 @@ class WorksController extends \lithium\action\Controller {
 					),
 					'order' => $order
 				));
+
+				$exhibition_ids = array();
+
+				foreach ($exhibitions as $exhibition) {
+					array_push($exhibition_ids, $exhibition->id);
+				}
 		
 				$other_exhibitions = Exhibitions::find('all', array(
-					'with' => array('ExhibitionsWorks'),
 					'order' => array('earliest_date' => 'DESC'),
-					//'conditions' => array('work_id' => array('!=', array($work->id))) //FIXME why does this not work?
+					'conditions' => array('id' => array('!=' => $exhibition_ids)) 
 				));
 		
 				$work_documents = WorksDocuments::find('all', array(
