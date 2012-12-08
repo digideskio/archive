@@ -87,10 +87,8 @@ $this->form->config(
 	<div class="span5">
 
 	<?=$this->partial->archives_links_edit(array(
-		'archive' => $exhibition,
-		'archives_links' => $exhibition_links,
-		'controller' => 'exhibitions_links',
-		'model' => 'exhibition'
+		'model' => $exhibition,
+		'junctions' => $exhibition_links,
 	)); ?>		
 
 		<div class="well">

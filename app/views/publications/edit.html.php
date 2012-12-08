@@ -96,10 +96,8 @@ $this->form->config(
 	<div class="span5">
 
 	<?=$this->partial->archives_links_edit(array(
-		'archive' => $publication,
-		'archives_links' => $publication_links,
-		'controller' => 'publications_links',
-		'model' => 'publication'
+		'model' => $publication,
+		'junctions' => $publication_links,
 	)); ?>		
 
 

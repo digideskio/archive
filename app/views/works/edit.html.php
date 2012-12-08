@@ -117,10 +117,8 @@ $this->form->config(
 	</div>
 
 	<?=$this->partial->archives_links_edit(array(
-		'archive' => $work,
-		'archives_links' => $work_links,
-		'controller' => 'works_links',
-		'model' => 'work'
+		'model' => $work,
+		'junctions' => $work_links,
 	)); ?>		
 
 	<div class="well">
