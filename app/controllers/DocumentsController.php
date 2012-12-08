@@ -464,12 +464,12 @@ class DocumentsController extends \lithium\action\Controller {
 
 			$options = $this->request->query;
 
-			if (isset($options['controller']) && isset($options['id'])) {
-				$controller = $options['controller'];
+			if (isset($options['model']) && isset($options['id'])) {
+				$model = $options['model'];
 				$id = $options['id'];
 				$document_id = $document->id;
 
-				switch ($controller) {
+				switch ($model) {
 					case "works":
 						$work_id = $id;
 						$data = compact('document_id', 'work_id');
