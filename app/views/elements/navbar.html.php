@@ -1,3 +1,5 @@
+<?php $check = lithium\security\Auth::check('default'); $username = $check['username']; ?>
+
 <div class="navbar navbar-fixed-top navbar-inverse" >
 	<div class="navbar-inner">
 		<div class="container">
@@ -12,10 +14,10 @@
 
 				<ul class="nav pull-right">
 					<li>
-					<a href="/users">Account</a>
+					<?=$this->html->link($username, $this->url(array('Users::view', 'username' => $username))); ?>
 					</li>
 					<li>
-					<a href="/logout"><strong>Logout</strong></a>
+					<a href="/logout">Logout</a>
 					</li>
 				</ul>
 

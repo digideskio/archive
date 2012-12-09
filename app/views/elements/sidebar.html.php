@@ -1,3 +1,5 @@
+<?php $check = lithium\security\Auth::check('default'); $role_id = $check['role_id']; ?>
+
 <?php $c = strtolower($this->request()->params['controller']); ?>
 
 <div id="sidebar"  class="span2">
@@ -21,8 +23,10 @@
 			<li <?php if ($c == 'links') echo 'class="active"'; ?> >
 				<a href="/links"><i class="icon-bookmark"></i> Links</a></li>
 			<li class="divider"></li>
-			<li <?php if ($c == 'users') echo 'class="active"'; ?> >
-				<a href="/users"><i class="icon-user"></i> Users</a></li>
+			<?php if ($role_id == '1'): ?>
+				<li <?php if ($c == 'users') echo 'class="active"'; ?> >
+					<a href="/users"><i class="icon-user"></i> Users</a></li>
+			<?php endif; ?>
 			<li <?php if ($c == 'notices') echo 'class="active"'; ?> >
 				<a href="/notices"><i class="icon-bell"></i> Notices</a></li>
 			<li <?php if ($c == 'metrics') echo 'class="active"'; ?> >

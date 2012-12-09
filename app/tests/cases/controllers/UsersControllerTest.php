@@ -80,6 +80,11 @@ class UsersControllerTest extends \lithium\test\Unit {
 			'controller' => 'users'
 		);
 
+		$usersIndex = new UsersController(array('request' => $this->request));
+		
+		$response = $usersIndex->index();
+		$this->assertEqual($response->headers["Location"], "/users/view/editor");
+	
 		$usersAdd = new UsersController(array('request' => $this->request));
 		
 		$response = $usersAdd->add();
