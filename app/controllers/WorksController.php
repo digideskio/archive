@@ -266,9 +266,12 @@ class WorksController extends \lithium\action\Controller {
 					array_push($collection_ids, $collection->id);
 				}
 
+				//Find the collections the work is NOT in
+				$other_collection_conditions = ($collection_ids) ? array('id' => array('!=' => $collection_ids)) : '';
+
 				$other_collections = Collections::find('all', array(
 					'order' => $order,
-					'conditions' => array('id' => array('!=' => $collection_ids)) 
+					'conditions' => $other_collection_conditions
 				));
 	
 				$exhibitions = Exhibitions::find('all', array(
@@ -284,7 +287,10 @@ class WorksController extends \lithium\action\Controller {
 				foreach ($exhibitions as $exhibition) {
 					array_push($exhibition_ids, $exhibition->id);
 				}
-		
+	
+				//Find the exhibitions the work is NOT in
+				$other_exhibition_conditions = ($exhibition_ids) ? array('id' => array('!=' => $exhibition_ids)) : '';
+
 				$other_exhibitions = Exhibitions::find('all', array(
 					'order' => array('earliest_date' => 'DESC'),
 					'conditions' => array('id' => array('!=' => $exhibition_ids)) 
