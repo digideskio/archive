@@ -293,7 +293,7 @@ class WorksController extends \lithium\action\Controller {
 
 				$other_exhibitions = Exhibitions::find('all', array(
 					'order' => array('earliest_date' => 'DESC'),
-					'conditions' => array('id' => array('!=' => $exhibition_ids)) 
+					'conditions' => $other_exhibition_conditions
 				));
 		
 				$work_documents = WorksDocuments::find('all', array(
