@@ -39,12 +39,10 @@ class Works extends \app\models\Archives {
     public function notes($entity) {
 						
 		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
-		$lender = $entity->lender ? 'Lender: ' . $entity->lender : '';
 		$remarks =  $entity->remarks ? $entity->remarks : '';
 		
 		$info = array_filter(array(
 			$quantity,
-			$lender,
 			$remarks,
 		));
 		
