@@ -19,8 +19,8 @@
 		<th>Title</th>
 		<th>Year</th>
 		<th>Dimensions</th>
-		<th>Media</th>
 		<th>Notes</th>
+		<th>Classification</th>
 	</tr>
 </thead>
 		
@@ -42,9 +42,9 @@
 	</td>
     <td><?=$this->html->link($work->title,'/works/view/'.$work->slug); ?></td>
     <td><?=$work->years(); ?></td>
-	<td><?php echo(implode('<br/>', array(str_replace(' ', '&nbsp;', $work->dimensions()), $work->measurement_remarks))); ?></td>
-    <td><?=$work->classification ?></td>
+	<td><?php echo(implode('<br/>', array_filter(array(str_replace(' ', '&nbsp;', $work->dimensions()), $work->measurement_remarks)))); ?></td>
     <td><?php echo $work->notes(); ?></td>
+    <td><?=$work->classification ?></td>
 </tr>
     
 <?php endforeach; ?>
