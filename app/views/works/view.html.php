@@ -91,13 +91,18 @@ $this->title($work->title);
 					</td>
 				</tr>
 				<tr>
+					<td><i class="icon-wrench"></i></td>
+					<td class="meta">Materials</td>
+					<td><?=$work->materials ?></td>
+				</tr>
+				<tr>
 					<td><i class="icon-tag"></i></td>
 					<td class="meta">Classification</td>
 					<td><?=$work->classification ?></td>
 				</tr>
 				<tr>
-					<td><i class=" icon-info-sign"></i></td>
-					<td class="meta">Info</td>
+					<td><i class="icon-info-sign"></i></td>
+					<td class="meta">Notes</td>
 					<td>
 						<?php 
 						
