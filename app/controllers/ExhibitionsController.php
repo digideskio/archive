@@ -69,6 +69,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		if (isset($data['conditions'])) {
 			$condition = $data['conditions'];
+			$type = $data['type'];
 
 			if ($condition == 'year') {
 				$condition = 'earliest_date';
@@ -76,6 +77,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 			$query = $data['query'];
 			$conditions = array("$condition" => array('LIKE' => "%$query%"));
+
+			if($type != 'All') {
+				$conditions['type'] = $type;
+			}
 
 			$exhibitions = Exhibitions::find('all', array(
 				'with' => 'ExhibitionsWorks',
@@ -88,7 +93,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			}
 		}
 
-		return compact('exhibitions', 'condition', 'query', 'auth');
+		return compact('exhibitions', 'condition', 'type', 'query', 'auth');
 	}
 
 	public function view() {

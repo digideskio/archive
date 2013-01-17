@@ -61,6 +61,26 @@ $this->title('Search Exhibitions');
 
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
+		<p></p>
+	
+		<fieldset>
+		<label class="radio">
+		<?php $checked = $type == 'All'; ?>
+		<?=$this->form->radio('type', array('value' => 'All', 'checked' => $checked)); ?>
+		All shows
+		</label>
+		<label class="radio">
+		<?php $checked = $type == 'Solo'; ?>
+		<?=$this->form->radio('type', array('value' => 'Solo', 'checked' => $checked)); ?>
+		Solo shows
+		</label>
+		<label class="radio">
+		<?php $checked = $type == 'Group'; ?>
+		<?=$this->form->radio('type', array('value' => 'Group', 'checked' => $checked)); ?>
+		Group shows
+		</label>
+		</fieldset>
+
 	<?=$this->form->end(); ?>
 	
 </div>
