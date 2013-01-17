@@ -42,6 +42,21 @@ $this->title($architecture->title);
 	</div>
 	
 	<div class="span4">
+
+		<?php if($architecture->annotation): ?>
+		
+		<div class="popover" style="display:block; position: static; margin-bottom:18px; width:100%">
+		<div class="popover-inner">
+			<div class="popover-title">
+			<strong><?=$architecture->title ?></strong>
+			</div>
+			<div class="popover-content">
+			<p><?=$architecture->annotation ?></p>
+			</div>
+		</div>
+		</div>
+		
+		<?php endif; ?>
 	
 		<div class="alert alert-block">
     	<p>
@@ -67,6 +82,21 @@ $this->title($architecture->title);
 					<td><i class="icon-hand-right"></i></td>
 					<td class="meta">Project Lead</td>
 					<td><?=$architecture->project_lead ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-certificate"></i></td>
+					<td class="meta">Consultants</td>
+					<td><?=$architecture->consultants ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-wrench"></i></td>
+					<td class="meta">Materials</td>
+					<td><?=$architecture->materials ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-th-large"></i></td>
+					<td class="meta">Area</td>
+					<td><?=$architecture->dimensions(); ?> </td>
 				</tr>
 			</tbody>
 		

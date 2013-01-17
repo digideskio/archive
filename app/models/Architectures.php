@@ -8,6 +8,10 @@ use lithium\util\Validator;
 class Architectures extends \app\models\Archives {
 
 	public $hasMany = array('ArchitecturesDocuments');
+
+	public function dimensions($entity) {
+		return $entity->area ? $entity->area . " square meters" : '';
+	}
     
     public function caption($entity) {
     
@@ -15,6 +19,7 @@ class Architectures extends \app\models\Archives {
     	$status = $entity->status ? '(' . $entity->status . ')' : '';
     
     	$caption = array_filter(array(
+			$entity->architects,
     		'<em>'.$entity->title.'</em>',
     		$entity->remarks,
     		$years,

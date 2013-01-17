@@ -50,10 +50,16 @@ $this->form->config(
 	<div class="span5">
 		<div class="well">
 		<?=$this->form->create($architecture); ?>
+    		<?=$this->form->field('architects');?>
 			<?=$this->form->field('title');?>
 			<?=$this->form->field('client');?>
 			<?=$this->form->field('project_lead');?>
-			<?=$this->form->field('remarks');?>
+    		<?=$this->form->field('consultants');?>
+    		<?=$this->form->field('remarks', array('type' => 'textarea'));?>
+			<?=$this->form->field('area', array(
+				'label' => "Area (square meters)"
+			));?>
+    		<?=$this->form->field('materials');?>
 			<?=$this->form->field('earliest_date', array(
 				'label' => 'Design Date',
 				'value' => $architecture->start_date_formatted()
@@ -84,6 +90,23 @@ $this->form->config(
 	</div>
 	
 	<div class="span5">
+
+	<div class="well">
+		<legend>Annotation</legend>
+		<?=$this->form->create($architecture); ?>
+			<?=$this->form->field('annotation', array(
+				'type' => 'textarea', 
+				'rows' => '10', 
+				'style' => 'width:90%;',
+				'label' => ''
+			));?>
+		
+			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
+			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->slug, array('class' => 'btn')); ?>
+		<?=$this->form->end(); ?>
+		
+	</div>
+
 	
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $architecture,

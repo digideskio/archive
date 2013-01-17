@@ -46,16 +46,23 @@ $this->form->config(
 <div class="well">
 <?=$this->form->create($architecture); ?>
 	<legend>Project Info</legend>
+    <?=$this->form->field('architects');?>
     <?=$this->form->field('title');?>
     <?=$this->form->field('client');?>
     <?=$this->form->field('project_lead');?>
-	<?=$this->form->field('remarks');?>
+    <?=$this->form->field('consultants');?>
+    <?=$this->form->field('remarks', array('type' => 'textarea'));?>
+	<?=$this->form->field('area', array(
+		'label' => "Area (square meters)"
+	));?>
+    <?=$this->form->field('materials');?>
     <?=$this->form->field('earliest_date', array('label' => 'Design Date'));?>
     <?=$this->form->field('latest_date', array('label' => 'Completion Date'));?>
     <?=$this->form->field('status', array('label' => 'Project Status'));?>
     <?=$this->form->field('location');?>
     <?=$this->form->field('city');?>
     <?=$this->form->field('country');?>
+    <?=$this->form->field('annotation', array('type' => 'textarea'));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/architectures', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
