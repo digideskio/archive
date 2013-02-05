@@ -29,7 +29,8 @@ class Works extends \app\models\Archives {
     		$entity->artist,
     		'<em>'.$entity->title.'</em>',
     		$years,
-    		$entity->dimensions()
+    		$entity->dimensions(), 
+			$entity->measurement_remarks
     	));
     	
     	return implode(', ', $caption) . '.';
