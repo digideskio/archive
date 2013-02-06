@@ -43,7 +43,7 @@
 	</td>
     <td><?=$this->html->link($work->title,'/works/view/'.$work->slug); ?></td>
     <td><?=$work->years(); ?></td>
-	<td><?php echo(implode('<br/>', array_filter(array(str_replace(' ', '&nbsp;', $work->dimensions()), $work->measurement_remarks)))); ?></td>
+	<td><?php echo(implode('<br/>', array_filter(array(str_replace(', ', '<br/>', $work->dimensions()), $work->measurement_remarks)))); ?></td>
 	<td><?=$work->materials ?></td>
     <td><?php echo $work->notes(); ?></td>
     <td><?=$work->classification ?></td>
