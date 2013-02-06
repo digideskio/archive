@@ -22,6 +22,8 @@
 	$model_slug_name = lithium\util\Inflector::underscore("$model_name_sing slug");
 	$model_slug_value = $model->slug;
 
+	$view_model_url = $this->url(array("$model_name::view", 'slug' => $model->slug));
+
 ?>
 
 
@@ -92,9 +94,12 @@
 
 		<div id="filelist"></div>
 
-
+		<div id="fileMessage">
 		</div>
 		
+
+		</div>
+
 		<h3 id="fileSelectMsg">Choose File(s) to Upload</h3>
 		<a class="btn btn-inverse" id="pickfiles" href="#">Add Files</a>
 
@@ -227,6 +232,8 @@
                     $fileWrapper.find(".bar").attr("style", "width:"+ file.percent + "%");
                     $fileWrapper.find(".percentComplete").html(file.percent+"%");
                     $fileWrapper.find('#cancel'+file.id).addClass('hide');
+
+					$('#fileMessage').html('');
                 });
                 
 
@@ -253,11 +260,10 @@
                     $fileItem.find('.progress').addClass('progress-success');
                     $('#cancel'+file.id).remove();
                     
-                    //$('#filelink').html('<div class="alert">Your finished uploads will be available on the <a href="/documents">Documents</a> page.</div>');
-                    
-                     response = jQuery.parseJSON( response.response );
+                    response = jQuery.parseJSON( response.response );
+
+                    $('#fileMessage').html('<p class="muted">Your files have finished uploading. Please <a href="<?php echo $view_model_url; ?>">continue</a>.</p>');
                      
-                	 location.reload(true); 
                 });
                 
                
