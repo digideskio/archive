@@ -2,6 +2,7 @@
 
 $this->title($work->title);
 
+$tz = new DateTimeZone($auth->timezone_id);
 ?>
 
 	<ul class="breadcrumb">
@@ -40,11 +41,18 @@ $this->title($work->title);
 	<div class="span10">
 	<?php foreach($works_histories as $wh): ?>
 		
+		<?php
+			$start_date_string = date("Y-m-d H:i:s", $wh->start_date);
+			$start_date_time = new DateTime($start_date_string);
+			$start_date_time->setTimeZone($tz);
+			$start_date_display = $start_date_time->format("Y-m-d H:i:s T");
+		?>
+
 		<table class="table table-bordered table-striped">
 			<thead>
 				<tr>
 					<td colspan="2">
-						<strong><?=$wh->start_date ?></strong> 
+						<strong><?=$start_date_display ?></strong> 
 						<?php if( $wh->user->id ): ?>
 						<small style="font-size: smaller;">by <?=$this->html->link($wh->user->name,'/users/view/'.$wh->user->username); ?></small>
 						<?php endif; ?>

@@ -128,7 +128,7 @@ class WorksController extends \lithium\action\Controller {
 			'page' => $page
 		));
 		
-		return compact('works_histories', 'total', 'page', 'limit', 'auth');
+		return compact('auth', 'works_histories', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {
@@ -363,7 +363,7 @@ class WorksController extends \lithium\action\Controller {
 				));
 		
 				//Send the retrieved data to the view
-				return compact('work', 'works_histories', 'auth');
+				return compact('auth', 'work', 'works_histories', 'auth');
 			}
 		}
 		

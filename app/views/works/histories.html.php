@@ -61,6 +61,15 @@ $this->title('Artwork History');
 	<?php if (sizeof($works_histories) > 0 ): ?>
 
 	<?php foreach( $works_histories as $wh ): ?>
+
+		<?php
+			$tz = new DateTimeZone($auth->timezone_id);
+			$start_date_string = date("Y-m-d H:i:s", $wh->start_date);
+			$start_date_time = new DateTime($start_date_string);
+			$start_date_time->setTimeZone($tz);
+			$start_date_display = $start_date_time->format("Y-m-d H:i:s");
+		?>
+
 		<tr>
 			<td style="text-align:center">
 				<?php if( $wh->user->id ): ?>
@@ -69,7 +78,7 @@ $this->title('Artwork History');
 				</strong>
 				<?php endif; ?>
 			</td>
-			<td><?=$wh->start_date ?></td>
+			<td><?=$start_date_display ?></td>
 			<td>
 				<?=$this->html->link($wh->title,'/works/history/'.$wh->slug); ?>
 			</td>
