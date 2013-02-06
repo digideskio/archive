@@ -20,8 +20,8 @@
 				<a href="/albums"><i class="icon-briefcase"></i> Albums</a></li>
 			<li <?php if ($c == 'documents') echo 'class="active"'; ?> >
 				<a href="/documents"><i class="icon-hdd"></i> Documents</a></li>
-			<li <?php if ($c == 'links') echo 'class="active"'; ?> >
-				<a href="/links"><i class="icon-bookmark"></i> Links</a></li>
+			<!--<li <?php if ($c == 'links') echo 'class="active"'; ?> >
+				<a href="/links"><i class="icon-bookmark"></i> Links</a></li>-->
 			<li class="divider"></li>
 			<?php if ($role_id == '1'): ?>
 				<li <?php if ($c == 'users') echo 'class="active"'; ?> >
