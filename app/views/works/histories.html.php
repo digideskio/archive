@@ -3,6 +3,8 @@
 
 $this->title('Artwork History');
 
+$tz = new DateTimeZone($auth->timezone_id);
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -63,7 +65,6 @@ $this->title('Artwork History');
 	<?php foreach( $works_histories as $wh ): ?>
 
 		<?php
-			$tz = new DateTimeZone($auth->timezone_id);
 			$start_date_string = date("Y-m-d H:i:s", $wh->start_date);
 			$start_date_time = new DateTime($start_date_string);
 			$start_date_time->setTimeZone($tz);
