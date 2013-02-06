@@ -2,7 +2,10 @@
 
 $this->title($work->title);
 
-$tz = new DateTimeZone($auth->timezone_id);
+if($auth->timezone_id) {
+	$tz = new DateTimeZone($auth->timezone_id);
+}
+
 ?>
 
 	<ul class="breadcrumb">
@@ -44,7 +47,11 @@ $tz = new DateTimeZone($auth->timezone_id);
 		<?php
 			$start_date_string = date("Y-m-d H:i:s", $wh->start_date);
 			$start_date_time = new DateTime($start_date_string);
-			$start_date_time->setTimeZone($tz);
+
+			if (isset($tz)) {
+				$start_date_time->setTimeZone($tz);
+			}
+
 			$start_date_display = $start_date_time->format("Y-m-d H:i:s T");
 		?>
 
