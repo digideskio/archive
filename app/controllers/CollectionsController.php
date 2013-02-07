@@ -243,6 +243,43 @@ class CollectionsController extends \lithium\action\Controller {
 		//$this->redirect(array('Collections::index'));
 	}
 
+	public function packages() {
+
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		$test_packages = Packages::all();
+
+		// Some packages may be removed from disk from time to time
+		// Therefore, first check if the actual file exists on disk
+		// If it does not, remove the record from the database
+		foreach ($test_packages as $package) {
+			$exists = FileSystem::exists($package->filesystem, $package->name);
+
+			if (!$exists) {
+				$package->delete();
+			}
+		}
+
+		// Find whatever packages are left
+		$packages = Packages::find('all', array(
+			'with' => 'Collections',
+			'order' => array('date_created' => 'DESC')
+		));
+
+		//Send the retrieved data to the view
+		return compact('auth', 'packages', 'auth');
+		
+	}
+
 	public function package() {
 
 	    $check = (Auth::check('default')) ?: null;
@@ -289,6 +326,7 @@ class CollectionsController extends \lithium\action\Controller {
 
 				// Find whatever packages are left
 				$packages = Packages::find('all', array(
+					'order' => array('date_created' => 'DESC'),
 					'conditions' => array(
 					'collection_id' => $collection->id
 				)));

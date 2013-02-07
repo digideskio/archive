@@ -80,6 +80,7 @@ Router::connect('/albums/view/{:slug}', array('Collections::view'));
 Router::connect('/albums/edit/{:slug}', array('Collections::edit'));
 Router::connect('/albums/history/{:slug}', array('Collections::history'));
 Router::connect('/albums/publish/{:slug}', array('Collections::publish'));
+Router::connect('/albums/packages', array('Collections::packages'));
 Router::connect('/albums/package/{:slug}', array('Collections::package'));
 Router::connect('/albums/delete/{:slug}', array('Collections::delete'));
 

@@ -6,6 +6,8 @@ use li3_filesystem\extensions\storage\FileSystem;
 
 class Packages extends \lithium\data\Model {
 
+	public $belongsTo = array('Collections');
+
 	//TODO validate the collection_id
 	public $validates = array();
 

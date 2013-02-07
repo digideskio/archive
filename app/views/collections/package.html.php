@@ -2,6 +2,10 @@
 
 $this->title($collection->title);
 
+if($auth->timezone_id) {
+	$tz = new DateTimeZone($auth->timezone_id);
+}
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -58,6 +62,15 @@ $this->title($collection->title);
 
 <?php foreach ($packages as $package): ?>
 
+	<?php
+		$package_date_created = new DateTime($package->date_created);
+
+		if (isset($tz)) {
+			$package_date_created->setTimeZone($tz);
+		}
+		$package_date_display = $package_date_created->format("Y-m-d H:i:s");
+	?>
+
 <tr>
 	
 	<td>
@@ -76,7 +89,7 @@ $this->title($collection->title);
 		?>
 	</td>
 	<td><?=$this->html->link($package->name, $package->url()); ?></td>
-	<td><?=$package->date_created ?></td>
+	<td><?=$package_date_display ?></td>
 	<td>
 			<?=$this->form->create($package, array('url' => "/packages/delete/$package->id", 'method' => 'post', 'style' => 'margin-bottom:0;')); ?>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-mini btn-danger')); ?>

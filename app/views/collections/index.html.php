@@ -21,6 +21,9 @@ $this->title('Albums');
 		<li class="active">
 			<?=$this->html->link('Index',$this->url(array('Collections::index'))); ?>
 		</li>
+		<li>
+			<?=$this->html->link('Packages',$this->url(array('Collections::packages'))); ?>
+		</li>
 	</ul>
 
 	<div class="btn-toolbar">
