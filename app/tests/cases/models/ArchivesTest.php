@@ -3,15 +3,51 @@
 namespace app\tests\cases\models;
 
 use app\models\Archives;
+use app\models\ArchivesHistories;
 use app\tests\mocks\data\MockArchives;
-
-use app\models\Works;
 
 class ArchivesTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
-	public function tearDown() {}
+	public function tearDown() {
+	
+		Archives::all()->delete();
+		ArchivesHistories::all()->delete();
+
+	}
+	
+	public function testSlugs() {
+		$archive = Archives::create();
+		$data = array (
+			"name" => "Archive Title",
+		);
+		
+		$slug = "Archive-Title";
+		
+		$this->assertTrue($archive->save($data));
+		$this->assertEqual($slug, $archive->slug);
+		
+		$second_archive = Archives::create();
+		$second_slug = "Archive-Title-1";
+		
+		$this->assertTrue($second_archive->save($data));
+		$this->assertEqual($second_slug, $second_archive->slug);
+		
+		$archive->delete();
+		$second_archive->delete();
+	}
+
+	public function testCreateWithNoTitle() {
+		$archive = Archives::create();
+		$data = array (
+			"name" => "",
+			"classification" => "Artwork"
+		);
+		
+		$this->assertFalse($archive->save($data));
+	}
+	
 
 	public function testYears() {
 
@@ -24,7 +60,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date_format" => "Y-m-d"
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$this->assertEqual('1999–2001', $archive->years());
 
@@ -35,7 +71,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date" => $end_date_same_year
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$this->assertEqual('2010', $archive->years());
 
@@ -49,7 +85,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date_format" => "Y-m-d"
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -62,7 +98,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date_format" => "Y-m-d"
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -75,7 +111,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date_format" => "Y-m-d"
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -88,7 +124,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date_format" => "Y-m-d"
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -99,7 +135,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date" => ""
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates() ?: '';
 
@@ -114,7 +150,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"earliest_date_format" => "Y",
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -127,7 +163,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"earliest_date_format" => "Y",
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -138,7 +174,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"earliest_date_format" => "M Y",
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 
@@ -151,7 +187,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"latest_date_format" => "M Y",
 		);
 
-		$archive = Works::create($data);
+		$archive = Archives::create($data);
 
 		$dates = $archive->dates();
 

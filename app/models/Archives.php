@@ -9,7 +9,7 @@ class Archives extends \lithium\data\Model {
 
 	public $validates = array(
 		'title' => array(
-			array('notEmpty', 'message' => 'Please enter a title.'),
+			array('notEmpty', 'message' => "You can't leave this blank."),
 		),
 		'url' => array(
 			array('url', 'skipEmpty' => true, 'message' => 'The URL is not valid.'),
@@ -93,17 +93,30 @@ class Archives extends \lithium\data\Model {
 
 		});
 
+		//TODO	The generic Archive will use name instead of title. However, a lot of models which extend Archives
+		//		rely on title to validate and for tests. When those models are migrated, we can remove the following filter
+
+		static::applyFilter('save', function($self, $params, $chain) {
+			if(isset($params['data']['name'])) {
+				$params['data']['title'] = $params['data']['name'];
+			} else {
+				$params['data']['name'] = $params['data']['title'];
+			}
+			return $chain->next($self, $params, $chain);
+		});
+
 		static::applyFilter('save', function($self, $params, $chain) {
 
 			if(!$params['entity']->exists()) { 
 
-				$title = $params['data']['title'];
+				$name = $params['data']['name'];
 
 				if( isset($params['data']['venue']) ) {
-					$title = $title . " " . $params['data']['venue'];
+					$name = $name . " " . $params['data']['venue'];
 				}
 
-				$slug = Inflector::slug($title);
+				/* FIXME we should respect that slugs are varchar(255). Limit slugs to 200 characters? */
+				$slug = Inflector::slug($name);
 
 				$conditions = array('slug' => $slug);
 
