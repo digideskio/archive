@@ -10,6 +10,11 @@ $this->form->config(
     )
 ); 
 
+$artist_names = json_encode($artists);
+
+$classification_names = json_encode($classifications);
+
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -53,9 +58,9 @@ $this->form->config(
 		<div class="well">
 		<?=$this->form->create($work); ?>
 			<legend>Info</legend>
-			<?=$this->form->field('artist');?>
+    		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
 			<?=$this->form->field('title');?>
-			<?=$this->form->field('classification');?>
+    		<?=$this->form->field('classification', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $classification_names));?>
 			<?=$this->form->field('earliest_date', array('value' => $work->start_date_formatted()));?>
 			<?=$this->form->field('latest_date', array('value' => $work->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('label' => 'Artwork ID'));?>

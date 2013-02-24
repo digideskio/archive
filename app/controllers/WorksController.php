@@ -218,10 +218,37 @@ class WorksController extends \lithium\action\Controller {
 		
 		$work = Works::create();
 
+		$works_artists = Works::find('all', array(
+			'fields' => array('artist', 'count(artist) as artists'),
+			'group' => 'artist',
+			'conditions' => array('artist' => array('!=' => '')),
+			'order' => array('artists' => 'DESC')
+		));
+
+		$artists = array();
+
+		foreach ($works_artists as $wa) {
+			array_push($artists, $wa->artist);
+		}
+
+		$works_classifications = Works::find('all', array(
+			'fields' => array('classification'),
+			'group' => 'classification',
+			'conditions' => array('classification' => array('!=' => '')),
+			'order' => array('classification' => 'ASC')
+		));
+
+		$classifications = array();
+
+		foreach ($works_classifications as $wc) {
+			array_push($classifications, $wc->classification);
+		}
+
 		if (($this->request->data) && $work->save($this->request->data)) {
 			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
 		}
-		return compact('work', 'auth');
+
+		return compact('work', 'artists', 'classifications', 'auth');
 	}
 
 	public function edit() {
@@ -249,6 +276,32 @@ class WorksController extends \lithium\action\Controller {
 			));
 		
 			if($work) {
+
+				$works_artists = Works::find('all', array(
+					'fields' => array('artist', 'count(artist) as artists'),
+					'group' => 'artist',
+					'conditions' => array('artist' => array('!=' => '')),
+					'order' => array('artists' => 'DESC')
+				));
+
+				$artists = array();
+
+				foreach ($works_artists as $wa) {
+					array_push($artists, $wa->artist);
+				}
+
+				$works_classifications = Works::find('all', array(
+					'fields' => array('classification'),
+					'group' => 'classification',
+					'conditions' => array('classification' => array('!=' => '')),
+					'order' => array('classification' => 'ASC')
+				));
+
+				$classifications = array();
+
+				foreach ($works_classifications as $wc) {
+					array_push($classifications, $wc->classification);
+				}
 		
 				$order = array('title' => 'ASC');
 
@@ -324,7 +377,9 @@ class WorksController extends \lithium\action\Controller {
 					'other_collections', 
 					'exhibitions', 
 					'other_exhibitions',
-					'work_links'
+					'work_links',
+					'artists',
+					'classifications'
 				);
 			}	
 		}																																		
