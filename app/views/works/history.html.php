@@ -147,7 +147,7 @@ if($auth->timezone_id) {
 				<?php if( $wh->height ): ?>
 					<tr>
 					<td class="meta">Height</td>
-					<td><?=$wh->height ?></td>
+					<td><?=$wh->height ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
@@ -155,7 +155,7 @@ if($auth->timezone_id) {
 				<?php if( $wh->width ): ?>
 					<tr>
 					<td class="meta">Width</td>
-					<td><?=$wh->width ?></td>
+					<td><?=$wh->width ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
@@ -163,7 +163,7 @@ if($auth->timezone_id) {
 				<?php if( $wh->depth ): ?>
 					<tr>
 					<td class="meta">Depth</td>
-					<td><?=$wh->depth ?></td>
+					<td><?=$wh->depth ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
@@ -171,7 +171,7 @@ if($auth->timezone_id) {
 				<?php if( $wh->diameter ): ?>
 					<tr>
 					<td class="meta">Diameter</td>
-					<td><?=$wh->diameter ?></td>
+					<td><?=$wh->diameter ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
@@ -179,7 +179,7 @@ if($auth->timezone_id) {
 				<?php if( $wh->weight ): ?>
 					<tr>
 					<td class="meta">Weight</td>
-					<td><?=$wh->weight ?></td>
+					<td><?=$wh->weight ?> kg</td>
 					</tr>
 				<?php endif; ?>
 
