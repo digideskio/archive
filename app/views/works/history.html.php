@@ -131,7 +131,7 @@ if($auth->timezone_id) {
 				<?php if( $wh->end_date() ): ?>
 					<tr>
 					<td class="meta">Latest Date</td>
-					<td><?=$wh->end_date() ?></td>
+					<td><?=$wh->end_date_formatted() ?></td>
 					</tr>
 				<?php endif; ?>
 
