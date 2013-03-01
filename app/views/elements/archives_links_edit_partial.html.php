@@ -16,7 +16,7 @@
 
 	//Get 'work_slug', etc.
 	$model_slug_name = lithium\util\Inflector::underscore("$model_name_sing slug");
-	$model_slug_value = $model->slug;
+	$model_slug_value = $model->slug ?: $model->archive->slug;
 	
 ?>
 
@@ -32,7 +32,7 @@
 	//The query parameter ?model=slug is used as a callback. If we edit this record,
 	//we want to be able to return here after saving (see Links::edit)
 	$edit_link_url = $this->url(array('Links::edit', 'id' => $junction->link->id)) . 
-		"?" . strtolower($model_name_sing) . "=" . $model->slug; 
+		"?" . strtolower($model_name_sing) . "=" . $model_slug_value; 
 
 ?>
 				<tr>

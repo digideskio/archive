@@ -34,19 +34,19 @@
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 		<?php $document = $work->documents('first'); if($document && $document->id) { ?>	
-			<a href="/works/view/<?=$work->slug?>">
+			<a href="/works/view/<?=$work->archive->slug ?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
 			<span class="label">No Preview</span>
 		<?php } ?>
 	</td>
-    <td><?=$this->html->link($work->title,'/works/view/'.$work->slug); ?></td>
-    <td><?=$work->years(); ?></td>
+    <td><?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?></td>
+    <td><?=$work->archive->years(); ?></td>
 	<td><?php echo(implode('<br/>', array_filter(array(str_replace(', ', '<br/>', $work->dimensions()), $work->measurement_remarks)))); ?></td>
 	<td><?=$work->materials ?></td>
     <td><?php echo $work->notes(); ?></td>
-    <td><?=$work->classification ?></td>
+    <td><?=$work->archive->classification ?></td>
 </tr>
     
 <?php endforeach; ?>

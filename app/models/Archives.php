@@ -4,8 +4,16 @@ namespace app\models;
 
 use lithium\util\Inflector;
 use lithium\util\Validator;
+use lithium\security\Auth;
 
 class Archives extends \lithium\data\Model {
+
+	public $belongsTo = array("Users");
+
+	public $hasOne = array(
+		'Works' => array (
+			'key' => 'id'
+	));
 
 	public $validates = array(
 		'title' => array(
@@ -100,7 +108,7 @@ class Archives extends \lithium\data\Model {
 			if(isset($params['data']['name'])) {
 				$params['data']['title'] = $params['data']['name'];
 			} else {
-				$params['data']['name'] = $params['data']['title'];
+				$params['data']['name'] = isset($params['data']['title']) ? $params['data']['title'] : '';
 			}
 			return $chain->next($self, $params, $chain);
 		});
@@ -281,6 +289,21 @@ class Archives extends \lithium\data\Model {
 	}
 	
 }
+
+Archives::applyFilter('save', function($self, $params, $chain) {
+
+	$check = (Auth::check('default')) ?: null;
+
+	if($check) {
+
+		$user_id = $check['id'];
+		$params['data']['user_id'] = $user_id;
+		
+	}
+
+	return $chain->next($self, $params, $chain);
+});
+
 
 Validator::add('validDate', function($value) {
 	

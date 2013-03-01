@@ -20,9 +20,9 @@
 
 	//Get 'work_slug', etc.
 	$model_slug_name = lithium\util\Inflector::underscore("$model_name_sing slug");
-	$model_slug_value = $model->slug;
+	$model_slug_value = $model->slug ?: $model->archive->slug;
 
-	$view_model_url = $this->url(array("$model_name::view", 'slug' => $model->slug));
+	$view_model_url = $this->url(array("$model_name::view", 'slug' => $model_slug_value));
 
 ?>
 
@@ -48,7 +48,7 @@
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($junction, array('url' => $delete_junction_url, 'method' => 'post')); ?>
-			<input type="hidden" name="<?=$model_slug_name ?>" value="<?=$model->slug ?>" />
+			<input type="hidden" name="<?=$model_slug_name ?>" value="<?=$model_slug_value ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -360,7 +360,7 @@ Handlebars.registerHelper('document_rows', function() {
 			+ "<form action='<?=$add_junction_url ?>' method='post'>"
 			+ "<input type='hidden' name='document_slug' value='" + doc['slug'] + "'>"
 			+ "<input type='hidden' name='<?=$model_id_name ?>' value='<?=$model->id ?>'>"
-			+ "<input type='hidden' name='<?=$model_slug_name ?>' value='<?=$model->slug ?>'>"
+			+ "<input type='hidden' name='<?=$model_slug_name ?>' value='<?=$model_slug_value ?>'>"
 			+ "<input type='submit' value='Add' class='btn btn-mini btn-success'>"
 			+ '</form>'
 			+ '</td>'

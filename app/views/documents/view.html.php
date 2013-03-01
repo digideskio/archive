@@ -59,10 +59,10 @@ $this->title($document->title);
 		
 		<?php endif; ?>
 	
-   		<?php foreach($works_documents as $wd): ?>
+   		<?php foreach($works as $work): ?>
 			<div class="alert alert-block alert-info">
 				<p>
-					<?php echo $wd->work->caption(); ?>
+    				<?=$this->artwork->caption($work->archive, $work); ?>
 					
 					<?php
 							echo "(Photo &copy; ";
@@ -191,7 +191,7 @@ $this->title($document->title);
 		</table>
 
 		<?php
-			$hasArtwork = sizeof($works_documents) > 0;
+			$hasArtwork = sizeof($works) > 0;
 			$hasArchitecture = sizeof($architectures_documents) > 0;
 			$hasExhibitions = sizeof($exhibitions_documents) > 0;
 			$hasPublications = sizeof($publications_documents) > 0;
@@ -216,10 +216,10 @@ $this->title($document->title);
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
 							
-								<?php foreach($works_documents as $wd): ?>
+								<?php foreach($works as $work): ?>
 								<li><strong><?=$this->html->link(
-									$wd->work->title,
-									'/works/view/'.$wd->work->slug
+									$work->title,
+									'/works/view/'.$work->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
 							

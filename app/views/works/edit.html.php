@@ -28,7 +28,7 @@ $classification_names = json_encode($classifications);
 	</li>
 
 	<li>
-	<?=$this->html->link($work->title,'/works/view/'.$work->slug); ?>
+	<?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -41,13 +41,13 @@ $classification_names = json_encode($classifications);
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/works/view/'.$work->slug); ?></li>
+	<li><?=$this->html->link('View','/works/view/'.$work->archive->slug); ?></li>
 	<li class="active">
 		<a href="#">
 			Edit
 		</a>
 	</li>
-	<li><?=$this->html->link('History','/works/history/'.$work->slug); ?></li>
+	<li><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
 </ul>
 
 
@@ -61,8 +61,8 @@ $classification_names = json_encode($classifications);
     		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
 			<?=$this->form->field('title');?>
     		<?=$this->form->field('classification', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $classification_names));?>
-			<?=$this->form->field('earliest_date', array('value' => $work->start_date_formatted()));?>
-			<?=$this->form->field('latest_date', array('value' => $work->end_date_formatted()));?>
+			<?=$this->form->field('earliest_date', array('value' => $work->archive->start_date_formatted()));?>
+			<?=$this->form->field('latest_date', array('value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('label' => 'Artwork ID'));?>
 			<?=$this->form->field('materials', array('type' => 'textarea'));?>
 			<?=$this->form->field('quantity');?>
@@ -85,7 +85,7 @@ $classification_names = json_encode($classifications);
 			<?=$this->form->field('running_time');?>
 			<?=$this->form->field('measurement_remarks', array('type' => 'textarea'));?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/works/view/'.$work->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
 		
@@ -113,9 +113,11 @@ $classification_names = json_encode($classifications);
 				'style' => 'width:90%;',
 				'label' => ''
 			));?>
+
+			<?=$this->form->hidden('title'); ?>
 		
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/works/view/'.$work->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		
 	</div>
@@ -137,7 +139,7 @@ $classification_names = json_encode($classifications);
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($cw, array('url' => $this->url(array('CollectionsWorks::delete', 'id' => $cw->id)), 'method' => 'post')); ?>
-			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -172,7 +174,7 @@ $classification_names = json_encode($classifications);
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
-			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -213,7 +215,7 @@ $classification_names = json_encode($classifications);
 			<?=$this->form->create($oc, array('url' => $this->url(array('CollectionsWorks::add')), 'method' => 'post')); ?>
 			<input type="hidden" name="collection_id" value="<?=$oc->id ?>" />
 			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -250,7 +252,7 @@ $classification_names = json_encode($classifications);
 			<?=$this->form->create($oe, array('url' => "/exhibitions_works/add", 'method' => 'post')); ?>
 			<input type="hidden" name="exhibition_id" value="<?=$oe->id ?>" />
 			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-			<input type="hidden" name="work_slug" value="<?=$work->slug ?>" />
+			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -274,7 +276,7 @@ $classification_names = json_encode($classifications);
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($work, array('url' => "/works/delete/$work->slug", 'method' => 'post')); ?>
+			<?=$this->form->create($work, array('url' => "/works/delete/$work->id", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

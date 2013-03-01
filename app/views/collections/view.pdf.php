@@ -5,7 +5,7 @@ $options = $content['options'];
 $collection = $content['collection'];
 $title = $collection->title;
 
-$collections_works = $content['collections_works'];
+$works = $content['works'];
 
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
@@ -49,11 +49,10 @@ $html .= <<<EOD
 
 EOD;
 
-foreach( $collections_works as $cw) {
+foreach( $works as $work) {
 
-$work = $cw->work;
-$years = $work->years();
-$caption = $work->caption();
+$years = $work->archive->years();
+$caption = $this->artwork->caption($work->archive, $work); 
 $annotation = $work->annotation;
 $notes = $work->notes();
 
@@ -106,7 +105,7 @@ if ($document) {
 	$thumbnail = $document->file(array('size' => 'thumb'));
 }
 
-if( $thumbnail ) {
+if( isset($thumbnail) ) {
 	$img_path = $options['path'] . '/'  . $thumbnail;
 	$thumb_img = '<img width="100" height="100" src="'.$img_path.'" />';
 } else {

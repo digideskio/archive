@@ -62,12 +62,12 @@ if($auth->timezone_id) {
 	</thead>
 	<tbody>
 
-	<?php if (sizeof($works_histories) > 0 ): ?>
+	<?php if (sizeof($archives_histories) > 0 ): ?>
 
-	<?php foreach( $works_histories as $wh ): ?>
+	<?php foreach( $archives_histories as $ah ): ?>
 
 		<?php
-			$start_date_string = date("Y-m-d H:i:s", $wh->start_date);
+			$start_date_string = date("Y-m-d H:i:s", $ah->start_date);
 			$start_date_time = new DateTime($start_date_string);
 
 			if (isset($tz)) {
@@ -78,15 +78,15 @@ if($auth->timezone_id) {
 
 		<tr>
 			<td style="text-align:center">
-				<?php if( $wh->user->id ): ?>
+				<?php if( $ah->user->id ): ?>
 				<strong style="font-size: smaller;">
-					<?=$this->html->link($wh->user->initials(),'/users/view/'.$wh->user->username); ?>
+					<?=$this->html->link($ah->user->initials(),'/users/view/'.$ah->user->username); ?>
 				</strong>
 				<?php endif; ?>
 			</td>
 			<td><?=$start_date_display ?></td>
 			<td>
-				<?=$this->html->link($wh->title,'/works/history/'.$wh->slug); ?>
+				<?=$this->html->link($ah->name,'/works/history/'.$ah->slug); ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>

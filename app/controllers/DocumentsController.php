@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Documents;
+use app\models\Works;
 use app\models\WorksDocuments;
 use app\models\ArchitecturesDocuments;
 use app\models\ExhibitionsDocuments;
@@ -130,12 +131,31 @@ class DocumentsController extends \lithium\action\Controller {
 			));
 
 			if ($document) {
+
+				$work_ids = array();	
 		
 				$works_documents = WorksDocuments::find('all', array(
-					'with' => 'Works',
+					'fields' => 'work_id',
 					'conditions' => array('document_id' => $document->id)
 				));
-			
+
+				$works = array();
+
+				if ($works_documents->count()) {
+				
+					//Get all the work IDs in a plain array
+					$work_ids = $works_documents->map(function($wd) {
+						return $wd->work_id;
+					}, array('collect' => false));
+
+					$works = Works::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Works.id' => $work_ids),
+						'order' => 'earliest_date DESC'
+					));
+
+				}
+
 				$architectures_documents = ArchitecturesDocuments::find('all', array(
 					'with' => 'Architectures',
 					'conditions' => array('document_id' => $document->id)
@@ -154,7 +174,7 @@ class DocumentsController extends \lithium\action\Controller {
 				//Send the retrieved data to the view
 				return compact(
 					'document', 
-					'works_documents', 
+					'works', 
 					'architectures_documents',
 					'exhibitions_documents',
 					'publications_documents', 

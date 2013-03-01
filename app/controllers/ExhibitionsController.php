@@ -64,6 +64,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		$condition = '';
 		$query = '';
+		$type = 'All';
 
 		$data = $this->request->data;
 
@@ -121,13 +122,28 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$total = ExhibitionsWorks::find('count', array(
 				'conditions' => array('exhibition_id' => $exhibition->id)
 			));
-			$order = 'earliest_date DESC';
 			
-			$works = Works::find('all', array(
-				'with' => 'ExhibitionsWorks',
+			$exhibitions_works = ExhibitionsWorks::find('all', array(
+				'fields' => 'work_id',
 				'conditions' => array('exhibition_id' => $exhibition->id),
-				'order' => $order
 			));
+
+			$works = array();
+
+			if ($exhibitions_works->count()) {
+
+				//Get all the work IDs in a plain array
+				$work_ids = $exhibitions_works->map(function($ew) {
+					return $ew->work_id;
+				}, array('collect' => false));
+
+				$works = Works::find('all', array(
+					'with' => 'Archives',
+					'conditions' => array('Works.id' => $work_ids),
+					'order' => 'earliest_date DESC'
+				));
+
+			}
 
 			$exhibitions_links = ExhibitionsLinks::find('all', array(
 				'with' => 'Links',

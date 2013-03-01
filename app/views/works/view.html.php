@@ -28,11 +28,11 @@ $this->title($work->title);
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit','/works/edit/'.$work->slug); ?></li>
+		<li><?=$this->html->link('Edit','/works/edit/'.$work->archive->slug); ?></li>
 	
 	<?php endif; ?>
 
-		<li><?=$this->html->link('History','/works/history/'.$work->slug); ?></li>
+		<li><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
 
 </ul>
 
@@ -62,7 +62,7 @@ $this->title($work->title);
 	
 		<div class="alert alert-block">
     	<p>
-    		<?php echo $work->caption(); ?>
+    		<?=$this->artwork->caption($work->archive, $work); ?>
     	</p>
 		</div>
 	
@@ -98,7 +98,7 @@ $this->title($work->title);
 				<tr>
 					<td><i class="icon-tag"></i></td>
 					<td class="meta">Classification</td>
-					<td><?=$work->classification ?></td>
+					<td><?=$work->archive->classification ?></td>
 				</tr>
 				<tr>
 					<td><i class="icon-info-sign"></i></td>

@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Collections;
 use app\models\CollectionsWorks;
+use app\models\ArchivesHistories;
 use app\models\Works;
 use app\models\Packages;
 
@@ -68,17 +69,35 @@ class CollectionsController extends \lithium\action\Controller {
 			)));
 			
 			if($collection) {
+
+				$work_ids = array();	
 			
 				$collection_works = CollectionsWorks::find('all', array(
-					'with' => 'Works',
+					'fields' => 'work_id',
 					'conditions' => array('collection_id' => $collection->id),
-					'order' => 'earliest_date ASC'
 				));
 
+				$works = array();
+
+				if ($collection_works->count()) {
+
+					//Get all the work IDs in a plain array
+					$work_ids = $collection_works->map(function($cw) {
+						return $cw->work_id;
+					}, array('collect' => false));
+
+					$works = Works::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Works.id' => $work_ids),
+						'order' => 'earliest_date DESC'
+					));
+
+				}
+
 				$li3_pdf = Libraries::get("li3_pdf");
-			
+
 				//Send the retrieved data to the view
-				return compact('collection', 'collection_works', 'auth', 'li3_pdf');
+				return compact('collection', 'works', 'auth', 'li3_pdf');
 				
 			}
 		}
@@ -163,15 +182,31 @@ class CollectionsController extends \lithium\action\Controller {
 			)));
 			
 			if($collection) {
-			
-				$works = Works::find('all', array(
-					'with' => array('CollectionsWorks', 'Users'),
+
+				$collection_works = CollectionsWorks::find('all', array(
+					'fields' => 'work_id',
 					'conditions' => array('collection_id' => $collection->id),
-					'order' => 'date_modified DESC'
 				));
-			
+
+				$archives_histories = array();
+
+				if ($collection_works->count()) {
+
+					//Get all the work IDs in a plain array
+					$work_ids = $collection_works->map(function($cw) {
+						return $cw->work_id;
+					}, array('collect' => false));
+				
+					$archives_histories = ArchivesHistories::find('all', array(
+						'with' => 'Users',
+						'conditions' => array('archive_id' => $work_ids),
+						'order' => 'start_date DESC'
+					));
+
+				}
+
 				//Send the retrieved data to the view
-				return compact('collection', 'works', 'auth');
+				return compact('collection', 'archives_histories', 'auth');
 				
 			}
 		}
@@ -213,12 +248,29 @@ class CollectionsController extends \lithium\action\Controller {
 				
 				$pdf = $collection->slug . '-' . $options['view'] . '.pdf';
 
-				$collections_works = CollectionsWorks::find('all', array(
-					'with' => 'Works',
+				$collection_works = CollectionsWorks::find('all', array(
+					'fields' => 'work_id',
 					'conditions' => array('collection_id' => $collection->id),
-					'order' => 'earliest_date ASC'
 				));
 
+				$works = array();
+
+				if ($collection_works->count()) {
+
+					$work_ids = array();	
+
+					//Get all the work IDs in a plain array
+					$work_ids = $collection_works->map(function($cw) {
+						return $cw->work_id;
+					}, array('collect' => false));
+
+					$works = Works::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Works.id' => $work_ids),
+						'order' => 'earliest_date DESC'
+					));
+
+				}
 
 				$view  = new View(array(
 					'paths' => array(
@@ -228,7 +280,7 @@ class CollectionsController extends \lithium\action\Controller {
 				));
 				echo $view->render(
 					'all',
-					array('content' => compact('pdf', 'collection','collections_works', 'options')),
+					array('content' => compact('pdf', 'collection','works', 'options')),
 					array(
 						'controller' => 'collections',
 						'template'=>'view',

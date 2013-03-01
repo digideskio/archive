@@ -3,6 +3,9 @@
 namespace app\controllers;
 
 use app\models\Works;
+use app\models\WorksHistories;
+use app\models\Archives;
+use app\models\ArchivesHistories;
 
 use app\models\Users;
 use app\models\Roles;
@@ -12,7 +15,6 @@ use app\models\Collections;
 use app\models\CollectionsWorks;
 use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
-use app\models\WorksHistories;
 use app\models\Links;
 use app\models\WorksLinks;
 
@@ -45,12 +47,12 @@ class WorksController extends \lithium\action\Controller {
 		$limit = ($limit == 'all') ? $total : $limit;
 
 		$works = Works::find('all', array(
-			'with' => 'WorksDocuments',
+			'with' => 'Archives',
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
 		));
-		
+
 		return compact('works', 'total', 'page', 'limit', 'auth');
 	}
 
@@ -90,7 +92,7 @@ class WorksController extends \lithium\action\Controller {
 			$conditions = array("$condition" => array('LIKE' => "%$query%"));
 
 			$works = Works::find('all', array(
-				'with' => 'WorksDocuments',
+				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $conditions
 			));
@@ -121,14 +123,14 @@ class WorksController extends \lithium\action\Controller {
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('start_date' => 'DESC');
 		$total = WorksHistories::count();
-		$works_histories = WorksHistories::find('all', array(
+		$archives_histories = ArchivesHistories::find('all', array(
 			'with' => 'Users',
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
 		));
 		
-		return compact('auth', 'works_histories', 'total', 'page', 'limit', 'auth');
+		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {
@@ -148,10 +150,11 @@ class WorksController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$work = Works::first(array(
+			$work = Works::find('first', array(
+				'with' => 'Archives',
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
-			
+
 			if($work) {
 	
 				$order = array('title' => 'ASC');
@@ -232,6 +235,7 @@ class WorksController extends \lithium\action\Controller {
 		}
 
 		$works_classifications = Works::find('all', array(
+			'with' => 'Archives',
 			'fields' => array('classification'),
 			'group' => 'classification',
 			'conditions' => array('classification' => array('!=' => '')),
@@ -245,7 +249,11 @@ class WorksController extends \lithium\action\Controller {
 		}
 
 		if (($this->request->data) && $work->save($this->request->data)) {
-			return $this->redirect(array('Works::view', 'args' => array($work->slug)));
+			//The slug has been saved with the Archive object, so let's look it up
+			$archive = Archives::find('first', array(
+				'conditions' => array('id' => $work->id)
+			));
+			return $this->redirect(array('Works::view', 'args' => array($archive->slug)));
 		}
 
 		return compact('work', 'artists', 'classifications', 'auth');
@@ -272,6 +280,7 @@ class WorksController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			$work = Works::first(array(
+				'with' => 'Archives',
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
 		
@@ -291,6 +300,7 @@ class WorksController extends \lithium\action\Controller {
 				}
 
 				$works_classifications = Works::find('all', array(
+					'with' => 'Archives',
 					'fields' => array('classification'),
 					'group' => 'classification',
 					'conditions' => array('classification' => array('!=' => '')),
@@ -367,7 +377,7 @@ class WorksController extends \lithium\action\Controller {
 				));
 
 				if (($this->request->data) && $work->save($this->request->data)) {
-					return $this->redirect(array('Works::view', 'args' => array($work->slug)));
+					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
 				}
 		
 				return compact(
@@ -406,19 +416,20 @@ class WorksController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$work = Works::first(array(
+				'with' => 'Archives',
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
 			
 			if($work) {
 
-				$works_histories = WorksHistories::find('all', array(
-					'conditions' => array('work_id' => $work->id),
-					'order' => 'start_date DESC',
-					'with' => 'Users'
+				$archives_histories = ArchivesHistories::find('all', array(
+					'conditions' => array('ArchivesHistories.archive_id' => $work->id),
+					'order' => 'ArchivesHistories.start_date DESC',
+					'with' => array('Users', 'WorksHistories'),
 				));
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'work', 'works_histories', 'auth');
+				return compact('auth', 'work', 'archives_histories', 'auth');
 			}
 		}
 		
@@ -439,8 +450,8 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$work = Works::first(array(
-			'conditions' => array('slug' => $this->request->params['slug']),
+		$work = Works::find('first', array(
+			'conditions' => array('id' => $this->request->params['id']),
 		));
 		
 		// If the user is not an Admin or Editor, redirect to the record view

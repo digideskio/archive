@@ -5,6 +5,9 @@ namespace app\tests\integration;
 use app\models\Works;
 use app\models\WorksHistories;
 
+use app\models\Archives;
+use app\models\ArchivesHistories;
+
 class WorksHistoriesTest extends \lithium\test\Integration {
 
 	public function setUp() {
@@ -12,27 +15,38 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 		Works::find("all")->delete();
 		WorksHistories::find("all")->delete();
 
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
+
 		$work = Works::create();
 		$data = array (
-			'user_id' => '1',
-			'artist' => 'The Artist',
 			'title' => 'Artwork Title',
-			'classifiction' => 'An Object',
-			'materials' => 'Some Materials',
-			'quantity'=> 'Many',
-			'earliest_date' => '2012-01-10', 
-			'latest_date' => '2012-02-28', 
-			'earliest_date_format' => 'Y-m-d',
-			'latest_date_format' => 'Y-m-d',
+			'artist' => 'The Artist',
 			'creation_number' => 'ARTWORK001',
+			'materials' => 'Some Materials',
+			'techniques' => 'A Technique',
+			'color'=> 'Rainbow',
+			'format'=> 'VHS',
+			'shape'=> 'round',
+			'size'=> 'XS',
+			'state'=> 'Finished',
+			'location'=> 'Nowhere',
+			'quantity'=> 'Many',
+			'annotation' => 'The Annotation',
+			'inscriptions' => 'Some words',
 			'height' => '10',
 			'width' => '11',
 			'depth' => '12',
+			'length' => '12.5',
+			'circumference' => '26',
 			'diameter' => '13',
+			'volume' => '13.35',
 			'weight' => '14',
+			'area' => '100.5',
+			'base' => '50.8',
 			'running_time'=> '15 hours',
 			'measurement_remark' => 'It is big',
-			'annotation' => 'The Annotation'
+			'attributes'=> '{"x":5,"y":6}',
 		);
 
 		$work->save($data);
@@ -43,6 +57,9 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 		Works::find("all")->delete();
 		WorksHistories::find("all")->delete();
 
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
+
 	}
 
 	public function testInsertHistory() {
@@ -51,33 +68,39 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 
 		$work_history = WorksHistories::first();
 
-		$this->assertEqual($work->user_id, $work_history->user_id);
-		$this->assertEqual($work->artist, $work_history->artist);
 		$this->assertEqual($work->title, $work_history->title);
-		$this->assertEqual($work->classification, $work_history->classification);
-		$this->assertEqual($work->materials, $work_history->materials);
-		$this->assertEqual($work->quantity, $work_history->quantity);
-		$this->assertEqual($work->earliest_date, $work_history->earliest_date);
-		$this->assertEqual($work->latest_date, $work_history->latest_date);
-		$this->assertEqual($work->earliest_date_format, $work_history->earliest_date_format);
-		$this->assertEqual($work->latest_date_format, $work_history->latest_date_format);
+		$this->assertEqual($work->artist, $work_history->artist);
 		$this->assertEqual($work->creation_number, $work_history->creation_number);
+		$this->assertEqual($work->materials, $work_history->materials);
+		$this->assertEqual($work->techniques, $work_history->techniques);
+		$this->assertEqual($work->color, $work_history->color);
+		$this->assertEqual($work->format, $work_history->format);
+		$this->assertEqual($work->shape, $work_history->shape);
+		$this->assertEqual($work->size, $work_history->size);
+		$this->assertEqual($work->state, $work_history->state);
+		$this->assertEqual($work->location, $work_history->location);
+		$this->assertEqual($work->quantity, $work_history->quantity);
+		$this->assertEqual($work->annotation, $work_history->annotation);
+		$this->assertEqual($work->inscriptions, $work_history->inscriptions);
 		$this->assertEqual($work->height, $work_history->height);
 		$this->assertEqual($work->width, $work_history->width);
 		$this->assertEqual($work->depth, $work_history->depth);
+		$this->assertEqual($work->length, $work_history->length);
+		$this->assertEqual($work->circumference, $work_history->circumference);
 		$this->assertEqual($work->diameter, $work_history->diameter);
+		$this->assertEqual($work->volume, $work_history->volume);
 		$this->assertEqual($work->weight, $work_history->weight);
+		$this->assertEqual($work->area, $work_history->area);
+		$this->assertEqual($work->base, $work_history->base);
 		$this->assertEqual($work->running_time, $work_history->running_time);
 		$this->assertEqual($work->measurement_remarks, $work_history->measurement_remarks);
-		$this->assertEqual($work->annotation, $work_history->annotation);
-		$this->assertEqual($work->slug, $work_history->slug);
+		$this->assertEqual($work->attributes, $work_history->attributes);
 
 		$this->assertNull($work_history->end_date);
 
 		$count = WorksHistories::count();
 
 		$this->assertEqual(1, $count);
-
 
 	}
 

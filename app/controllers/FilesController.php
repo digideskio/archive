@@ -204,7 +204,7 @@ class FilesController extends \lithium\action\Controller {
 				$this->response->headers(array(
 					'X-Sendfile' => $send_file,
 					'Content-type' => 'application/octet-stream',
-					'Content-Disposition' => 'attachment; filename="' . $file . '"'
+					'Content-Disposition' => 'attachment; filename="' . $filename . '"'
 				));
 			
 				return compact('file');
@@ -239,7 +239,7 @@ class FilesController extends \lithium\action\Controller {
 				$this->response->headers(array(
 					'X-Sendfile' => $send_file,
 					'Content-type' => 'application/octet-stream',
-					'Content-Disposition' => 'attachment; filename="' . $file . '"'
+					'Content-Disposition' => 'attachment; filename="' . $filename . '"'
 				));
 			
 				return compact('file');

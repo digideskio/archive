@@ -61,14 +61,31 @@ class PackagesController extends \lithium\action\Controller {
 			$zip = new \ZipArchive();
 			$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
 
-			$collections_works = CollectionsWorks::find('all', array(
-				'with' => 'Works',
+			$collection_works = CollectionsWorks::find('all', array(
+				'fields' => 'work_id',
 				'conditions' => array('collection_id' => $collection->id),
-				'order' => 'earliest_date ASC'
 			));
 
-			foreach ($collections_works as $cw) {
-				$work = $cw->work;
+			$works = array();
+
+			if($collection_works->count()) {
+
+				$work_ids = array();	
+			
+				//Get all the work IDs in a plain array
+				$work_ids = $collection_works->map(function($work) {
+					return $work->work_id;
+				}, array('collect' => false));
+
+				$works = Works::find('all', array(
+					'with' => 'Archives',
+					'conditions' => array('Works.id' => $work_ids),
+					'order' => 'earliest_date DESC'
+				));
+
+			}
+
+			foreach ($works as $work) {
 				$documents = $work->documents();
 
 				foreach ($documents as $document) {
@@ -78,7 +95,7 @@ class PackagesController extends \lithium\action\Controller {
 						$document_file = $document->file();
 						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
 
-						$document_localname = $cw->work->years() . '-' . $work->slug . '-' . $slug . '.' . $extension;
+						$document_localname = $work->archive->years() . '-' . $work->archive->slug . '-' . $slug . '.' . $extension;
 
 						$zip->addFile($document_path, $document_localname);
 					}
@@ -98,7 +115,7 @@ class PackagesController extends \lithium\action\Controller {
 			));
 			$view->render(
 				'all',
-				array('content' => compact('pdf', 'collection','collections_works', 'options')),
+				array('content' => compact('pdf', 'collection','works', 'options')),
 				array(
 					'controller' => 'collections',
 					'template'=>'view',
@@ -113,7 +130,7 @@ class PackagesController extends \lithium\action\Controller {
 
 			unlink($pdf);
 
-			return $this->redirect(array('Collections::package', 'args' => array($collection->slug)));
+			return $this->redirect(array('Collections::package', 'slug' => $collection->slug));
 		}
 
 		return $this->redirect('Collections::index');
@@ -148,7 +165,7 @@ class PackagesController extends \lithium\action\Controller {
 		FileSystem::delete($package->filesystem, $package->name);
 
 		Packages::find($this->request->id)->delete();
-		return $this->redirect(array('Collections::package', 'args' => array($collection->slug)));
+		return $this->redirect(array('Collections::package', 'slug' => $collection->slug));
 	}
 }
 
