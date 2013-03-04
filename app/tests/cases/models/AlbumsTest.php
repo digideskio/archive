@@ -3,47 +3,38 @@
 namespace app\tests\cases\models;
 
 use app\models\Albums;
+use app\models\AlbumsHistories;
+use app\models\Archives;
+use app\models\ArchivesHistories;
+
 
 class AlbumsTest extends \lithium\test\Unit {
 
-	public function setUp() {
-		Albums::find('all')->delete();
-	}
+	public function setUp() {}
 
 	public function tearDown() {
 	
 		Albums::find('all')->delete();
+		AlbumsHistories::find('all')->delete();
+
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
 
 	}
-	
-	public function testCreateAlbum() {
-		$album = Albums::create();
-		$data = array (
-			"title" => "Album Title",
-			"description" => "This is the Album Description"
-		);
-		
-		$slug = "Album-Title";
-		
-		$this->assertTrue($album->save($data));
-		$this->assertEqual($slug, $album->slug);
-		
-		$second_album = Albums::create();
-		$second_slug = "Album-Title-1";
-		
-		$this->assertTrue($second_album->save($data));
-		$this->assertEqual($second_slug, $second_album->slug);
-		
-	}
-	
-	public function testCreateAlbumWithNoTitle() {
+
+	public function testCreateWithNoTitle() {
 		$album = Albums::create();
 		$data = array (
 			"title" => "",
-			"description" => "This is the Album Description"
+			"remarks" => "This is the description."
 		);
 		
-		$this->assertFalse($album->save($data));
+		$this->assertFalse($album->save($data), "The album was able to be saved without a title.");
+
+		$errors = $album->errors();
+
+		$this->assertEqual('Please enter a title.', $errors['title'][0]);
+
 	}
 
 

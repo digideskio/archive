@@ -135,7 +135,7 @@ $classification_names = json_encode($classifications);
 			<?php $cw = $album->albums_works[0]; ?> 
 				<tr>
 					<td>
-						<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
+						<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($cw, array('url' => $this->url(array('AlbumsWorks::delete', 'id' => $cw->id)), 'method' => 'post')); ?>

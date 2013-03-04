@@ -14,7 +14,7 @@ $this->title($album->title);
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
+	<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 	</li>
 
 	</ul>
@@ -30,13 +30,13 @@ $this->title($album->title);
 
 		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 		
-			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->slug))); ?></li>
+			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->archive->slug))); ?></li>
 		
 		<?php endif; ?>
 
-		<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->slug))); ?></li>
+		<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->archive->slug))); ?></li>
 
-		<li><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->slug))); ?></li>
+		<li><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->archive->slug))); ?></li>
 
 	</ul>
 
@@ -46,17 +46,17 @@ $this->title($album->title);
 		<div class="btn-group">
 			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret"</span></button>
 			<ul class="dropdown-menu">
-				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->slug)); ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
-				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->slug)); ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>
+				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
+				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>
 			</ul>
 		</div>
 	</div>
 </div>
 
 	<?php endif; ?>
-<?php if($album->description): ?>
+<?php if($album->remarks): ?>
 	<div class="alert alert-info">
-	<p><?=$album->description ?></p>
+	<p><?=$album->remarks ?></p>
 	</div>
 <?php endif; ?>
 

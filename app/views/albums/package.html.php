@@ -18,7 +18,7 @@ if($auth->timezone_id) {
 	</li>
 
 	<li>
-		<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
+		<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 		<span class="divider">/</span>
 	</li>
 	
@@ -33,17 +33,17 @@ if($auth->timezone_id) {
 <div class="actions">
 
 	<ul class="nav nav-tabs">
-		<li><?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->slug))); ?></li>
+		<li><?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?></li>
 
 		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 		
-			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->slug))); ?></li>
+			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->archive->slug))); ?></li>
 		
 		<?php endif; ?>
 
-		<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->slug))); ?></li>
+		<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->archive->slug))); ?></li>
 
-		<li class="active"><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->slug))); ?></li>
+		<li class="active"><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->archive->slug))); ?></li>
 
 	</ul>
 
@@ -108,6 +108,7 @@ if($auth->timezone_id) {
 <legend>Create Package</legend>
 <?=$this->form->create(null, array('url' => "/packages/add/", 'method' => 'post')); ?>
 	<?=$this->form->hidden('album_id', array('value' => $album->id)); ?>
+	<?=$this->form->hidden('slug', array('value' => $album->archive->slug)); ?>
 <fieldset>
 	<label class="radio inline">
 		<input type="radio" name="filesystem" id="secure" value="secure" checked>

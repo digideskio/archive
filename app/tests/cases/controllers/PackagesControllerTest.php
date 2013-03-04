@@ -24,10 +24,10 @@ class PackagesControllerTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
-	public function testIndex() {}
-	public function testView() {}
+//	public function testIndex() {}
+//	public function testView() {}
 	public function testAdd() {}
-	public function testEdit() {}
+//	public function testEdit() {}
 	public function testDelete() {}
 
 	public function testUnauthorizedAccess() {

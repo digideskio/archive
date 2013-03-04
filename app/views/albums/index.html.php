@@ -50,8 +50,8 @@ $this->title('Albums');
 <?php foreach($albums as $album): ?>
 <article>
 	<div class="alert">
-    <h1><?=$this->html->link($album->title,$this->url(array('Albums::view', 'slug' => $album->slug))); ?></h1>
-    <p><?=$album->description ?></p>
+    <h1><?=$this->html->link($album->title,$this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?></h1>
+    <p><?=$album->remarks ?></p>
     </div>
 </article>
 <?php endforeach; ?>

@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Archives;
 use app\models\Albums;
 use app\models\AlbumsWorks;
 use app\models\ArchivesHistories;
@@ -40,7 +41,7 @@ class AlbumsController extends \lithium\action\Controller {
 		$order = array('title' => 'ASC'); 
 		
 		$albums = Albums::find('all', array(
-			'with' => 'AlbumsWorks',
+			'with' => array('Archives', 'AlbumsWorks'),
 			'order' => $order
 		));
 		return compact('albums', 'auth');
@@ -64,6 +65,7 @@ class AlbumsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
+				'with' => 'Archives',
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
@@ -127,7 +129,11 @@ class AlbumsController extends \lithium\action\Controller {
 		$album = Albums::create();
 
 		if (($this->request->data) && $album->save($this->request->data)) {
-			return $this->redirect(array('Albums::view', 'slug' => $album->slug));
+			//The slug has been saved with the Archive object, so let's look it up
+			$archive = Archives::find('first', array(
+				'conditions' => array('id' => $album->id)
+			));
+			return $this->redirect(array('Albums::view', 'slug' => $archive->slug));
 		}
 		return compact('album');
 	}
@@ -146,15 +152,16 @@ class AlbumsController extends \lithium\action\Controller {
 		));
 		
 		$album = Albums::first(array(
-				'conditions' => array(
-				'slug' => $this->request->params['slug'],
-			)));
+			'with' => 'Archives',
+			'conditions' => array(
+			'slug' => $this->request->params['slug'],
+		)));
 
 		if (!$album) {
 			return $this->redirect('Albums::index');
 		}
 		if (($this->request->data) && $album->save($this->request->data)) {
-			return $this->redirect(array('Albums::view', 'slug' => $album->slug));
+			return $this->redirect(array('Albums::view', 'slug' => $album->archive->slug));
 		}
 		return compact('album');
 	}
@@ -177,6 +184,7 @@ class AlbumsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
+				'with' => 'Archives',
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
@@ -240,13 +248,14 @@ class AlbumsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
+				'with' => 'Archives',
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 			
 			if($album) {
 				
-				$pdf = $album->slug . '-' . $options['view'] . '.pdf';
+				$pdf = $album->archive->slug . '-' . $options['view'] . '.pdf';
 
 				$album_works = AlbumsWorks::find('all', array(
 					'fields' => 'work_id',
@@ -354,6 +363,7 @@ class AlbumsController extends \lithium\action\Controller {
 			
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
+				'with' => 'Archives',
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
@@ -409,6 +419,7 @@ class AlbumsController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
         
 			$album = Albums::first(array(
+				'with' => 'Archives',
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));

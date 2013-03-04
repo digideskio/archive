@@ -47,7 +47,7 @@ $this->form->config(
 <?=$this->form->create($album); ?>
 	<legend>Album Info</legend>
     <?=$this->form->field('title');?>
-    <?=$this->form->field('description', array('type' => 'textarea'));?>
+    <?=$this->form->field('remarks', array('label' => 'Description', 'type' => 'textarea'));?>
     <?=$this->form->hidden('class'); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel',$this->url('Albums::index'), array('class' => 'btn')); ?>

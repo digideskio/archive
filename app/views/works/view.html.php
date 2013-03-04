@@ -144,7 +144,7 @@ $this->title($work->title);
 								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
 									$album->title,
-									$this->url(array('Albums::view', 'slug' => $album->slug))
+									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
 							

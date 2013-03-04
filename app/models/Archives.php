@@ -13,7 +13,11 @@ class Archives extends \lithium\data\Model {
 	public $hasOne = array(
 		'Works' => array (
 			'key' => 'id'
-	));
+		),
+		'Albums' => array (
+			'key' => 'id'
+		),
+	);
 
 	public $validates = array(
 		'title' => array(

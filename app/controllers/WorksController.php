@@ -169,7 +169,7 @@ class WorksController extends \lithium\action\Controller {
 				));
 		
 				$albums = Albums::find('all', array(
-					'with' => 'AlbumsWorks',
+					'with' => array('AlbumsWorks', 'Archives'),
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
@@ -316,7 +316,7 @@ class WorksController extends \lithium\action\Controller {
 				$order = array('title' => 'ASC');
 
 				$albums = Albums::find('all', array(
-					'with' => 'AlbumsWorks',
+					'with' => array('AlbumsWorks', 'Archives'),
 					'conditions' => array(
 						'work_id' => $work->id,
 					),

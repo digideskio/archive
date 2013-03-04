@@ -174,11 +174,16 @@ class ConvertWorksToArchives extends Ruckusing_BaseMigration {
 		}
 	}
 
+	//Any end dates that are 0 should instead be NULL
+
+	$this->execute("UPDATE archives_histories SET end_date = NULL where end_date = 0");
+	$this->execute("UPDATE works_histories SET end_date = NULL where end_date = 0");
+
 	//Finally, create the triggers for Works Histories
 		
-	$this->execute("CREATE TRIGGER WorksHistoriesTableInsert AFTER INSERT ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); INSERT INTO works_histories (work_id, title, artist, creation_number, materials, techniques, color, format, shape, size, state, location, quantity, annotation, inscriptions, height, width, depth, length, circumference, diameter, volume, weight, area, base, running_time, measurement_remarks, attributes, remarks) VALUES (NEW.id, NEW.title, NEW.artist, NEW.creation_number, NEW.materials, NEW.techniques, NEW.color, NEW.format, NEW.shape, NEW.size, NEW.state, NEW.location, NEW.quantity, NEW.annotation, NEW.inscriptions, NEW.height, NEW.width, NEW.depth, NEW.length, NEW.circumference, NEW.diameter, NEW.volume, NEW.weight, NEW.area, NEW.base, NEW.running_time, NEW.measurement_remarks, NEW.attributes, NEW.remarks); END");
+	$this->execute("CREATE TRIGGER WorksHistoriesTableInsert AFTER INSERT ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); INSERT INTO works_histories (work_id, title, artist, creation_number, materials, techniques, color, format, shape, size, state, location, quantity, annotation, inscriptions, height, width, depth, length, circumference, diameter, volume, weight, area, base, running_time, measurement_remarks, attributes, remarks, start_date, end_date) VALUES (NEW.id, NEW.title, NEW.artist, NEW.creation_number, NEW.materials, NEW.techniques, NEW.color, NEW.format, NEW.shape, NEW.size, NEW.state, NEW.location, NEW.quantity, NEW.annotation, NEW.inscriptions, NEW.height, NEW.width, NEW.depth, NEW.length, NEW.circumference, NEW.diameter, NEW.volume, NEW.weight, NEW.area, NEW.base, NEW.running_time, NEW.measurement_remarks, NEW.attributes, NEW.remarks, N, NULL); END");
 	$this->execute("CREATE TRIGGER WorksHistoriesTableDelete AFTER DELETE ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); UPDATE works_histories SET end_date = N WHERE work_id = OLD.id AND end_date IS NULL; END");
-	$this->execute("CREATE TRIGGER WorksHistoriesTableUpdate AFTER UPDATE ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); UPDATE works_histories SET end_date = N WHERE work_id = OLD.id AND end_date IS NULL; INSERT INTO works_histories (work_id, title, artist, creation_number, materials, techniques, color, format, shape, size, state, location, quantity, annotation, inscriptions, height, width, depth, length, circumference, diameter, volume, weight, area, base, running_time, measurement_remarks, attributes, remarks) VALUES (NEW.id, NEW.title, NEW.artist, NEW.creation_number, NEW.materials, NEW.techniques, NEW.color, NEW.format, NEW.shape, NEW.size, NEW.state, NEW.location, NEW.quantity, NEW.annotation, NEW.inscriptions, NEW.height, NEW.width, NEW.depth, NEW.length, NEW.circumference, NEW.diameter, NEW.volume, NEW.weight, NEW.area, NEW.base, NEW.running_time, NEW.measurement_remarks, NEW.attributes, NEW.remarks); END");	
+	$this->execute("CREATE TRIGGER WorksHistoriesTableUpdate AFTER UPDATE ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); UPDATE works_histories SET end_date = N WHERE work_id = OLD.id AND end_date IS NULL; INSERT INTO works_histories (work_id, title, artist, creation_number, materials, techniques, color, format, shape, size, state, location, quantity, annotation, inscriptions, height, width, depth, length, circumference, diameter, volume, weight, area, base, running_time, measurement_remarks, attributes, remarks, start_date, end_date) VALUES (NEW.id, NEW.title, NEW.artist, NEW.creation_number, NEW.materials, NEW.techniques, NEW.color, NEW.format, NEW.shape, NEW.size, NEW.state, NEW.location, NEW.quantity, NEW.annotation, NEW.inscriptions, NEW.height, NEW.width, NEW.depth, NEW.length, NEW.circumference, NEW.diameter, NEW.volume, NEW.weight, NEW.area, NEW.base, NEW.running_time, NEW.measurement_remarks, NEW.attributes, NEW.remarks, N, NULL); END");	
 
   }//up()
 
@@ -293,6 +298,12 @@ class ConvertWorksToArchives extends Ruckusing_BaseMigration {
 			}	
 		}
 	}
+
+	//Any end dates that are 0 should instead be NULL
+
+	$this->execute("UPDATE works_histories SET end_date = NULL where end_date = 0");
+
+	//Re-create the triggers
 
 	$this->execute("CREATE TRIGGER WorksHistoriesTableInsert AFTER INSERT ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); INSERT INTO works_histories (work_id, user_id, artist, title, classification, materials, quantity, location, lender, remarks, earliest_date, latest_date, earliest_date_format, latest_date_format, creation_number, height, width, depth, diameter, weight, running_time, measurement_remarks, annotation, slug, date_created, date_modified, start_date, end_date) VALUES (NEW.id, NEW.user_id, NEW.artist, NEW.title, NEW.classification, NEW.materials, NEW.quantity, NEW.location, NEW.lender, NEW.remarks, NEW.earliest_date, NEW.latest_date, NEW.earliest_date_format, NEW.latest_date_format, NEW.creation_number, NEW.height, NEW.width, NEW.depth, NEW.diameter, NEW.weight, NEW.running_time, NEW.measurement_remarks, NEW.annotation, NEW.slug, NEW.date_created, NEW.date_modified, N, NULL); END");
 		$this->execute("CREATE TRIGGER WorksHistoriesTableDelete AFTER DELETE ON works FOR EACH ROW BEGIN DECLARE N int(11); SET N = UNIX_TIMESTAMP(); UPDATE works_histories SET end_date = N WHERE work_id = OLD.id AND end_date IS NULL; END");

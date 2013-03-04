@@ -15,7 +15,7 @@ $this->title('Album History');
 	</li>
 
 	<li>
-	<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
+	<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 	<span class="divider">/</span>
 	</li>
 
@@ -29,12 +29,12 @@ $this->title('Album History');
 
 <ul class="nav nav-tabs">
 	<li>
-		<?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
+		<?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 	</li>
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->slug))); ?></li>
+		<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->archive->slug))); ?></li>
 	
 	<?php endif; ?>
 
@@ -42,7 +42,7 @@ $this->title('Album History');
 		<a href="#">History</a>
 	</li>
 
-	<li><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->slug))); ?></li>
+	<li><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->archive->slug))); ?></li>
 </ul>
 
 <table class="table">

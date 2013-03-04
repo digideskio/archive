@@ -9,7 +9,17 @@ class Packages extends \lithium\data\Model {
 	public $belongsTo = array('Albums');
 
 	//TODO validate the album_id
-	public $validates = array();
+	public $validates = array(
+		'album_id' => array(
+			array('notEmpty', 'message' => 'No Album was specified for the Package.')
+		),
+		'filesystem' => array(
+			array('notEmpty', 'message' => 'No Filesystem was specified for the Package.')
+		),
+		'slug' => array(
+			array('notEmpty', 'message' => 'No Filename was suggested for the Package.')
+		),
+	);		
 
 	public function url($entity) {
 		$filename = $entity->name;
@@ -52,12 +62,8 @@ Packages::applyFilter('save', function($self, $params, $chain) {
 		// Set the date created
 		$params['data']['date_created'] = date("Y-m-d H:i:s");
 
-		$album = Albums::first(array(
-			'conditions' => array(
-			'id' => $params['data']['album_id']
-		)));
-
-		$params['data']['name'] = $album->slug . '_' . date("Y-m-d_His") . ".zip";
+		//Set the filename
+		$params['data']['name'] = $params['data']['slug'] . '_' . date("Y-m-d_His") . ".zip";
 
 	}
 

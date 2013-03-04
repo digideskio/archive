@@ -45,7 +45,8 @@ class PackagesController extends \lithium\action\Controller {
 			$filesystem = $package->filesystem;
 
 			$album = Albums::find('first', array(
-				'conditions' => array('id' => $package->album_id)
+				'with' => 'Archives',
+				'conditions' => array('Albums.id' => $package->album_id)
 			));
 
 			$packages_path = $package->directory();
@@ -105,7 +106,7 @@ class PackagesController extends \lithium\action\Controller {
 			$layout = 'file';
 			$options['path'] = $documents_path;
 			$options['view'] = 'artwork';
-			$pdf = $packages_path . DIRECTORY_SEPARATOR . $album->slug . '.pdf';
+			$pdf = $packages_path . DIRECTORY_SEPARATOR . $album->archive->slug . '.pdf';
 			
 			$view  = new View(array(
 				'paths' => array(
@@ -124,13 +125,13 @@ class PackagesController extends \lithium\action\Controller {
 				)
 			);
 
-			$zip->addFile($pdf, $album->slug . '.pdf');
+			$zip->addFile($pdf, $album->archive->slug . '.pdf');
 
 			$zip->close();
 
 			unlink($pdf);
 
-			return $this->redirect(array('Albums::package', 'slug' => $album->slug));
+			return $this->redirect(array('Albums::package', 'slug' => $album->archive->slug));
 		}
 
 		return $this->redirect('Albums::index');
@@ -160,12 +161,15 @@ class PackagesController extends \lithium\action\Controller {
 
 		$package = Packages::find($this->request->id);
 
-		$album = Albums::find($package->album_id);
+		$album = Albums::find('first', array(
+			'with' => 'Archives',
+			'conditions' => array('Albums.id' => $package->album_id)
+		));
 
 		FileSystem::delete($package->filesystem, $package->name);
 
 		Packages::find($this->request->id)->delete();
-		return $this->redirect(array('Albums::package', 'slug' => $album->slug));
+		return $this->redirect(array('Albums::package', 'slug' => $album->archive->slug));
 	}
 }
 
