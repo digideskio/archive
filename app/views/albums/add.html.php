@@ -18,7 +18,7 @@ $this->form->config(
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Albums',$this->url('Collections::index')); ?>
+	<?=$this->html->link('Albums',$this->url('Albums::index')); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -33,7 +33,7 @@ $this->form->config(
 <div class="actions">
 	<ul class="nav nav-tabs">
 		<li>
-			<?=$this->html->link('Index',$this->url('Collections::index')); ?>
+			<?=$this->html->link('Index',$this->url('Albums::index')); ?>
 		</li>
 
 	</ul>
@@ -44,12 +44,12 @@ $this->form->config(
 </div>
 
 <div class="well">
-<?=$this->form->create($collection); ?>
+<?=$this->form->create($album); ?>
 	<legend>Album Info</legend>
     <?=$this->form->field('title');?>
     <?=$this->form->field('description', array('type' => 'textarea'));?>
     <?=$this->form->hidden('class'); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel',$this->url('Collections::index'), array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel',$this->url('Albums::index'), array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>

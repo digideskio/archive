@@ -37,12 +37,12 @@ class PackagesControllerTest extends \lithium\test\Unit {
 			'controller' => 'packages'
 		);
 
-		$collections = new PackagesController(array('request' => $this->request));
+		$albums = new PackagesController(array('request' => $this->request));
 		
-		$response = $collections->add();
+		$response = $albums->add();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $collections->delete();
+		$response = $albums->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	}
 }

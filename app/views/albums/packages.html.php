@@ -13,7 +13,7 @@ if($auth->timezone_id) {
 	<ul class="breadcrumb">
 
 	<li>
-		<?=$this->html->link('Albums', $this->url(array('Collections::index'))); ?>
+		<?=$this->html->link('Albums', $this->url(array('Albums::index'))); ?>
 		<span class="divider">/</span>
 	</li>
 
@@ -28,10 +28,10 @@ if($auth->timezone_id) {
 <div class="actions">
 	<ul class="nav nav-tabs">
 		<li>
-			<?=$this->html->link('Index',$this->url(array('Collections::index'))); ?>
+			<?=$this->html->link('Index',$this->url(array('Albums::index'))); ?>
 		</li>
 		<li class="active">
-			<?=$this->html->link('Packages',$this->url(array('Collections::packages'))); ?>
+			<?=$this->html->link('Packages',$this->url(array('Albums::packages'))); ?>
 		</li>
 	</ul>
 </div>

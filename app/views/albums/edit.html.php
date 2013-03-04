@@ -1,6 +1,6 @@
 <?php
 
-$this->title($collection->title);
+$this->title($album->title);
 
 $this->form->config(
     array( 
@@ -18,12 +18,12 @@ $this->form->config(
 	<ul class="breadcrumb">
 
 	<li>
-	<?=$this->html->link('Albums', $this->url(array('Collections::index'))); ?>
+	<?=$this->html->link('Albums', $this->url(array('Albums::index'))); ?>
 	<span class="divider">/</span>
 	</li>
 
 	<li>
-	<?=$this->html->link($collection->title, $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
+	<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -36,28 +36,28 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View', $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
+	<li><?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
 	<li class="active">
 		<a href="#">
 			Edit
 		</a>
 	</li>
-	<li><?=$this->html->link('History', $this->url(array('Collections::history', 'slug' => $collection->slug))); ?></li>
-	<li><?=$this->html->link('Packages', $this->url(array('Collections::package', 'slug' => $collection->slug))); ?></li>
+	<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->slug))); ?></li>
+	<li><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->slug))); ?></li>
 </ul>
 
 
 <div class="well">
-<?=$this->form->create($collection); ?>
+<?=$this->form->create($album); ?>
 	<legend>Album Info</legend>
-    <?=$this->form->field('title',array('value'=>$collection->title)); ?>
+    <?=$this->form->field('title',array('value'=>$album->title)); ?>
 	<?=$this->form->field('slug', array('label' => 'Permalink', 'disabled' => 'disabled'));?>
     <?=$this->form->field('description',array(
     	'type'=>'textarea',
-    	'value'=>$collection->description
+    	'value'=>$album->description
     )); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel', $this->url(array('Collections::view', 'slug' => $collection->slug)), array('class' => 'btn')); ?>
+    <?=$this->html->link('Cancel', $this->url(array('Albums::view', 'slug' => $album->slug)), array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
 
@@ -80,12 +80,12 @@ $this->form->config(
 			<h3>Delete Album</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$collection->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$album->title; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Album from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($collection, array('url' => $this->url(array('Collections::delete', 'slug' => $collection->slug)), 'method' => 'post')); ?>
+			<?=$this->form->create($album, array('url' => $this->url(array('Albums::delete', 'slug' => $album->slug)), 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

@@ -2,13 +2,13 @@
 
 namespace app\tests\cases\controllers;
 
-use app\controllers\CollectionsWorksController;
+use app\controllers\AlbumsWorksController;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
 
-class CollectionsWorksControllerTest extends \lithium\test\Unit {
+class AlbumsWorksControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
 	
@@ -31,15 +31,15 @@ class CollectionsWorksControllerTest extends \lithium\test\Unit {
 	
 		$this->request = new Request();
 		$this->request->params = array(
-			'controller' => 'collections_works'
+			'controller' => 'albums_works'
 		);
 
-		$collections_works = new CollectionsWorksController(array('request' => $this->request));
+		$albums_works = new AlbumsWorksController(array('request' => $this->request));
 		
-		$response = $collections_works->add();
+		$response = $albums_works->add();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $collections_works->delete();
+		$response = $albums_works->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	
 	}

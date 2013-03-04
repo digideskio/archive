@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Collections;
-use app\models\CollectionsWorks;
+use app\models\Albums;
+use app\models\AlbumsWorks;
 use app\models\ArchivesHistories;
 use app\models\Works;
 use app\models\Packages;
@@ -19,7 +19,7 @@ use lithium\template\View;
 
 use lithium\core\Libraries;
 
-class CollectionsController extends \lithium\action\Controller {
+class AlbumsController extends \lithium\action\Controller {
 
 	public function index() {
     
@@ -39,11 +39,11 @@ class CollectionsController extends \lithium\action\Controller {
 
 		$order = array('title' => 'ASC'); 
 		
-		$collections = Collections::find('all', array(
-			'with' => 'CollectionsWorks',
+		$albums = Albums::find('all', array(
+			'with' => 'AlbumsWorks',
 			'order' => $order
 		));
-		return compact('collections', 'auth');
+		return compact('albums', 'auth');
 	}
 
 	public function view() {
@@ -63,26 +63,26 @@ class CollectionsController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$collection = Collections::first(array(
+			$album = Albums::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 			
-			if($collection) {
+			if($album) {
 
 				$work_ids = array();	
 			
-				$collection_works = CollectionsWorks::find('all', array(
+				$album_works = AlbumsWorks::find('all', array(
 					'fields' => 'work_id',
-					'conditions' => array('collection_id' => $collection->id),
+					'conditions' => array('album_id' => $album->id),
 				));
 
 				$works = array();
 
-				if ($collection_works->count()) {
+				if ($album_works->count()) {
 
 					//Get all the work IDs in a plain array
-					$work_ids = $collection_works->map(function($cw) {
+					$work_ids = $album_works->map(function($cw) {
 						return $cw->work_id;
 					}, array('collect' => false));
 
@@ -97,13 +97,13 @@ class CollectionsController extends \lithium\action\Controller {
 				$li3_pdf = Libraries::get("li3_pdf");
 
 				//Send the retrieved data to the view
-				return compact('collection', 'works', 'auth', 'li3_pdf');
+				return compact('album', 'works', 'auth', 'li3_pdf');
 				
 			}
 		}
 		
 		//since no record was specified, redirect to the index page
-		$this->redirect(array('Collections::index'));
+		$this->redirect(array('Albums::index'));
 	}
 
 	public function add() {
@@ -121,15 +121,15 @@ class CollectionsController extends \lithium\action\Controller {
         
         // If the user is not an Admin or Editor, redirect to the index
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Collections::index');
+        	return $this->redirect('Albums::index');
         }
         
-		$collection = Collections::create();
+		$album = Albums::create();
 
-		if (($this->request->data) && $collection->save($this->request->data)) {
-			return $this->redirect(array('Collections::view', 'slug' => $collection->slug));
+		if (($this->request->data) && $album->save($this->request->data)) {
+			return $this->redirect(array('Albums::view', 'slug' => $album->slug));
 		}
-		return compact('collection');
+		return compact('album');
 	}
 
 	public function edit() {
@@ -145,18 +145,18 @@ class CollectionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$collection = Collections::first(array(
+		$album = Albums::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 
-		if (!$collection) {
-			return $this->redirect('Collections::index');
+		if (!$album) {
+			return $this->redirect('Albums::index');
 		}
-		if (($this->request->data) && $collection->save($this->request->data)) {
-			return $this->redirect(array('Collections::view', 'slug' => $collection->slug));
+		if (($this->request->data) && $album->save($this->request->data)) {
+			return $this->redirect(array('Albums::view', 'slug' => $album->slug));
 		}
-		return compact('collection');
+		return compact('album');
 	}
 
 	public function history() {
@@ -176,24 +176,24 @@ class CollectionsController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$collection = Collections::first(array(
+			$album = Albums::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 			
-			if($collection) {
+			if($album) {
 
-				$collection_works = CollectionsWorks::find('all', array(
+				$album_works = AlbumsWorks::find('all', array(
 					'fields' => 'work_id',
-					'conditions' => array('collection_id' => $collection->id),
+					'conditions' => array('album_id' => $album->id),
 				));
 
 				$archives_histories = array();
 
-				if ($collection_works->count()) {
+				if ($album_works->count()) {
 
 					//Get all the work IDs in a plain array
-					$work_ids = $collection_works->map(function($cw) {
+					$work_ids = $album_works->map(function($cw) {
 						return $cw->work_id;
 					}, array('collect' => false));
 				
@@ -206,13 +206,13 @@ class CollectionsController extends \lithium\action\Controller {
 				}
 
 				//Send the retrieved data to the view
-				return compact('collection', 'archives_histories', 'auth');
+				return compact('album', 'archives_histories', 'auth');
 				
 			}
 		}
 
 		//since no record was specified, redirect to the index page
-		$this->redirect(array('Collections::index'));
+		$this->redirect(array('Albums::index'));
 	}
 
 	public function publish() {
@@ -239,28 +239,28 @@ class CollectionsController extends \lithium\action\Controller {
 			$options['path'] = $config['path'];
 		
 			//Get single record from the database where the slug matches the URL
-			$collection = Collections::first(array(
+			$album = Albums::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 			
-			if($collection) {
+			if($album) {
 				
-				$pdf = $collection->slug . '-' . $options['view'] . '.pdf';
+				$pdf = $album->slug . '-' . $options['view'] . '.pdf';
 
-				$collection_works = CollectionsWorks::find('all', array(
+				$album_works = AlbumsWorks::find('all', array(
 					'fields' => 'work_id',
-					'conditions' => array('collection_id' => $collection->id),
+					'conditions' => array('album_id' => $album->id),
 				));
 
 				$works = array();
 
-				if ($collection_works->count()) {
+				if ($album_works->count()) {
 
 					$work_ids = array();	
 
 					//Get all the work IDs in a plain array
-					$work_ids = $collection_works->map(function($cw) {
+					$work_ids = $album_works->map(function($cw) {
 						return $cw->work_id;
 					}, array('collect' => false));
 
@@ -280,9 +280,9 @@ class CollectionsController extends \lithium\action\Controller {
 				));
 				echo $view->render(
 					'all',
-					array('content' => compact('pdf', 'collection','works', 'options')),
+					array('content' => compact('pdf', 'album','works', 'options')),
 					array(
-						'controller' => 'collections',
+						'controller' => 'albums',
 						'template'=>'view',
 						'type' => 'pdf',
 						'layout' => $layout
@@ -292,7 +292,7 @@ class CollectionsController extends \lithium\action\Controller {
 		}
 		
 		//since no record was specified, redirect to the index page
-		//$this->redirect(array('Collections::index'));
+		//$this->redirect(array('Albums::index'));
 	}
 
 	public function packages() {
@@ -323,7 +323,7 @@ class CollectionsController extends \lithium\action\Controller {
 
 		// Find whatever packages are left
 		$packages = Packages::find('all', array(
-			'with' => 'Collections',
+			'with' => 'Albums',
 			'order' => array('date_created' => 'DESC')
 		));
 
@@ -353,16 +353,16 @@ class CollectionsController extends \lithium\action\Controller {
 			$filesystem = isset($options['filesystem']) ? $options['filesystem'] : 'secure'; 
 			
 			//Get single record from the database where the slug matches the URL
-			$collection = Collections::first(array(
+			$album = Albums::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 			
-			if($collection) {
+			if($album) {
 
 				$test_packages = Packages::find('all', array(
 					'conditions' => array(
-					'collection_id' => $collection->id
+					'album_id' => $album->id
 				)));
 
 				// Some packages may be removed from disk from time to time
@@ -380,17 +380,17 @@ class CollectionsController extends \lithium\action\Controller {
 				$packages = Packages::find('all', array(
 					'order' => array('date_created' => 'DESC'),
 					'conditions' => array(
-					'collection_id' => $collection->id
+					'album_id' => $album->id
 				)));
 
 				//Send the retrieved data to the view
-				return compact('collection', 'packages', 'auth');
+				return compact('album', 'packages', 'auth');
 			}
 		
 		}
 
 		//since no record was specified, redirect to the index page
-		$this->redirect(array('Collections::index'));
+		$this->redirect(array('Albums::index'));
 	}
 
 	public function delete() {
@@ -408,32 +408,32 @@ class CollectionsController extends \lithium\action\Controller {
 		
 		if(isset($this->request->params['slug'])) {
         
-			$collection = Collections::first(array(
+			$album = Albums::first(array(
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
 		
-			if($collection) {
+			if($album) {
 		    
 				// If the user is not an Admin or Editor, redirect to the record view
 				if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
 					return $this->redirect(array(
-						'Collections::view', 'args' => array($this->request->params['slug']))
+						'Albums::view', 'args' => array($this->request->params['slug']))
 					);
 				}
 				
 				// For the following to work, the delete form must have an explicit 'method' => 'post'
 				// since the default method is PUT
 				if (!$this->request->is('post') && !$this->request->is('delete')) {
-					$msg = "Collections::delete can only be called with http:post or http:delete.";
+					$msg = "Albums::delete can only be called with http:post or http:delete.";
 					throw new DispatchException($msg);
 				}
 		
-				$collection->delete();
+				$album->delete();
 		
 			}
 		}
-		return $this->redirect('Collections::index');
+		return $this->redirect('Albums::index');
 	}
 
 }

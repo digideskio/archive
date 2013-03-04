@@ -6,9 +6,9 @@ use li3_filesystem\extensions\storage\FileSystem;
 
 class Packages extends \lithium\data\Model {
 
-	public $belongsTo = array('Collections');
+	public $belongsTo = array('Albums');
 
-	//TODO validate the collection_id
+	//TODO validate the album_id
 	public $validates = array();
 
 	public function url($entity) {
@@ -52,12 +52,12 @@ Packages::applyFilter('save', function($self, $params, $chain) {
 		// Set the date created
 		$params['data']['date_created'] = date("Y-m-d H:i:s");
 
-		$collection = Collections::first(array(
+		$album = Albums::first(array(
 			'conditions' => array(
-			'id' => $params['data']['collection_id']
+			'id' => $params['data']['album_id']
 		)));
 
-		$params['data']['name'] = $collection->slug . '_' . date("Y-m-d_His") . ".zip";
+		$params['data']['name'] = $album->slug . '_' . date("Y-m-d_His") . ".zip";
 
 	}
 

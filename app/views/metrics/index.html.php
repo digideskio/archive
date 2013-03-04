@@ -22,7 +22,7 @@ $this->title('Metrics');
 
 	<hr/>
 
-	<!--<p><strong><?=$collections ?></strong> collections comprising <strong><?=$collections_works ?></strong> artworks.</p>-->
+	<!--<p><strong><?=$albums ?></strong> albums comprising <strong><?=$albums_works ?></strong> artworks.</p>-->
 
 	<p><strong><?=$works ?></strong> artworks and <strong><?=$architectures ?></strong> architecture projects.</p>
 

@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Collections;
-use app\models\CollectionsWorks;
+use app\models\Albums;
+use app\models\AlbumsWorks;
 use app\models\Works;
 use app\models\WorksDocuments;
 use app\models\Architectures;
@@ -39,8 +39,8 @@ class MetricsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 
-		$collections = Collections::count();
-		$collections_works = CollectionsWorks::count();
+		$albums = Albums::count();
+		$albums_works = AlbumsWorks::count();
 		$works = Works::count();
 		$works_documents = WorksDocuments::count();
 		$architectures = Architectures::count();
@@ -75,8 +75,8 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		return compact(
-			'collections', 
-			'collections_works', 
+			'albums', 
+			'albums_works', 
 			'works', 
 			'works_documents', 
 			'architectures', 

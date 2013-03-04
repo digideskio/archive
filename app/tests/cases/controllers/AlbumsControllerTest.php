@@ -2,16 +2,16 @@
 
 namespace app\tests\cases\controllers;
 
-use app\controllers\CollectionsController;
+use app\controllers\AlbumsController;
 
-use app\model\Collections;
+use app\model\Albums;
 use lithium\storage\Session;
 use app\models\Users;
 
 use lithium\security\Auth;
 use lithium\action\Request;
 
-class CollectionsControllerTest extends \lithium\test\Unit {
+class AlbumsControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
 	
@@ -35,36 +35,36 @@ class CollectionsControllerTest extends \lithium\test\Unit {
 	
 		$this->request = new Request();
 		$this->request->params = array(
-			'controller' => 'collections'
+			'controller' => 'albums'
 		);
 
-		$collections = new CollectionsController(array('request' => $this->request));
+		$albums = new AlbumsController(array('request' => $this->request));
 		
-		$response = $collections->index();
+		$response = $albums->index();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $collections->view();
+		$response = $albums->view();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $collections->add();
+		$response = $albums->add();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $collections->edit();
+		$response = $albums->edit();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $collections->history();
+		$response = $albums->history();
 		$this->assertEqual($response->headers["Location"], "/login");
 
-		$response = $collections->publish();
+		$response = $albums->publish();
 		$this->assertEqual($response->headers["Location"], "/login");
 
-		$response = $collections->packages();
+		$response = $albums->packages();
 		$this->assertEqual($response->headers["Location"], "/login");
 
-		$response = $collections->package();
+		$response = $albums->package();
 		$this->assertEqual($response->headers["Location"], "/login");
 
-		$response = $collections->delete();
+		$response = $albums->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	
 	}

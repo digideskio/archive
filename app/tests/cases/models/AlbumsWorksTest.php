@@ -2,9 +2,9 @@
 
 namespace app\tests\cases\models;
 
-use app\models\CollectionsWorks;
+use app\models\AlbumsWorks;
 
-class CollectionsWorksTest extends \lithium\test\Unit {
+class AlbumsWorksTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 

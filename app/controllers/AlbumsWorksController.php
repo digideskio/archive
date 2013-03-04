@@ -2,14 +2,14 @@
 
 namespace app\controllers;
 
-use app\models\CollectionsWorks;
+use app\models\AlbumsWorks;
 use app\models\Users;
 use app\models\Roles;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
-class CollectionsWorksController extends \lithium\action\Controller {
+class AlbumsWorksController extends \lithium\action\Controller {
 
 	public function add() {
     
@@ -33,8 +33,8 @@ class CollectionsWorksController extends \lithium\action\Controller {
 	
 		if ($this->request->data) {
 	
-			$collections_works = CollectionsWorks::create();
-			$collections_works->save($this->request->data);
+			$albums_works = AlbumsWorks::create();
+			$albums_works->save($this->request->data);
 			
 			return $this->redirect(array('Works::edit', 'args' => array($this->request->data['work_slug'])));
 		}
@@ -60,13 +60,13 @@ class CollectionsWorksController extends \lithium\action\Controller {
         }
         
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
-			$msg = "CollectionsWorks::delete can only be called with http:post or http:delete.";
+			$msg = "AlbumsWorks::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
 		
 		//Dont run the query if no id is provided
 		if(isset($this->request->params['id'])) {
-			CollectionsWorks::first(array(
+			AlbumsWorks::first(array(
 					'conditions' => array('id' => $this->request->params['id'])
 				))->delete();
 		}

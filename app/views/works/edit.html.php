@@ -131,14 +131,14 @@ $classification_names = json_encode($classifications);
 		<legend>Albums</legend>
 		<table class="table">
 		
-			<?php foreach($collections as $collection): ?>
-			<?php $cw = $collection->collections_works[0]; ?> 
+			<?php foreach($albums as $album): ?>
+			<?php $cw = $album->albums_works[0]; ?> 
 				<tr>
 					<td>
-						<?=$this->html->link($collection->title, $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
+						<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($cw, array('url' => $this->url(array('CollectionsWorks::delete', 'id' => $cw->id)), 'method' => 'post')); ?>
+			<?=$this->form->create($cw, array('url' => $this->url(array('AlbumsWorks::delete', 'id' => $cw->id)), 'method' => 'post')); ?>
 			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
@@ -147,12 +147,12 @@ $classification_names = json_encode($classifications);
 			
 			<?php endforeach; ?>
 			
-			<?php if(sizeof($other_collections) > 0): ?>
+			<?php if(sizeof($other_albums) > 0): ?>
 			
 			<tr>
 				<td></td>
 				<td align="right" style="text-align:right">
-					<a data-toggle="modal" href="#collectionModal" class="btn btn-mini btn-inverse">Add an Album</a>
+					<a data-toggle="modal" href="#albumModal" class="btn btn-mini btn-inverse">Add an Album</a>
 				</td>
 			</tr>
 			
@@ -197,23 +197,23 @@ $classification_names = json_encode($classifications);
 		
 	</div>
 	
-<div class="modal fade hide" id="collectionModal">
+<div class="modal fade hide" id="albumModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
 			<h3>Add this Artwork to an Album</h3>
 		</div>
 		<div class="modal-body">
 			<table class="table"><tbody>
-			<?php foreach($other_collections as $oc): ?>
+			<?php foreach($other_albums as $oc): ?>
 				<tr>
 					<td>
 						<strong>
-							<?=$this->html->link($oc->title, $this->url(array('Collections::view', 'slug' => $oc->slug))); ?>
+							<?=$this->html->link($oc->title, $this->url(array('Albums::view', 'slug' => $oc->slug))); ?>
 						</strong><br/>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($oc, array('url' => $this->url(array('CollectionsWorks::add')), 'method' => 'post')); ?>
-			<input type="hidden" name="collection_id" value="<?=$oc->id ?>" />
+			<?=$this->form->create($oc, array('url' => $this->url(array('AlbumsWorks::add')), 'method' => 'post')); ?>
+			<input type="hidden" name="album_id" value="<?=$oc->id ?>" />
 			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
 			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>

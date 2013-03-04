@@ -2,8 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Collections;
-use app\models\CollectionsWorks;
+use app\models\Albums;
+use app\models\AlbumsWorks;
 use app\models\Works;
 use app\models\Packages;
 
@@ -35,17 +35,17 @@ class PackagesController extends \lithium\action\Controller {
 
         // If the user is not an Admin or Editor, redirect to the index
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Collections::index');
+        	return $this->redirect('Albums::index');
         }
 
 		$package = Packages::create();
 
 		if (($this->request->data) && $package->save($this->request->data)) {
-			$collection_id = $package->collection_id;
+			$album_id = $package->album_id;
 			$filesystem = $package->filesystem;
 
-			$collection = Collections::find('first', array(
-				'conditions' => array('id' => $package->collection_id)
+			$album = Albums::find('first', array(
+				'conditions' => array('id' => $package->album_id)
 			));
 
 			$packages_path = $package->directory();
@@ -61,19 +61,19 @@ class PackagesController extends \lithium\action\Controller {
 			$zip = new \ZipArchive();
 			$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
 
-			$collection_works = CollectionsWorks::find('all', array(
+			$album_works = AlbumsWorks::find('all', array(
 				'fields' => 'work_id',
-				'conditions' => array('collection_id' => $collection->id),
+				'conditions' => array('album_id' => $album->id),
 			));
 
 			$works = array();
 
-			if($collection_works->count()) {
+			if($album_works->count()) {
 
 				$work_ids = array();	
 			
 				//Get all the work IDs in a plain array
-				$work_ids = $collection_works->map(function($work) {
+				$work_ids = $album_works->map(function($work) {
 					return $work->work_id;
 				}, array('collect' => false));
 
@@ -105,7 +105,7 @@ class PackagesController extends \lithium\action\Controller {
 			$layout = 'file';
 			$options['path'] = $documents_path;
 			$options['view'] = 'artwork';
-			$pdf = $packages_path . DIRECTORY_SEPARATOR . $collection->slug . '.pdf';
+			$pdf = $packages_path . DIRECTORY_SEPARATOR . $album->slug . '.pdf';
 			
 			$view  = new View(array(
 				'paths' => array(
@@ -115,25 +115,25 @@ class PackagesController extends \lithium\action\Controller {
 			));
 			$view->render(
 				'all',
-				array('content' => compact('pdf', 'collection','works', 'options')),
+				array('content' => compact('pdf', 'album','works', 'options')),
 				array(
-					'controller' => 'collections',
+					'controller' => 'albums',
 					'template'=>'view',
 					'type' => 'pdf',
 					'layout' => $layout
 				)
 			);
 
-			$zip->addFile($pdf, $collection->slug . '.pdf');
+			$zip->addFile($pdf, $album->slug . '.pdf');
 
 			$zip->close();
 
 			unlink($pdf);
 
-			return $this->redirect(array('Collections::package', 'slug' => $collection->slug));
+			return $this->redirect(array('Albums::package', 'slug' => $album->slug));
 		}
 
-		return $this->redirect('Collections::index');
+		return $this->redirect('Albums::index');
 
 	}
 
@@ -151,7 +151,7 @@ class PackagesController extends \lithium\action\Controller {
 
         // If the user is not an Admin or Editor, redirect to the index
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Collections::index');
+        	return $this->redirect('Albums::index');
         }
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Packages::delete can only be called with http:post or http:delete.";
@@ -160,12 +160,12 @@ class PackagesController extends \lithium\action\Controller {
 
 		$package = Packages::find($this->request->id);
 
-		$collection = Collections::find($package->collection_id);
+		$album = Albums::find($package->album_id);
 
 		FileSystem::delete($package->filesystem, $package->name);
 
 		Packages::find($this->request->id)->delete();
-		return $this->redirect(array('Collections::package', 'slug' => $collection->slug));
+		return $this->redirect(array('Albums::package', 'slug' => $album->slug));
 	}
 }
 

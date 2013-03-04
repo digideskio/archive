@@ -2,18 +2,18 @@
 
 $options = $content['options'];
 
-$collection = $content['collection'];
-$title = $collection->title;
+$album = $content['album'];
+$title = $album->title;
 
 $works = $content['works'];
 
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
-	'header'=>function() use($pdf, $collection){
+	'header'=>function() use($pdf, $album){
 		list($r, $g, $b) = array(200,200,200);
 		$pdf->SetFillColor($r, $g, $b); 
 		$pdf->SetTextColor(0 , 0, 0);
-		$pdf->Cell(0,15, $collection->title, 0,1,'C', 1);
+		$pdf->Cell(0,15, $album->title, 0,1,'C', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){

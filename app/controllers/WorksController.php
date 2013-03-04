@@ -11,8 +11,8 @@ use app\models\Users;
 use app\models\Roles;
 use app\models\Documents;
 use app\models\WorksDocuments;
-use app\models\Collections;
-use app\models\CollectionsWorks;
+use app\models\Albums;
+use app\models\AlbumsWorks;
 use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
 use app\models\Links;
@@ -168,8 +168,8 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('slug' => 'ASC')
 				));
 		
-				$collections = Collections::find('all', array(
-					'with' => 'CollectionsWorks',
+				$albums = Albums::find('all', array(
+					'with' => 'AlbumsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
@@ -193,7 +193,7 @@ class WorksController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('work', 'work_documents', 'work_links', 'collections', 'exhibitions', 'auth');
+				return compact('work', 'work_documents', 'work_links', 'albums', 'exhibitions', 'auth');
 			}
 		}
 		
@@ -315,26 +315,26 @@ class WorksController extends \lithium\action\Controller {
 		
 				$order = array('title' => 'ASC');
 
-				$collections = Collections::find('all', array(
-					'with' => 'CollectionsWorks',
+				$albums = Albums::find('all', array(
+					'with' => 'AlbumsWorks',
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
 					'order' => $order
 				));
 		
-				$collection_ids = array();
+				$album_ids = array();
 
-				foreach ($collections as $collection) {
-					array_push($collection_ids, $collection->id);
+				foreach ($albums as $album) {
+					array_push($album_ids, $album->id);
 				}
 
-				//Find the collections the work is NOT in
-				$other_collection_conditions = ($collection_ids) ? array('id' => array('!=' => $collection_ids)) : '';
+				//Find the albums the work is NOT in
+				$other_album_conditions = ($album_ids) ? array('id' => array('!=' => $album_ids)) : '';
 
-				$other_collections = Collections::find('all', array(
+				$other_albums = Albums::find('all', array(
 					'order' => $order,
-					'conditions' => $other_collection_conditions
+					'conditions' => $other_album_conditions
 				));
 	
 				$exhibitions = Exhibitions::find('all', array(
@@ -383,8 +383,8 @@ class WorksController extends \lithium\action\Controller {
 				return compact(
 					'work', 
 					'work_documents', 
-					'collections', 
-					'other_collections', 
+					'albums', 
+					'other_albums', 
 					'exhibitions', 
 					'other_exhibitions',
 					'work_links',

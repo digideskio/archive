@@ -116,13 +116,13 @@ $this->title($work->title);
 		</table>
 
 		<?php 
-			$hasCollections = sizeof($collections) > 0;
+			$hasAlbums = sizeof($albums) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasDocuments = sizeof($work_documents) > 0;
 			$hasLinks = sizeof($work_links) > 0;
 		?>
 
-		<?php if ($hasCollections || $hasExhibitions || $hasDocuments || $hasLinks) : ?>
+		<?php if ($hasAlbums || $hasExhibitions || $hasDocuments || $hasLinks) : ?>
 
 			<table class="table">
 				<thead>
@@ -134,17 +134,17 @@ $this->title($work->title);
 				</thead>
 				<tbody>
 				
-					<?php if ($hasCollections) : ?>
+					<?php if ($hasAlbums) : ?>
 					<tr>
 						<td><i class="icon-briefcase"></i></td>
 						<td class="meta">Albums</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
 							
-								<?php foreach($collections as $collection): ?>
+								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
-									$collection->title,
-									$this->url(array('Collections::view', 'slug' => $collection->slug))
+									$album->title,
+									$this->url(array('Albums::view', 'slug' => $album->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
 							

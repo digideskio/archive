@@ -8,7 +8,7 @@ use app\models\Roles;
 use app\models\Works;
 use app\models\Documents;
 use app\models\WorksDocuments;
-use app\models\Collections;
+use app\models\Albums;
 use app\models\Exhibitions;
 
 use lithium\action\DispatchException;

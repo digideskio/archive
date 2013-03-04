@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($collection->title);
+$this->title($album->title);
 
 if($auth->timezone_id) {
 	$tz = new DateTimeZone($auth->timezone_id);
@@ -13,12 +13,12 @@ if($auth->timezone_id) {
 	<ul class="breadcrumb">
 
 	<li>
-		<?=$this->html->link('Albums', $this->url(array('Collections::index'))); ?>
+		<?=$this->html->link('Albums', $this->url(array('Albums::index'))); ?>
 		<span class="divider">/</span>
 	</li>
 
 	<li>
-		<?=$this->html->link($collection->title, $this->url(array('Collections::view', 'slug' => $collection->slug))); ?>
+		<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->slug))); ?>
 		<span class="divider">/</span>
 	</li>
 	
@@ -33,17 +33,17 @@ if($auth->timezone_id) {
 <div class="actions">
 
 	<ul class="nav nav-tabs">
-		<li><?=$this->html->link('View', $this->url(array('Collections::view', 'slug' => $collection->slug))); ?></li>
+		<li><?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->slug))); ?></li>
 
 		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 		
-			<li><?=$this->html->link('Edit', $this->url(array('Collections::edit', 'slug' => $collection->slug))); ?></li>
+			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->slug))); ?></li>
 		
 		<?php endif; ?>
 
-		<li><?=$this->html->link('History', $this->url(array('Collections::history', 'slug' => $collection->slug))); ?></li>
+		<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->slug))); ?></li>
 
-		<li class="active"><?=$this->html->link('Packages', $this->url(array('Collections::package', 'slug' => $collection->slug))); ?></li>
+		<li class="active"><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->slug))); ?></li>
 
 	</ul>
 
@@ -107,7 +107,7 @@ if($auth->timezone_id) {
 <div class="well">
 <legend>Create Package</legend>
 <?=$this->form->create(null, array('url' => "/packages/add/", 'method' => 'post')); ?>
-	<?=$this->form->hidden('collection_id', array('value' => $collection->id)); ?>
+	<?=$this->form->hidden('album_id', array('value' => $album->id)); ?>
 <fieldset>
 	<label class="radio inline">
 		<input type="radio" name="filesystem" id="secure" value="secure" checked>
