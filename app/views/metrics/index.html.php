@@ -65,8 +65,6 @@ $this->title('Metrics');
 
 </script>
 
-	<!--<p>There are <?=$works_no_year ?> artworks with no year recorded.</p>-->
-
 </div>
 
 <?php endif; ?>

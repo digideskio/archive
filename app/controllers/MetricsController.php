@@ -59,10 +59,7 @@ class MetricsController extends \lithium\action\Controller {
 
 		$no_date = array('earliest_date' => '0000-00-00');
 
-		$works_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM works WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
-		$works_no_year = Works::count('all', array(
-			'conditions' => $no_date
-		));
+		$works_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'works' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
 		$architectures_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM architectures WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
