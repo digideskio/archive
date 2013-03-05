@@ -61,7 +61,6 @@ $this->title('Search Artwork');
 			<option value='classification' <?php if ($condition == 'classification') { echo $selected; } ?>>Classification</option>
 			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
 			<option value='materials' <?php if ($condition == 'materials') { echo $selected; } ?>>Materials</option>
-			<option value='lender' <?php if ($condition == 'lender') { echo $selected; } ?>>Lender</option>
 			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
 			<option value='creation_number' <?php if ($condition == 'creation_number') { echo $selected; } ?>>Artwork ID</option>
 			<option value='annotation' <?php if ($condition == 'annotation') { echo $selected; } ?>>Annotation</option>
