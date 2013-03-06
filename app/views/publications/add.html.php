@@ -72,8 +72,8 @@ $this->form->config(array('templates' => array(
 	<?=$this->form->field('subject');?>
 	<?=$this->form->field('remarks', array('type' => 'textarea'));?>
 	<?=$this->form->field('language');?>
-	<?=$this->form->field('location');?>
-	<?=$this->form->field('location_code');?>
+	<?=$this->form->field('storage_location');?>
+	<?=$this->form->field('storage_number');?>
 	<?=$this->form->field('publication_number', array('label' => 'Publication ID'));?>
 	<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 	<?=$this->html->link('Cancel','/publications', array('class' => 'btn')); ?>
