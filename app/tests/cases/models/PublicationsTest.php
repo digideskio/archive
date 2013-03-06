@@ -3,6 +3,13 @@
 namespace app\tests\cases\models;
 
 use app\models\Publications;
+use app\models\PublicationsHistories;
+
+use app\models\Archives;
+use app\models\ArchivesHistories;
+
+use app\models\PublicationsLinks;
+use app\models\Links;
 
 class PublicationsTest extends \lithium\test\Unit {
 
@@ -10,34 +17,112 @@ class PublicationsTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
-	public function testCreatePublication() {
+	public function testSave() {
+	
 		$publication = Publications::create();
-		$data = array (
-			"title" => "Publication Title",
+		$data = array(
+			'title' => 'Book Title',
 		);
 
-		$slug = "Publication-Title";
+		$success = $publication->save($data);
 
-		$this->assertTrue($publication->save($data));
-		$this->assertEqual($slug, $publication->slug);
+		$this->assertTrue($success);
 
-		$second_pub = Publications::create();
-		$second_slug = "Publication-Title-1";
+		$data = array(
+			'earliest_date' => '2010',
+		);
 
-		$this->assertTrue($second_pub->save($data));
-		$this->assertEqual($second_slug, $second_pub->slug);
+		$success = $publication->save($data);
 
-		$publication->delete();
-		$second_pub->delete();
+		$this->assertTrue($success);
+
+		if ($success) {
+			$publication->delete();
+		}
+
 	}
 
-	public function testCreatePublicationWithNoTitle() {
+	public function testCreateWithNoTitle() {
 		$publication = Publications::create();
 		$data = array (
 			"title" => "",
+			"Author" => "Book Author"
+		);
+		
+		$this->assertFalse($publication->save($data), "The publication was able to be saved without a title.");
+
+		$errors = $publication->errors();
+
+		$this->assertEqual('Please enter a title.', $errors['title'][0]);
+
+	}
+
+	public function testInvalidDates() {
+
+		$publication = Publications::create();
+		$data = array (
+			"title" => "Book Title",
+			"earliest_date" => 'X',
+			"latest_date" => 'Y'
+		);
+		
+		$this->assertFalse($publication->save($data), "The publication was able to be saved with an invalid date.");
+
+		$errors = $publication->errors();
+
+		$this->assertEqual('Please enter a valid date.', $errors['earliest_date'][0]);
+		$this->assertEqual('Please enter a valid date.', $errors['latest_date'][0]);
+
+	}
+
+	public function testBadLink() {
+		$data = array(
+			'title' => 'Bad Book',
+			'url' => 'http:// bad url'
 		);
 
-		$this->assertFalse($publication->save($data));
+		$publication = Publications::create();
+
+		$success = $publication->save($data);
+
+		$this->assertFalse($success, 'The publication could be saved with a bad URL.');
+
+		$link_count = Links::count();
+
+		$this->assertEqual(0, $link_count);
+
+		$publication_link_count = PublicationsLinks::count();
+
+		$this->assertEqual(0, $publication_link_count);
+
+		$errors = $publication->errors();
+
+		$this->assertEqual('The URL is not valid.', $errors['url'][0]);
+	}
+
+	public function testByline() {
+
+		$data = array(
+			'title' => 'Book Title',
+			'author' => 'First Last'
+		);
+
+		$publication = Publications::create($data);
+
+		$this->assertEqual("First Last", $publication->byline());
+
+		$data['editor'] = 'Given Surname';
+
+		$publication = Publications::create($data);
+
+		$this->assertEqual("First Last, Given Surname (ed.)", $publication->byline());
+
+		$data['author'] = '';
+
+		$publication = Publications::create($data);
+
+		$this->assertEqual("Given Surname (ed.)", $publication->byline());
+
 	}
 
 }

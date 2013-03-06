@@ -34,7 +34,7 @@
 	</td>
 	<!--<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 		<?php $document = $publication->documents('first'); if(isset($document->id)) { ?>	
-			<a href="/publications/view/<?=$publication->slug?>">
+			<a href="/publications/view/<?=$publication->archive->slug?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
@@ -43,8 +43,8 @@
 	</td>-->
 	<td><?=$publication->byline(); ?></td>
 	
-    <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?></td>
-    <td><?=$publication->dates(); ?></td>
+    <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?></td>
+    <td><?=$publication->archive->dates(); ?></td>
     <td><?=$publication->publisher ?></td>
 </tr>
     

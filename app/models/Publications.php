@@ -5,9 +5,38 @@ namespace app\models;
 use lithium\util\Inflector;
 use lithium\util\Validator;
 
-class Publications extends \app\models\Archives {
+class Publications extends \lithium\data\Model {
 
-	public $hasMany = array('PublicationsDocuments', 'PublicationsLinks');
+	public $hasMany = array('PublicationsDocuments', 'PublicationsLinks', 'PublicationsHistories');
+
+	public $belongsTo = array(
+		'Archives' => array (
+			'to' => 'app\models\Archives',
+			'key' => 'id'
+	));
+
+	public $validates = array(
+		'title' => array(
+			array('notEmpty', 'message' => 'Please enter a title.')
+		),
+		'url' => array(
+			array('url', 'skipEmpty' => true, 'message' => 'The URL is not valid.'),
+		),
+		'latest_date' => array(
+			array('validDate',
+				'skipEmpty' => true,
+				'message' => 'Please enter a valid date.',
+				'format' => 'any'
+			)
+		),
+		'earliest_date' => array(
+			array('validDate',
+				'skipEmpty' => true,
+				'message' => 'Please enter a valid date.',
+				'format' => 'any'
+			)
+		)
+	);
 
 	public static function types() {
 		return array("Newspaper", "Magazine", "Catalogue", "Monograph", "Book", "Website");
@@ -58,9 +87,36 @@ class Publications extends \app\models\Archives {
     
 }
 
+Publications::applyFilter('save', function($self, $params, $chain) {
+
+	if(!$params['entity']->exists()) {
+
+		$params['data']['controller'] = 'publications';
+
+		$archive = Archives::create();
+		$success = $archive->save($params['data']);
+
+		$params['data']['id'] = $archive->id;
+
+	} else {
+		$archive = Archives::find('first', array(
+			'conditions' => array('id' => $params['entity']->id)
+		));
+
+		$success = $archive->save($params['data']);
+	}
+
+	return $chain->next($self, $params, $chain);
+	
+});
+
 Publications::applyFilter('delete', function($self, $params, $chain) {
 
 	$publication_id = $params['entity']->id;
+	
+	Archives::find('all', array(
+		'conditions' => array('id' => $publication_id)
+	))->delete();
 		
 	//Delete any relationships
 	PublicationsDocuments::find('all', array(
@@ -90,6 +146,76 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 	}
 
 	return $result;
+});
+
+//TODO We don't really want this code in Publications
+//Some models allow a URL to be saved during an add, which creates a Link object and/or a link relation
+//In order for the validation to work properly in the Archives model, the URL cannot be unset
+Publications::applyFilter('save', function($self, $params, $chain) {
+
+	if (!isset($params['data']['url'])) {
+		$params['data']['url'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
+//So let's make sure the value is at least empty if it is not set
+Publications::applyFilter('save', function($self, $params, $chain) {
+
+	if(!isset($params['data']['earliest_date'])) {
+		$params['data']['earliest_date'] = '';
+	}
+
+	if(!isset($params['data']['latest_date'])) {
+		$params['data']['latest_date'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+//TODO we don't want this code directly in Works
+Publications::applyFilter('save', function($self, $params, $chain) {
+
+	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
+		$earliest_date = $params['data']['earliest_date'];
+		$earliest_date_filtered = Archives::filterDate($earliest_date);
+		$params['data']['earliest_date'] = $earliest_date_filtered['date'];
+		$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
+	} else {
+		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
+		//So let's make sure the value is at least empty if it is not set
+		//This has only been necessary since the extra date format code was added
+		$params['data']['earliest_date'] = '';
+	}
+
+	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
+		$latest_date = $params['data']['latest_date'];
+		$latest_date_filtered = Archives::filterDate($latest_date);
+		$params['data']['latest_date'] = $latest_date_filtered['date'];
+		$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
+	} else {
+		$params['data']['latest_date'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+Validator::add('validDate', function($value) {
+	
+	return (
+		Validator::isDate($value, 'dmy') ||
+		Validator::isDate($value, 'mdy') ||
+		Validator::isDate($value, 'ymd') ||
+		Validator::isDate($value, 'dMy') ||
+		Validator::isDate($value, 'Mdy') ||
+		Validator::isDate($value, 'My')  ||
+		Validator::isDate($value, 'my')
+	);
 });
 
 ?>

@@ -23,7 +23,7 @@ $this->form->config(
 	</li>
 
 	<li>
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?>
+	<?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -36,7 +36,7 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/publications/view/'.$publication->slug); ?></li>
+	<li><?=$this->html->link('View','/publications/view/'.$publication->archive->slug); ?></li>
 	<li class="active">
 		<a href="#">
 			Edit
@@ -66,8 +66,8 @@ $this->form->config(
 			<?=$this->form->field('title');?>
 			<?=$this->form->field('editor');?>
 			<?=$this->form->field('publisher');?>
-			<?=$this->form->field('earliest_date', array('value' => $publication->start_date_formatted()));?>
-			<?=$this->form->field('latest_date', array('value' => $publication->end_date_formatted()));?>
+			<?=$this->form->field('earliest_date', array('value' => $publication->archive->start_date_formatted()));?>
+			<?=$this->form->field('latest_date', array('value' => $publication->archive->end_date_formatted()));?>
 			<?=$this->form->field('pages');?>
 			<?=$this->form->field('subject');?>
 			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
@@ -76,7 +76,7 @@ $this->form->config(
 			<?=$this->form->field('storage_number');?>
 			<?=$this->form->field('publication_number', array('label' => 'Publication ID'));?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/publications/view/' . $publication->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/publications/view/' . $publication->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
 
@@ -116,7 +116,8 @@ $this->form->config(
 			<p>By selecting <code>Delete</code>, you will remove this Publication from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($publication, array('url' => "/publications/delete/$publication->slug", 'method' => 'post')); ?>
+			<?php $slug = $publication->archive->slug; ?>
+			<?=$this->form->create($publication, array('url' => "/publications/delete/$slug", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

@@ -17,7 +17,7 @@ $hasLinks = sizeof($publication_links) > 0;
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->slug); ?>
+	<?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?>
 	</li>
 
 	</ul>
@@ -31,7 +31,7 @@ $hasLinks = sizeof($publication_links) > 0;
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit','/publications/edit/'.$publication->slug); ?></li>
+		<li><?=$this->html->link('Edit','/publications/edit/'.$publication->archive->slug); ?></li>
 	
 	<?php endif; ?>
 
@@ -48,7 +48,7 @@ $hasLinks = sizeof($publication_links) > 0;
 	
 		<div class="alert alert-block">
     	<p>
-    		<?php echo $publication->citation(); ?>
+    		<?=$this->publication->citation($publication->archive, $publication); ?>
     	</p>
 		
 		<?php if ($hasLinks): ?>

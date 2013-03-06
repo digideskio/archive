@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Publications;
+use app\models\PublicationsHistories;
 use app\models\PublicationsDocuments;
 use app\models\PublicationsLinks;
 
@@ -48,7 +49,7 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 		
 		$publications = Publications::find('all', array(
-			'with' => 'PublicationsDocuments',
+			'with' => 'Archives',
 			'limit' => $limit,
 			'order' => $order,
 			'conditions' => $conditions,
@@ -129,6 +130,7 @@ class PublicationsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$publication = Publications::first(array(
+				'with' => 'Archives',
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
 
@@ -211,6 +213,7 @@ class PublicationsController extends \lithium\action\Controller {
         }
 
 		$publication = Publications::first(array(
+			'with' => 'Archives',
 			'conditions' => array('slug' => $this->request->params['slug'])
 		));
 
@@ -239,7 +242,7 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
-			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
+			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
 		}
 		
 		return compact('publication', 'pub_types_list', 'publication_documents', 'publication_links');
