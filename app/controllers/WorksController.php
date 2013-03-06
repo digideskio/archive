@@ -451,7 +451,8 @@ class WorksController extends \lithium\action\Controller {
 		));
 		
 		$work = Works::find('first', array(
-			'conditions' => array('id' => $this->request->params['id']),
+			'with' => 'Archives',
+			'conditions' => array('slug' => $this->request->params['slug']),
 		));
 		
 		// If the user is not an Admin or Editor, redirect to the record view

@@ -182,4 +182,45 @@ Works::applyFilter('save', function($self, $params, $chain) {
 
 });
 
+//TODO we don't want this code directly in Works
+Works::applyFilter('save', function($self, $params, $chain) {
+
+	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
+		$earliest_date = $params['data']['earliest_date'];
+		$earliest_date_filtered = Archives::filterDate($earliest_date);
+		$params['data']['earliest_date'] = $earliest_date_filtered['date'];
+		$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
+	} else {
+		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
+		//So let's make sure the value is at least empty if it is not set
+		//This has only been necessary since the extra date format code was added
+		$params['data']['earliest_date'] = '';
+	}
+
+	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
+		$latest_date = $params['data']['latest_date'];
+		$latest_date_filtered = Archives::filterDate($latest_date);
+		$params['data']['latest_date'] = $latest_date_filtered['date'];
+		$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
+	} else {
+		$params['data']['latest_date'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+Validator::add('validDate', function($value) {
+	
+	return (
+		Validator::isDate($value, 'dmy') ||
+		Validator::isDate($value, 'mdy') ||
+		Validator::isDate($value, 'ymd') ||
+		Validator::isDate($value, 'dMy') ||
+		Validator::isDate($value, 'Mdy') ||
+		Validator::isDate($value, 'My')  ||
+		Validator::isDate($value, 'my')
+	);
+});
+
 ?>

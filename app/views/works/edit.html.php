@@ -276,7 +276,8 @@ $classification_names = json_encode($classifications);
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($work, array('url' => "/works/delete/$work->id", 'method' => 'post')); ?>
+			<?php $slug = $work->archive->slug; ?>
+			<?=$this->form->create($work, array('url' => "/works/delete/$slug", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

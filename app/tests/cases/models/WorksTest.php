@@ -27,6 +27,28 @@ class WorksTest extends \lithium\test\Unit {
 		WorksLinks::all()->delete();
 
 	}
+
+	public function testSave() {
+	
+		$work = Works::create();
+		$data = array(
+			'title' => 'Artwork Title',
+		);
+
+		$success = $work->save($data);
+
+		$this->assertTrue($success);
+
+		$data = array(
+			'earliest_date' => '2010',
+		);
+
+		$success = $work->save($data);
+
+		$this->assertTrue($success);
+
+	}
+
 	
 	public function testCreateWithNoTitle() {
 		$work = Works::create();
@@ -121,6 +143,10 @@ class WorksTest extends \lithium\test\Unit {
 		$work_link_count = WorksLinks::count();
 
 		$this->assertEqual(0, $work_link_count);
+
+		$errors = $work->errors();
+
+		$this->assertEqual('The URL is not valid.', $errors['url'][0]);
 	}
 
 	public function testLinks() {
