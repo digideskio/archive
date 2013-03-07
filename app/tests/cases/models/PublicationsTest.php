@@ -46,6 +46,33 @@ class PublicationsTest extends \lithium\test\Unit {
 
 	}
 
+	public function testLanguages() {
+
+		$publication = Publications::create();
+		$data = array(
+			'title' => 'Book Title',
+			'language' => 'French',
+		);
+
+		$success = $publication->save($data);
+
+		$publication = Publications::find('first', array(
+			'with' => 'Archives'
+		));
+
+		$this->assertEqual('fr', $publication->archive->language_code);
+
+		$data['language'] = 'Korean 朝鲜语';
+
+		$publication->save($data);
+
+		$publication = Publications::find('first', array(
+			'with' => 'Archives'
+		));
+
+		$this->assertEqual('ko', $publication->archive->language_code);
+	}
+
 	public function testCreateWithNoTitle() {
 		$publication = Publications::create();
 		$data = array (

@@ -87,7 +87,24 @@ class Publications extends \lithium\data\Model {
     
 }
 
+
+
 Publications::applyFilter('save', function($self, $params, $chain) {
+
+	if (isset($params['data']['language'])) {
+	
+		$lang = $params['data']['language'];
+
+		$language = Languages::find('first', array(
+			'conditions' => "'$lang' LIKE CONCAT('%', name, '%')" 
+		));
+
+		if($language) {
+
+			$params['data']['language_code'] = $language->code;
+
+		}
+	}
 
 	if(!$params['entity']->exists()) {
 
