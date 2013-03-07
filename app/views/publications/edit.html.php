@@ -42,6 +42,9 @@ $this->form->config(
 			Edit
 		</a>
 	</li>
+	<li>
+		<?=$this->html->link('History', $this->url(array('Publications::history', 'slug' => $publication->archive->slug))); ?>
+	</li>
 </ul>
 
 <div class="row">

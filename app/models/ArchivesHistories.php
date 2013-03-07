@@ -19,6 +19,12 @@ class ArchivesHistories extends \app\models\Archives {
 				'start_date' => 'start_date',
 				'archive_id' => 'album_id'
 		)),
+		'PublicationsHistories' => array (
+			'to' => 'app\models\PublicationsHistories',
+			'key' => array(
+				'start_date' => 'start_date',
+				'archive_id' => 'publication_id'
+		)),
 	);
 
 	public $validates = array();

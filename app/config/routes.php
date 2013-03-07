@@ -106,6 +106,8 @@ Router::connect('/exhibitions_works/delete/{:id}', array('ExhibitionsWorks::dele
 Router::connect('/publications/pages/{:page:[0-9]+}', array('Publications::index'));
 Router::connect('/publications/view/{:slug}', array('Publications::view'));
 Router::connect('/publications/edit/{:slug}', array('Publications::edit'));
+Router::connect('/publications/history/{:slug}', array('Publications::history'));
+Router::connect('/publications/histories/{:page:[0-9]+}', array('Publications::histories'));
 Router::connect('/publications/delete/{:slug}', array('Publications::delete'));
 
 Router::connect('/documents/index.{:type}', array('Documents::index'));

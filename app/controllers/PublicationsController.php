@@ -8,6 +8,7 @@ use app\models\PublicationsDocuments;
 use app\models\PublicationsLinks;
 
 use app\models\Archives;
+use app\models\ArchivesHistories;
 
 use app\models\Users;
 use app\models\Roles;
@@ -255,6 +256,45 @@ class PublicationsController extends \lithium\action\Controller {
 		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links');
 	}
 
+	public function history() {
+	
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$publication = Publications::first(array(
+				'with' => 'Archives',
+				'conditions' => array('slug' => $this->request->params['slug']),
+			));
+			
+			if($publication) {
+
+				$archives_histories = ArchivesHistories::find('all', array(
+					'conditions' => array('ArchivesHistories.archive_id' => $publication->id),
+					'order' => 'ArchivesHistories.start_date DESC',
+					'with' => array('Users', 'PublicationsHistories'),
+				));
+		
+				//Send the retrieved data to the view
+				return compact('auth', 'publication', 'archives_histories', 'auth');
+			}
+		}
+		
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Works::index'));
+	}
+
 	public function delete() {
     
 	    $check = (Auth::check('default')) ?: null;
@@ -275,7 +315,7 @@ class PublicationsController extends \lithium\action\Controller {
         
         // If the user is not an Admin or Editor, redirect to the record view
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
+			return $this->redirect(array(
         		'Publications::view', 'args' => array($this->request->params['slug']))
         	);
         }

@@ -35,6 +35,10 @@ $hasLinks = sizeof($publication_links) > 0;
 	
 	<?php endif; ?>
 
+	<li>
+		<?=$this->html->link('History', $this->url(array('Publications::history', 'slug' => $publication->archive->slug))); ?>
+	</li>
+
 </ul>
 
 <div class="row">

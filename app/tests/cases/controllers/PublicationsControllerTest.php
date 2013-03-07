@@ -51,6 +51,9 @@ class PublicationsControllerTest extends \lithium\test\Unit {
 		$response = $publications->edit();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $publications->history();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
 		$response = $publications->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	
