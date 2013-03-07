@@ -51,15 +51,15 @@ $this->form->config(
 		<?=$this->form->create($publication); ?>
 			<legend>Info</legend>
 			
-			<?php $pub_types_list = array_merge(array('' => 'Choose one...'), $pub_types_list); ?>
+			<?php $pub_classes_list = array_merge(array('' => 'Choose one...'), $pub_classes_list); ?>
 
 			<?=$this->form->label('type', 'Category'); ?>
-			<?=$this->form->select('type', $pub_types_list); ?>
+			<?=$this->form->select('type', $pub_classes_list); ?>
 	
 			<span class="help-block">Is the publication an interview?</span>
 			
 			<label class="checkbox">
-			<?=$this->form->checkbox('interview');?> Interview
+			<?=$this->form->checkbox('type', array('value' => 'Interview', 'checked' => $publication->archive->type == 'Interview' ));?> Interview
 			</label>
 
 			<?=$this->form->field('author');?>

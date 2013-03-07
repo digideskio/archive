@@ -1,6 +1,6 @@
 <?php 
 
-$type = isset($options['type']) ? $options['type'] : NULL;
+$classification = isset($options['classification']) ? $options['classification'] : NULL;
 
 $this->title('Publications');
 
@@ -21,16 +21,16 @@ $this->title('Publications');
 <div class="actions">
 	<ul class="nav nav-tabs">
 
-		<li <?php if (!$type) { echo 'class="active"'; } ?>>
+		<li <?php if (!$classification) { echo 'class="active"'; } ?>>
 			<?=$this->html->link('Index','/publications'); ?>
 		</li>
 
-		<li class="dropdown <?php if ($type) { echo 'active'; } ?>">
+		<li class="dropdown <?php if ($classification) { echo 'active'; } ?>">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter <b class="caret"></b></a>
 			<ul class="dropdown-menu">
-		<?php foreach($publications_types as $pt): ?>
-			<li <?php if ($pt == $type) { echo 'class="active"'; } ?>>
-				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+		<?php foreach($pub_classifications as $pc): ?>
+			<li <?php if ($pc == $classification) { echo 'class="active"'; } ?>>
+				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
 			</li>
 		<?php endforeach; ?>
 			</ul>
@@ -51,7 +51,7 @@ $this->title('Publications');
 	</div>
 <div>
 
-<?php if($total == 0 && !$type): ?>
+<?php if($total == 0 && !$classification): ?>
 
 	<div class="alert alert-danger">There are no Publications in the Archive.</div>
 
@@ -69,7 +69,7 @@ $this->title('Publications');
 
 <div class="pagination">
     <ul>
-	<?php $query = $type ? "?type=$type" : ''; ?>
+	<?php $query = $classification ? "?classification=$classification" : ''; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
     <li><?=$this->html->link('«', "/publications/pages/$prev$query");?></li> 

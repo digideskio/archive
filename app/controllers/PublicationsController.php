@@ -7,6 +7,8 @@ use app\models\PublicationsHistories;
 use app\models\PublicationsDocuments;
 use app\models\PublicationsLinks;
 
+use app\models\Archives;
+
 use app\models\Users;
 use app\models\Roles;
 
@@ -39,12 +41,13 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$options = $this->request->query;
 
-		if (isset($options['type'])) {
-			$type = $options['type'];
-			$conditions = compact('type');
+		if (isset($options['classification'])) {
+			$classification = $options['classification'];
+			$conditions = compact('classification');
 		}
 
 		$total = Publications::count('all', array(
+			'with' => 'Archives',
 			'conditions' => $conditions
 		));
 		
@@ -56,9 +59,9 @@ class PublicationsController extends \lithium\action\Controller {
 			'page' => $page
 		));
 
-		$publications_types = Publications::types();
+		$pub_classifications = Publications::classifications();
 
-		return compact('publications', 'publications_types', 'total', 'page', 'limit', 'auth', 'options');
+		return compact('publications', 'pub_classifications', 'total', 'page', 'limit', 'auth', 'options');
 	}
 	
 	public function search() {
@@ -97,7 +100,7 @@ class PublicationsController extends \lithium\action\Controller {
 			$conditions = array("$condition" => array('LIKE' => "%$query%"));
 
 			$publications = Publications::find('all', array(
-				'with' => 'PublicationsDocuments',
+				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $conditions,
 			));
@@ -107,9 +110,9 @@ class PublicationsController extends \lithium\action\Controller {
 			}
 		}
 
-		$publications_types = Publications::types();
+		$pub_classifications = Publications::classifications();
 
-		return compact('publications', 'publications_types', 'condition', 'query', 'auth');
+		return compact('publications', 'pub_classifications', 'condition', 'query', 'auth');
 	}
 
 	public function view() {
@@ -181,15 +184,19 @@ class PublicationsController extends \lithium\action\Controller {
         	return $this->redirect('Publications::index');
         }
 
-		$publications_types = Publications::types();
-		$pub_types_list = array_combine($publications_types, $publications_types);
+		$pub_classifications = Publications::classifications();
+		$pub_classes_list = array_combine($pub_classifications, $pub_classifications);
 
 		$publication = Publications::create();
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
-			return $this->redirect(array('Publications::view', 'args' => array($publication->slug)));
+			//The slug has been saved with the Archive object, so let's look it up
+			$archive = Archives::find('first', array(
+				'conditions' => array('id' => $publication->id)
+			));
+			return $this->redirect(array('Publications::view', 'args' => array($archive->slug)));
 		}
-		return compact('publication', 'pub_types_list');
+		return compact('publication', 'pub_classes_list');
 	}
 
 	public function edit() {
@@ -217,8 +224,8 @@ class PublicationsController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug'])
 		));
 
-		$publications_types = Publications::types();
-		$pub_types_list = array_combine($publications_types, $publications_types);
+		$pub_classifications = Publications::classifications();
+		$pub_classes_list = array_combine($pub_classifications, $pub_classifications);
 
 		if (!$publication) {
 			return $this->redirect('Publications::index');
@@ -245,7 +252,7 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
 		}
 		
-		return compact('publication', 'pub_types_list', 'publication_documents', 'publication_links');
+		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links');
 	}
 
 	public function delete() {
@@ -262,6 +269,7 @@ class PublicationsController extends \lithium\action\Controller {
 		));
         
 		$publication = Publications::first(array(
+			'with' => 'Archives',
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
         

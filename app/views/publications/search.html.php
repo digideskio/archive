@@ -26,9 +26,9 @@ $this->title('Publications');
 		<li class="dropdown">
 			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter <b class="caret"></b></a>
 			<ul class="dropdown-menu">
-		<?php foreach($publications_types as $pt): ?>
+		<?php foreach($pub_classifications as $pc): ?>
 			<li>
-				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
 			</li>
 		<?php endforeach; ?>
 			</ul>

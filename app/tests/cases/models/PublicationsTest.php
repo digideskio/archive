@@ -15,7 +15,15 @@ class PublicationsTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
-	public function tearDown() {}
+	public function tearDown() {
+	
+		Publications::all()->delete();
+		PublicationsHistories::all()->delete();
+
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
+	
+	}
 
 	public function testSave() {
 	
@@ -35,10 +43,6 @@ class PublicationsTest extends \lithium\test\Unit {
 		$success = $publication->save($data);
 
 		$this->assertTrue($success);
-
-		if ($success) {
-			$publication->delete();
-		}
 
 	}
 

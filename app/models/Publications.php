@@ -38,7 +38,7 @@ class Publications extends \lithium\data\Model {
 		)
 	);
 
-	public static function types() {
+	public static function classifications() {
 		return array("Newspaper", "Magazine", "Catalogue", "Monograph", "Book", "Website");
 	}
 
