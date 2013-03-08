@@ -124,7 +124,8 @@ class WorksController extends \lithium\action\Controller {
 		$order = array('start_date' => 'DESC');
 		$total = WorksHistories::count();
 		$archives_histories = ArchivesHistories::find('all', array(
-			'with' => 'Users',
+			'with' => array('Users', 'Archives'),
+			'conditions' => array('ArchivesHistories.controller' => 'works'),
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page

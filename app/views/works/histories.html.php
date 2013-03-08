@@ -86,7 +86,11 @@ if($auth->timezone_id) {
 			</td>
 			<td><?=$start_date_display ?></td>
 			<td>
-				<?=$this->html->link($ah->name,'/works/history/'.$ah->slug); ?>
+				<?php if ($ah->archive->id): ?>
+					<?=$this->html->link($ah->name,'/works/history/'.$ah->slug); ?>
+				<?php else: ?>
+					<?=$ah->name ?> <span class="meta muted text-error">&mdash; Deleted</span>
+				<?php endif; ?>
 			</td>
 		</tr>
 	<?php endforeach; ?>
