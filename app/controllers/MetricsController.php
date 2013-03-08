@@ -65,7 +65,7 @@ class MetricsController extends \lithium\action\Controller {
 
 		$exhibitions_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM exhibitions WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
-		$publications_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM publications WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$publications_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'publications' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
 		$publications_languages = Model::connection()->read(
 			"select count(*) as records, language from publications where language != '' group by language order by records desc"
