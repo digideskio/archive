@@ -37,6 +37,9 @@ $this->title('Publications');
 		</li>
 
 		<li>
+			<?=$this->html->link('History','/publications/histories'); ?>
+		</li>
+		<li>
 			<?=$this->html->link('Search','/publications/search'); ?>
 		</li>
 

@@ -65,6 +65,36 @@ class PublicationsController extends \lithium\action\Controller {
 		return compact('publications', 'pub_classifications', 'total', 'page', 'limit', 'auth', 'options');
 	}
 	
+	public function histories() {
+
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('start_date' => 'DESC');
+		$total = PublicationsHistories::count();
+		$archives_histories = ArchivesHistories::find('all', array(
+			'with' => array('Users', 'Archives'),
+			'conditions' => array('ArchivesHistories.controller' => 'publications'),
+			'limit' => $limit,
+			'order' => $order,
+			'page' => $page
+		));
+		
+		$pub_classifications = Publications::classifications();
+
+		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'pub_classifications');
+	}
+
 	public function search() {
 
     	// Check authorization
