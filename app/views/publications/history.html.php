@@ -47,10 +47,12 @@ if($auth->timezone_id) {
 
 </ul>
 
+<?php $ph = $publications_histories->first(); ?>
+
 <div class="row">
 	<div class="span10">
 	<?php foreach($archives_histories as $ah): ?>
-		
+
 		<?php
 			$start_date_string = date("Y-m-d H:i:s", $ah->start_date);
 			$start_date_time = new DateTime($start_date_string);
@@ -76,227 +78,227 @@ if($auth->timezone_id) {
 
 			<tbody>
 
-				<?php if( $ah->publications_history->annotation ): ?>
+				<?php if( $ph->annotation ): ?>
 					<tr>
 					<td style="width:200px"><span class="label">Annotation</a></td>
 					<td><em><?=$ah->publications->annotation ?></em></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->title ): ?>
+				<?php if( $ph->title ): ?>
 					<tr>
 					<td class="meta">Title</td>
-					<td><?=$ah->publications_history->title ?></td>
+					<td><?=$ph->title ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->remarks ): ?>
+				<?php if( $ph->remarks ): ?>
 					<tr>
 					<td class="meta">Remarks</td>
-					<td><?=$ah->publications_history->remarks ?></td>
+					<td><?=$ph->remarks ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->storage_location ): ?>
+				<?php if( $ph->storage_location ): ?>
 					<tr>
 					<td class="meta">Storage Location</td>
-					<td><?=$ah->publications_history->storage_location ?></td>
+					<td><?=$ph->storage_location ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->storage_number ): ?>
+				<?php if( $ph->storage_number ): ?>
 					<tr>
 					<td class="meta">Storage Number</td>
-					<td><?=$ah->publications_history->storage_number ?></td>
+					<td><?=$ph->storage_number ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->publication_number ): ?>
+				<?php if( $ph->publication_number ): ?>
 					<tr>
 					<td class="meta">Publication Number</td>
-					<td><?=$ah->publications_history->publication_number ?></td>
+					<td><?=$ph->publication_number ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->subject ): ?>
+				<?php if( $ph->subject ): ?>
 					<tr>
 					<td class="meta">Subject</td>
-					<td><?=$ah->publications_history->subject ?></td>
+					<td><?=$ph->subject ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->language ): ?>
+				<?php if( $ph->language ): ?>
 					<tr>
 					<td class="meta">Language</td>
-					<td><?=$ah->publications_history->language ?></td>
+					<td><?=$ph->language ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->access_date ): ?>
+				<?php if( $ph->access_date ): ?>
 					<tr>
 					<td class="meta">Access Date</td>
-					<td><?=$ah->publications_history->access_date ?></td>
+					<td><?=$ph->access_date ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->address ): ?>
+				<?php if( $ph->address ): ?>
 					<tr>
 					<td class="meta">Address</td>
-					<td><?=$ah->publications_history->address ?></td>
+					<td><?=$ph->address ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->author ): ?>
+				<?php if( $ph->author ): ?>
 					<tr>
 					<td class="meta">Author</td>
-					<td><?=$ah->publications_history->author ?></td>
+					<td><?=$ph->author ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->book_title ): ?>
+				<?php if( $ph->book_title ): ?>
 					<tr>
 					<td class="meta">Book Title</td>
-					<td><?=$ah->publications_history->book_title ?></td>
+					<td><?=$ph->book_title ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->chapter ): ?>
+				<?php if( $ph->chapter ): ?>
 					<tr>
 					<td class="meta">Chapter</td>
-					<td><?=$ah->publications_history->edition ?></td>
+					<td><?=$ph->edition ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->editor ): ?>
+				<?php if( $ph->editor ): ?>
 					<tr>
 					<td class="meta">Editor</td>
-					<td><?=$ah->publications_history->editor ?></td>
+					<td><?=$ph->editor ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->format ): ?>
+				<?php if( $ph->format ): ?>
 					<tr>
 					<td class="meta">Format</td>
-					<td><?=$ah->publications_history->format ?></td>
+					<td><?=$ph->format ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->how_published ): ?>
+				<?php if( $ph->how_published ): ?>
 					<tr>
 					<td class="meta">How Published</td>
-					<td><?=$ah->publications_history->how_published ?></td>
+					<td><?=$ph->how_published ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->identifier ): ?>
+				<?php if( $ph->identifier ): ?>
 					<tr>
 					<td class="meta">Identifier</td>
-					<td><?=$ah->publications_history->identifier ?></td>
+					<td><?=$ph->identifier ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->institution ): ?>
+				<?php if( $ph->institution ): ?>
 					<tr>
 					<td class="meta">Institution</td>
-					<td><?=$ah->publications_history->institution ?></td>
+					<td><?=$ph->institution ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->isbn ): ?>
+				<?php if( $ph->isbn ): ?>
 					<tr>
 					<td class="meta">ISBN</td>
-					<td><?=$ah->publications_history->isbn ?></td>
+					<td><?=$ph->isbn ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->journal ): ?>
+				<?php if( $ph->journal ): ?>
 					<tr>
 					<td class="meta">Journal</td>
-					<td><?=$ah->publications_history->journal ?></td>
+					<td><?=$ph->journal ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->location ): ?>
+				<?php if( $ph->location ): ?>
 					<tr>
 					<td class="meta">Location</td>
-					<td><?=$ah->publications_history->location ?></td>
+					<td><?=$ph->location ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->note ): ?>
+				<?php if( $ph->note ): ?>
 					<tr>
 					<td class="meta">Note</td>
-					<td><?=$ah->publications_history->note ?></td>
+					<td><?=$ph->note ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->number ): ?>
+				<?php if( $ph->number ): ?>
 					<tr>
 					<td class="meta">Number</td>
-					<td><?=$ah->publications_history->number ?></td>
+					<td><?=$ph->number ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->organization ): ?>
+				<?php if( $ph->organization ): ?>
 					<tr>
 					<td class="meta">Organization</td>
-					<td><?=$ah->publications_history->organization ?></td>
+					<td><?=$ph->organization ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->original_date ): ?>
+				<?php if( $ph->original_date ): ?>
 					<tr>
 					<td class="meta">Original Date</td>
-					<td><?=$ah->publications_history->original_date ?></td>
+					<td><?=$ph->original_date ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->pages ): ?>
+				<?php if( $ph->pages ): ?>
 					<tr>
 					<td class="meta">Pages</td>
-					<td><?=$ah->publications_history->pages ?></td>
+					<td><?=$ph->pages ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->publisher ): ?>
+				<?php if( $ph->publisher ): ?>
 					<tr>
 					<td class="meta">Publisher</td>
-					<td><?=$ah->publications_history->publisher ?></td>
+					<td><?=$ph->publisher ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->school ): ?>
+				<?php if( $ph->school ): ?>
 					<tr>
 					<td class="meta">School</td>
-					<td><?=$ah->publications_history->school ?></td>
+					<td><?=$ph->school ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->series ): ?>
+				<?php if( $ph->series ): ?>
 					<tr>
 					<td class="meta">Series</td>
-					<td><?=$ah->publications_history->series ?></td>
+					<td><?=$ph->series ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->translator ): ?>
+				<?php if( $ph->translator ): ?>
 					<tr>
 					<td class="meta">Translator</td>
-					<td><?=$ah->publications_history->translator ?></td>
+					<td><?=$ph->translator ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->url ): ?>
+				<?php if( $ph->url ): ?>
 					<tr>
 					<td class="meta">URL</td>
-					<td><?=$ah->publications_history->url ?></td>
+					<td><?=$ph->url ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->volume ): ?>
+				<?php if( $ph->volume ): ?>
 					<tr>
 					<td class="meta">Volume</td>
-					<td><?=$ah->publications_history->volume ?></td>
+					<td><?=$ph->volume ?></td>
 					</tr>
 				<?php endif; ?>
 
@@ -331,6 +333,7 @@ if($auth->timezone_id) {
 			</tbody>
 		</table>
 
+	<?php $ph = $publications_histories->next(); ?>
 	<?php endforeach; ?>
 	</div>
 </div>

@@ -335,9 +335,16 @@ class PublicationsController extends \lithium\action\Controller {
 					'order' => 'ArchivesHistories.start_date DESC',
 					'with' => array('Users', 'PublicationsHistories'),
 				));
+
+				//FIXME We can't actually guarantee that the start_date can be used as a foreign key for the histories,
+				//so for now let's grab the subclass history table, then iterate through it as well
+				$publications_histories = PublicationsHistories::find('all', array(
+					'conditions' => array('publication_id' => $publication->id),
+					'order' => array('start_date' => 'DESC')
+				));
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'publication', 'archives_histories', 'auth');
+				return compact('auth', 'publication', 'archives_histories', 'publications_histories', 'auth');
 			}
 		}
 		

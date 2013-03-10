@@ -40,6 +40,8 @@ if($auth->timezone_id) {
 
 </ul>
 
+<?php $wh = $works_histories->first(); ?>
+
 <div class="row">
 	<div class="span10">
 	<?php foreach($archives_histories as $ah): ?>
@@ -69,24 +71,24 @@ if($auth->timezone_id) {
 
 			<tbody>
 
-				<?php if( $ah->works_history->annotation ): ?>
+				<?php if( $wh->annotation ): ?>
 					<tr>
 					<td style="width:200px"><span class="label">Annotation</a></td>
-					<td><em><?=$ah->works_history->annotation ?></em></td>
+					<td><em><?=$wh->annotation ?></em></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->works_history->artist ): ?>
+				<?php if( $wh->artist ): ?>
 					<tr>
 					<td class="meta">Artist</td>
-					<td><?=$ah->works_history->artist ?></td>
+					<td><?=$wh->artist ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->works_history->title ): ?>
+				<?php if( $wh->title ): ?>
 					<tr>
 					<td class="meta">Title</td>
-					<td><?=$ah->works_history->title ?></td>
+					<td><?=$wh->title ?></td>
 					</tr>
 				<?php endif; ?>
 
@@ -97,25 +99,25 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->works_history->materials ): ?>
+				<?php if( $wh->materials ): ?>
 					<tr>
 					<td class="meta">Materials</td>
-					<td><?=$ah->works_history->materials ?></td>
+					<td><?=$wh->materials ?></td>
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->works_history->quantity ): ?>
+				<?php if( $wh->quantity ): ?>
 					<tr>
 					<td class="meta">Quantity</td>
-					<td><?=$ah->works_history->quantity ?></td>
+					<td><?=$wh->quantity ?></td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->remarks ): ?>
+				<?php if( $wh->remarks ): ?>
 					<tr>
 					<td class="meta">Remarks</td>
-					<td><?=$ah->works_history->remarks ?></td>
+					<td><?=$wh->remarks ?></td>
 					</tr>
 				<?php endif; ?>
 
@@ -136,72 +138,73 @@ if($auth->timezone_id) {
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->creation_number ): ?>
+				<?php if( $wh->creation_number ): ?>
 					<tr>
 					<td class="meta">Artwork ID</td>
-					<td><?=$ah->works_history->creation_number ?></td>
+					<td><?=$wh->creation_number ?></td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->height ): ?>
+				<?php if( $wh->height ): ?>
 					<tr>
 					<td class="meta">Height</td>
-					<td><?=$ah->works_history->height ?> cm</td>
+					<td><?=$wh->height ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->width ): ?>
+				<?php if( $wh->width ): ?>
 					<tr>
 					<td class="meta">Width</td>
-					<td><?=$ah->works_history->width ?> cm</td>
+					<td><?=$wh->width ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->depth ): ?>
+				<?php if( $wh->depth ): ?>
 					<tr>
 					<td class="meta">Depth</td>
-					<td><?=$ah->works_history->depth ?> cm</td>
+					<td><?=$wh->depth ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->diameter ): ?>
+				<?php if( $wh->diameter ): ?>
 					<tr>
 					<td class="meta">Diameter</td>
-					<td><?=$ah->works_history->diameter ?> cm</td>
+					<td><?=$wh->diameter ?> cm</td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->weight ): ?>
+				<?php if( $wh->weight ): ?>
 					<tr>
 					<td class="meta">Weight</td>
-					<td><?=$ah->works_history->weight ?> kg</td>
+					<td><?=$wh->weight ?> kg</td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->running_time ): ?>
+				<?php if( $wh->running_time ): ?>
 					<tr>
 					<td class="meta">Running Time</td>
-					<td><?=$ah->works_history->running_time ?></td>
+					<td><?=$wh->running_time ?></td>
 					</tr>
 				<?php endif; ?>
 
 
-				<?php if( $ah->works_history->measurement_remarks ): ?>
+				<?php if( $wh->measurement_remarks ): ?>
 					<tr>
 					<td class="meta">Measurement Remarks</td>
-					<td><?=$ah->works_history->measurement_remarks ?></td>
+					<td><?=$wh->measurement_remarks ?></td>
 					</tr>
 				<?php endif; ?>
 
 			</tbody>
 		</table>
 
+	<?php $wh = $works_histories->next(); ?>
 	<?php endforeach; ?>
 	</div>
 </div>

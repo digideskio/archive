@@ -428,9 +428,17 @@ class WorksController extends \lithium\action\Controller {
 					'order' => 'ArchivesHistories.start_date DESC',
 					'with' => array('Users', 'WorksHistories'),
 				));
+
+				//FIXME We can't actually guarantee that the start_date can be used as a foreign key for the histories,
+				//so for now let's grab the subclass history table, then iterate through it as well
+				$works_histories = WorksHistories::find('all', array(
+					'conditions' => array('work_id' => $work->id),
+					'order' => array('start_date' => 'DESC')
+				));
+		
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'work', 'archives_histories', 'auth');
+				return compact('auth', 'work', 'archives_histories', 'works_histories', 'auth');
 			}
 		}
 		
