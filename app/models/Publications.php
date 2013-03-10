@@ -180,7 +180,7 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 Publications::applyFilter('save', function($self, $params, $chain) {
 
 	if (!isset($params['data']['url'])) {
-		$params['data']['url'] = '';
+		$params['data']['url'] = $params['entity']->url ?: '';
 	}
 
 	return $chain->next($self, $params, $chain);
