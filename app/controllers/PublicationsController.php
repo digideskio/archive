@@ -10,6 +10,8 @@ use app\models\PublicationsLinks;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 
+use app\models\Languages;
+
 use app\models\Users;
 use app\models\Roles;
 
@@ -227,7 +229,16 @@ class PublicationsController extends \lithium\action\Controller {
 			));
 			return $this->redirect(array('Publications::view', 'args' => array($archive->slug)));
 		}
-		return compact('publication', 'pub_classes_list');
+
+		$languages = Languages::find('all', array(
+			'fields' => 'name',
+		));
+
+		$language_names = $languages->map(function($lang) {
+			return $lang->name;
+		}, array('collect' => false));
+
+		return compact('publication', 'pub_classes_list', 'language_names');
 	}
 
 	public function edit() {
@@ -262,6 +273,10 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect('Publications::index');
 		}
 
+		if (($this->request->data) && $publication->save($this->request->data)) {
+			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
+		}
+
 		$publication_documents = PublicationsDocuments::find('all', array(
 			'with' => array(
 				'Documents',
@@ -279,11 +294,16 @@ class PublicationsController extends \lithium\action\Controller {
 			'order' => array('date_modified' =>  'DESC')
 		));
 
-		if (($this->request->data) && $publication->save($this->request->data)) {
-			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
-		}
+		$languages = Languages::find('all', array(
+			'fields' => 'name',
+		));
+
+		$language_names = $languages->map(function($lang) {
+			return $lang->name;
+		}, array('collect' => false));
+
 		
-		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links');
+		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links', 'language_names');
 	}
 
 	public function history() {

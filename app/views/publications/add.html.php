@@ -10,9 +10,7 @@ $this->form->config(
     )
 ); 
 
-$this->form->config(array('templates' => array(
-    
-)));
+$language_list = json_encode($language_names);
 
 ?>
 
@@ -71,7 +69,7 @@ $this->form->config(array('templates' => array(
 	<?=$this->form->field('url', array('label' => 'Website'));?>
 	<?=$this->form->field('subject');?>
 	<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-	<?=$this->form->field('language');?>
+	<?=$this->form->field('language', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
 	<?=$this->form->field('storage_location');?>
 	<?=$this->form->field('storage_number');?>
 	<?=$this->form->field('publication_number', array('label' => 'Publication ID'));?>

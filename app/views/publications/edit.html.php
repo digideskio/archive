@@ -10,6 +10,8 @@ $this->form->config(
     )
 ); 
 
+$language_list = json_encode($language_names);
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -74,7 +76,7 @@ $this->form->config(
 			<?=$this->form->field('pages');?>
 			<?=$this->form->field('subject');?>
 			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-			<?=$this->form->field('language');?>
+			<?=$this->form->field('language', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
 			<?=$this->form->field('storage_location');?>
 			<?=$this->form->field('storage_number');?>
 			<?=$this->form->field('publication_number', array('label' => 'Publication ID'));?>
