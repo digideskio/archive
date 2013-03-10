@@ -83,7 +83,6 @@ $language_list = json_encode($language_names);
 		<?=$this->form->field('translator', array('autocomplete' => 'off', 'class' => 'book'));?>
 		<?=$this->form->field('pages', array('autocomplete' => 'off', 'class' => 'pages'));?>
 		<?=$this->form->field('edition', array('autocomplete' => 'off', 'class' => 'book'));?>
-		<?=$this->form->field('url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web'));?>
 		<?=$this->form->field('access_date', array('autocomplete' => 'off', 'value' => $access_date, 'class' => 'web'));?>
 		<?=$this->form->field('subject', array('autocomplete' => 'off'));?>
 		<?=$this->form->field('remarks', array('autocomplete' => 'off', 'type' => 'textarea'));?>
