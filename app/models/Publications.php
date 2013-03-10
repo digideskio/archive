@@ -39,7 +39,16 @@ class Publications extends \lithium\data\Model {
 	);
 
 	public static function classifications() {
-		return array("Newspaper", "Magazine", "Catalogue", "Monograph", "Book", "Website");
+		return array(
+			"Monograph",
+			"Catalogue", 
+			"Artist's Book",
+			"Newspaper",
+			"Magazine", 
+			"Journal", 
+			"Essay in Book", 
+			"Website"
+		);
 	}
 
 	public function byline($entity) {
@@ -194,7 +203,7 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 
 });
 
-//TODO we don't want this code directly in Works
+//TODO we don't want this code directly in Publications
 Publications::applyFilter('save', function($self, $params, $chain) {
 
 	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
