@@ -300,13 +300,6 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ah->publications_history->author ): ?>
-					<tr>
-					<td class="meta">Author</td>
-					<td><?=$ah->publications_history->author ?></td>
-					</tr>
-				<?php endif; ?>
-
 				<?php if( $ah->start_date() ): ?>
 					<tr>
 					<td class="meta">Earliest Date</td>
