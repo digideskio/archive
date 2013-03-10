@@ -60,7 +60,7 @@ $classification_names = json_encode($classifications);
 			<legend>Info</legend>
     		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
 			<?=$this->form->field('title');?>
-    		<?=$this->form->field('classification', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $classification_names));?>
+    		<?=$this->form->field('classification', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $classification_names, 'value' => $work->archive->classification));?>
 			<?=$this->form->field('earliest_date', array('value' => $work->archive->start_date_formatted()));?>
 			<?=$this->form->field('latest_date', array('value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('label' => 'Artwork ID'));?>
