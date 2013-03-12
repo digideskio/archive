@@ -10,6 +10,8 @@ $this->form->config(
     )
 ); 
 
+$location_list = json_encode($locations);
+
 $language_list = json_encode($language_names);
 
 $access_date = $publication->access_date ?: date('Y-m-d');
@@ -67,7 +69,7 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 	<?=$this->form->field('title', array('autocomplete' => 'off'));?>
 	<?=$this->form->field('book_title', array('autocomplete' => 'off', 'placeholder' => 'Book the essay is in....', 'class' => 'essay'));?>
 	<?=$this->form->field('publisher', array('autocomplete' => 'off'));?>
-	<?=$this->form->field('location', array('autocomplete' => 'off', 'label' => 'Publisher Location', 'placeholder' => 'City, Country', 'class' => 'book'));?>
+	<?=$this->form->field('location', array('autocomplete' => 'off', 'label' => 'Publisher Location', 'placeholder' => 'City, Country', 'class' => 'book', 'data-provide' => 'typeahead', 'data-source' => $location_list));?>
 	<?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
 	<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'class' => 'journal'));?>
 	<?=$this->form->field('number', array('autocomplete' => 'off', 'class' => 'journal', 'placeholder' => 'Issue number'));?>

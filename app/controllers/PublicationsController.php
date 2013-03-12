@@ -217,9 +217,6 @@ class PublicationsController extends \lithium\action\Controller {
         	return $this->redirect('Publications::index');
         }
 
-		$pub_classifications = Publications::classifications();
-		$pub_classes_list = array_combine($pub_classifications, $pub_classifications);
-
 		$publication = Publications::create();
 
 		if (($this->request->data) && $publication->save($this->request->data)) {
@@ -230,6 +227,20 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($archive->slug)));
 		}
 
+		$pub_classifications = Publications::classifications();
+		$pub_classes_list = array_combine($pub_classifications, $pub_classifications);
+
+		$publications_locations = Publications::find('all', array(
+			'fields' => 'location',
+			'group' => 'location',
+			'conditions' => array('location' => array('!=' => '')),
+			'order' => array('location' => 'ASC')
+		));
+
+		$locations = $publications_locations->map(function($loc) {
+			return $loc->location;
+		}, array('collect' => false));
+
 		$languages = Languages::find('all', array(
 			'fields' => 'name',
 		));
@@ -238,7 +249,7 @@ class PublicationsController extends \lithium\action\Controller {
 			return $lang->name;
 		}, array('collect' => false));
 
-		return compact('publication', 'pub_classes_list', 'language_names');
+		return compact('publication', 'pub_classes_list', 'locations', 'language_names');
 	}
 
 	public function edit() {
@@ -294,6 +305,17 @@ class PublicationsController extends \lithium\action\Controller {
 			'order' => array('date_modified' =>  'DESC')
 		));
 
+		$publications_locations = Publications::find('all', array(
+			'fields' => 'location',
+			'group' => 'location',
+			'conditions' => array('location' => array('!=' => '')),
+			'order' => array('location' => 'ASC')
+		));
+
+		$locations = $publications_locations->map(function($loc) {
+			return $loc->location;
+		}, array('collect' => false));
+
 		$languages = Languages::find('all', array(
 			'fields' => 'name',
 		));
@@ -303,7 +325,7 @@ class PublicationsController extends \lithium\action\Controller {
 		}, array('collect' => false));
 
 		
-		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links', 'language_names');
+		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links', 'locations', 'language_names');
 	}
 
 	public function history() {
