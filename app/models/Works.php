@@ -40,6 +40,22 @@ class Works extends \lithium\data\Model {
 		)
 	);
 
+	public static function classifications() {
+		return array(
+			"Audio",
+			"Furniture",
+			"Installation",
+			"Object",
+			"Painting",
+			"Photography",
+			"Porcelain",
+			"Poster and Design",
+			"Pottery",
+			"Video",
+			"Works on Paper",
+		);
+	}
+
     public function dimensions($entity) {
     	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));
     	$measures = $hwd ? implode(' × ', $hwd) . ' cm' : '';

@@ -12,9 +12,9 @@ $this->form->config(
 
 $artist_names = json_encode($artists);
 
-$classification_names = json_encode($classifications);
-
 $artist = $work->artist ?: $artists[0];
+
+$work_classes_list = array_combine($classifications, $classifications);
 
 ?>
 
@@ -57,36 +57,90 @@ $artist = $work->artist ?: $artists[0];
 </div>
 
 <div class="well">
-<?=$this->form->create($work); ?>
+<?=$this->form->create($work, array('id' => 'WorksForm')); ?>
 	<legend>Artwork Info</legend>
+
+	<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
+
+	<?=$this->form->label('classification', 'Classification'); ?>
+	<?=$this->form->select('classification', $work_classes_list); ?>
+
     <?=$this->form->field('artist', array('value' => $artist, 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
-    <?=$this->form->field('title');?>
-    <?=$this->form->field('classification', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $classification_names));?>
-    <?=$this->form->field('earliest_date');?>
-    <?=$this->form->field('latest_date');?>
-    <?=$this->form->field('creation_number', array('label' => 'Artwork ID'));?>
+    <?=$this->form->field('title', array('autocomplete' => 'off'));?>
+    <?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
+    <?=$this->form->field('latest_date', array('autocomplete' => 'off'));?>
+    <?=$this->form->field('creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
 	<?=$this->form->field('materials', array('type' => 'textarea'));?>
-    <?=$this->form->field('quantity');?>
+    <?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
     <?=$this->form->field('remarks', array('type' => 'textarea'));?>
 	<?=$this->form->field('height', array(
-		'label' => "Height (cm)"
+		'label' => "Height (cm)",
+		'class' => 'dim two-d',
+		'autocomplete' => 'off'
 	));?>
 	<?=$this->form->field('width', array(
-		'label' => "Width (cm)"
+		'label' => "Width (cm)",
+		'class' => 'dim two-d',
+		'autocomplete' => 'off'
 	));?>
 	<?=$this->form->field('depth', array(
-		'label' => "Depth (cm)"
+		'label' => "Depth (cm)",
+		'class' => 'dim three-d',
+		'autocomplete' => 'off'
 	));?>
 	<?=$this->form->field('diameter', array(
-		'label' => "Diameter (cm)"
+		'label' => "Diameter (cm)",
+		'class' => 'dim three-d',
+		'autocomplete' => 'off'
 	));?>
-	<?=$this->form->field('weight', array(
-		'label' => "Weight (kg)"
-	));?>
-    <?=$this->form->field('running_time');?>
-    <?=$this->form->field('measurement_remarks', array('type' => 'textarea'));?>
-    <?=$this->form->field('url', array('label' => 'URL'));?>
+    <?=$this->form->field('running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
+    <?=$this->form->field('measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
+    <?=$this->form->field('url', array('label' => 'URL', 'autocomplete' => 'off'));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/works', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>
 </div>
+
+<script>
+
+$(document).ready(function() {
+
+	function handleFields() {
+		var work = $('#WorksClassification').val();
+
+		$('#WorksForm .dim').parent().hide();
+
+		if (work == 'Audio' || work == 'Video') {
+			$('#WorksForm .four-d').parent().fadeIn();
+		} else {
+			$('#WorksForm .four-d').parent().hide();
+		}
+
+		if (work == 'Painting' || work == 'Photography' || work == 'Poster and Design' || work == 'Works on Paper' ||
+				work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') { 
+			
+			$('#WorksForm .two-d').parent().fadeIn();
+			$('#WorksForm .dim.remarks').parent().fadeIn();
+		} else {
+			$('#WorksForm .two-d').parent().hide();
+			$('#WorksForm .dim.remarks').parent().hide();
+		}
+
+		if (work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') {
+			$('#WorksForm .three-d').parent().fadeIn();
+		} else {
+			$('#WorksForm .three-d').parent().hide();
+		}
+			
+			
+	}
+
+	$('#WorksClassification').change(function() {
+		handleFields();
+	});
+
+	handleFields();
+
+});
+
+</script>

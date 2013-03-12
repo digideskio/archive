@@ -235,19 +235,7 @@ class WorksController extends \lithium\action\Controller {
 			array_push($artists, $wa->artist);
 		}
 
-		$works_classifications = Works::find('all', array(
-			'with' => 'Archives',
-			'fields' => array('classification'),
-			'group' => 'classification',
-			'conditions' => array('classification' => array('!=' => '')),
-			'order' => array('classification' => 'ASC')
-		));
-
-		$classifications = array();
-
-		foreach ($works_classifications as $wc) {
-			array_push($classifications, $wc->classification);
-		}
+		$classifications = Works::classifications();
 
 		if (($this->request->data) && $work->save($this->request->data)) {
 			//The slug has been saved with the Archive object, so let's look it up
@@ -300,20 +288,8 @@ class WorksController extends \lithium\action\Controller {
 					array_push($artists, $wa->artist);
 				}
 
-				$works_classifications = Works::find('all', array(
-					'with' => 'Archives',
-					'fields' => array('classification'),
-					'group' => 'classification',
-					'conditions' => array('classification' => array('!=' => '')),
-					'order' => array('classification' => 'ASC')
-				));
+				$classifications = Works::classifications();
 
-				$classifications = array();
-
-				foreach ($works_classifications as $wc) {
-					array_push($classifications, $wc->classification);
-				}
-		
 				$order = array('title' => 'ASC');
 
 				$albums = Albums::find('all', array(
