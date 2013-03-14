@@ -113,6 +113,12 @@ $(document).ready(function() {
 
 		$('#WorksForm .dim').parent().hide();
 
+		if (work) {
+			$('#WorksForm .dim.remarks').parent().fadeIn();
+		} else {
+			$('#WorksForm .dim.remarks').parent().hide();
+		}
+
 		if (work == 'Audio' || work == 'Video') {
 			$('#WorksForm .four-d').parent().fadeIn();
 		} else {
@@ -123,10 +129,8 @@ $(document).ready(function() {
 				work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') { 
 			
 			$('#WorksForm .two-d').parent().fadeIn();
-			$('#WorksForm .dim.remarks').parent().fadeIn();
 		} else {
 			$('#WorksForm .two-d').parent().hide();
-			$('#WorksForm .dim.remarks').parent().hide();
 		}
 
 		if (work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') {
