@@ -33,7 +33,7 @@ $this->title('Home');
 
 			<div class="accordion-inner">
 
-				<p><small style="font-size: smaller;">2012-10-29 23:44:21</small></p>
+				<p><small style="font-size: smaller;"><?=$notice->date_modified ?></small></p>
 				<?=$notice->body ?>
 
 			</div>
