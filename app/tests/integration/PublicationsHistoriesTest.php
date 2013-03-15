@@ -118,6 +118,42 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 
 	}
 
+	public function testUpdateHistory() {
+	
+		$publication = Publications::first();
+		$data = array(
+			'title' => 'New Title'
+		);
+
+		$publication->save($data); 
+
+		$count = PublicationsHistories::count();
+
+		$this->assertEqual(2, $count);
+
+		$publication_history = PublicationsHistories::find('first', array (
+			'conditions' => array(
+				'end_date' => NULL
+			)
+		));
+
+		$this->assertEqual($publication->title, $publication_history->title);
+
+	}
+
+	public function testDeleteHistory() {
+		$publication = Publications::first();
+		$publication->delete();
+
+		$count = PublicationsHistories::count();
+
+		$this->assertEqual(1, $count);
+
+		$publication_history = PublicationsHistories::first();
+
+		$this->assertTrue($publication_history->end_date);
+
+	}
 }
 
 ?>

@@ -77,7 +77,7 @@ class PublicationsTest extends \lithium\test\Unit {
 		$publication = Publications::create();
 		$data = array (
 			"title" => "",
-			"Author" => "Book Author"
+			"author" => "Book Author"
 		);
 		
 		$this->assertFalse($publication->save($data), "The publication was able to be saved without a title.");
