@@ -14,7 +14,7 @@ $this->title($architecture->title);
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->slug); ?>
+	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?>
 	</li>
 
 	</ul>
@@ -28,7 +28,7 @@ $this->title($architecture->title);
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit','/architectures/edit/'.$architecture->slug); ?></li>
+		<li><?=$this->html->link('Edit','/architectures/edit/'.$architecture->archive->slug); ?></li>
 	
 	<?php endif; ?>
 
@@ -60,7 +60,7 @@ $this->title($architecture->title);
 	
 		<div class="alert alert-block">
     	<p>
-    		<?php echo $architecture->caption(); ?>
+    		<?=$this->architecture->caption($architecture->archive, $architecture); ?>
     	</p>
 		</div>
 	

@@ -23,7 +23,7 @@ $this->form->config(
 	</li>
 
 	<li>
-	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->slug); ?>
+	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -36,7 +36,7 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/architectures/view/'.$architecture->slug); ?></li>
+	<li><?=$this->html->link('View','/architectures/view/'.$architecture->archive->slug); ?></li>
 	<li class="active">
 		<a href="#">
 			Edit
@@ -50,30 +50,33 @@ $this->form->config(
 	<div class="span5">
 		<div class="well">
 		<?=$this->form->create($architecture); ?>
-    		<?=$this->form->field('architects');?>
-			<?=$this->form->field('title');?>
-			<?=$this->form->field('client');?>
-			<?=$this->form->field('project_lead');?>
-    		<?=$this->form->field('consultants');?>
+    		<?=$this->form->field('architect', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('title', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('client', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('project_lead', array('autocomplete' => 'off'));?>
+    		<?=$this->form->field('consultants', array('autocomplete' => 'off'));?>
     		<?=$this->form->field('remarks', array('type' => 'textarea'));?>
 			<?=$this->form->field('area', array(
+				'autocomplete' => 'off',
 				'label' => "Area (square meters)"
 			));?>
-    		<?=$this->form->field('materials');?>
+    		<?=$this->form->field('materials', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('earliest_date', array(
+				'autocomplete' => 'off',
 				'label' => 'Design Date',
-				'value' => $architecture->start_date_formatted()
+				'value' => $architecture->archive->start_date_formatted()
 			));?>
 			<?=$this->form->field('latest_date', array(
+				'autocomplete' => 'off',
 				'label' => 'Completion Date',
-				'value' => $architecture->end_date_formatted()
+				'value' => $architecture->archive->end_date_formatted()
 			));?>
-			<?=$this->form->field('status', array('label' => 'Project Status'));?>
-			<?=$this->form->field('location');?>
-			<?=$this->form->field('city');?>
-			<?=$this->form->field('country');?>
+			<?=$this->form->field('status', array('autocomplete' => 'off', 'label' => 'Project Status'));?>
+			<?=$this->form->field('location', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('city', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('country', array('autocomplete' => 'off'));?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
 		
@@ -101,8 +104,10 @@ $this->form->config(
 				'label' => ''
 			));?>
 		
+			<?=$this->form->hidden('title'); ?>
+
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		
 	</div>
@@ -126,7 +131,8 @@ $this->form->config(
 			<p>By selecting <code>Delete</code>, you will remove this Project from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($architecture, array('url' => "/architectures/delete/$architecture->slug", 'method' => 'post')); ?>
+			<?php $slug = $architecture->archive->slug; ?>
+			<?=$this->form->create($architecture, array('url' => "/architectures/delete/$slug", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>

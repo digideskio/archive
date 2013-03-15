@@ -9,6 +9,9 @@ use app\models\Roles;
 use app\models\Documents;
 use app\models\ArchitecturesDocuments;
 
+use app\models\Archives;
+use app\models\ArchivesHistories;
+
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
@@ -31,7 +34,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 		));
 		
 		$architectures = Architectures::find('all', array(
-			'with' => 'ArchitecturesDocuments',
+			'with' => 'Archives',
 			'order' => array('earliest_date' => 'DESC')
 		));
 		return compact('architectures', 'auth');
@@ -73,7 +76,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			$conditions = array("$condition" => array('LIKE' => "%$query%"));
 
 			$architectures = Architectures::find('all', array(
-				'with' => 'ArchitecturesDocuments',
+				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $conditions
 			));
@@ -103,6 +106,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$architecture = Architectures::first(array(
+				'with' => 'Archives',
 				'conditions' => array('slug' => $this->request->params['slug']),
 			));
 			
@@ -150,7 +154,11 @@ class ArchitecturesController extends \lithium\action\Controller {
 		$architecture = Architectures::create();
 
 		if (($this->request->data) && $architecture->save($this->request->data)) {
-			return $this->redirect(array('Architectures::view', 'args' => array($architecture->slug)));
+			//The slug has been saved with the Archive object, so let's look it up
+			$archive = Archives::find('first', array(
+				'conditions' => array('id' => $architecture->id)
+			));
+			return $this->redirect(array('Architectures::view', 'args' => array($archive->slug)));
 		}
 		return compact('architecture');
 	}
@@ -169,6 +177,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 		));
 		
 		$architecture = Architectures::first(array(
+			'with' => 'Archives',
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
 		
@@ -185,7 +194,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			return $this->redirect('Architectures::index');
 		}
 		if (($this->request->data) && $architecture->save($this->request->data)) {
-			return $this->redirect(array('Architectures::view', 'args' => array($architecture->slug)));
+			return $this->redirect(array('Architectures::view', 'args' => array($architecture->archive->slug)));
 		}
 		
 		return compact('architecture', 'architecture_documents');
@@ -205,6 +214,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 		));
         
 		$architecture = Architectures::first(array(
+			'with' => 'Archives',
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
         

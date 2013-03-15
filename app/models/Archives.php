@@ -14,6 +14,9 @@ class Archives extends \lithium\data\Model {
 		'Works' => array (
 			'key' => 'id'
 		),
+		'Architectures' => array (
+			'key' => 'id'
+		),
 		'Albums' => array (
 			'key' => 'id'
 		),

@@ -30,16 +30,16 @@
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 		<?php $document = $architecture->documents('first'); if($document && $document->id) { ?>	
-			<a href="/architectures/view/<?=$architecture->slug?>">
+			<a href="/architectures/view/<?=$architecture->archive->slug?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
 		<?php } else { ?>
 			<span class="label label-warning">No Image</span>
 		<?php } ?>
 	</td>
-    <td><?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->slug); ?></td>
-    <td><?=$architecture->years(); ?></td>
-    <td><?php echo $architecture->caption(); ?></td>
+    <td><?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?></td>
+    <td><?=$architecture->archive->years(); ?></td>
+    <td><?=$this->architecture->caption($architecture->archive, $architecture); ?></td>
 </tr>
     
 <?php endforeach; ?>
