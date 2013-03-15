@@ -30,7 +30,7 @@ class SearchController extends \lithium\action\Controller {
         
         $order = array('earliest_date' => 'DESC');
         $works = Works::find('all', array(
-			'with' => 'WorksDocuments',
+			'with' => 'Archives',
 			'order' => $order,
 			'conditions' => array(
 				'title' => array(
