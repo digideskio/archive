@@ -74,11 +74,11 @@ $this->title($document->title);
 			</div>
 		<?php endforeach; ?>
 		
-		<?php foreach($architectures_documents as $ad): ?>
+		<?php foreach($architectures as $architecture): ?>
 	
 			<div class="alert alert-block alert-info">
 			<p>
-				<?php echo $ad->architecture->caption(); ?>
+    			<?=$this->architecture->caption($architecture->archive, $architecture); ?>
 					
 					<?php
 							echo "(Photo &copy; ";
@@ -107,11 +107,11 @@ $this->title($document->title);
 			</div>
 		
 		<?php endforeach; ?>
-		<?php foreach($publications_documents as $pd): ?>
+		<?php foreach($publications as $publication): ?>
 	
 			<div class="alert alert-block alert-info">
 			<p>
-				<?php echo $pd->publication->citation(); ?>
+    			<?=$this->publication->citation($publication->archive, $publication); ?>
 			</p>
 			</div>
 		
@@ -192,9 +192,9 @@ $this->title($document->title);
 
 		<?php
 			$hasArtwork = sizeof($works) > 0;
-			$hasArchitecture = sizeof($architectures_documents) > 0;
+			$hasArchitecture = sizeof($architectures) > 0;
 			$hasExhibitions = sizeof($exhibitions_documents) > 0;
-			$hasPublications = sizeof($publications_documents) > 0;
+			$hasPublications = sizeof($publications) > 0;
 		?>
 
 		<?php if ($hasArtwork || $hasArchitecture || $hasExhibitions || $hasPublications): ?>
@@ -236,10 +236,10 @@ $this->title($document->title);
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
 							
-								<?php foreach($architectures_documents as $ad): ?>
+								<?php foreach($architectures as $architecture): ?>
 								<li><strong><?=$this->html->link(
-									$ad->architecture->title,
-									'/architectures/view/'.$ad->architecture->slug
+									$architecture->title,
+									'/architectures/view/'.$architecture->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
 							
@@ -274,10 +274,10 @@ $this->title($document->title);
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
 							
-								<?php foreach($publications_documents as $pd): ?>
+								<?php foreach($publications as $publication): ?>
 								<li><strong><?=$this->html->link(
-									$pd->publication->title,
-									'/publications/view/'.$pd->publication->slug
+									$publication->title,
+									'/publications/view/'.$publication->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
 							

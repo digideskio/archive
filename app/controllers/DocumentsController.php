@@ -5,8 +5,10 @@ namespace app\controllers;
 use app\models\Documents;
 use app\models\Works;
 use app\models\WorksDocuments;
+use app\models\Architectures;
 use app\models\ArchitecturesDocuments;
 use app\models\ExhibitionsDocuments;
+use app\models\Publications;
 use app\models\PublicationsDocuments;
 
 use app\models\Users;
@@ -156,28 +158,63 @@ class DocumentsController extends \lithium\action\Controller {
 
 				}
 
+				$architecture_ids = array();
+
 				$architectures_documents = ArchitecturesDocuments::find('all', array(
-					'with' => 'Architectures',
+					'fields' => 'architecture_id',
 					'conditions' => array('document_id' => $document->id)
 				));
+
+				$architectures = array();
+
+				if($architectures_documents->count()) {
+				
+					$architecture_ids = $architectures_documents->map(function($ad) {
+						return $ad->architecture_id;
+					}, array('collect' => false));
+
+					$architectures = Architectures::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Architectures.id' => $architecture_ids),
+						'order' => 'earliest_date DESC'
+					));
+				}
 
 				$exhibitions_documents = ExhibitionsDocuments::find('all', array(
 					'with' => 'Exhibitions',
 					'conditions' => array('document_id' => $document->id)
 				));
 
+				$publication_ids = array();
+
 				$publications_documents = PublicationsDocuments::find('all', array(
-					'with' => 'Publications',
+					'fields' => 'publication_id',
 					'conditions' => array('document_id' => $document->id)
 				));
+
+				$publications = array();
+
+				if($publications_documents->count()) {
+					
+					$publication_ids = $publications_documents->map(function($pd) {
+						return $pd->publication_id;
+					}, array('collect' => false));
+
+					$publications = Publications::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Publications.id' => $publication_ids),
+						'order' => 'earliest_date DESC'
+					));
+
+				}
 				
 				//Send the retrieved data to the view
 				return compact(
 					'document', 
 					'works', 
-					'architectures_documents',
+					'architectures',
 					'exhibitions_documents',
-					'publications_documents', 
+					'publications', 
 					'auth'
 				);
 
