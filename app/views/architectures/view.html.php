@@ -32,6 +32,10 @@ $this->title($architecture->title);
 	
 	<?php endif; ?>
 
+	<li>
+		<?=$this->html->link('History', $this->url(array('Architectures::history', 'slug' => $architecture->archive->slug))); ?>
+	</li>
+
 </ul>
 
 <div class="row">

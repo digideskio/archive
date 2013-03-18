@@ -42,6 +42,9 @@ class ArchitecturesControllerTest extends \lithium\test\Unit {
 		$response = $architectures->index();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $architectures->histories();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
 		$response = $architectures->search();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
@@ -52,6 +55,9 @@ class ArchitecturesControllerTest extends \lithium\test\Unit {
 		$this->assertEqual($response->headers["Location"], "/login");
 		
 		$response = $architectures->edit();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
+		$response = $architectures->history();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
 		$response = $architectures->delete();

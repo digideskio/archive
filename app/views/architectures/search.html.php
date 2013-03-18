@@ -26,6 +26,9 @@ $this->title('Search Architecture');
 		<li>
 			<?=$this->html->link('Index','/architectures'); ?>
 		</li>
+		<li>
+			<?=$this->html->link('History','/architectures/histories'); ?>
+		</li>
 		<li class="active">
 			<?=$this->html->link('Search','/architectures/search'); ?>
 		</li>
