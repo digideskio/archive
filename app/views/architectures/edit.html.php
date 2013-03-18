@@ -108,6 +108,10 @@ $this->form->config(
 			));?>
 		
 			<?=$this->form->hidden('title'); ?>
+		
+			<?php //FIXME set the dates in the annotation form; if they have no value, they will be set back to empty in the Archives class ?>
+			<?=$this->form->hidden('earliest_date', array('value' => $architecture->archive->start_date_formatted())); ?>
+			<?=$this->form->hidden('latest_date', array('value' => $architecture->archive->end_date_formatted())); ?>
 
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->archive->slug, array('class' => 'btn')); ?>

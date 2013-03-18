@@ -177,6 +177,10 @@ $(document).ready(function() {
 			));?>
 
 			<?=$this->form->hidden('title'); ?>
+
+			<?php //FIXME set the dates in the annotation form; if they have no value, they will be set back to empty in the Archives class ?>
+			<?=$this->form->hidden('earliest_date', array('value' => $work->archive->start_date_formatted())); ?>
+			<?=$this->form->hidden('latest_date', array('value' => $work->archive->end_date_formatted())); ?>
 		
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
