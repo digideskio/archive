@@ -81,7 +81,7 @@ if($auth->timezone_id) {
 				<?php if( $ph->annotation ): ?>
 					<tr>
 					<td style="width:200px"><span class="label">Annotation</a></td>
-					<td><em><?=$ah->publications->annotation ?></em></td>
+					<td><em><?=$ph->annotation ?></em></td>
 					</tr>
 				<?php endif; ?>
 

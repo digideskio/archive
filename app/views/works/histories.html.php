@@ -1,4 +1,3 @@
-
 <?php 
 
 $this->title('Artwork History');

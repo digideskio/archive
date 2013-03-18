@@ -366,12 +366,12 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'publication', 'archives_histories', 'publications_histories', 'auth');
+				return compact('auth', 'publication', 'archives_histories', 'publications_histories');
 			}
 		}
 		
 		//since no record was specified, redirect to the index page
-		$this->redirect(array('Works::index'));
+		$this->redirect(array('Publications::index'));
 	}
 
 	public function delete() {
