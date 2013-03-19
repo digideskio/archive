@@ -198,7 +198,52 @@ class ExhibitionsController extends \lithium\action\Controller {
 		
 			return $this->redirect(array('Exhibitions::view', 'args' => array($archive->slug)));
 		}
-		return compact('exhibition');
+
+		$exhibition_titles = Exhibitions::find('all', array(
+			'fields' => 'title',
+			'group' => 'title',
+			'conditions' => array('title' => array('!=' => '')),
+			'order' => array('title' => 'ASC'),
+		));
+
+		$titles = $exhibition_titles->map(function($tit) {
+			return $tit->title;
+		}, array('collect' => false));
+
+		$exhibition_venues = Exhibitions::find('all', array(
+			'fields' => 'venue',
+			'group' => 'venue',
+			'conditions' => array('venue' => array('!=' => '')),
+			'order' => array('venue' => 'ASC'),
+		));
+
+		$venues = $exhibition_venues->map(function($ven) {
+			return $ven->venue;
+		}, array('collect' => false));
+
+		$exhibition_cities = Exhibitions::find('all', array(
+			'fields' => 'city',
+			'group' => 'city',
+			'conditions' => array('city' => array('!=' => '')),
+			'order' => array('city' => 'ASC'),
+		));
+
+		$cities = $exhibition_cities->map(function($cit) {
+			return $cit->city;
+		}, array('collect' => false));
+
+		$exhibition_countries = Exhibitions::find('all', array(
+			'fields' => 'country',
+			'group' => 'country',
+			'conditions' => array('country' => array('!=' => '')),
+			'order' => array('country' => 'ASC'),
+		));
+
+		$countries = $exhibition_countries->map(function($con) {
+			return $con->country;
+		}, array('collect' => false));
+
+		return compact('exhibition', 'titles', 'venues', 'cities', 'countries');
 	}
 
 	public function edit() {
@@ -245,8 +290,52 @@ class ExhibitionsController extends \lithium\action\Controller {
 		
 			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->archive->slug)));
 		}
+
+		$exhibition_titles = Exhibitions::find('all', array(
+			'fields' => 'title',
+			'group' => 'title',
+			'conditions' => array('title' => array('!=' => '')),
+			'order' => array('title' => 'ASC'),
+		));
+
+		$titles = $exhibition_titles->map(function($tit) {
+			return $tit->title;
+		}, array('collect' => false));
+
+		$exhibition_venues = Exhibitions::find('all', array(
+			'fields' => 'venue',
+			'group' => 'venue',
+			'conditions' => array('venue' => array('!=' => '')),
+			'order' => array('venue' => 'ASC'),
+		));
+
+		$venues = $exhibition_venues->map(function($ven) {
+			return $ven->venue;
+		}, array('collect' => false));
+
+		$exhibition_cities = Exhibitions::find('all', array(
+			'fields' => 'city',
+			'group' => 'city',
+			'conditions' => array('city' => array('!=' => '')),
+			'order' => array('city' => 'ASC'),
+		));
+
+		$cities = $exhibition_cities->map(function($cit) {
+			return $cit->city;
+		}, array('collect' => false));
+
+		$exhibition_countries = Exhibitions::find('all', array(
+			'fields' => 'country',
+			'group' => 'country',
+			'conditions' => array('country' => array('!=' => '')),
+			'order' => array('country' => 'ASC'),
+		));
+
+		$countries = $exhibition_countries->map(function($con) {
+			return $con->country;
+		}, array('collect' => false));
 		
-		return compact('exhibition', 'exhibition_documents', 'exhibition_links');
+		return compact('exhibition', 'exhibition_documents', 'exhibition_links', 'titles', 'venues', 'cities', 'countries');
 	}
 
 	public function delete() {

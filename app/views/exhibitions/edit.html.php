@@ -10,6 +10,14 @@ $this->form->config(
     )
 ); 
 
+$title_data = json_encode($titles);
+
+$venue_data = json_encode($venues);
+
+$city_data = json_encode($cities);
+
+$country_data = json_encode($countries);
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -48,11 +56,11 @@ $this->form->config(
 	<div class="span5">
 		<div class="well">
 		<?=$this->form->create($exhibition); ?>
-    		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data));?>
 			<?=$this->form->field('curator', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('venue', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('city', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('country', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data));?>
+			<?=$this->form->field('city', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data));?>
+			<?=$this->form->field('country', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $country_data));?>
 			<?=$this->form->field('earliest_date', array(
 				'autocomplete' => 'off',
 				'label' => 'Opening Date',
