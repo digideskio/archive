@@ -48,16 +48,18 @@ $this->form->config(
 	<div class="span5">
 		<div class="well">
 		<?=$this->form->create($exhibition); ?>
-			<?=$this->form->field('title');?>
-			<?=$this->form->field('curator');?>
-			<?=$this->form->field('venue');?>
-			<?=$this->form->field('city');?>
-			<?=$this->form->field('country');?>
+    		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('curator', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('venue', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('city', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('country', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('earliest_date', array(
+				'autocomplete' => 'off',
 				'label' => 'Opening Date',
 				'value' => $exhibition->archive->start_date_formatted()
 			));?>
 			<?=$this->form->field('latest_date', array(
+				'autocomplete' => 'off',
 				'label' => 'Closing Date',
 				'value' => $exhibition->archive->end_date_formatted()
 			));?>
