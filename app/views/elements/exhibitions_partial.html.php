@@ -1,13 +1,13 @@
 <?php foreach($exhibitions as $exhibition): ?>
 <article>
 	<div class="alert">
-	<h1><?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?></h1>
+	<h1><?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->archive->slug); ?></h1>
 	
 	<?php 
 		date_default_timezone_set('UTC');
 		
 		$location = $exhibition->location();
-		$dates = $exhibition->dates();
+		$dates = $exhibition->archive->dates();
 		$curator = $exhibition->curator;
 	?>
 	
@@ -23,7 +23,7 @@
 		
 	?>
 	
-	<span class="badge"><?=$exhibition->type ?> Show</span>
+	<span class="badge"><?=$exhibition->archive->type ?> Show</span>
 	
 	</div>
 </article>

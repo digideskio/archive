@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Archives;
 use app\models\Exhibitions;
 use app\models\ExhibitionsWorks;
 use app\models\Works;
@@ -35,7 +36,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 	 	$order = 'earliest_date DESC';
 		
 		$exhibitions = Exhibitions::find('all', array(
-			'with' => array('ExhibitionsWorks'),
+			'with' => array('Archives', 'ExhibitionsWorks'),
 			'order' => $order,
 		));
 		
@@ -84,7 +85,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			}
 
 			$exhibitions = Exhibitions::find('all', array(
-				'with' => 'ExhibitionsWorks',
+				'with' => array('Archives', 'ExhibitionsWorks'),
 				'order' => $order,
 				'conditions' => $conditions
 			));
@@ -115,6 +116,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		
 			//Get single record from the database where the slug matches the URL
 			$exhibition = Exhibitions::find('first', array(
+				'with' => 'Archives',
 				'conditions' => array(
 				'slug' => $this->request->params['slug'],
 			)));
@@ -189,8 +191,12 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$exhibition = Exhibitions::create();
 
 		if (($this->request->data) && $exhibition->save($this->request->data)) {
+			//The slug has been saved with the Archive object, so let's look it up
+			$archive = Archives::find('first', array(
+				'conditions' => array('id' => $exhibition->id)
+			));
 		
-			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
+			return $this->redirect(array('Exhibitions::view', 'args' => array($archive->slug)));
 		}
 		return compact('exhibition');
 	}
@@ -209,6 +215,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		));
 		
 		$exhibition = Exhibitions::find('first', array(
+			'with' => 'Archives',
 			'conditions' => array(
 				'slug' => $this->request->params['slug'],
 		)));
@@ -236,7 +243,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		
 			$exhibition->save($this->request->data);
 		
-			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->slug)));
+			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->archive->slug)));
 		}
 		
 		return compact('exhibition', 'exhibition_documents', 'exhibition_links');
@@ -256,6 +263,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		));
 		
 		$exhibition = Exhibitions::find('first', array(
+			'with' => 'Archives',
 			'conditions' => array(
 			'slug' => $this->request->params['slug'],
 		)));

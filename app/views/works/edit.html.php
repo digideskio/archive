@@ -236,7 +236,7 @@ $(document).ready(function() {
 			<?php $ew = $exhibition->exhibitions_works[0]; ?>
 				<tr>
 					<td>
-						<a href="/exhibitions/view/<?=$exhibition->slug ?>"><?=$exhibition->title ?></a> <strong></strong> 
+						<?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?>
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
@@ -274,7 +274,7 @@ $(document).ready(function() {
 				<tr>
 					<td>
 						<strong>
-							<?=$this->html->link($oc->title, $this->url(array('Albums::view', 'slug' => $oc->slug))); ?>
+							<?=$this->html->link($oc->title, $this->url(array('Albums::view', 'slug' => $oc->archive->slug))); ?>
 						</strong><br/>
 					</td>
 					<td align="right" style="text-align:right">
@@ -309,10 +309,10 @@ $(document).ready(function() {
 			<?php foreach($other_exhibitions as $oe): ?>
 				<tr>
 					<td>
-						<a href="/exhibitions/view/<?=$oe->slug ?>">
+						<a href="/exhibitions/view/<?=$oe->archive->slug ?>">
 							<strong><?=$oe->title ?></a></strong><br/>
 							<?=$oe->venue ?><br/>
-							<?=$oe->dates() ?>
+							<?=$oe->archive->dates() ?>
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($oe, array('url' => "/exhibitions_works/add", 'method' => 'post')); ?>

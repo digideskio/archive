@@ -178,7 +178,7 @@ class WorksController extends \lithium\action\Controller {
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
-					'with' => 'ExhibitionsWorks',
+					'with' => array('Archives', 'ExhibitionsWorks'),
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
@@ -307,15 +307,16 @@ class WorksController extends \lithium\action\Controller {
 				}
 
 				//Find the albums the work is NOT in
-				$other_album_conditions = ($album_ids) ? array('id' => array('!=' => $album_ids)) : '';
+				$other_album_conditions = ($album_ids) ? array('Albums.id' => array('!=' => $album_ids)) : '';
 
 				$other_albums = Albums::find('all', array(
+					'with' => 'Archives',
 					'order' => $order,
 					'conditions' => $other_album_conditions
 				));
 	
 				$exhibitions = Exhibitions::find('all', array(
-					'with' => 'ExhibitionsWorks',
+					'with' => array('Archives', 'ExhibitionsWorks'),
 					'conditions' => array(
 						'work_id' => $work->id,
 					),
@@ -329,9 +330,10 @@ class WorksController extends \lithium\action\Controller {
 				}
 	
 				//Find the exhibitions the work is NOT in
-				$other_exhibition_conditions = ($exhibition_ids) ? array('id' => array('!=' => $exhibition_ids)) : '';
+				$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
 
 				$other_exhibitions = Exhibitions::find('all', array(
+					'with' => 'Archives',
 					'order' => array('earliest_date' => 'DESC'),
 					'conditions' => $other_exhibition_conditions
 				));

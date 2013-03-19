@@ -163,7 +163,7 @@ $this->title($work->title);
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
 									$exhibition->title,
-									'/exhibitions/view/'.$exhibition->slug
+									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
 							

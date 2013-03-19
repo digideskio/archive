@@ -47,9 +47,11 @@ class MetricsController extends \lithium\action\Controller {
 		$architectures_documents = ArchitecturesDocuments::count();
 		$exhibitions = Exhibitions::count();
 		$solo_shows = Exhibitions::count('all', array(
+			'with' => 'Archives',
 			'conditions' => array('type' => 'Solo')
 		));
 		$group_shows = Exhibitions::count('all', array(
+			'with' => 'Archives',
 			'conditions' => array('type' => 'Group')
 		));
 		$exhibitions_works = ExhibitionsWorks::count();
@@ -63,7 +65,7 @@ class MetricsController extends \lithium\action\Controller {
 
 		$architectures_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'architectures' and  YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
-		$exhibitions_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM exhibitions WHERE YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$exhibitions_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'exhibitions' AND YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
 		$publications_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'publications' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 

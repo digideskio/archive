@@ -7,6 +7,7 @@ use app\models\Works;
 use app\models\WorksDocuments;
 use app\models\Architectures;
 use app\models\ArchitecturesDocuments;
+use app\models\Exhibitions;
 use app\models\ExhibitionsDocuments;
 use app\models\Publications;
 use app\models\PublicationsDocuments;
@@ -180,10 +181,27 @@ class DocumentsController extends \lithium\action\Controller {
 					));
 				}
 
+				$exhibition_ids = array();
+
 				$exhibitions_documents = ExhibitionsDocuments::find('all', array(
-					'with' => 'Exhibitions',
+					'fields' => 'exhibition_id',
 					'conditions' => array('document_id' => $document->id)
 				));
+
+				$exhibitions = array();
+
+				if($exhibitions_documents->count()) {
+				
+					$exhibition_ids = $exhibitions_documents->map(function($ed) {
+						return $ed->exhibition_id;
+					}, array('collect' => false));
+
+					$exhibitions = Exhibitions::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Exhibitions.id' => $exhibition_ids),
+						'order' => 'earliest_date DESC'
+					));
+				}
 
 				$publication_ids = array();
 
@@ -213,7 +231,7 @@ class DocumentsController extends \lithium\action\Controller {
 					'document', 
 					'works', 
 					'architectures',
-					'exhibitions_documents',
+					'exhibitions',
 					'publications', 
 					'auth'
 				);

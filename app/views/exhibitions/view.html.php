@@ -14,7 +14,7 @@ $this->title($exhibition->title);
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?>
+	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 	</li>
 
 	</ul>
@@ -28,7 +28,7 @@ $this->title($exhibition->title);
 
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
-		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$exhibition->slug); ?></li>
+		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$exhibition->archive->slug); ?></li>
 	
 	<?php endif; ?>
 
@@ -41,7 +41,7 @@ $this->title($exhibition->title);
 		date_default_timezone_set('UTC');
 		
 		$location = $exhibition->location();
-		$dates = $exhibition->dates();
+		$dates = $exhibition->archive->dates();
 		$curator = $exhibition->curator;
 	?>
 	
@@ -58,7 +58,7 @@ $this->title($exhibition->title);
 		<?php endforeach; ?>
 	<?php endif; ?>
 	
-	<p><span class="badge"><?=$exhibition->type ?> Show</span></p>
+	<p><span class="badge"><?=$exhibition->archive->type ?> Show</span></p>
 	</div>
 
 <?php if(sizeof($exhibition_documents) > 0): ?>

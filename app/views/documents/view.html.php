@@ -90,13 +90,13 @@ $this->title($document->title);
 		
 		<?php endforeach; ?>
 	
-		<?php foreach($exhibitions_documents as $ed): ?>
+		<?php foreach($exhibitions as $exhibition): ?>
 	
 			<div class="alert alert-block alert-info">
 			<p>
-				<?php echo $ed->exhibition->title . ', '; ?>
+				<?php echo $exhibition->title . ', '; ?>
 					
-					<?php if($ed->exhibition->venue) { echo $ed->exhibition->venue; } ?>
+					<?php if($exhibition->venue) { echo $exhibition->venue; } ?>
 
 					<?php
 							echo "(Photo &copy; ";
@@ -193,7 +193,7 @@ $this->title($document->title);
 		<?php
 			$hasArtwork = sizeof($works) > 0;
 			$hasArchitecture = sizeof($architectures) > 0;
-			$hasExhibitions = sizeof($exhibitions_documents) > 0;
+			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasPublications = sizeof($publications) > 0;
 		?>
 
@@ -255,10 +255,10 @@ $this->title($document->title);
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
 							
-								<?php foreach($exhibitions_documents as $ed): ?>
+								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
-									$ed->exhibition->title,
-									'/exhibitions/view/'.$ed->exhibition->slug
+									$exhibition->title,
+									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
 							

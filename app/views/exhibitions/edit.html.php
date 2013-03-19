@@ -23,7 +23,7 @@ $this->form->config(
 	</li>
 
 	<li>
-	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->slug); ?>
+	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -36,7 +36,7 @@ $this->form->config(
 </div>
 
 <ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/exhibitions/view/'.$exhibition->slug); ?></li>
+	<li><?=$this->html->link('View','/exhibitions/view/'.$exhibition->archive->slug); ?></li>
 	<li class="active">
 		<a href="#">
 			Edit
@@ -55,19 +55,19 @@ $this->form->config(
 			<?=$this->form->field('country');?>
 			<?=$this->form->field('earliest_date', array(
 				'label' => 'Opening Date',
-				'value' => $exhibition->start_date_formatted()
+				'value' => $exhibition->archive->start_date_formatted()
 			));?>
 			<?=$this->form->field('latest_date', array(
 				'label' => 'Closing Date',
-				'value' => $exhibition->end_date_formatted()
+				'value' => $exhibition->archive->end_date_formatted()
 			));?>
 			<?=$this->form->label('Show Type');?>
-			<?=$this->form->select('type', array('Solo' => 'Solo', 'Group' => 'Group')); ?>
+			<?=$this->form->select('type', array('Solo' => 'Solo', 'Group' => 'Group'), array('value' => $exhibition->archive->type)); ?>
 			<?=$this->form->field('remarks', array(
 				'type' => 'textarea',
 			));?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/exhibitions/view/'.$exhibition->slug, array('class' => 'btn')); ?>
+			<?=$this->html->link('Cancel','/exhibitions/view/'.$exhibition->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
 
@@ -107,7 +107,8 @@ $this->form->config(
 			<p>By selecting <code>Delete</code>, you will remove this Exhibition from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
-			<?=$this->form->create($exhibition, array('url' => "/exhibitions/delete/$exhibition->slug", 'method' => 'post')); ?>
+			<?php $slug = $exhibition->archive->slug; ?>
+			<?=$this->form->create($exhibition, array('url' => "/exhibitions/delete/$slug", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>
