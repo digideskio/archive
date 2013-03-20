@@ -86,6 +86,8 @@ Router::connect('/albums/delete/{:slug}', array('Albums::delete'));
 
 Router::connect('/albums_works/delete/{:id}', array('AlbumsWorks::delete'));
 
+Router::connect('/components/delete/{:id}', array('Components::delete'));
+
 Router::connect('/works/pages/{:page:[0-9]+}', array('Works::index'));
 Router::connect('/works/view/{:slug}', array('Works::view'));
 Router::connect('/works/edit/{:slug}', array('Works::edit'));

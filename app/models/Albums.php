@@ -8,14 +8,20 @@ use lithium\util\Inflector;
 
 class Albums extends \lithium\data\Model {
 
-	public $hasMany = array('AlbumsWorks');
-
 	public $belongsTo = array(
 		'Archives' => array (
 			'to' => 'app\models\Archives',
 			'key' => 'id'
 	));
 
+	public $hasMany = array(
+		'AlbumsWorks',
+		'Components' => array(
+			'to' => 'app\models\Components',
+			'key' => array(
+				'id' => 'archive_id1',
+		)),
+	);
 
 	public $validates = array(
 		'title' => array(

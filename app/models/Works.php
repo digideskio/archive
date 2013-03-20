@@ -8,7 +8,7 @@ use lithium\security\Auth;
 
 class Works extends \lithium\data\Model {
 
-	public $hasMany = array('AlbumsWorks', 'ExhibitionsWorks', 'WorksDocuments', 'WorksHistories', 'WorksLinks');
+	public $hasMany = array('AlbumsWorks', 'ExhibitionsWorks', 'WorksDocuments', 'WorksHistories', 'WorksLinks', 'Components');
 
 	public $belongsTo = array(
 		'Users',
