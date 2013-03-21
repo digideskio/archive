@@ -74,7 +74,7 @@ class PackagesController extends \lithium\action\Controller {
 				$work_ids = array();	
 			
 				//Get all the work IDs in a plain array
-				$work_ids = $album_works->map(function($work) {
+				$work_ids = $album_works->map(function($aw) {
 					return $aw->archive_id2;
 				}, array('collect' => false));
 
