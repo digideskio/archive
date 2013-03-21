@@ -2,7 +2,7 @@
 
 $this->title($publication->title);
 
-$hasDocuments = sizeof($publication_documents) > 0;
+$hasDocuments = sizeof($archives_documents) > 0;
 $hasLinks = sizeof($publication_links) > 0;
 
 ?>
@@ -44,7 +44,7 @@ $hasLinks = sizeof($publication_links) > 0;
 <div class="row">
 	<div class="span6">
 
-		<?=$this->partial->archives_documents(array('archives_documents' =>  $publication_documents)); ?>	
+		<?=$this->partial->archives_documents(array('archives_documents' =>  $archives_documents)); ?>	
 		
 	</div>
 	
@@ -155,10 +155,10 @@ $hasLinks = sizeof($publication_links) > 0;
 							<ul class="unstyled" style="margin-bottom:0">
 						
 			
-						<?php foreach($publication_documents as $pd): ?>
+						<?php foreach($archives_documents as $ad): ?>
 				
-								<li><a href="/documents/view/<?=$pd->document->slug?>">
-									<strong><?=$pd->document->slug?>.<?=$pd->format->extension?></strong>
+								<li><a href="/documents/view/<?=$ad->document->slug?>">
+									<strong><?=$ad->document->slug?>.<?=$ad->format->extension?></strong>
 								</a></li>
 				
 						<?php endforeach; ?>

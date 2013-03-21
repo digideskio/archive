@@ -2,13 +2,13 @@
 
 namespace app\tests\cases\controllers;
 
-use app\controllers\WorksDocumentsController;
+use app\controllers\ArchivesDocumentsController;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
 
-class WorksDocumentsControllerTest extends \lithium\test\Unit {
+class ArchivesDocumentsControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
 	
@@ -31,15 +31,15 @@ class WorksDocumentsControllerTest extends \lithium\test\Unit {
 	
 		$this->request = new Request();
 		$this->request->params = array(
-			'controller' => 'works_documents'
+			'controller' => 'archives_documents'
 		);
 
-		$works_documents = new WorksDocumentsController(array('request' => $this->request));
+		$archives_documents = new ArchivesDocumentsController(array('request' => $this->request));
 		
-		$response = $works_documents->add();
+		$response = $archives_documents->add();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
-		$response = $works_documents->delete();
+		$response = $archives_documents->delete();
 		$this->assertEqual($response->headers["Location"], "/login");
 	
 	}

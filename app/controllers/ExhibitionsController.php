@@ -6,8 +6,8 @@ use app\models\Archives;
 use app\models\Exhibitions;
 use app\models\Works;
 use app\models\Components;
-use app\models\ExhibitionsDocuments;
 use app\models\ExhibitionsLinks;
+use app\models\ArchivesDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -151,17 +151,17 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'order' => array('date_modified' =>  'DESC')
 			));
 
-			$exhibition_documents = ExhibitionsDocuments::find('all', array(
+			$archives_documents = ArchivesDocuments::find('all', array(
 				'with' => array(
 					'Documents',
 					'Formats'
 				),
-				'conditions' => array('exhibition_id' => $exhibition->id),
+				'conditions' => array('archive_id' => $exhibition->id),
 				'order' => array('slug' => 'ASC')
 			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'works', 'total', 'exhibition_documents', 'exhibitions_links', 'auth');
+			return compact('exhibition', 'works', 'total', 'archives_documents', 'exhibitions_links', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -273,12 +273,12 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'order' => array('date_modified' =>  'DESC')
 		));
 
-		$exhibition_documents = ExhibitionsDocuments::find('all', array(
+		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
 				'Formats'
 			),
-			'conditions' => array('exhibition_id' => $exhibition->id),
+			'conditions' => array('archive_id' => $exhibition->id),
 			'order' => array('slug' => 'ASC')
 		));
 
@@ -333,7 +333,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $con->country;
 		}, array('collect' => false));
 		
-		return compact('exhibition', 'exhibition_documents', 'exhibition_links', 'titles', 'venues', 'cities', 'countries');
+		return compact('exhibition', 'archives_documents', 'exhibition_links', 'titles', 'venues', 'cities', 'countries');
 	}
 
 	public function delete() {

@@ -7,7 +7,14 @@ use lithium\util\Validator;
 
 class Architectures extends \lithium\data\Model {
 
-	public $hasMany = array('ArchitecturesDocuments', 'ArchitecturesHistories');
+	public $hasMany = array(
+		'ArchitecturesHistories',
+		'ArchivesDocuments' => array(
+			'to' => 'app\models\ArchivesDocuments',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
+	);
 
 	public $belongsTo = array(
 		'Archives' => array (
@@ -43,10 +50,10 @@ class Architectures extends \lithium\data\Model {
 		
 		$documents = Documents::find($type, array(
 			'with' => array(
-				'ArchitecturesDocuments',
+				'ArchivesDocuments',
 				'Formats'
 			),
-			'conditions' => array('architecture_id' => $entity->id),
+			'conditions' => array('archive_id' => $entity->id),
 		));
 
 		return $documents;
@@ -86,8 +93,8 @@ Architectures::applyFilter('delete', function($self, $params, $chain) {
 	))->delete();
 		
 	//Delete any relationships
-	ArchitecturesDocuments::find('all', array(
-		'conditions' => array('architecture_id' => $architecture_id)
+	ArchivesDocuments::find('all', array(
+		'conditions' => array('archive_id' => $architecture_id)
 	))->delete();
 
 	return $chain->next($self, $params, $chain);

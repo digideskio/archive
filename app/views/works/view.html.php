@@ -39,7 +39,7 @@ $this->title($work->title);
 <div class="row">
 	<div class="span6">
 
-		<?=$this->partial->archives_documents(array('archives_documents' => $work_documents)); ?>
+		<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents)); ?>
 		
 	</div>
 	
@@ -118,7 +118,7 @@ $this->title($work->title);
 		<?php 
 			$hasAlbums = sizeof($albums) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
-			$hasDocuments = sizeof($work_documents) > 0;
+			$hasDocuments = sizeof($archives_documents) > 0;
 			$hasLinks = sizeof($work_links) > 0;
 		?>
 
@@ -180,10 +180,10 @@ $this->title($work->title);
 							<ul class="unstyled" style="margin-bottom:0">
 						
 			
-						<?php foreach($work_documents as $wd): ?>
+						<?php foreach($archives_documents as $ad): ?>
 				
-								<li><a href="/documents/view/<?=$wd->document->slug?>">
-									<strong><?=$wd->document->slug?>.<?=$wd->format->extension?></strong>
+								<li><a href="/documents/view/<?=$ad->document->slug?>">
+									<strong><?=$ad->document->slug?>.<?=$ad->format->extension?></strong>
 								</a></li>
 				
 						<?php endforeach; ?>

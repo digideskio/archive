@@ -4,11 +4,11 @@ namespace app\controllers;
 
 use app\models\Publications;
 use app\models\PublicationsHistories;
-use app\models\PublicationsDocuments;
 use app\models\PublicationsLinks;
 
 use app\models\Archives;
 use app\models\ArchivesHistories;
+use app\models\ArchivesDocuments;
 
 use app\models\Languages;
 
@@ -172,12 +172,12 @@ class PublicationsController extends \lithium\action\Controller {
 
 			if($publication) {
 		
-				$publication_documents = PublicationsDocuments::find('all', array(
+				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
 						'Formats'
 					),
-					'conditions' => array('publication_id' => $publication->id),
+					'conditions' => array('archive_id' => $publication->id),
 					'order' => array('slug' => 'ASC')
 				));
 
@@ -190,7 +190,7 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('publication', 'publication_documents', 'publication_links','auth');
+				return compact('publication', 'archives_documents', 'publication_links','auth');
 
 			}
 		}
@@ -288,12 +288,12 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
 		}
 
-		$publication_documents = PublicationsDocuments::find('all', array(
+		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
 				'Formats'
 			),
-			'conditions' => array('publication_id' => $publication->id),
+			'conditions' => array('archive_id' => $publication->id),
 			'order' => array('slug' => 'ASC')
 		));
 
@@ -325,7 +325,7 @@ class PublicationsController extends \lithium\action\Controller {
 		}, array('collect' => false));
 
 		
-		return compact('publication', 'pub_classes_list', 'publication_documents', 'publication_links', 'locations', 'language_names');
+		return compact('publication', 'pub_classes_list', 'archives_documents', 'publication_links', 'locations', 'language_names');
 	}
 
 	public function history() {

@@ -61,9 +61,9 @@ $this->title($exhibition->title);
 	<p><span class="badge"><?=$exhibition->archive->type ?> Show</span></p>
 	</div>
 
-<?php if(sizeof($exhibition_documents) > 0): ?>
+<?php if(sizeof($archives_documents) > 0): ?>
 
-	<?=$this->partial->archives_documents(array('archives_documents' => $exhibition_documents, 'showBar' => true)); ?>
+	<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents, 'showBar' => true)); ?>
 
 <?php endif; ?>
 

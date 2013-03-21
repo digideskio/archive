@@ -103,7 +103,7 @@ $country_data = json_encode($countries);
 
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $exhibition,
-		'junctions' => $exhibition_documents,
+		'archives_documents' => $archives_documents,
 	)); ?>		
 
 <div class="modal fade hide" id="deleteModal">

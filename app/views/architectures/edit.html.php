@@ -122,7 +122,7 @@ $this->form->config(
 	
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $architecture,
-		'junctions' => $architecture_documents,
+		'archives_documents' => $archives_documents,
 	)); ?>		
 
 	</div>

@@ -295,7 +295,7 @@ $(document).ready(function() {
 
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $work,
-		'junctions' => $work_documents,
+		'archives_documents' => $archives_documents,
 	)); ?>		
 
 <div class="modal fade hide" id="exhibitionModal">

@@ -9,7 +9,6 @@ use lithium\security\Auth;
 class Works extends \lithium\data\Model {
 
 	public $hasMany = array(
-		'WorksDocuments',
 		'WorksHistories',
 		'WorksLinks',
 		'Components' => array(
@@ -17,10 +16,14 @@ class Works extends \lithium\data\Model {
 			'key' => array(
 				'id' => 'archive_id2',
 		)),
+		'ArchivesDocuments' => array(
+			'to' => 'app\models\ArchivesDocuments',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
 	);
 
 	public $belongsTo = array(
-		'Users',
 		'Archives' => array (
 			'to' => 'app\models\Archives',
 			'key' => 'id'
@@ -89,11 +92,11 @@ class Works extends \lithium\data\Model {
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
 		
-		$conditions['work_id'] = $entity->id;
+		$conditions['archive_id'] = $entity->id;
 
 		$documents = Documents::find($type, array(
 			'with' => array(
-				'WorksDocuments',
+				'ArchivesDocuments',
 				'Formats'
 			),
 			'conditions' => $conditions,
@@ -140,8 +143,8 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('archive_id2' => $work_id)
 	))->delete();
 	
-	WorksDocuments::find('all', array(
-		'conditions' => array('work_id' => $work_id)
+	ArchivesDocuments::find('all', array(
+		'conditions' => array('archive_id' => $work_id)
 	))->delete();
 
 	WorksLinks::find('all', array(

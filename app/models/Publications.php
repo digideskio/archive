@@ -7,7 +7,15 @@ use lithium\util\Validator;
 
 class Publications extends \lithium\data\Model {
 
-	public $hasMany = array('PublicationsDocuments', 'PublicationsLinks', 'PublicationsHistories');
+	public $hasMany = array(
+		'PublicationsLinks', 
+		'PublicationsHistories',
+		'ArchivesDocuments' => array(
+			'to' => 'app\models\ArchivesDocuments',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
+	);
 
 	public $belongsTo = array(
 		'Archives' => array (
@@ -81,11 +89,11 @@ class Publications extends \lithium\data\Model {
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
 		
-		$conditions['publication_id'] = $entity->id;
+		$conditions['archive_id'] = $entity->id;
 
 		$documents = Documents::find($type, array(
 			'with' => array(
-				'PublicationsDocuments',
+				'ArchivesDocuments',
 				'Formats'
 			),
 			'conditions' => $conditions,
@@ -145,8 +153,8 @@ Publications::applyFilter('delete', function($self, $params, $chain) {
 	))->delete();
 		
 	//Delete any relationships
-	PublicationsDocuments::find('all', array(
-		'conditions' => array('publication_id' => $publication_id)
+	ArchivesDocuments::find('all', array(
+		'conditions' => array('archive_id' => $publication_id)
 	))->delete();
 
 	PublicationsLinks::find('all', array(

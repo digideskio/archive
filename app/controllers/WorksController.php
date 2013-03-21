@@ -10,7 +10,7 @@ use app\models\ArchivesHistories;
 use app\models\Users;
 use app\models\Roles;
 use app\models\Documents;
-use app\models\WorksDocuments;
+use app\models\ArchivesDocuments;
 use app\models\Albums;
 use app\models\Exhibitions;
 use app\models\Components;
@@ -159,12 +159,12 @@ class WorksController extends \lithium\action\Controller {
 	
 				$order = array('title' => 'ASC');
 
-				$work_documents = WorksDocuments::find('all', array(
+				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
 						'Formats'
 					),
-					'conditions' => array('work_id' => $work->id),
+					'conditions' => array('archive_id' => $work->id),
 					'order' => array('slug' => 'ASC')
 				));
 		
@@ -193,7 +193,7 @@ class WorksController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('work', 'work_documents', 'work_links', 'albums', 'exhibitions', 'auth');
+				return compact('work', 'archives_documents', 'work_links', 'albums', 'exhibitions', 'auth');
 			}
 		}
 		
@@ -337,12 +337,12 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => $other_exhibition_conditions
 				));
 		
-				$work_documents = WorksDocuments::find('all', array(
+				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
 						'Formats'
 					),
-					'conditions' => array('work_id' => $work->id),
+					'conditions' => array('archive_id' => $work->id),
 					'order' => array('slug' => 'ASC')
 				));
 
@@ -360,7 +360,7 @@ class WorksController extends \lithium\action\Controller {
 		
 				return compact(
 					'work', 
-					'work_documents', 
+					'archives_documents', 
 					'albums', 
 					'other_albums', 
 					'exhibitions', 

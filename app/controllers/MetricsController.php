@@ -4,12 +4,9 @@ namespace app\controllers;
 
 use app\models\Albums;
 use app\models\Works;
-use app\models\WorksDocuments;
 use app\models\Architectures;
-use app\models\ArchitecturesDocuments;
 use app\models\Exhibitions;
 use app\models\Publications;
-use app\models\PublicationsDocuments;
 use app\models\Documents;
 use app\models\Components;
 
@@ -43,9 +40,7 @@ class MetricsController extends \lithium\action\Controller {
 			'conditions' => array('type' => 'albums_works')
 		));
 		$works = Works::count();
-		$works_documents = WorksDocuments::count();
 		$architectures = Architectures::count();
-		$architectures_documents = ArchitecturesDocuments::count();
 		$exhibitions = Exhibitions::count();
 		$solo_shows = Exhibitions::count('all', array(
 			'with' => 'Archives',
@@ -60,7 +55,10 @@ class MetricsController extends \lithium\action\Controller {
 		));
 		$documents = Documents::count();
 		$publications = Publications::count();
-		$publications_documents = PublicationsDocuments::count();
+
+		$publications_archives_documents = Model::connection()->read("SELECT count(*) as records FROM archives_documents WHERE archive_id IN (SELECT id FROM publications)");
+		$pad = $publications_archives_documents[0];
+		$publications_documents = $pad['records'];
 
 		$no_date = array('earliest_date' => '0000-00-00');
 
@@ -80,9 +78,7 @@ class MetricsController extends \lithium\action\Controller {
 			'albums', 
 			'albums_works', 
 			'works', 
-			'works_documents', 
 			'architectures', 
-			'architectures_documents',
 			'exhibitions',
 			'solo_shows',
 			'group_shows',

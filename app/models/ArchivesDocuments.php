@@ -2,12 +2,12 @@
 
 namespace app\models;
 
-class ArchitecturesDocuments extends \lithium\data\Model {
+class ArchivesDocuments extends \lithium\data\Model {
 
 	public $belongsTo = array(
-		'Architectures' => array(
-			"to" => "app\models\Architectures",
-			"key" => "architecture_id",
+		'Archives' => array(
+			"to" => "app\models\Archives",
+			"key" => "archive_id",
 		),
 		'Documents' => array(
 			"to" => "app\models\Documents",
@@ -23,7 +23,6 @@ class ArchitecturesDocuments extends \lithium\data\Model {
 	);
 
 	public $validates = array();
-	
 }
 
 ?>

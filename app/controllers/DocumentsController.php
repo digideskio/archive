@@ -4,13 +4,10 @@ namespace app\controllers;
 
 use app\models\Documents;
 use app\models\Works;
-use app\models\WorksDocuments;
 use app\models\Architectures;
-use app\models\ArchitecturesDocuments;
 use app\models\Exhibitions;
-use app\models\ExhibitionsDocuments;
 use app\models\Publications;
-use app\models\PublicationsDocuments;
+use app\models\ArchivesDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -135,97 +132,30 @@ class DocumentsController extends \lithium\action\Controller {
 
 			if ($document) {
 
-				$work_ids = array();	
-		
-				$works_documents = WorksDocuments::find('all', array(
-					'fields' => 'work_id',
-					'conditions' => array('document_id' => $document->id)
+				$works = Works::find('all', array(
+					'with' => array('Archives', 'ArchivesDocuments'),
+					'conditions' => array('document_id' => $document->id),
+					'order' => 'earliest_date DESC'
 				));
 
-				$works = array();
-
-				if ($works_documents->count()) {
-				
-					//Get all the work IDs in a plain array
-					$work_ids = $works_documents->map(function($wd) {
-						return $wd->work_id;
-					}, array('collect' => false));
-
-					$works = Works::find('all', array(
-						'with' => 'Archives',
-						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'earliest_date DESC'
-					));
-
-				}
-
-				$architecture_ids = array();
-
-				$architectures_documents = ArchitecturesDocuments::find('all', array(
-					'fields' => 'architecture_id',
-					'conditions' => array('document_id' => $document->id)
+				$architectures = Architectures::find('all', array(
+					'with' => array('Archives', 'ArchivesDocuments'),
+					'conditions' => array('document_id' => $document->id),
+					'order' => 'earliest_date DESC'
 				));
 
-				$architectures = array();
-
-				if($architectures_documents->count()) {
-				
-					$architecture_ids = $architectures_documents->map(function($ad) {
-						return $ad->architecture_id;
-					}, array('collect' => false));
-
-					$architectures = Architectures::find('all', array(
-						'with' => 'Archives',
-						'conditions' => array('Architectures.id' => $architecture_ids),
-						'order' => 'earliest_date DESC'
-					));
-				}
-
-				$exhibition_ids = array();
-
-				$exhibitions_documents = ExhibitionsDocuments::find('all', array(
-					'fields' => 'exhibition_id',
-					'conditions' => array('document_id' => $document->id)
+				$exhibitions = Exhibitions::find('all', array(
+					'with' => array('Archives', 'ArchivesDocuments'),
+					'conditions' => array('document_id' => $document->id),
+					'order' => 'earliest_date DESC'
 				));
 
-				$exhibitions = array();
-
-				if($exhibitions_documents->count()) {
-				
-					$exhibition_ids = $exhibitions_documents->map(function($ed) {
-						return $ed->exhibition_id;
-					}, array('collect' => false));
-
-					$exhibitions = Exhibitions::find('all', array(
-						'with' => 'Archives',
-						'conditions' => array('Exhibitions.id' => $exhibition_ids),
-						'order' => 'earliest_date DESC'
-					));
-				}
-
-				$publication_ids = array();
-
-				$publications_documents = PublicationsDocuments::find('all', array(
-					'fields' => 'publication_id',
-					'conditions' => array('document_id' => $document->id)
+				$publications = Publications::find('all', array(
+					'with' => array('Archives', 'ArchivesDocuments'),
+					'conditions' => array('document_id' => $document->id),
+					'order' => 'earliest_date DESC'
 				));
 
-				$publications = array();
-
-				if($publications_documents->count()) {
-					
-					$publication_ids = $publications_documents->map(function($pd) {
-						return $pd->publication_id;
-					}, array('collect' => false));
-
-					$publications = Publications::find('all', array(
-						'with' => 'Archives',
-						'conditions' => array('Publications.id' => $publication_ids),
-						'order' => 'earliest_date DESC'
-					));
-
-				}
-				
 				//Send the retrieved data to the view
 				return compact(
 					'document', 

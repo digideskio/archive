@@ -41,7 +41,7 @@ $this->title($architecture->title);
 <div class="row">
 	<div class="span6">
 	
-		<?=$this->partial->archives_documents(array('archives_documents' => $architecture_documents)); ?>
+		<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents)); ?>
 
 	</div>
 	
@@ -107,7 +107,7 @@ $this->title($architecture->title);
 		</table>
 
 		<?php
-			$hasDocuments = sizeof($architecture_documents) > 0;
+			$hasDocuments = sizeof($archives_documents) > 0;
 		?>
 
 		<?php if ($hasDocuments): ?>
@@ -130,7 +130,7 @@ $this->title($architecture->title);
 							<ul class="unstyled" style="margin-bottom:0">
 						
 			
-						<?php foreach($architecture_documents as $ad): ?>
+						<?php foreach($archives_documents as $ad): ?>
 				
 								<li><a href="/documents/view/<?=$ad->document->slug?>">
 									<strong><?=$ad->document->slug?>.<?=$ad->format->extension?></strong>

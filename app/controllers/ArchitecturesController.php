@@ -8,7 +8,7 @@ use app\models\ArchitecturesHistories;
 use app\models\Users;
 use app\models\Roles;
 use app\models\Documents;
-use app\models\ArchitecturesDocuments;
+use app\models\ArchivesDocuments;
 
 use app\models\Archives;
 use app\models\ArchivesHistories;
@@ -143,17 +143,17 @@ class ArchitecturesController extends \lithium\action\Controller {
 				$this->redirect(array('Architectures::index'));
 			} else {
 		
-				$architecture_documents = ArchitecturesDocuments::find('all', array(
+				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
 						'Formats'
 					),
-					'conditions' => array('architecture_id' => $architecture->id),
+					'conditions' => array('archive_id' => $architecture->id),
 					'order' => array('slug' => 'ASC')
 				));
 			
 				//Send the retrieved data to the view
-				return compact('architecture', 'architecture_documents', 'auth');
+				return compact('architecture', 'archives_documents', 'auth');
 			
 			}
 		}
@@ -210,12 +210,12 @@ class ArchitecturesController extends \lithium\action\Controller {
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
 		
-		$architecture_documents = ArchitecturesDocuments::find('all', array(
+		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
 				'Formats'
 			),
-			'conditions' => array('architecture_id' => $architecture->id),
+			'conditions' => array('archive_id' => $architecture->id),
 			'order' => array('slug' => 'ASC')
 		));
 
@@ -226,7 +226,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			return $this->redirect(array('Architectures::view', 'args' => array($architecture->archive->slug)));
 		}
 		
-		return compact('architecture', 'architecture_documents');
+		return compact('architecture', 'archives_documents');
 	}
 
 	public function history() {

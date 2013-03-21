@@ -15,12 +15,7 @@ class Documents extends \lithium\data\Model {
 		),
 	);
 
-	public $hasMany = array(
-		"WorksDocuments", 
-		"ArchitecturesDocuments", 
-		"ExhibitionsDocuments", 
-		"PublicationsDocuments"
-	);
+	public $hasMany = array("ArchivesDocuments");
 
 	public $validates = array();
 	
@@ -114,19 +109,7 @@ Documents::applyFilter('delete', function($self, $params, $chain) {
 	$document_id = $params['entity']->id;
 		
 	//Delete any relationships
-	WorksDocuments::find('all', array(
-		'conditions' => array('document_id' => $document_id)
-	))->delete();
-
-	ArchitecturesDocuments::find('all', array(
-		'conditions' => array('document_id' => $document_id)
-	))->delete();
-	
-	ExhibitionsDocuments::find('all', array(
-		'conditions' => array('document_id' => $document_id)
-	))->delete();
-
-	PublicationsDocuments::find('all', array(
+	ArchivesDocuments::find('all', array(
 		'conditions' => array('document_id' => $document_id)
 	))->delete();
 

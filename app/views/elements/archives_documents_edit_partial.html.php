@@ -4,19 +4,11 @@
 	$model_name = basename(str_replace('\\', '/', $model->model()));
 	$model_name_sing = lithium\util\Inflector::singularize($model_name);
 
-	//Get 'WorksDocuments' from 'app\models\WorksDocuments', etc.
-	$junction_name = basename(str_replace('\\', '/', $junctions->model()));
-
-	//Get 'works_documents/add', etc.
-	$add_junction_url = $this->url(array("$junction_name::add"));
+	$add_url = $this->url(array("ArchivesDocuments::add"));
 
 	//Get upload endpoint
 	$upload_document_url = $this->url(array('Documents::upload')) . 
-		'?model=' . strtolower($model_name) . '&id=' . $model->id;
-
-	//Get 'work_id', etc.
-	$model_id_name = lithium\util\Inflector::underscore("$model_name_sing id");
-	$model_id_value = $model->id;
+		'&archive_id=' . $model->archive->id;
 
 	//Get 'work_slug', etc.
 	$model_slug_name = lithium\util\Inflector::underscore("$model_name_sing slug");
@@ -31,24 +23,23 @@
 		<legend>Images</legend>
 		<table class="table">
 		
-			<?php foreach($junctions as $junction): ?>
+			<?php foreach($archives_documents as $ad): ?>
 		
 <?php
-	$delete_junction_url = $this->url(array("$junction_name::delete", 'id'=> $junction->id));
+	$delete_url = $this->url(array("ArchivesDocuments::delete", 'id'=> $ad->id));
 
-	$view_document_url = $this->url(array('Documents::view', 'slug' => $junction->document->slug));
+	$view_document_url = $this->url(array('Documents::view', 'slug' => $ad->document->slug));
 ?>
 
 				<tr>
 					<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 						<?php $px = '260'; ?>
-						<a href="/documents/view/<?=$junction->document->slug ?>" title="<?=$junction->document->title ?>">
-						<img width="125" height="125" src="/files/<?=$junction->document->view(); ?>" alt="<?=$junction->document->title ?>">
+						<a href="/documents/view/<?=$ad->document->slug ?>" title="<?=$ad->document->title ?>">
+						<img width="125" height="125" src="/files/<?=$ad->document->view(); ?>" alt="<?=$ad->document->title ?>">
 						</a>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($junction, array('url' => $delete_junction_url, 'method' => 'post')); ?>
-			<input type="hidden" name="<?=$model_slug_name ?>" value="<?=$model_slug_value ?>" />
+			<?=$this->form->create($ad, array('url' => $delete_url, 'method' => 'post')); ?>
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -357,10 +348,9 @@ Handlebars.registerHelper('document_rows', function() {
 			+ '</td>'
 			+ '<td>'
 			+ "<td align='right' style='text-align:right'>"
-			+ "<form action='<?=$add_junction_url ?>' method='post'>"
-			+ "<input type='hidden' name='document_slug' value='" + doc['slug'] + "'>"
-			+ "<input type='hidden' name='<?=$model_id_name ?>' value='<?=$model->id ?>'>"
-			+ "<input type='hidden' name='<?=$model_slug_name ?>' value='<?=$model_slug_value ?>'>"
+			+ "<form action='<?=$add_url ?>' method='post'>"
+			+ "<input type='hidden' name='document_id' value='" + doc['id'] + "'>"
+			+ "<input type='hidden' name='archive_id' value='<?=$model->archive->id ?>'>"
 			+ "<input type='submit' value='Add' class='btn btn-mini btn-success'>"
 			+ '</form>'
 			+ '</td>'
