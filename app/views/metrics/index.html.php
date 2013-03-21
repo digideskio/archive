@@ -22,13 +22,13 @@ $this->title('Metrics');
 
 	<hr/>
 
-	<!--<p><strong><?=$albums ?></strong> albums comprising <strong><?=$albums_works ?></strong> artworks.</p>-->
+	<!--<p><strong><?=$albums ?></strong> <?php echo $albums == '1' ? 'album' : 'albums'; ?> comprising <strong><?=$albums_works ?></strong> artworks.</p>-->
 
-	<p><strong><?=$works ?></strong> artworks and <strong><?=$architectures ?></strong> architecture projects.</p>
+	<p><strong><?=$works ?></strong> <?php echo $works == '1' ? 'artwork' : 'artworks'; ?> and <strong><?=$architectures ?></strong> architecture <?php echo $architectures == '1' ? 'project' : 'projects'; ?>.</p>
 
-	<p><strong><?=$exhibitions ?></strong> exhibitions which featured <strong><?=$exhibitions_works ?></strong> artworks, including <strong><?=$solo_shows ?></strong> solo shows and <strong><?=$group_shows ?></strong> group shows.</p>
+	<p><strong><?=$exhibitions ?></strong> <?php echo $exhibitions == '1' ? 'exhibition' : 'exhibitions'; ?> which featured <strong><?=$exhibitions_works ?></strong> <?php echo $exhibitions_works == '1' ? 'artwork' : 'artworks'; ?>, including <strong><?=$solo_shows ?></strong> solo <?php echo $solo_shows= '1' ? 'show' : 'shows'; ?> and <strong><?=$group_shows ?></strong> group <?php echo $group_shows == '1' ? 'show' : 'shows'; ?>.</p>
 
-	<p><strong><?=$publications ?></strong> publications with <strong><?=$publications_documents ?></strong> attachments.</p>
+	<p><strong><?=$publications ?></strong> <?php echo $publications == '1' ? 'publication' : 'publications'; ?> with <strong><?=$publications_documents ?></strong> <?php echo $publications_documents == '1' ? 'attachment' : 'attachments'; ?>.</p>
 
 	<p>The total number of uploaded files is  <strong><?=$documents ?></strong>.</p>
 
