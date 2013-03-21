@@ -4,9 +4,9 @@ namespace app\controllers;
 
 use app\models\Archives;
 use app\models\Albums;
-use app\models\AlbumsWorks;
 use app\models\ArchivesHistories;
 use app\models\Works;
+use app\models\Components;
 use app\models\Packages;
 
 use app\models\Users;
@@ -41,7 +41,7 @@ class AlbumsController extends \lithium\action\Controller {
 		$order = array('title' => 'ASC'); 
 		
 		$albums = Albums::find('all', array(
-			'with' => array('Archives', 'AlbumsWorks'),
+			'with' => 'Archives',
 			'order' => $order
 		));
 		return compact('albums', 'auth');
@@ -74,9 +74,9 @@ class AlbumsController extends \lithium\action\Controller {
 
 				$work_ids = array();	
 			
-				$album_works = AlbumsWorks::find('all', array(
-					'fields' => 'work_id',
-					'conditions' => array('album_id' => $album->id),
+				$album_works = Components::find('all', array(
+					'fields' => 'archive_id2',
+					'conditions' => array('archive_id1' => $album->id),
 				));
 
 				$works = array();
@@ -84,8 +84,8 @@ class AlbumsController extends \lithium\action\Controller {
 				if ($album_works->count()) {
 
 					//Get all the work IDs in a plain array
-					$work_ids = $album_works->map(function($cw) {
-						return $cw->work_id;
+					$work_ids = $album_works->map(function($aw) {
+						return $aw->archive_id2;
 					}, array('collect' => false));
 
 					$works = Works::find('all', array(
@@ -191,9 +191,9 @@ class AlbumsController extends \lithium\action\Controller {
 			
 			if($album) {
 
-				$album_works = AlbumsWorks::find('all', array(
-					'fields' => 'work_id',
-					'conditions' => array('album_id' => $album->id),
+				$album_works = Components::find('all', array(
+					'fields' => 'archive_id2',
+					'conditions' => array('archive_id1' => $album->id),
 				));
 
 				$archives_histories = array();
@@ -201,8 +201,8 @@ class AlbumsController extends \lithium\action\Controller {
 				if ($album_works->count()) {
 
 					//Get all the work IDs in a plain array
-					$work_ids = $album_works->map(function($cw) {
-						return $cw->work_id;
+					$work_ids = $album_works->map(function($aw) {
+						return $aw->archive_id2;
 					}, array('collect' => false));
 				
 					$archives_histories = ArchivesHistories::find('all', array(
@@ -257,9 +257,9 @@ class AlbumsController extends \lithium\action\Controller {
 				
 				$pdf = $album->archive->slug . '-' . $options['view'] . '.pdf';
 
-				$album_works = AlbumsWorks::find('all', array(
-					'fields' => 'work_id',
-					'conditions' => array('album_id' => $album->id),
+				$album_works = Components::find('all', array(
+					'fields' => 'archive_id2',
+					'conditions' => array('archive_id1' => $album->id),
 				));
 
 				$works = array();
@@ -269,8 +269,8 @@ class AlbumsController extends \lithium\action\Controller {
 					$work_ids = array();	
 
 					//Get all the work IDs in a plain array
-					$work_ids = $album_works->map(function($cw) {
-						return $cw->work_id;
+					$work_ids = $album_works->map(function($aw) {
+						return $aw->archive_id2;
 					}, array('collect' => false));
 
 					$works = Works::find('all', array(

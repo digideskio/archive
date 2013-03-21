@@ -12,9 +12,8 @@ use app\models\Roles;
 use app\models\Documents;
 use app\models\WorksDocuments;
 use app\models\Albums;
-use app\models\AlbumsWorks;
 use app\models\Exhibitions;
-use app\models\ExhibitionsWorks;
+use app\models\Components;
 use app\models\Links;
 use app\models\WorksLinks;
 
@@ -170,17 +169,17 @@ class WorksController extends \lithium\action\Controller {
 				));
 		
 				$albums = Albums::find('all', array(
-					'with' => array('AlbumsWorks', 'Archives'),
+					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'work_id' => $work->id,
+						'archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
-					'with' => array('Archives', 'ExhibitionsWorks'),
+					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'work_id' => $work->id,
+						'archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -293,9 +292,9 @@ class WorksController extends \lithium\action\Controller {
 				$order = array('title' => 'ASC');
 
 				$albums = Albums::find('all', array(
-					'with' => array('AlbumsWorks', 'Archives'),
+					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'work_id' => $work->id,
+						'archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -316,9 +315,9 @@ class WorksController extends \lithium\action\Controller {
 				));
 	
 				$exhibitions = Exhibitions::find('all', array(
-					'with' => array('Archives', 'ExhibitionsWorks'),
+					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'work_id' => $work->id,
+						'archive_id2' => $work->id,
 					),
 					'order' => $order
 				));

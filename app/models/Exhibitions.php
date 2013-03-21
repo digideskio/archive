@@ -7,7 +7,17 @@ use lithium\util\Validator;
 
 class Exhibitions extends \lithium\data\Model {
 
-	public $hasMany = array('ExhibitionsWorks', 'ExhibitionsDocuments', 'ExhibitionsLinks', 'ExhibitionsHistories');
+	public $hasMany = array(
+		'ExhibitionsDocuments',
+		'ExhibitionsLinks',
+		'ExhibitionsHistories',
+		'Components' => array(
+			'to' => 'app\models\Components',
+			'key' => array(
+				'id' => 'archive_id1',
+		)),
+
+	);
 
 	public $belongsTo = array(
 		'Archives' => array (
@@ -79,8 +89,8 @@ Exhibitions::applyFilter('delete', function($self, $params, $chain) {
 	))->delete();
 		
 	//Delete any relationships
-	ExhibitionsWorks::find('all', array(
-		'conditions' => array('exhibition_id' => $exhibition_id)
+	Components::find('all', array(
+		'conditions' => array('archive_id1' => $exhibition_id)
 	))->delete();
 	
 	ExhibitionsDocuments::find('all', array(

@@ -3,16 +3,15 @@
 namespace app\controllers;
 
 use app\models\Albums;
-use app\models\AlbumsWorks;
 use app\models\Works;
 use app\models\WorksDocuments;
 use app\models\Architectures;
 use app\models\ArchitecturesDocuments;
 use app\models\Exhibitions;
-use app\models\ExhibitionsWorks;
 use app\models\Publications;
 use app\models\PublicationsDocuments;
 use app\models\Documents;
+use app\models\Components;
 
 use app\models\Users;
 use app\models\Roles;
@@ -40,7 +39,9 @@ class MetricsController extends \lithium\action\Controller {
 		));
 
 		$albums = Albums::count();
-		$albums_works = AlbumsWorks::count();
+		$albums_works = Components::find('count', array(
+			'conditions' => array('type' => 'albums_works')
+		));
 		$works = Works::count();
 		$works_documents = WorksDocuments::count();
 		$architectures = Architectures::count();
@@ -54,7 +55,9 @@ class MetricsController extends \lithium\action\Controller {
 			'with' => 'Archives',
 			'conditions' => array('type' => 'Group')
 		));
-		$exhibitions_works = ExhibitionsWorks::count();
+		$exhibitions_works = Components::find('count', array(
+			'conditions' => array('type' => 'exhibitions_works')
+		));
 		$documents = Documents::count();
 		$publications = Publications::count();
 		$publications_documents = PublicationsDocuments::count();

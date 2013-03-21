@@ -15,7 +15,6 @@ class Albums extends \lithium\data\Model {
 	));
 
 	public $hasMany = array(
-		'AlbumsWorks',
 		'Components' => array(
 			'to' => 'app\models\Components',
 			'key' => array(
@@ -63,8 +62,8 @@ Albums::applyFilter('delete', function($self, $params, $chain) {
 	))->delete();
 		
 	//Delete any relationships
-	AlbumsWorks::find('all', array(
-		'conditions' => array('album_id' => $album_id)
+	Components::find('all', array(
+		'conditions' => array('archive_id1' => $album_id)
 	))->delete();
 	
 	return $chain->next($self, $params, $chain);

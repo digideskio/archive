@@ -10,9 +10,16 @@ class Components extends \lithium\data\Model {
 			'key' => array(
 				'archive_id1' => 'id'
 		)),
+		'Exhibitions' => array(
+			'to' => 'app\models\Exhibitions',
+			'key' => array(
+				'archive_id1' => 'id'
+		)),
 		'Works' => array(
-			'key' => 'archive_id2'
-		)
+			'to' => 'app\models\Works',
+			'key' => array(
+				'archive_id2' => 'id'
+		)),
 	);
 
 	public $validates = array();

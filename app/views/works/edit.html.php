@@ -198,14 +198,13 @@ $(document).ready(function() {
 		<table class="table">
 		
 			<?php foreach($albums as $album): ?>
-			<?php $cw = $album->albums_works[0]; ?> 
+			<?php $component = $album->components[0]; ?> 
 				<tr>
 					<td>
 						<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($cw, array('url' => $this->url(array('AlbumsWorks::delete', 'id' => $cw->id)), 'method' => 'post')); ?>
-			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
+			<?=$this->form->create($component, array('url' => $this->url(array('Components::delete', 'id' => $component->id)), 'method' => 'post')); ?>
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -233,13 +232,13 @@ $(document).ready(function() {
 		<table class="table">
 		
 			<?php foreach($exhibitions as $exhibition): ?>
-			<?php $ew = $exhibition->exhibitions_works[0]; ?>
+			<?php $component = $exhibition->components[0]; ?>
 				<tr>
 					<td>
 						<?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($ew, array('url' => "/exhibitions_works/delete/$ew->id", 'method' => 'post')); ?>
+			<?=$this->form->create($component, array('url' => $this->url(array('Components::delete', 'id' => $component->id)), 'method' => 'post')); ?>
 			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
@@ -278,10 +277,10 @@ $(document).ready(function() {
 						</strong><br/>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($oc, array('url' => $this->url(array('AlbumsWorks::add')), 'method' => 'post')); ?>
-			<input type="hidden" name="album_id" value="<?=$oc->id ?>" />
-			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
+			<?=$this->form->create($oc, array('url' => $this->url(array('Components::add')), 'method' => 'post')); ?>
+			<input type="hidden" name="archive_id1" value="<?=$oc->id ?>" />
+			<input type="hidden" name="archive_id2" value="<?=$work->id ?>" />
+			<input type="hidden" name="type" value="albums_works" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
 			<?=$this->form->end(); ?>
 					</td>
@@ -315,10 +314,10 @@ $(document).ready(function() {
 							<?=$oe->archive->dates() ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($oe, array('url' => "/exhibitions_works/add", 'method' => 'post')); ?>
-			<input type="hidden" name="exhibition_id" value="<?=$oe->id ?>" />
-			<input type="hidden" name="work_id" value="<?=$work->id ?>" />
-			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
+			<?=$this->form->create($oe, array('url' => $this->url(array('Components::add')), 'method' => 'post')); ?>
+			<input type="hidden" name="archive_id1" value="<?=$oe->id ?>" />
+			<input type="hidden" name="archive_id2" value="<?=$work->id ?>" />
+			<input type="hidden" name="type" value="exhibitions_works" />
 			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
 			<?=$this->form->end(); ?>
 					</td>

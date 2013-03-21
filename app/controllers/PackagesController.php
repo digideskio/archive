@@ -3,8 +3,8 @@
 namespace app\controllers;
 
 use app\models\Albums;
-use app\models\AlbumsWorks;
 use app\models\Works;
+use app\models\Components;
 use app\models\Packages;
 
 use app\models\Users;
@@ -62,9 +62,9 @@ class PackagesController extends \lithium\action\Controller {
 			$zip = new \ZipArchive();
 			$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
 
-			$album_works = AlbumsWorks::find('all', array(
-				'fields' => 'work_id',
-				'conditions' => array('album_id' => $album->id),
+			$album_works = Components::find('all', array(
+				'fields' => 'archive_id2',
+				'conditions' => array('archive_id1' => $album->id),
 			));
 
 			$works = array();
@@ -75,7 +75,7 @@ class PackagesController extends \lithium\action\Controller {
 			
 				//Get all the work IDs in a plain array
 				$work_ids = $album_works->map(function($work) {
-					return $work->work_id;
+					return $aw->archive_id2;
 				}, array('collect' => false));
 
 				$works = Works::find('all', array(

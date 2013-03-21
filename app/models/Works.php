@@ -8,7 +8,16 @@ use lithium\security\Auth;
 
 class Works extends \lithium\data\Model {
 
-	public $hasMany = array('AlbumsWorks', 'ExhibitionsWorks', 'WorksDocuments', 'WorksHistories', 'WorksLinks', 'Components');
+	public $hasMany = array(
+		'WorksDocuments',
+		'WorksHistories',
+		'WorksLinks',
+		'Components' => array(
+			'to' => 'app\models\Components',
+			'key' => array(
+				'id' => 'archive_id2',
+		)),
+	);
 
 	public $belongsTo = array(
 		'Users',
@@ -127,8 +136,8 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 	))->delete();
 
 	//Delete any relationships
-	AlbumsWorks::find('all', array(
-		'conditions' => array('work_id' => $work_id)
+	Components::find('all', array(
+		'conditions' => array('archive_id2' => $work_id)
 	))->delete();
 	
 	WorksDocuments::find('all', array(

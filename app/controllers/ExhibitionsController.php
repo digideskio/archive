@@ -4,8 +4,8 @@ namespace app\controllers;
 
 use app\models\Archives;
 use app\models\Exhibitions;
-use app\models\ExhibitionsWorks;
 use app\models\Works;
+use app\models\Components;
 use app\models\ExhibitionsDocuments;
 use app\models\ExhibitionsLinks;
 
@@ -33,10 +33,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-	 	$order = 'earliest_date DESC';
+	 	$order = 'Archives.earliest_date DESC';
 		
 		$exhibitions = Exhibitions::find('all', array(
-			'with' => array('Archives', 'ExhibitionsWorks'),
+			'with' => array('Archives', 'Components'),
 			'order' => $order,
 		));
 		
@@ -61,7 +61,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		$exhibitions = array();
 
-		$order = array('earliest_date' => 'DESC');
+		$order = array('Archives.earliest_date' => 'DESC');
 
 		$condition = '';
 		$query = '';
@@ -74,7 +74,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$type = $data['type'];
 
 			if ($condition == 'year') {
-				$condition = 'earliest_date';
+				$condition = 'Archives.earliest_date';
 			}
 
 			$query = $data['query'];
@@ -85,7 +85,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			}
 
 			$exhibitions = Exhibitions::find('all', array(
-				'with' => array('Archives', 'ExhibitionsWorks'),
+				'with' => array('Archives', 'Components'),
 				'order' => $order,
 				'conditions' => $conditions
 			));
@@ -121,13 +121,9 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'slug' => $this->request->params['slug'],
 			)));
 		
-			$total = ExhibitionsWorks::find('count', array(
-				'conditions' => array('exhibition_id' => $exhibition->id)
-			));
-			
-			$exhibitions_works = ExhibitionsWorks::find('all', array(
-				'fields' => 'work_id',
-				'conditions' => array('exhibition_id' => $exhibition->id),
+			$exhibitions_works = Components::find('all', array(
+				'fields' => 'archive_id2',
+				'conditions' => array('archive_id1' => $exhibition->id),
 			));
 
 			$works = array();
@@ -136,7 +132,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 				//Get all the work IDs in a plain array
 				$work_ids = $exhibitions_works->map(function($ew) {
-					return $ew->work_id;
+					return $ew->archive_id2;
 				}, array('collect' => false));
 
 				$works = Works::find('all', array(
@@ -146,6 +142,8 @@ class ExhibitionsController extends \lithium\action\Controller {
 				));
 
 			}
+
+			$total = $works ? $works->count() : 0;
 
 			$exhibitions_links = ExhibitionsLinks::find('all', array(
 				'with' => 'Links',

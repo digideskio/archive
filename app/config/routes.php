@@ -84,8 +84,6 @@ Router::connect('/albums/packages', array('Albums::packages'));
 Router::connect('/albums/package/{:slug}', array('Albums::package'));
 Router::connect('/albums/delete/{:slug}', array('Albums::delete'));
 
-Router::connect('/albums_works/delete/{:id}', array('AlbumsWorks::delete'));
-
 Router::connect('/components/delete/{:id}', array('Components::delete'));
 
 Router::connect('/works/pages/{:page:[0-9]+}', array('Works::index'));
@@ -104,8 +102,6 @@ Router::connect('/architectures/delete/{:slug}', array('Architectures::delete'))
 Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));
 Router::connect('/exhibitions/edit/{:slug}', array('Exhibitions::edit'));
 Router::connect('/exhibitions/delete/{:slug}', array('Exhibitions::delete'));
-
-Router::connect('/exhibitions_works/delete/{:id}', array('ExhibitionsWorks::delete'));
 
 Router::connect('/publications/pages/{:page:[0-9]+}', array('Publications::index'));
 Router::connect('/publications/view/{:slug}', array('Publications::view'));

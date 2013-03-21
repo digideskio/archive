@@ -17,9 +17,9 @@
 	
 	<?php 
 	
-		$has_works = isset($exhibition->exhibitions_works[0]->id) ? true : false;
+		$has_works = isset($exhibition->components[0]->id) ? true : false;
 	
-		if ($has_works) echo '<span class="badge badge-info">' . sizeof($exhibition->exhibitions_works) . '</span>';
+		if ($has_works) echo '<span class="badge badge-info">' . sizeof($exhibition->components) . '</span>';
 		
 	?>
 	
