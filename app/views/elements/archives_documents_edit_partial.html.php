@@ -8,7 +8,7 @@
 
 	//Get upload endpoint
 	$upload_document_url = $this->url(array('Documents::upload')) . 
-		'&archive_id=' . $model->archive->id;
+		'?archive_id=' . $model->archive->id;
 
 	//Get 'work_slug', etc.
 	$model_slug_name = lithium\util\Inflector::underscore("$model_name_sing slug");
