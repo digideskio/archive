@@ -191,13 +191,14 @@ $this->title($document->title);
 		</table>
 
 		<?php
+			$hasAlbums = sizeof($albums) > 0;
 			$hasArtwork = sizeof($works) > 0;
 			$hasArchitecture = sizeof($architectures) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasPublications = sizeof($publications) > 0;
 		?>
 
-		<?php if ($hasArtwork || $hasArchitecture || $hasExhibitions || $hasPublications): ?>
+		<?php if ($hasAlbums || $hasArtwork || $hasArchitecture || $hasExhibitions || $hasPublications): ?>
 
 			<table class="table">
 				<thead>
@@ -208,6 +209,25 @@ $this->title($document->title);
 					</tr>
 				</thead>
 				<tbody>
+				
+					<?php if ($hasAlbums) : ?>
+					<tr>
+						<td><i class="icon-briefcase"></i></td>
+						<td class="meta">Albums</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($albums as $album): ?>
+								<li><strong><?=$this->html->link(
+									$album->title,
+									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
 					<?php if ($hasArtwork) : ?> 
 				
 					<tr>

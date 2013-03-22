@@ -138,6 +138,33 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 	}
 	
+	public function testAlbumsDocuments() {
+
+		$document = Documents::first();
+
+		$album = Albums::create();
+		$al_data = array(
+			'title' => 'The Title',
+		);
+
+		$album->save($al_data);
+
+		$archive_document = ArchivesDocuments::create();
+		$ad_data = array(
+			'archive_id' => $album->id,
+			'document_id' => $document->id,
+		);
+
+		$archive_document->save($ad_data);
+
+		$this->assertEqual(1, ArchivesDocuments::count());
+
+		$album->delete();
+
+		$this->assertFalse(ArchivesDocuments::count());
+
+	}
+	
 	public function testExhibitionsDocuments() {
 
 		$document = Documents::first();

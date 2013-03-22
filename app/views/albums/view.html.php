@@ -60,6 +60,12 @@ $this->title($album->title);
 	</div>
 <?php endif; ?>
 
+<?php if(sizeof($archives_documents) > 0): ?>
+
+	<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents, 'showBar' => false)); ?>
+
+<?php endif; ?>
+
 <table class="table table-bordered">
 
 <thead>

@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Documents;
+use app\models\Albums;
 use app\models\Works;
 use app\models\Architectures;
 use app\models\Exhibitions;
@@ -132,6 +133,12 @@ class DocumentsController extends \lithium\action\Controller {
 
 			if ($document) {
 
+				$albums = Albums::find('all', array(
+					'with' => array('Archives', 'ArchivesDocuments'),
+					'conditions' => array('document_id' => $document->id),
+					'order' => 'earliest_date DESC'
+				));
+
 				$works = Works::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
 					'conditions' => array('document_id' => $document->id),
@@ -159,6 +166,7 @@ class DocumentsController extends \lithium\action\Controller {
 				//Send the retrieved data to the view
 				return compact(
 					'document', 
+					'albums',
 					'works', 
 					'architectures',
 					'exhibitions',

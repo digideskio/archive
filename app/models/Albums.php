@@ -20,6 +20,11 @@ class Albums extends \lithium\data\Model {
 			'key' => array(
 				'id' => 'archive_id1',
 		)),
+		'ArchivesDocuments' => array(
+			'to' => 'app\models\ArchivesDocuments',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
 	);
 
 	public $validates = array(
@@ -66,6 +71,10 @@ Albums::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('archive_id1' => $album_id)
 	))->delete();
 	
+	ArchivesDocuments::find('all', array(
+		'conditions' => array('archive_id' => $album_id)
+	))->delete();
+
 	return $chain->next($self, $params, $chain);
 
 });

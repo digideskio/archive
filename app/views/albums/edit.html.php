@@ -46,6 +46,9 @@ $this->form->config(
 	<li><?=$this->html->link('Packages', $this->url(array('Albums::package', 'slug' => $album->archive->slug))); ?></li>
 </ul>
 
+<div class="row">
+
+<div class="span5">
 
 <div class="well">
 <?=$this->form->create($album); ?>
@@ -73,6 +76,18 @@ $this->form->config(
 
 </div>
 
+</div>
+
+<div class="span5">
+
+	<?=$this->partial->archives_documents_edit(array(
+		'model' => $album,
+		'archives_documents' => $archives_documents,
+	)); ?>		
+
+</div>
+
+</div>
 
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">

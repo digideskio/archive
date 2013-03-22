@@ -8,6 +8,7 @@ use app\models\ArchivesHistories;
 use app\models\Works;
 use app\models\Components;
 use app\models\Packages;
+use app\models\ArchivesDocuments;
 
 use app\models\Users;
 use app\models\Roles;
@@ -96,10 +97,19 @@ class AlbumsController extends \lithium\action\Controller {
 
 				}
 
+				$archives_documents = ArchivesDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('archive_id' => $album->id),
+					'order' => array('slug' => 'ASC')
+				));
+
 				$li3_pdf = Libraries::get("li3_pdf");
 
 				//Send the retrieved data to the view
-				return compact('album', 'works', 'auth', 'li3_pdf');
+				return compact('album', 'works', 'archives_documents', 'auth', 'li3_pdf');
 				
 			}
 		}
@@ -163,7 +173,17 @@ class AlbumsController extends \lithium\action\Controller {
 		if (($this->request->data) && $album->save($this->request->data)) {
 			return $this->redirect(array('Albums::view', 'slug' => $album->archive->slug));
 		}
-		return compact('album');
+
+		$archives_documents = ArchivesDocuments::find('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('archive_id' => $album->id),
+			'order' => array('slug' => 'ASC')
+		));
+
+		return compact('album', 'archives_documents');
 	}
 
 	public function history() {
