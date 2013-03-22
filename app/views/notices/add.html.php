@@ -46,7 +46,7 @@ $this->form->config(
 <div class="well">
 <?=$this->form->create($notice); ?>
 	<legend>Notice</legend>
-    <?=$this->form->field('subject');?>
+    <?=$this->form->field('subject', array('autocomplete' => 'off'));?>
     <?=$this->form->field('body', array('type' => 'textarea'));?>
     <?=$this->form->hidden('path', array('value' => 'home'));?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>

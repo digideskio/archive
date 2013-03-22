@@ -46,9 +46,8 @@ $this->form->config(
 <div class="well">
 <?=$this->form->create($album); ?>
 	<legend>Album Info</legend>
-    <?=$this->form->field('title');?>
+    <?=$this->form->field('title', array('autocomplete' => 'off'));?>
     <?=$this->form->field('remarks', array('label' => 'Description', 'type' => 'textarea'));?>
-    <?=$this->form->hidden('class'); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel',$this->url('Albums::index'), array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>

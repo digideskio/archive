@@ -50,7 +50,7 @@ $this->title('Search Architecture');
 	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
 		<legend>Search Architecture</legend>
 
-		<input type="text" name="query" value="<?=$query?>" placeholder="Search…">
+		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
 
 		<?php $selected = 'selected="selected"'; ?>
 

@@ -22,7 +22,7 @@
 				</ul>
 
 				<form class="navbar-search pull-right form-search" action="/search" method="get">
-					<input type="text" class="search-query span3" placeholder="Search" name="query">
+					<input type="text" class="search-query span3" placeholder="Search" name="query" autocomplete="off">
 				</form>
 			</div>
 		</div>

@@ -49,11 +49,10 @@ $this->form->config(
 <?=$this->form->create($document); ?>
 	<legend>Info</legend>
 	
-	<?=$this->form->field('title');?>
-	<?=$this->form->field('slug', array('label' => 'Permalink', 'disabled' => 'disabled'));?>
-	<?=$this->form->field('file_date');?>
-	<?=$this->form->field('repository', array('label' => 'Image Repository'));?>
-	<?=$this->form->field('credit', array('label' => 'Photo Credit'));?>
+	<?=$this->form->field('title', array('autocomplete' => 'off'));?>
+	<?=$this->form->field('file_date', array('autocomplete' => 'off', 'disabled' => 'disabled'));?>
+	<?=$this->form->field('repository', array('label' => 'Image Repository', 'autocomplete' => 'off'));?>
+	<?=$this->form->field('credit', array('label' => 'Photo Credit', 'autocomplete' => 'off'));?>
 	<?=$this->form->field('remarks', array('type' => 'textarea'));?>
 	
 	<label class="checkbox">
