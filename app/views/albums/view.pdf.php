@@ -53,7 +53,6 @@ EOD;
 foreach( $works as $work) {
 
 $caption = $this->artwork->caption($work->archive, $work); 
-$annotation = $work->annotation;
 
 	$work_documents = $work->documents('all', array('published' => 1));
 
@@ -88,7 +87,6 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
-			<p style="color: #888888"><small>$annotation</small></p>
 			<p style="color: #888888"><small>$remarks</small></p>
 		</td>
 		<td style="width:380px; font-family:monospace; font-size:0.8em;">
@@ -112,7 +110,6 @@ foreach ($documents as $doc) {
 		));
 
 		$caption = $doc_work ? $this->artwork->caption($doc_work->archive, $doc_work) : $doc->title;
-		$annotation = $doc_work ? $doc_work->annotation : '';
 		$remarks = $doc->remarks;
 
 		if ($doc->published) {
@@ -141,7 +138,6 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
-			<p style="color: #888888"><small>$annotation</small></p>
 			<p style="color: #888888"><small>$remarks</small></p>
 		</td>
 		<td style="width:380px; font-family:monospace; font-size:0.8em;">
