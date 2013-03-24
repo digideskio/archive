@@ -278,29 +278,11 @@ class AlbumsController extends \lithium\action\Controller {
 				
 				$pdf = $album->archive->slug . '-' . $options['view'] . '.pdf';
 
-				$album_works = Components::find('all', array(
-					'fields' => 'archive_id2',
-					'conditions' => array('archive_id1' => $album->id),
+				$works = Works::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array('Components.archive_id1' => $album->id),
+					'order' => 'Archives.earliest_date DESC',
 				));
-
-				$works = array();
-
-				if ($album_works->count()) {
-
-					$work_ids = array();	
-
-					//Get all the work IDs in a plain array
-					$work_ids = $album_works->map(function($aw) {
-						return $aw->archive_id2;
-					}, array('collect' => false));
-
-					$works = Works::find('all', array(
-						'with' => 'Archives',
-						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'earliest_date DESC'
-					));
-
-				}
 
 				$documents = Documents::find('all', array(
 					'with' => array(
