@@ -64,13 +64,17 @@ if(isset($options['view']) && $options['view'] == 'images') {
 
 		if ($doc->published) {
 
-			$thumbnail = $doc->file(array('size' => 'small'));
+			$thumbnail = $doc->file(array('size' => 'thumb'));
 
 			$img_path = $options['path'] . '/' . $thumbnail;
 			$thumb_img = '<img width="100" src="'.$img_path.'" />';
 
 			$resolution = $doc->resolution();
 			$size = $doc->size();
+
+			//$credit = " (Photo &copy; " . $doc->credit ? $doc->credit . ', ' : '' . $doc->year() . ').';
+			$credit = "Photo &copy; " . $doc->year() . " " .  $doc->credit;
+
 		} else {
 			$thumb_img = "Private Image";
 			$resolution = "";
@@ -85,10 +89,12 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
+			<p style="color: #888888"><small>$annotation</small></p>
 		</td>
-		<td style="width:380px; font-family:monospaced;">
+		<td style="width:380px; font-family:monospace; font-size:0.8em;">
 			$resolution<br/>
-			$size
+			$size<br/>
+			$credit
 		</td>
 	</tr>
 EOD;
