@@ -105,7 +105,14 @@ EOD;
 
 foreach ($documents as $doc) {
 
-		$caption = $doc->title;
+		$doc_work = \app\models\Works::first('all', array(
+			'with' => array('Archives', 'ArchivesDocuments'),
+			'conditions' => array('document_id' => $doc->id),
+			'order' => 'earliest_date DESC'
+		));
+
+		$caption = $doc_work ? $this->artwork->caption($doc_work->archive, $doc_work) : $doc->title;
+		$annotation = $doc_work ? $doc_work->annotation : '';
 		$remarks = $doc->remarks;
 
 		if ($doc->published) {
@@ -134,6 +141,7 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
+			<p style="color: #888888"><small>$annotation</small></p>
 			<p style="color: #888888"><small>$remarks</small></p>
 		</td>
 		<td style="width:380px; font-family:monospace; font-size:0.8em;">
