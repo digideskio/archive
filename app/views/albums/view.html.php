@@ -94,7 +94,7 @@ $this->title($album->title);
 				echo "<img width='125' height='125' src='/files/$thumbnail' />";
 				echo "</a>";
 			} else {
-				echo '<span class="label label-warning">No Image</span>';
+				echo '<span class="label">No Published Images</span>';
 			}
 		
 		?>
