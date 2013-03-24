@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Albums;
 use app\models\Works;
+use app\models\Documents;
 use app\models\Components;
 use app\models\Packages;
 
@@ -62,32 +63,14 @@ class PackagesController extends \lithium\action\Controller {
 			$zip = new \ZipArchive();
 			$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
 
-			$album_works = Components::find('all', array(
-				'fields' => 'archive_id2',
-				'conditions' => array('archive_id1' => $album->id),
+			$works = Works::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array('Components.archive_id1' => $album->id),
+				'order' => 'Archives.earliest_date DESC',
 			));
 
-			$works = array();
-
-			if($album_works->count()) {
-
-				$work_ids = array();	
-			
-				//Get all the work IDs in a plain array
-				$work_ids = $album_works->map(function($aw) {
-					return $aw->archive_id2;
-				}, array('collect' => false));
-
-				$works = Works::find('all', array(
-					'with' => 'Archives',
-					'conditions' => array('Works.id' => $work_ids),
-					'order' => 'earliest_date DESC'
-				));
-
-			}
-
 			foreach ($works as $work) {
-				$documents = $work->documents();
+				$documents = $work->documents('all', array('published' => 1));
 
 				foreach ($documents as $document) {
 					if ($document->published) {
@@ -100,6 +83,30 @@ class PackagesController extends \lithium\action\Controller {
 
 						$zip->addFile($document_path, $document_localname);
 					}
+				}
+			}
+
+			$documents = Documents::find('all', array(
+				'with' => array(
+					'ArchivesDocuments',
+					'Formats'
+				),
+				'conditions' => array(
+					'archive_id' => $album->id,
+					'published' => '1',
+				),
+			));
+
+			foreach ($documents as $document) {
+				if ($document->published) {
+					$slug = $document->slug;
+					$extension = $document->format->extension;
+					$document_file = $document->file();
+					$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
+
+					$document_localname = $slug . '.' . $extension;
+
+					$zip->addFile($document_path, $document_localname);
 				}
 			}
 
@@ -116,7 +123,7 @@ class PackagesController extends \lithium\action\Controller {
 			));
 			$view->render(
 				'all',
-				array('content' => compact('pdf', 'album','works', 'options')),
+				array('content' => compact('pdf', 'album', 'works', 'documents', 'options')),
 				array(
 					'controller' => 'albums',
 					'template'=>'view',
