@@ -230,8 +230,33 @@ class DocumentsController extends \lithium\action\Controller {
 		if($document->file_date == '0000-00-00 00:00:00') {
 			$document->file_date = '';
 		}
-		
-		return compact('document');
+
+		$order = array('title' => 'ASC');
+
+		$albums = Albums::find('all', array(
+			'with' => array('Archives', 'ArchivesDocuments'),
+			'conditions' => array('document_id' => $document->id),
+			'order' => $order
+		));
+
+		$album_ids = array();
+
+		if ($albums->count()) {
+			$album_ids = $albums->map(function($alb) {
+				return $alb->id;
+			}, array('collect' => false));
+		}
+
+		//Find the albums the document is NOT in
+		$other_album_conditions = ($album_ids) ? array('Albums.id' => array('!=' => $album_ids)) : '';
+
+		$other_albums = Albums::find('all', array(
+			'with' => 'Archives',
+			'order' => $order,
+			'conditions' => $other_album_conditions
+		));
+
+		return compact('document', 'albums', 'other_albums');
 	}
 
 	public function delete() {
