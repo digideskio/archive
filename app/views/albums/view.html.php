@@ -46,8 +46,8 @@ $this->title($album->title);
 		<div class="btn-group">
 			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret"</span></button>
 			<ul class="dropdown-menu">
-				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?view=artwork"><i class="icon-picture"></i> Print Artwork</a></li>
-				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?view=images"><i class="icon-camera"></i> Print Images</a></li>
+				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?layout=download"><i class="icon-download-alt"></i> Download PDF</a></li>
+				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?layout=inline"><i class="icon-fullscreen"></i> Display PDF</a></li>
 			</ul>
 		</div>
 	</div>
