@@ -85,7 +85,7 @@ $this->title($album->title);
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 	
 		<?php 
-			$document = $work->documents('first');
+			$document = $work->documents('first', array('published' => 1));
 		
 			if($document->id) {
 				$thumbnail = $document->view();
