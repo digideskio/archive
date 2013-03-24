@@ -6,6 +6,7 @@ $album = $content['album'];
 $title = $album->title;
 
 $works = $content['works'];
+$documents = $content['documents'];
 
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
@@ -51,14 +52,12 @@ EOD;
 
 foreach( $works as $work) {
 
-$years = $work->archive->years();
 $caption = $this->artwork->caption($work->archive, $work); 
 $annotation = $work->annotation;
-$notes = $work->notes();
 
-	$documents = $work->documents('all', array('published' => 1));
+	$work_documents = $work->documents('all', array('published' => 1));
 
-	foreach ($documents as $doc) {
+	foreach ($work_documents as $doc) {
 
 		if ($doc->published) {
 
@@ -70,7 +69,55 @@ $notes = $work->notes();
 			$resolution = $doc->resolution();
 			$size = $doc->size();
 
-			//$credit = " (Photo &copy; " . $doc->credit ? $doc->credit . ', ' : '' . $doc->year() . ').';
+			$credit = "Photo &copy; " . $doc->year() . " " .  $doc->credit;
+
+			$remarks = $doc->remarks;
+
+		} else {
+			$thumb_img = "Private Image";
+			$resolution = "";
+			$size = "";
+			$remarks = "";
+		}
+
+$html .= <<<EOD
+
+	<tr style="page-break-inside: avoid;">
+		<td style="width:150px">
+			$thumb_img	
+		</td>
+		<td>
+			<p style="color:#08C"><strong>$caption</strong></p>
+			<p style="color: #888888"><small>$annotation</small></p>
+			<p style="color: #888888"><small>$remarks</small></p>
+		</td>
+		<td style="width:380px; font-family:monospace; font-size:0.8em;">
+			$resolution<br/>
+			$size<br/>
+			$credit
+		</td>
+	</tr>
+EOD;
+
+	}
+
+}
+
+foreach ($documents as $doc) {
+
+		$caption = $doc->title;
+		$remarks = $doc->remarks;
+
+		if ($doc->published) {
+
+			$thumbnail = $doc->file(array('size' => 'thumb'));
+
+			$img_path = $options['path'] . '/' . $thumbnail;
+			$thumb_img = '<img width="100" src="'.$img_path.'" />';
+
+			$resolution = $doc->resolution();
+			$size = $doc->size();
+
 			$credit = "Photo &copy; " . $doc->year() . " " .  $doc->credit;
 
 		} else {
@@ -87,7 +134,7 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
-			<p style="color: #888888"><small>$annotation</small></p>
+			<p style="color: #888888"><small>$remarks</small></p>
 		</td>
 		<td style="width:380px; font-family:monospace; font-size:0.8em;">
 			$resolution<br/>
@@ -97,9 +144,8 @@ $html .= <<<EOD
 	</tr>
 EOD;
 
-	}
-
 }
+
 $html .= "</tbody></table>";
 
 $this->Pdf->writeHTML($html, true, false, true, false, '');

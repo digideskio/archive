@@ -8,6 +8,7 @@ use app\models\ArchivesHistories;
 use app\models\Works;
 use app\models\Components;
 use app\models\Packages;
+use app\models\Documents;
 use app\models\ArchivesDocuments;
 
 use app\models\Users;
@@ -301,6 +302,17 @@ class AlbumsController extends \lithium\action\Controller {
 
 				}
 
+				$documents = Documents::find('all', array(
+					'with' => array(
+						'ArchivesDocuments',
+						'Formats'
+					),
+					'conditions' => array(
+						'archive_id' => $album->id,
+						'published' => '1',
+					),
+				));
+
 				$view  = new View(array(
 					'paths' => array(
 						'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
@@ -309,7 +321,7 @@ class AlbumsController extends \lithium\action\Controller {
 				));
 				echo $view->render(
 					'all',
-					array('content' => compact('pdf', 'album','works', 'options')),
+					array('content' => compact('pdf', 'album','works', 'documents', 'options')),
 					array(
 						'controller' => 'albums',
 						'template'=>'view',
