@@ -56,8 +56,6 @@ $caption = $this->artwork->caption($work->archive, $work);
 $annotation = $work->annotation;
 $notes = $work->notes();
 
-if(isset($options['view']) && $options['view'] == 'images') {
-
 	$documents = $work->documents('all', array('published' => 1));
 
 	foreach ($documents as $doc) {
@@ -100,44 +98,6 @@ $html .= <<<EOD
 EOD;
 
 	}
-
-}
-
-if(!isset($options['view']) || $options['view'] == 'artwork') {
-
-$document = $work->documents('first', array('published' => 1));
-
-if ($document) {
-	$thumbnail = $document->file(array('size' => 'thumb'));
-}
-
-if( isset($thumbnail) ) {
-	$img_path = $options['path'] . '/'  . $thumbnail;
-	$thumb_img = '<img width="100" height="100" src="'.$img_path.'" />';
-} else {
-	$thumb_img = 'No Image';
-}
-
-$html .= <<<EOD
-
-	<tr style="page-break-inside: avoid;">
-		<td style="width:150px">
-			$thumb_img	
-		</td>
-		<td>
-			<p style="color:#08C"><strong>$caption</strong></p>
-			<p style="color: #888888"><small>$annotation</small></p>
-		</td>
-		<td style="width:380px">
-			<p><small>$notes</small></p>
-		</td>
-	</tr>
-
-EOD;
-
-unset($thumbnail);
-
-}
 
 }
 $html .= "</tbody></table>";
