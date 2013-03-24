@@ -58,6 +58,14 @@ $this->title($document->title);
 		</div>
 		
 		<?php endif; ?>
+
+		<?php if($document->remarks): ?>
+
+			<div class="alert alert-block" style="font-family:monospace">
+				<p><?=$document->remarks; ?></p>
+			</div>
+
+		<?php endif; ?>
 	
    		<?php foreach($works as $work): ?>
 			<div class="alert alert-block alert-info">
