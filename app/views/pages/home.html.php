@@ -7,7 +7,7 @@ $this->title('Home');
 <div class="hero-unit">
 	<h1>Welcome to the Archive.</h1>
 	<p>All of our Artworks, Architectural projects, and Exhibitions are collected here. Use the sidebar to navigate through the archive.</p>
-	<p><a class="btn btn-inverse btn-large" href="<?=$this->url(array('Collections::index')); ?>">Browse the Albums »</a></p>
+	<p><a class="btn btn-inverse btn-large" href="<?=$this->url(array('Albums::index')); ?>">Browse the Albums »</a></p>
 </div>
 
 <div class="accordion" id="notices">
