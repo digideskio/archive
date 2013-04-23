@@ -13,27 +13,7 @@ use li3_access\security\Access;
 class UsersController extends \lithium\action\Controller {
 
 	public function index() {
-	    $check = Auth::check('default');
 
-		if($check) {
-			$auth = Users::first(array(
-				'conditions' => array('username' => $check['username']),
-				'with' => array('Roles')
-			));
-		} else {
-			return $this->redirect('Sessions::add');
-		}
-	    
-		$rules = array(
-			array('rule' => 'isAdminUser', 'message' => 'You cannot see these users!', 'redirect' => "/users/view/$auth->username"),
-		);
-		
-	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
-	    
-        if(!empty($access)){
-        	return $this->redirect($access['redirect']);
-        }
-    
     	// Check authorization
 	    $check = (Auth::check('default')) ?: null;
 	
@@ -48,6 +28,17 @@ class UsersController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
+		//Define the access rules for this action
+		$rules = array(
+			array('rule' => 'isAdminUser', 'message' => 'You cannot see these users!', 'redirect' => "/users/view/$auth->username"),
+		);
+		
+	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
+	    
+        if(!empty($access)){
+        	return $this->redirect($access['redirect']);
+        }
+    
 		// Look up all users
 		$users = Users::find('all', array(
 			'with' => array('Roles')

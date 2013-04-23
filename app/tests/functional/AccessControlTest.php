@@ -74,7 +74,7 @@ class AccessControlTest extends \lithium\test\Integration {
 
 			Auth::set('default', $users[$username]);
 
-			//Non-Admins cannot set the user list
+			//Non-Admins cannot see the user list
 			$this->request = new Request();
 			$this->request->params = array(
 				'controller' => 'users'
