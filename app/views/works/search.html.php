@@ -35,6 +35,14 @@ $this->title('Search Artwork');
 			<?=$this->html->link('Classifications','/works/classifications'); ?>
 		</li>
 
+		<?php if($auth->role->name == 'Admin'): ?>
+
+			<li>
+				<?=$this->html->link('Locations','/works/locations'); ?>
+			</li>
+		
+		<?php endif; ?>
+
 		<li>
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>
@@ -68,6 +76,11 @@ $this->title('Search Artwork');
 			<option value='artist' <?php if ($condition == 'artist') { echo $selected; } ?>>Artist</option>
 			<option value='classification' <?php if ($condition == 'classification') { echo $selected; } ?>>Classification</option>
 			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
+
+		<?php if($auth->role->name == 'Admin'): ?>
+			<option value='location' <?php if ($condition == 'location') { echo $selected; } ?>>Location</option>
+		<?php endif; ?>
+
 			<option value='materials' <?php if ($condition == 'materials') { echo $selected; } ?>>Materials</option>
 			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
 			<option value='creation_number' <?php if ($condition == 'creation_number') { echo $selected; } ?>>Artwork ID</option>

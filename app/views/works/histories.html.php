@@ -39,6 +39,14 @@ if($auth->timezone_id) {
 			<?=$this->html->link('Classifications','/works/classifications'); ?>
 		</li>
 
+		<?php if($auth->role->name == 'Admin'): ?>
+
+			<li>
+				<?=$this->html->link('Locations','/works/locations'); ?>
+			</li>
+		
+		<?php endif; ?>
+
 		<li class="active">
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>

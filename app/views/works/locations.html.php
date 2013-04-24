@@ -1,6 +1,6 @@
 <?php
 
-$this->title('Artists');
+$this->title('Locations');
 
 ?>
 
@@ -14,19 +14,20 @@ $this->title('Artists');
 	</li>
 
 	<li class="active">
-		Artists
+		Locations
 	</li>
 
 	</ul>
 
 </div>
-</span><div class="actions">
+
+<div class="actions">
 	<ul class="nav nav-tabs">
 		<li>
 			<a href="/works">Index</a>
 		</li>
 
-		<li class="active">
+		<li>
 			<?=$this->html->link('Artists','/works/artists'); ?>
 		</li>
 
@@ -36,7 +37,7 @@ $this->title('Artists');
 
 		<?php if($auth->role->name == 'Admin'): ?>
 
-			<li>
+			<li class="active">
 				<?=$this->html->link('Locations','/works/locations'); ?>
 			</li>
 		
@@ -60,10 +61,10 @@ $this->title('Artists');
 		<?php endif; ?>
 	</div>
 
-	<?php foreach ($artists as $artist): ?>
+	<?php foreach ($locations as $location): ?>
 
-		<?php $query = urlencode($artist['name']); ?>
-		<p><?=$this->html->link($artist['name'], "/works/search?conditions=artist&query=$query"); ?> <span class="badge"><?=$artist['works'] ?></span></p>
+		<?php $query = urlencode($location['name']); ?>
+		<p><?=$this->html->link($location['name'], "/works/search?conditions=location&query=$query"); ?> <span class="badge"><?=$location['works'] ?></span></p>
 
 	<?php endforeach; ?>
 </div>

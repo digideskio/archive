@@ -20,6 +20,8 @@ use app\models\WorksLinks;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
+use li3_access\security\Access;
+
 class WorksController extends \lithium\action\Controller {
 
 	public function index() {
@@ -176,6 +178,47 @@ class WorksController extends \lithium\action\Controller {
 		}, array('collect' => false));
 
 		return compact('classifications', 'auth');
+	}
+
+	public function locations() {
+
+		// Check authorization
+		$check = (Auth::check('default')) ?: null;
+
+		// If the user is not authorized, redirect to the login screen
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+
+		// Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		//Define the access rules for this action
+		$rules = array(
+			array('rule' => 'isAdminUser', 'message' => 'You are not authorized', 'redirect' => "/works"),
+		);
+		
+	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
+	    
+        if(!empty($access)){
+        	return $this->redirect($access['redirect']);
+        }
+    
+		$works_locations = Works::find('all', array(
+			'fields' => array('location', 'count(location) as works'),
+			'group' => 'location',
+			'conditions' => array('location' => array('!=' => '')),
+			'order' => array('works' => 'DESC'),
+		));
+
+		$locations = $works_locations->map(function($wc) {
+			return array('name' => $wc->location, 'works' => $wc->works);
+		}, array('collect' => false));
+
+		return compact('locations', 'auth');
 	}
 
 	public function histories() {

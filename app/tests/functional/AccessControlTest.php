@@ -3,6 +3,7 @@
 namespace app\tests\functional;
 
 use app\controllers\UsersController;
+use app\controllers\WorksController;
 
 use app\models\Users;
 
@@ -62,6 +63,32 @@ class AccessControlTest extends \lithium\test\Integration {
 		Users::all()->delete();
 		Auth::clear('default');
 	
+	}
+
+	public function testWorkAccess() {
+
+		$users = $this->users;
+
+		$access = array('editor', 'viewer');
+
+		foreach ($access as $username) {
+
+			Auth::set('default', $users[$username]);
+
+			//Non-Admins cannot see the locations
+			$this->request = new Request();
+			$this->request->params = array(
+				'controller' => 'works',
+				'action' => 'locations'
+			);
+
+			$controller = new WorksController(array('request' => $this->request));
+
+			$response = $controller->locations();
+			$this->assertEqual($response->headers["Location"], "/works"); 
+
+		}
+
 	}
 
 	public function testUserAccess() {
