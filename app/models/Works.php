@@ -68,6 +68,27 @@ class Works extends \lithium\data\Model {
 		);
 	}
 
+	public static function attributes() {
+		$attributes = array(
+			'signed',
+			'framed',
+			'edition'
+		);
+
+		return $attributes;
+	}
+
+	public function attribute($entity, $attribute) {
+
+		$attributes_json = $entity->attributes;
+
+		$attributes = $attributes_json ? json_decode($attributes_json, true) : array();
+
+		return isset($attributes[$attribute]) ? $attributes[$attribute] : '';
+
+	}
+
+
     public function dimensions($entity) {
     	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));
     	$measures = $hwd ? implode(' × ', $hwd) . ' cm' : '';
@@ -81,10 +102,17 @@ class Works extends \lithium\data\Model {
 						
 		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
 		$remarks =  $entity->remarks ? $entity->remarks : '';
+
+		$edition = $entity->attribute('edition') ? 'Edition: ' . $entity->attribute('edition') : '';
+		$signed = $entity->attribute('signed') ? 'Work is Signed' : '';
+		$framed = $entity->attribute('framed') ? 'Work is Framed' : '';
 		
 		$info = array_filter(array(
+			$edition,
 			$quantity,
 			$remarks,
+			$signed,
+			$framed
 		));
 		
 		return implode('<br/>', $info);
@@ -128,6 +156,29 @@ Works::applyFilter('save', function($self, $params, $chain) {
 
 	return $chain->next($self, $params, $chain);
 	
+});
+
+Works::applyFilter('save', function($self, $params, $chain) {
+
+	$attributes_json = $params['entity']->attributes;
+
+	$attributes = $attributes_json ? json_decode($attributes_json, true) : array();
+
+	$work_attrs = Works::attributes();
+
+	foreach ($work_attrs as $att) {
+
+		if (isset($params['data'][$att]) && $params['data'][$att]) {
+			$attributes[$att] = $params['data'][$att];
+		} else {
+			unset($attributes[$att]);
+		}
+
+	}
+
+	$params['data']['attributes'] = json_encode($attributes);
+
+	return $chain->next($self, $params, $chain);
 });
 
 Works::applyFilter('delete', function($self, $params, $chain) {

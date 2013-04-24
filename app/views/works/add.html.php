@@ -70,6 +70,7 @@ $work_classes_list = array_combine($classifications, $classifications);
     <?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('latest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
+	<?=$this->form->field('edition', array('autocomplete' => 'off'));?>
 	<?=$this->form->field('materials', array('type' => 'textarea'));?>
     <?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
     <?=$this->form->field('remarks', array('type' => 'textarea'));?>
@@ -96,6 +97,18 @@ $work_classes_list = array_combine($classifications, $classifications);
     <?=$this->form->field('running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
     <?=$this->form->field('measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
     <?=$this->form->field('url', array('label' => 'URL', 'autocomplete' => 'off'));?>
+
+	<label><span class="two-d">Additional Notes</span></label>
+	<div class="signed">
+		<label class="checkbox">
+		<?=$this->form->checkbox('signed', array('class' => 'two-d'));?> Artwork is Signed
+		</label>
+	</div>
+	<div class="framed">
+		<label class="checkbox">
+		<?=$this->form->checkbox('framed', array('class' => 'two-d'));?> Artwork is Framed
+		</label>
+	</div>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/works', array('class' => 'btn')); ?>
 <?=$this->form->end(); ?>

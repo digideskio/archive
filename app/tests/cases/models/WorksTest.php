@@ -124,6 +124,31 @@ class WorksTest extends \lithium\test\Unit {
 
 	}
 
+	public function testAttributes() {
+
+		$work = Works::create();
+		$data = array(
+			'title' => 'Test Title',
+			'signed' => '1',
+		);
+
+		$work->save($data);
+
+		$this->assertEqual('{"signed":"1"}', $work->attributes);
+
+		$signed = $work->attribute('signed');
+
+		$this->assertEqual($data['signed'], $signed);
+
+		$data = array(
+			'title' => 'New Title'
+		);
+
+		$work->save($data);
+
+		$this->assertEqual($work->attributes, '[]');
+	}
+
 	public function testBadLink() {
 		$data = array(
 			'title' => 'Bad Artwork',

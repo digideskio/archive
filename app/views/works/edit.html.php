@@ -71,6 +71,7 @@ $work_classes_list = array_combine($classifications, $classifications);
 			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
 			<?=$this->form->field('materials', array('type' => 'textarea'));?>
+			<?=$this->form->field('edition', array('autocomplete' => 'off', 'value' => $work->attribute('edition')));?>
 			<?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
 			<?=$this->form->field('height', array(
@@ -99,6 +100,17 @@ $work_classes_list = array_combine($classifications, $classifications);
 			));?>
 			<?=$this->form->field('running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
 			<?=$this->form->field('measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
+			<label><span class="two-d">Additional Notes</span></label>
+			<div class="signed">
+				<label class="checkbox">
+				<?=$this->form->checkbox('signed', array('class' => 'two-d', 'checked' => $work->attribute('signed')));?> Artwork is Signed
+				</label>
+			</div>
+			<div class="framed">
+				<label class="checkbox">
+				<?=$this->form->checkbox('framed', array('class' => 'two-d', 'checked' => $work->attribute('framed')));?> Artwork is Framed
+				</label>
+			</div>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
@@ -181,6 +193,11 @@ $(document).ready(function() {
 			<?php //FIXME set the dates in the annotation form; if they have no value, they will be set back to empty in the Archives class ?>
 			<?=$this->form->hidden('earliest_date', array('value' => $work->archive->start_date_formatted())); ?>
 			<?=$this->form->hidden('latest_date', array('value' => $work->archive->end_date_formatted())); ?>
+
+			<?=$this->form->hidden('edition', array('value' => $work->attribute('edition'))); ?>
+			<?=$this->form->hidden('signed', array('value' => $work->attribute('signed'))); ?>
+			<?=$this->form->hidden('framed', array('value' => $work->attribute('framed'))); ?>
+		
 		
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>

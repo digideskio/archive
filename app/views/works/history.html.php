@@ -106,13 +106,19 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
+				<?php if( $wh->attribute('edition') ): ?>
+					<tr>
+					<td class="meta">Edition</td>
+					<td><?=$wh->attribute('edition'); ?></td>
+					</tr>
+				<?php endif; ?>
+
 				<?php if( $wh->quantity ): ?>
 					<tr>
 					<td class="meta">Quantity</td>
 					<td><?=$wh->quantity ?></td>
 					</tr>
 				<?php endif; ?>
-
 
 				<?php if( $wh->remarks ): ?>
 					<tr>
@@ -198,6 +204,20 @@ if($auth->timezone_id) {
 					<tr>
 					<td class="meta">Measurement Remarks</td>
 					<td><?=$wh->measurement_remarks ?></td>
+					</tr>
+				<?php endif; ?>
+
+				<?php if( $wh->attribute('signed') ): ?>
+					<tr>
+					<td class="meta">Signed</td>
+					<td>Yes</td>
+					</tr>
+				<?php endif; ?>
+
+				<?php if( $wh->attribute('framed') ): ?>
+					<tr>
+					<td class="meta">Framed</td>
+					<td>Yes</td>
 					</tr>
 				<?php endif; ?>
 
