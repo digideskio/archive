@@ -66,12 +66,13 @@ $work_classes_list = array_combine($classifications, $classifications);
 	<?=$this->form->select('classification', $work_classes_list); ?>
 
     <?=$this->form->field('artist', array('value' => $artist, 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
+	<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
     <?=$this->form->field('title', array('autocomplete' => 'off'));?>
     <?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('latest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
-	<?=$this->form->field('edition', array('autocomplete' => 'off'));?>
 	<?=$this->form->field('materials', array('type' => 'textarea'));?>
+	<?=$this->form->field('edition', array('autocomplete' => 'off'));?>
     <?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
     <?=$this->form->field('remarks', array('type' => 'textarea'));?>
 	<?=$this->form->field('height', array(

@@ -72,7 +72,8 @@ class Works extends \lithium\data\Model {
 		$attributes = array(
 			'signed',
 			'framed',
-			'edition'
+			'edition',
+			'artist_native_name'
 		);
 
 		return $attributes;
