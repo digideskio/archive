@@ -78,7 +78,7 @@ class WorksController extends \lithium\action\Controller {
 		$query = '';
 		$condition = '';
 
-		$data = $this->request->data;
+		$data = $this->request->data ?: $this->request->query;
 
 		if (isset($data['conditions'])) {
 			$condition = $data['conditions'];
@@ -102,6 +102,37 @@ class WorksController extends \lithium\action\Controller {
 		}
 
 		return compact('works', 'condition', 'query', 'auth');
+
+	}
+
+	public function artists() {
+		
+		// Check authorization
+		$check = (Auth::check('default')) ?: null;
+
+		// If the user is not authorized, redirect to the login screen
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+
+		// Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		$works_artists = Works::find('all', array(
+			'fields' => array('artist', 'count(artist) as works'),
+			'group' => 'artist',
+			'conditions' => array('artist' => array('!=' => '')),
+			'order' => array('artist' => 'ASC')
+		));
+
+		$artists = $works_artists->map(function($wa) {
+			return array('name' => $wa->artist, 'works' => $wa->works);
+		}, array('collect' => false));
+
+		return compact('artists', 'auth');
 
 	}
 

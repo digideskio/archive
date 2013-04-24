@@ -43,7 +43,15 @@ $work_classes_list = array_combine($classifications, $classifications);
 		</li>
 
 		<li>
+			<?=$this->html->link('Artists','/works/artists'); ?>
+		</li>
+
+		<li>
 			<?=$this->html->link('History','/works/histories'); ?>
+		</li>
+
+		<li>
+			<?=$this->html->link('Search','/works/search'); ?>
 		</li>
 
 	</ul>

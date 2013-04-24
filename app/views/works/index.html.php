@@ -23,8 +23,13 @@ $this->title('Artwork');
 		</li>
 
 		<li>
+			<?=$this->html->link('Artists','/works/artists'); ?>
+		</li>
+
+		<li>
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>
+
 		<li>
 			<?=$this->html->link('Search','/works/search'); ?>
 		</li>
