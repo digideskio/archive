@@ -68,6 +68,7 @@ $work_classes_list = array_combine($classifications, $classifications);
     		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
 			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'value' => $work->attribute('artist_native_name')));?>
     		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
 			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
 			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
