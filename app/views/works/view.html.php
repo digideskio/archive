@@ -100,6 +100,13 @@ $this->title($work->title);
 					<td class="meta">Classification</td>
 					<td><?=$work->archive->classification ?></td>
 				</tr>
+				<?php if($auth->role->name == 'Admin'): ?>
+				<tr>
+					<td><i class="icon-globe"></i></td>
+					<td class="meta">Location</td>
+					<td><?=$work->location ?></td>
+				</tr>
+				<?php endif; ?>
 				<tr>
 					<td><i class="icon-info-sign"></i></td>
 					<td class="meta">Notes</td>

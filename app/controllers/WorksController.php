@@ -483,7 +483,8 @@ class WorksController extends \lithium\action\Controller {
 					'other_exhibitions',
 					'work_links',
 					'artists',
-					'classifications'
+					'classifications',
+					'auth'
 				);
 			}	
 		}																																		

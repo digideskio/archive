@@ -92,6 +92,11 @@ $work_classes_list = array_combine($classifications, $classifications);
     <?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('latest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
+
+	<?php if($auth->role->name == 'Admin'): ?>
+    	<?=$this->form->field('location', array('autocomplete' => 'off'));?>
+	<?php endif; ?>
+
 	<?=$this->form->field('materials', array('type' => 'textarea'));?>
 	<?=$this->form->field('edition', array('autocomplete' => 'off'));?>
     <?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
