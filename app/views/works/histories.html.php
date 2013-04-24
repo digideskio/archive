@@ -35,6 +35,10 @@ if($auth->timezone_id) {
 			<?=$this->html->link('Artists','/works/artists'); ?>
 		</li>
 
+		<li>
+			<?=$this->html->link('Classifications','/works/classifications'); ?>
+		</li>
+
 		<li class="active">
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>

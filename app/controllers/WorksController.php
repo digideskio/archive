@@ -148,6 +148,36 @@ class WorksController extends \lithium\action\Controller {
 
 	}
 
+	public function classifications() {
+
+		// Check authorization
+		$check = (Auth::check('default')) ?: null;
+
+		// If the user is not authorized, redirect to the login screen
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+
+		// Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		$works_classifications = Archives::find('all', array(
+			'fields' => array('classification', 'count(classification) as works'),
+			'group' => 'classification',
+			'conditions' => array('classification' => array('!=' => ''), 'controller' => 'works'),
+			'order' => array('classification' => 'ASC'),
+		));
+
+		$classifications = $works_classifications->map(function($wc) {
+			return array('name' => $wc->classification, 'works' => $wc->works);
+		}, array('collect' => false));
+
+		return compact('classifications', 'auth');
+	}
+
 	public function histories() {
 
 		$check = (Auth::check('default')) ?: null;

@@ -1,6 +1,6 @@
 <?php
 
-$this->title('Artists');
+$this->title('Classifications');
 
 ?>
 
@@ -20,17 +20,18 @@ $this->title('Artists');
 	</ul>
 
 </div>
-</span><div class="actions">
+
+<div class="actions">
 	<ul class="nav nav-tabs">
 		<li>
 			<a href="/works">Index</a>
 		</li>
 
-		<li class="active">
+		<li>
 			<?=$this->html->link('Artists','/works/artists'); ?>
 		</li>
 
-		<li>
+		<li class="active">
 			<?=$this->html->link('Classifications','/works/classifications'); ?>
 		</li>
 
@@ -52,10 +53,10 @@ $this->title('Artists');
 		<?php endif; ?>
 	</div>
 
-	<?php foreach ($artists as $artist): ?>
+	<?php foreach ($classifications as $classification): ?>
 
-		<?php $query = urlencode($artist['name']); ?>
-		<p><?=$this->html->link($artist['name'], "/works/search?conditions=artist&query=$query"); ?> <span class="badge"><?=$artist['works'] ?></span></p>
+		<?php $query = urlencode($classification['name']); ?>
+		<p><?=$this->html->link($classification['name'], "/works/search?conditions=classification&query=$query"); ?> <span class="badge"><?=$classification['works'] ?></span></p>
 
 	<?php endforeach; ?>
 </div>

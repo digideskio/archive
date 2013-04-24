@@ -92,6 +92,9 @@ class WorksControllerTest extends \lithium\test\Unit {
 		$response = $works->artists();
 		$this->assertEqual($response->headers["Location"], "/login");
 		
+		$response = $works->classifications();
+		$this->assertEqual($response->headers["Location"], "/login");
+		
 		$response = $works->view();
 		$this->assertEqual($response->headers["Location"], "/login");
 		

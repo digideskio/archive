@@ -32,6 +32,10 @@ $this->title('Search Artwork');
 		</li>
 
 		<li>
+			<?=$this->html->link('Classifications','/works/classifications'); ?>
+		</li>
+
+		<li>
 			<?=$this->html->link('History','/works/histories'); ?>
 		</li>
 
