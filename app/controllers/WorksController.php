@@ -78,9 +78,13 @@ class WorksController extends \lithium\action\Controller {
 		$query = '';
 		$condition = '';
 
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$total = 0;
+
 		$data = $this->request->data ?: $this->request->query;
 
-		if (isset($data['conditions'])) {
+		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
 			$condition = $data['conditions'];
 
 			if ($condition == 'year') {
@@ -93,7 +97,15 @@ class WorksController extends \lithium\action\Controller {
 			$works = Works::find('all', array(
 				'with' => 'Archives',
 				'order' => $order,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'limit' => $limit,
+				'page' => $page
+			));
+
+			$total = Works::count('all', array(
+				'with' => 'Archives',
+				'order' => $order,
+				'conditions' => $conditions,
 			));
 
 			if ($condition == 'earliest_date') {
@@ -101,7 +113,7 @@ class WorksController extends \lithium\action\Controller {
 			}
 		}
 
-		return compact('works', 'condition', 'query', 'auth');
+		return compact('works', 'condition', 'query', 'total', 'page', 'limit', 'auth');
 
 	}
 
