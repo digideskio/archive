@@ -72,6 +72,7 @@ class Works extends \lithium\data\Model {
 		$attributes = array(
 			'signed',
 			'framed',
+			'certification',
 			'edition',
 			'artist_native_name'
 		);
@@ -107,13 +108,15 @@ class Works extends \lithium\data\Model {
 		$edition = $entity->attribute('edition') ? 'Edition: ' . $entity->attribute('edition') : '';
 		$signed = $entity->attribute('signed') ? 'Work is Signed' : '';
 		$framed = $entity->attribute('framed') ? 'Work is Framed' : '';
+		$certification = $entity->attribute('certification') ? 'Certificate of Authenticity included' : '';
 		
 		$info = array_filter(array(
 			$edition,
 			$quantity,
 			$remarks,
 			$signed,
-			$framed
+			$framed,
+			$certification
 		));
 		
 		return implode('<br/>', $info);

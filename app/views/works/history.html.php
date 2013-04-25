@@ -227,6 +227,13 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
+				<?php if( $wh->attribute('certification') ): ?>
+					<tr>
+					<td class="meta">Certificate of Authenticity</td>
+					<td>Yes</td>
+					</tr>
+				<?php endif; ?>
+
 			</tbody>
 		</table>
 

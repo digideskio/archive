@@ -107,7 +107,7 @@ $work_classes_list = array_combine($classifications, $classifications);
 			));?>
 			<?=$this->form->field('running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
 			<?=$this->form->field('measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
-			<label><span class="two-d">Additional Notes</span></label>
+			<label>Additional Notes</label>
 			<div class="signed">
 				<label class="checkbox">
 				<?=$this->form->checkbox('signed', array('class' => 'two-d', 'checked' => $work->attribute('signed')));?> Artwork is Signed
@@ -116,6 +116,11 @@ $work_classes_list = array_combine($classifications, $classifications);
 			<div class="framed">
 				<label class="checkbox">
 				<?=$this->form->checkbox('framed', array('class' => 'two-d', 'checked' => $work->attribute('framed')));?> Artwork is Framed
+				</label>
+			</div>
+			<div class="certification">
+				<label class="checkbox">
+				<?=$this->form->checkbox('certification', array('checked' => $work->attribute('certification')));?> Certificate of Authenticity
 				</label>
 			</div>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
