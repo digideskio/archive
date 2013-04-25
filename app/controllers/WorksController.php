@@ -338,17 +338,30 @@ class WorksController extends \lithium\action\Controller {
 		$work = Works::create();
 
 		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'count(artist) as artists'),
+			'fields' => array('artist', 'count(artist) as works'),
 			'group' => 'artist',
 			'conditions' => array('artist' => array('!=' => '')),
-			'order' => array('artists' => 'DESC')
+			'order' => array('works' => 'DESC')
 		));
 
-		$artists = array();
+		$artists = $works_artists->map(function($wa) {
+			return $wa->artist;
+		}, array('collect' => false));
 
-		foreach ($works_artists as $wa) {
-			array_push($artists, $wa->artist);
-		}
+		$works_locations = Works::find('all', array(
+			'fields' => array('location'),
+			'group' => 'location',
+			'conditions' => array('location' => array('!=' => '')),
+			'order' => array('location' => 'ASC')
+		));
+
+		$locations = $works_locations->map(function($wl) {
+			return $wl->location;
+		}, array('collect' => false));
+
+		$users = Users::find('all', array(
+			'order' => array('name' => 'ASC'),
+		));
 
 		$classifications = Works::classifications();
 
@@ -360,7 +373,7 @@ class WorksController extends \lithium\action\Controller {
 			return $this->redirect(array('Works::view', 'args' => array($archive->slug)));
 		}
 
-		return compact('work', 'artists', 'classifications', 'auth');
+		return compact('work', 'artists', 'classifications', 'locations', 'users', 'auth');
 	}
 
 	public function edit() {
@@ -391,19 +404,32 @@ class WorksController extends \lithium\action\Controller {
 			if($work) {
 
 				$works_artists = Works::find('all', array(
-					'fields' => array('artist', 'count(artist) as artists'),
+					'fields' => array('artist', 'count(artist) as works'),
 					'group' => 'artist',
 					'conditions' => array('artist' => array('!=' => '')),
-					'order' => array('artists' => 'DESC')
+					'order' => array('works' => 'DESC')
 				));
 
-				$artists = array();
-
-				foreach ($works_artists as $wa) {
-					array_push($artists, $wa->artist);
-				}
+				$artists = $works_artists->map(function($wa) {
+					return $wa->artist;
+				}, array('collect' => false));
 
 				$classifications = Works::classifications();
+		
+				$works_locations = Works::find('all', array(
+					'fields' => array('location'),
+					'group' => 'location',
+					'conditions' => array('location' => array('!=' => '')),
+					'order' => array('location' => 'ASC')
+				));
+
+				$locations = $works_locations->map(function($wl) {
+					return $wl->location;
+				}, array('collect' => false));
+
+				$users = Users::find('all', array(
+					'order' => array('name' => 'ASC'),
+				));
 
 				$order = array('title' => 'ASC');
 
@@ -414,7 +440,7 @@ class WorksController extends \lithium\action\Controller {
 					),
 					'order' => $order
 				));
-		
+
 				$album_ids = array();
 
 				foreach ($albums as $album) {
@@ -484,6 +510,8 @@ class WorksController extends \lithium\action\Controller {
 					'work_links',
 					'artists',
 					'classifications',
+					'locations',
+					'users',
 					'auth'
 				);
 			}	

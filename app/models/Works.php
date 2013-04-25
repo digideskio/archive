@@ -74,7 +74,13 @@ class Works extends \lithium\data\Model {
 			'framed',
 			'certification',
 			'edition',
-			'artist_native_name'
+			'artist_native_name',
+			'packing_type',
+			'pack_price',
+			'pack_price_per',
+			'in_time',
+			'in_from',
+			'in_operator',
 		);
 
 		return $attributes;
@@ -120,6 +126,26 @@ class Works extends \lithium\data\Model {
 		));
 		
 		return implode('<br/>', $info);
+	}
+
+	public function inventory($entity) {
+
+		$packing_type = $entity->attribute('packing_type') ? 'Packing Type: ' . $entity->attribute('packing_type')  : '';
+		$pack_price = $entity->attribute('pack_price') ? 'Packing Cost: ' . $entity->attribute('pack_price') . ' <small>' . $entity->attribute('pack_price_per'). '</small>' : '';
+		$in_time = $entity->attribute('in_time') ? 'Received Time: ' . $entity->attribute('in_time')  : '';
+		$in_from = $entity->attribute('in_from') ? 'Sent From: ' . $entity->attribute('in_from')  : '';
+		$in_operator = $entity->attribute('in_operator') ? 'Received By: ' . $entity->attribute('in_operator')  : '';
+
+		$info = array_filter(array(
+			$packing_type,
+			$pack_price,
+			$in_time,
+			$in_from,
+			$in_operator
+		));
+
+		return implode('<br/>', $info);
+
 	}
 
 	public function documents($entity,  $type = 'all', $conditions = null) {

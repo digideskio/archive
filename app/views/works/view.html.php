@@ -107,6 +107,17 @@ $this->title($work->title);
 					<td><?=$work->location ?></td>
 				</tr>
 				<?php endif; ?>
+				<?php if($auth->role->name == 'Admin'): ?>
+				<tr>
+					<td><i class="icon-gift"></i></td>
+					<td class="meta">Inventory</td>
+					<td>
+						<?php
+							echo $work->inventory(); 
+						?>
+					</td>
+				</tr>
+				<?php endif; ?>
 				<tr>
 					<td><i class="icon-info-sign"></i></td>
 					<td class="meta">Notes</td>

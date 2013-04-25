@@ -16,6 +16,20 @@ $classification_names = json_encode($classifications);
 
 $work_classes_list = array_combine($classifications, $classifications);
 
+$packing_types = array('Crate', 'Paper Box', 'Simple', 'None', 'Other');
+$packing_types_list = array_combine($packing_types, $packing_types);
+
+$currencies = array('RMB', 'USD', 'EURO');
+$currencies_list = array_combine($currencies, $currencies);
+
+$location_names = json_encode($locations);
+
+$users_list = array();
+
+foreach ($users as $user) {
+	$users_list += array($user->username => $user->name);
+}
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -56,8 +70,8 @@ $work_classes_list = array_combine($classifications, $classifications);
 <div class="row">
 
 	<div class="span5">
-		<div class="well">
 		<?=$this->form->create($work, array('id' => 'WorksForm')); ?>
+		<div class="well">
 			<legend>Info</legend>
 
 			<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
@@ -72,10 +86,6 @@ $work_classes_list = array_combine($classifications, $classifications);
 			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
 			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
-
-			<?php if($auth->role->name == 'Admin'): ?>
-				<?=$this->form->field('location', array('autocomplete' => 'off'));?>
-			<?php endif; ?>
 
 			<?=$this->form->field('materials', array('type' => 'textarea'));?>
 			<?=$this->form->field('edition', array('autocomplete' => 'off', 'value' => $work->attribute('edition')));?>
@@ -125,9 +135,41 @@ $work_classes_list = array_combine($classifications, $classifications);
 			</div>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
-		<?=$this->form->end(); ?>
 		</div>
 		
+			<?php if($auth->role->name == 'Admin'): ?>
+
+				<div class="well">
+
+					<legend>Inventory Info</legend>
+						<?php $packing_types_list = array_merge(array('' => 'choose one...'), $packing_types_list); ?>
+
+						<?=$this->form->label('packing_type', 'Packing Type'); ?>
+						<?=$this->form->select('packing_type', $packing_types_list, array('value' => $work->attribute('packing_type'))); ?>
+
+						<?=$this->form->field('pack_price', array('label' => 'Packing Cost', 'autocomplete' => 'off', 'value' => $work->attribute('pack_price')));?>
+
+						<?=$this->form->select('pack_price_per', $currencies_list, array('value' => $work->attribute('pack_price_per'))); ?>
+					
+						<?=$this->form->field('location', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $location_names));?>
+
+						<?=$this->form->field('in_time', array('label' => 'Received Time', 'autocomplete' => 'off', 'value' => $work->attribute('in_time')));?>
+						<?=$this->form->field('in_from', array('label' => 'Sent From', 'autocomplete' => 'off', 'value' => $work->attribute('in_from')));?>
+
+						<?php $users_list = array_merge(array('' => 'choose one...'), $users_list); ?>
+
+						<?=$this->form->label('in_operator', 'Received By'); ?>
+						<?=$this->form->select('in_operator', $users_list, array('value' => $work->attribute('in_operator'))); ?>
+					
+						<fieldset>
+						<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
+						<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
+						</fieldset>
+				</div>
+
+			<?php endif; ?>
+
+		<?=$this->form->end(); ?>
 <script>
 
 $(document).ready(function() {
@@ -210,6 +252,12 @@ $(document).ready(function() {
 			<?=$this->form->hidden('signed', array('value' => $work->attribute('signed'))); ?>
 			<?=$this->form->hidden('framed', array('value' => $work->attribute('framed'))); ?>
 			<?=$this->form->hidden('artist_native_name', array('value' => $work->attribute('artist_native_name'))); ?>
+			<?=$this->form->hidden('packing_type', array('value' => $work->attribute('packing_type'))); ?>
+			<?=$this->form->hidden('pack_price', array('value' => $work->attribute('pack_price'))); ?>
+			<?=$this->form->hidden('pack_price_per', array('value' => $work->attribute('pack_price_per'))); ?>
+			<?=$this->form->hidden('in_time', array('value' => $work->attribute('in_time'))); ?>
+			<?=$this->form->hidden('in_from', array('value' => $work->attribute('in_from'))); ?>
+			<?=$this->form->hidden('in_operator', array('value' => $work->attribute('in_operator'))); ?>
 		
 		
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>

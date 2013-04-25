@@ -16,6 +16,22 @@ $artist = $work->artist ?: $artists[0];
 
 $work_classes_list = array_combine($classifications, $classifications);
 
+$packing_types = array('Crate', 'Paper Box', 'Simple', 'None', 'Other');
+$packing_types_list = array_combine($packing_types, $packing_types);
+
+$currencies = array('RMB', 'USD', 'EURO');
+$currencies_list = array_combine($currencies, $currencies);
+
+$location_names = json_encode($locations);
+
+$users_list = array();
+
+foreach ($users as $user) {
+	$users_list += array($user->username => $user->name);
+}
+
+$in_time = $work->in_time ?: date('Y-m-d');
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -76,8 +92,12 @@ $work_classes_list = array_combine($classifications, $classifications);
 	</div>
 </div>
 
-<div class="well">
+<div class="row">
+
 <?=$this->form->create($work, array('id' => 'WorksForm')); ?>
+
+<div class="span5">
+<div class="well">
 	<legend>Artwork Info</legend>
 
 	<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
@@ -92,10 +112,6 @@ $work_classes_list = array_combine($classifications, $classifications);
     <?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('latest_date', array('autocomplete' => 'off'));?>
     <?=$this->form->field('creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
-
-	<?php if($auth->role->name == 'Admin'): ?>
-    	<?=$this->form->field('location', array('autocomplete' => 'off'));?>
-	<?php endif; ?>
 
 	<?=$this->form->field('materials', array('type' => 'textarea'));?>
 	<?=$this->form->field('edition', array('autocomplete' => 'off'));?>
@@ -143,6 +159,39 @@ $work_classes_list = array_combine($classifications, $classifications);
 	</div>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/works', array('class' => 'btn')); ?>
+</div>
+</div>
+
+	<?php if($auth->role->name == 'Admin'): ?>
+		<div class="span5">
+
+		<div class="well">
+			<legend>Inventory Info</legend>
+
+				<?php $packing_types_list = array_merge(array('' => 'choose one...'), $packing_types_list); ?>
+
+				<?=$this->form->label('packing_type', 'Packing Type'); ?>
+				<?=$this->form->select('packing_type', $packing_types_list); ?>
+
+				<?=$this->form->field('pack_price', array('label' => 'Packing Cost', 'autocomplete' => 'off'));?>
+
+				<?=$this->form->select('pack_price_per', $currencies_list); ?>
+			
+				<?=$this->form->field('location', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $location_names));?>
+
+				<?=$this->form->field('in_time', array('label' => 'Received Time', 'autocomplete' => 'off', 'value' => $in_time));?>
+				<?=$this->form->field('in_from', array('label' => 'Sent From', 'autocomplete' => 'off'));?>
+
+				<?php $users_list = array_merge(array('' => 'choose one...'), $users_list); ?>
+
+				<?=$this->form->label('in_operator', 'Received By'); ?>
+				<?=$this->form->select('in_operator', $users_list); ?>
+
+		</div>
+
+	<?php endif; ?>
+</div>
+
 <?=$this->form->end(); ?>
 </div>
 
