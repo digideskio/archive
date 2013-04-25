@@ -16,9 +16,7 @@
 	<tr>
 		<th>ID</th>
 		<th>Image</th>
-		<th>Title</th>
-		<th>Year</th>
-		<th>Dimensions</th>
+		<th>Info</th>
 		<th style="width: 150px">Materials</th>
 		<th>Notes</th>
 		<th>Classification</th>
@@ -41,9 +39,7 @@
 			<span class="label">No Preview</span>
 		<?php } ?>
 	</td>
-    <td><?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?></td>
-    <td><?=$work->archive->years(); ?></td>
-	<td><?php echo(implode('<br/>', array_filter(array(str_replace(', ', '<br/>', $work->dimensions()), $work->measurement_remarks)))); ?></td>
+	<td><?=$this->artwork->caption($work->archive, $work, array('link' => true)); ?></td>
 	<td><?=$work->materials ?></td>
     <td><?php echo $work->notes(); ?></td>
     <td><?=$work->archive->classification ?></td>
