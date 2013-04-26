@@ -112,9 +112,9 @@ class Works extends \lithium\data\Model {
 		$remarks =  $entity->remarks ? $entity->remarks : '';
 
 		$edition = $entity->attribute('edition') ? 'Edition: ' . $entity->attribute('edition') : '';
-		$signed = $entity->attribute('signed') ? 'Work is Signed' : '';
-		$framed = $entity->attribute('framed') ? 'Work is Framed' : '';
-		$certification = $entity->attribute('certification') ? 'Certificate of Authenticity included' : '';
+		$signed = $entity->attribute('signed') ? '<span class="label label-info">Signed</span>' : '';
+		$framed = $entity->attribute('framed') ? '<span class="label label-inverse">Framed</span>' : '';
+		$certification = $entity->attribute('certification') ? '<span class="label label-success">Certification</span>' : '';
 		
 		$info = array_filter(array(
 			$edition,
