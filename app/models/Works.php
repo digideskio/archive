@@ -108,6 +108,7 @@ class Works extends \lithium\data\Model {
     
     public function notes($entity) {
 						
+		$annotation = $entity->annotation ? '<em>' . $entity->annotation . '</em>' : '';
 		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
 		$remarks =  $entity->remarks ? $entity->remarks : '';
 
@@ -117,6 +118,7 @@ class Works extends \lithium\data\Model {
 		$certification = $entity->attribute('certification') ? '<span class="label label-success">Certification</span>' : '';
 		
 		$info = array_filter(array(
+			$annotation,
 			$edition,
 			$quantity,
 			$remarks,
