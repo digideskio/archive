@@ -122,7 +122,13 @@ class PublicationsController extends \lithium\action\Controller {
 		$query = '';
 		$condition = '';
 
-		if (isset($data['conditions'])) {
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$total = 0;
+
+		$data = $this->request->data ?: $this->request->query;
+
+		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
 			$condition = $data['conditions'];
 
 			if ($condition == 'year') {
@@ -136,6 +142,13 @@ class PublicationsController extends \lithium\action\Controller {
 				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $conditions,
+				'limit' => $limit,
+				'page' => $page
+			));
+
+			$total = Publications::count('all', array(
+				'with' => 'Archives',
+				'conditions' => $conditions,
 			));
 
 			if ($condition == 'earliest_date') {
@@ -145,7 +158,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$pub_classifications = Publications::classifications();
 
-		return compact('publications', 'pub_classifications', 'condition', 'query', 'auth');
+		return compact('publications', 'pub_classifications', 'condition', 'query', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {
