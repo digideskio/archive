@@ -36,20 +36,18 @@ class SearchController extends \lithium\action\Controller {
         
 			$order = array('earliest_date' => 'DESC');
 
+			$work_conditions = "(`title` LIKE '%$query%') OR (`artist` LIKE '%$query%') OR (`classification` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`materials` LIKE '%$query%') OR (`remarks` LIKE '%$query%') OR (`creation_number` LIKE '%$query%') OR (`annotation` LIKE '%$query%')";
+
 			$works = Works::find('all', array(
 				'with' => 'Archives',
 				'order' => $order,
-				'conditions' => array(
-					'title' => array(
-						'LIKE' => "%$query%"
-					))
+				'conditions' => $work_conditions
 			));
 
+			$doc_conditions = "(`title` LIKE '%$query%') OR (`date_created` LIKE '%$query%') OR (`repository` LIKE '%$query%') OR (`credit` LIKE '%$query%') OR (`remarks` LIKE '%$query%')";
+
 			$documents = Documents::find('all', array(
-				'conditions' => array(
-					'slug' => array(
-						'LIKE' => "%$query%"
-				))
+				'conditions' => $doc_conditions
 			));
 
 			}
