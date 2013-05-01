@@ -102,8 +102,10 @@ Router::connect('/architectures/histories/{:page:[0-9]+}', array('Architectures:
 Router::connect('/architectures/search/{:page:[0-9]+}', array('Architectures::search'));
 Router::connect('/architectures/delete/{:slug}', array('Architectures::delete'));
 
+Router::connect('/exhibitions/pages/{:page:[0-9]+}', array('Exhibitions::index'));
 Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));
 Router::connect('/exhibitions/edit/{:slug}', array('Exhibitions::edit'));
+Router::connect('/exhibitions/search/{:page:[0-9]+}', array('Exhibitions::search'));
 Router::connect('/exhibitions/delete/{:slug}', array('Exhibitions::delete'));
 
 Router::connect('/publications/pages/{:page:[0-9]+}', array('Publications::index'));

@@ -47,4 +47,23 @@ $this->title('Exhibitions');
 
 <?php endif; ?>
 
+<?php if($total > 0): ?>
+
 <?=$this->partial->exhibitions(compact('exhibitions')); ?>
+
+<div class="pagination">
+    <ul>
+	<?php $query = "?limit=$limit"; ?>
+    <?php if($page > 1):?>
+	 <?php $prev = $page - 1; ?>
+    <li><?=$this->html->link('«', "/exhibitions/pages/$prev$query");?></li> 
+    <?php endif;?> 
+        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
+     <?php if($total > ($limit * $page)):?>
+	 <?php $next = $page + 1; ?>
+     <li><?=$this->html->link('»', "/exhibitions/pages/$next$query");?></li>
+     <?php endif;?> 
+    </ul>
+</div>
+
+<?php endif; ?>

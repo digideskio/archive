@@ -33,14 +33,21 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-	 	$order = 'Archives.earliest_date DESC';
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('Archives.earliest_date' => 'DESC');
+		$total = Exhibitions::count();
+
+		$limit = ($limit == 'all') ? $total : $limit;
 		
 		$exhibitions = Exhibitions::find('all', array(
 			'with' => array('Archives', 'Components'),
 			'order' => $order,
+			'limit' => $limit,
+			'page' => $page
 		));
 		
-		return compact('exhibitions', 'auth');
+		return compact('exhibitions', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function search() {
@@ -67,9 +74,13 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$query = '';
 		$type = 'All';
 
-		$data = $this->request->data;
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$total = 0;
 
-		if (isset($data['conditions'])) {
+		$data = $this->request->data ?: $this->request->query;
+
+		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
 			$condition = $data['conditions'];
 			$type = $data['type'];
 
@@ -81,21 +92,31 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$conditions = array("$condition" => array('LIKE' => "%$query%"));
 
 			if($type != 'All') {
-				$conditions['type'] = $type;
+				$conditions['Archives.type'] = $type;
 			}
 
+			//FIXME trying to find:: with => Components seems to mess up the conditions and page
 			$exhibitions = Exhibitions::find('all', array(
-				'with' => array('Archives', 'Components'),
+				'with' => array('Archives'),
 				'order' => $order,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'limit' => $limit,
+				'page' => $page
 			));
 
-			if ($condition == 'earliest_date') {
+			$total = Exhibitions::count('all', array(
+				'with' => array('Archives'),
+				'order' => $order,
+				'conditions' => $conditions,
+			));
+
+			if ($condition == 'Archives.earliest_date') {
 				$condition = 'year';
 			}
+
 		}
 
-		return compact('exhibitions', 'condition', 'type', 'query', 'auth');
+		return compact('exhibitions', 'condition', 'type', 'query', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {

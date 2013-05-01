@@ -42,7 +42,7 @@ $this->title('Search Exhibitions');
 
 <div class="well">
 
-	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+	<?=$this->form->create(null, array('class' => 'form-inline', 'action' => 'search')); ?>
 		<legend>Search Exhibitions</legend>
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
@@ -85,4 +85,23 @@ $this->title('Search Exhibitions');
 	
 </div>
 
+<?php if($total > 0): ?>
+
 <?=$this->partial->exhibitions(compact('exhibitions')); ?>
+
+<div class="pagination">
+    <ul>
+	<?php $query = $condition ? "?conditions=$condition&query=$query&type=$type" : ''; ?>
+    <?php if($page > 1):?>
+	 <?php $prev = $page - 1; ?>
+    <li><?=$this->html->link('«', "/exhibitions/search/$prev$query");?></li> 
+    <?php endif;?> 
+        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
+     <?php if($total > ($limit * $page)):?>
+	 <?php $next = $page + 1; ?>
+     <li><?=$this->html->link('»', "/exhibitions/search/$next$query");?></li>
+     <?php endif;?> 
+    </ul>
+</div>
+
+<?php endif; ?>
