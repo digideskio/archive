@@ -47,7 +47,7 @@ $this->title('Search Architecture');
 
 <div class="well">
 
-	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+	<?=$this->form->create(null, array('class' => 'form-inline', 'action' => 'search')); ?>
 		<legend>Search Architecture</legend>
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
