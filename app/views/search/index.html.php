@@ -38,6 +38,8 @@ $this->title('Search');
 
 </div>
 
+<div id="search-results">
+
 	<?php 
 		$has_works = sizeof($works) > 0 ? true : false; 
 		$has_documents = sizeof($documents) > 0 ? true : false; 
@@ -62,3 +64,13 @@ $this->title('Search');
 		<?=$this->partial->documents(array('documents' => $documents, 'showBar' => true)); ?>
 
 	<? endif; ?>
+
+</div>
+
+	<script>
+
+		$(document).ready(function() {
+			$("#search-results .table").highlight("<?=$query?>");
+		 });
+
+	</script>

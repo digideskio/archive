@@ -25,6 +25,10 @@
 			'plupload.html4.js',
 			'plupload.html5.js'
 		)); ?>
+
+	<?php echo $this->html->script(array(
+		'jquery.highlight.js',
+	)); ?>
 	
 </head>
 <body class="app">

@@ -51,6 +51,10 @@ blockquote {
 	left: 12px;
 }
 
+.highlight {
+	background-color: #FFFF88;
+}
+
 @media (max-width: 979px) {
   body {
     padding-top: 0;
