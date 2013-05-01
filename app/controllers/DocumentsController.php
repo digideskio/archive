@@ -81,16 +81,20 @@ class DocumentsController extends \lithium\action\Controller {
 
 		$order = array('file_date' => 'DESC');
 
-		$data = $this->request->data;
-
 		$query = '';
 		$condition = '';
 
-		if (isset($data['conditions'])) {
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$total = 0;
+
+		$data = $this->request->data ?: $this->request->query;
+
+		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
 			$condition = $data['conditions'];
 
 			if ($condition == 'year') {
-				$condition = 'earliest_date';
+				$condition = 'date_created';
 			}
 
 			$query = $data['query'];
@@ -99,14 +103,20 @@ class DocumentsController extends \lithium\action\Controller {
 			$documents = Documents::find('all', array(
 				'with' => array('Formats'),
 				'order' => $order,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'limit' => $limit,
+				'page' => $page
 			));
 
-			if ($condition == 'earliest_date') {
+			$total = Documents::count('all', array(
+				'conditions' => $conditions,
+			));
+
+			if ($condition == 'date_created') {
 				$condition = 'year';
 			}
 		}
-		return compact('documents', 'condition', 'query', 'auth');
+		return compact('documents', 'condition', 'query', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {

@@ -55,13 +55,33 @@ $this->title('Search');
 
 	<?php if ($has_works): ?>
 
+		<?php if (sizeof($works) > 100): ?>
+
+		<div class="alert alert-error">
+			<p>Your search has returned too many Artworks. Please narrow your search criteria using the <a href="/works/search?conditions=title&query=<?=$query?>">Artworks search page</a>.</p>
+		</div>
+
+		<?php else: ?>
+
 		<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
+
+		<?php endif; ?>
 
 	<? endif; ?>
 
 	<?php if ($has_documents): ?>
 
+		<?php if (sizeof($works) > 100): ?>
+
+		<div class="alert alert-error">
+			<p>Your search has returned too many Documents. Please narrow your search criteria using the <a href="/documents/search?conditions=title&query=<?=$query?>">Documents search page</a>.</p>
+		</div>
+
+		<?php else: ?>
+
 		<?=$this->partial->documents(array('documents' => $documents, 'showBar' => true)); ?>
+
+		<?php endif; ?>
 
 	<? endif; ?>
 

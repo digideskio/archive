@@ -116,6 +116,7 @@ Router::connect('/documents/pages/{:page:[0-9]+}', array('Documents::index'));
 Router::connect('/documents/pages/{:page:[0-9]+}.{:type}', array('Documents::index'));
 Router::connect('/documents/view/{:slug}', array('Documents::view'));
 Router::connect('/documents/edit/{:slug}', array('Documents::edit'));
+Router::connect('/documents/search/{:page:[0-9]+}', array('Documents::search'));
 Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
 
 Router::connect('/archives_documents/delete/{:id}', array('ArchivesDocuments::delete'));
