@@ -72,4 +72,23 @@ $this->title('Search Architecture');
 	
 </div>
 
+<?php if($total > 0): ?>
+
 <?=$this->partial->architectures(compact('architectures')); ?>
+
+<div class="pagination">
+    <ul>
+	<?php $query = $condition ? "?conditions=$condition&query=$query" : ''; ?>
+    <?php if($page > 1):?>
+	 <?php $prev = $page - 1; ?>
+    <li><?=$this->html->link('«', "/architectures/search/$prev$query");?></li> 
+    <?php endif;?> 
+        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
+     <?php if($total > ($limit * $page)):?>
+	 <?php $next = $page + 1; ?>
+     <li><?=$this->html->link('»', "/architectures/search/$next$query");?></li>
+     <?php endif;?> 
+    </ul>
+</div>
+
+<?php endif; ?>

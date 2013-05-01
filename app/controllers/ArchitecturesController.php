@@ -33,12 +33,22 @@ class ArchitecturesController extends \lithium\action\Controller {
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
+
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('earliest_date' => 'DESC');
+		$total = Architectures::count();
+
+		$limit = ($limit == 'all') ? $total : $limit;
 		
 		$architectures = Architectures::find('all', array(
 			'with' => 'Archives',
-			'order' => array('earliest_date' => 'DESC')
+			'order' => array('earliest_date' => 'DESC'),
+			'limit' => $limit,
+			'page' => $page
 		));
-		return compact('architectures', 'auth');
+
+		return compact('architectures', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function histories() {
@@ -89,12 +99,16 @@ class ArchitecturesController extends \lithium\action\Controller {
 
 		$order = array('earliest_date' => 'DESC');
 
-		$data = $this->request->data;
-
 		$query = '';
 		$condition = '';
 
-		if (isset($data['conditions'])) {
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$total = 0;
+
+		$data = $this->request->data ?: $this->request->query;
+
+		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
 			$condition = $data['conditions'];
 
 			if ($condition == 'year') {
@@ -107,14 +121,22 @@ class ArchitecturesController extends \lithium\action\Controller {
 			$architectures = Architectures::find('all', array(
 				'with' => 'Archives',
 				'order' => $order,
-				'conditions' => $conditions
+				'conditions' => $conditions,
+				'limit' => $limit,
+				'page' => $page
+			));
+
+			$total = Architectures::count('all', array(
+				'with' => 'Archives',
+				'order' => $order,
+				'conditions' => $conditions,
 			));
 
 			if ($condition == 'earliest_date') {
 				$condition = 'year';
 			}
 		}
-		return compact('architectures', 'condition', 'query', 'auth');
+		return compact('architectures', 'condition', 'query', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function view() {
