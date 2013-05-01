@@ -10,14 +10,31 @@ $this->title('Search');
 
 	<li>
 	<?=$this->html->link('Search','/search'); ?>
-	<span class="divider">/</span>
-	</li>
-	
-	<li class="active">
-		<?=$this->html->link($query,'/search?query='.$query); ?>
 	</li>
 
 	</ul>
+
+</div>
+
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li class="active">
+			<?=$this->html->link('All Results','/search'); ?>
+		</li>
+	</ul>
+
+</div>
+
+<div class="well">
+
+	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+		<legend>Search the Archive</legend>
+
+		<?=$this->form->field('query', array('value' => $query, 'autocomplete' => 'off', 'placeholder' => 'Search…', 'template' => '{:input}')); ?>
+
+		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
+
+	<?=$this->form->end(); ?>
 
 </div>
 
@@ -26,10 +43,10 @@ $this->title('Search');
 		$has_documents = sizeof($documents) > 0 ? true : false; 
 	?>
 
-	<?php if (!$has_works && !$has_documents): ?>
+	<?php if ($query && !$has_works && !$has_documents): ?>
 
 		<div class="alert alert-error">
-			<p>We could find nothing in the archive called <strong><?=$query ?></strong>.</p>
+			<p>No results found.</p>
 		</div>
 
 	<?php endif; ?>

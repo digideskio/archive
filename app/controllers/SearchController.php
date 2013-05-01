@@ -26,24 +26,33 @@ class SearchController extends \lithium\action\Controller {
             return $this->redirect('Sessions::add');
         }
         
-        $query = $this->request->query['query'];
-        
-        $order = array('earliest_date' => 'DESC');
-        $works = Works::find('all', array(
-			'with' => 'Archives',
-			'order' => $order,
-			'conditions' => array(
-				'title' => array(
-					'LIKE' => "%$query%"
-			))
-		));
+		$data = $this->request->data ?: $this->request->query;
 
-		$documents = Documents::find('all', array(
-			'conditions' => array(
-				'slug' => array(
-					'LIKE' => "%$query%"
-			))
-		));
+		$works = array();
+		$documents = array();
+
+		if (isset($data['query']) && $data['query']) {
+			$query = $data['query'];
+        
+			$order = array('earliest_date' => 'DESC');
+
+			$works = Works::find('all', array(
+				'with' => 'Archives',
+				'order' => $order,
+				'conditions' => array(
+					'title' => array(
+						'LIKE' => "%$query%"
+					))
+			));
+
+			$documents = Documents::find('all', array(
+				'conditions' => array(
+					'slug' => array(
+						'LIKE' => "%$query%"
+				))
+			));
+
+			}
         
         return compact('works', 'documents', 'query', 'auth');
         
