@@ -31,6 +31,9 @@
 				<a href="/notices"><i class="icon-bell"></i> Notices</a></li>
 			<li <?php if ($c == 'metrics') echo 'class="active"'; ?> >
 				<a href="/metrics"><i class="icon-signal"></i> Metrics</a></li>
+			<li class="divider"></li>
+			<li <?php if ($c == 'search') echo 'class="active"'; ?> >
+				<a href="/search"><i class="icon-search"></i> Search</a></li>
 		</ul>
 	</div>
 	</div>
