@@ -31,14 +31,19 @@ class SearchController extends \lithium\action\Controller {
 		$data = $this->request->data ?: $this->request->query;
 
 		$works = array();
+		$architectures = array();
+		$exhibitions = array();
+		$publications = array();
 		$documents = array();
+
+		$query = '';
 
 		if (isset($data['query']) && $data['query']) {
 			$query = $data['query'];
         
 			$order = array('earliest_date' => 'DESC');
 
-			$work_conditions = "(`title` LIKE '%$query%') OR (`artist` LIKE '%$query%') OR (`classification` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`materials` LIKE '%$query%') OR (`remarks` LIKE '%$query%') OR (`creation_number` LIKE '%$query%') OR (`annotation` LIKE '%$query%')";
+			$work_conditions = "((`title` LIKE '%$query%') OR (`artist` LIKE '%$query%') OR (`classification` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`materials` LIKE '%$query%') OR (`remarks` LIKE '%$query%') OR (`creation_number` LIKE '%$query%') OR (`annotation` LIKE '%$query%'))";
 
 			$works = Works::find('all', array(
 				'with' => 'Archives',
@@ -46,7 +51,7 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $work_conditions
 			));
 
-			$architecture_conditions = "(`title` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%')";
+			$architecture_conditions = "((`title` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
 
 			$architectures = Architectures::find('all', array(
 				'with' => 'Archives',
@@ -54,7 +59,7 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $architecture_conditions,
 			));
 
-			$exhibition_conditions = "(`title` LIKE '%$query%') OR (`venue` LIKE '%$query%') OR (`curator` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%')";
+			$exhibition_conditions = "((`title` LIKE '%$query%') OR (`venue` LIKE '%$query%') OR (`curator` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
 
 			//FIXME trying to find:: with => Components seems to mess up the conditions and page
 			$exhibitions = Exhibitions::find('all', array(
@@ -63,7 +68,7 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $exhibition_conditions,
 			));
 
-			$publication_conditions = "(`title` LIKE '%$query%') OR (`author` LIKE '%$query%') OR (`publisher` LIKE '%$query%') OR (`editor` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`subject` LIKE '%$query%') OR (`language` LIKE '%$query%') OR (`storage_location` LIKE '%$query%') OR (`storage_number` LIKE '%$query%') OR (`publication_number` LIKE '%$query%')";
+			$publication_conditions = "((`title` LIKE '%$query%') OR (`author` LIKE '%$query%') OR (`publisher` LIKE '%$query%') OR (`editor` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`subject` LIKE '%$query%') OR (`language` LIKE '%$query%') OR (`storage_location` LIKE '%$query%') OR (`storage_number` LIKE '%$query%') OR (`publication_number` LIKE '%$query%'))";
 
 			$publications = Publications::find('all', array(
 				'with' => 'Archives',
@@ -71,7 +76,7 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $publication_conditions,
 			));
 
-			$doc_conditions = "(`title` LIKE '%$query%') OR (`date_created` LIKE '%$query%') OR (`repository` LIKE '%$query%') OR (`credit` LIKE '%$query%') OR (`remarks` LIKE '%$query%')";
+			$doc_conditions = "((`title` LIKE '%$query%') OR (`date_created` LIKE '%$query%') OR (`repository` LIKE '%$query%') OR (`credit` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
 
 			$documents = Documents::find('all', array(
 				'conditions' => $doc_conditions

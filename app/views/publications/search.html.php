@@ -2,6 +2,20 @@
 
 $this->title('Publications');
 
+$conditions_list = array(
+	'' => 'Search by...',
+	'title' => 'Title',
+	'author' => 'Author',
+	'publisher' => 'Publisher',
+	'editor' => 'Editor',
+	'earliest_date' => 'Year',
+	'subject' => 'Subject',
+	'langauge' => 'Langauge',
+	'storage_location' => 'Storage Location',
+	'storage_number' => 'Storage Number',
+	'publication_number' => 'Publication Number',
+);
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -59,20 +73,7 @@ $this->title('Publications');
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
 
-		<?php $selected = 'selected="selected"'; ?>
-
-		<select name="conditions">
-			<option value='title'>Title</option>
-			<option value='author' <?php if ($condition == 'author') { echo $selected; } ?>>Author</option>
-			<option value='publisher' <?php if ($condition == 'publisher') { echo $selected; } ?>>Publisher</option>
-			<option value='editor' <?php if ($condition == 'editor') { echo $selected; } ?>>Editor</option>
-			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
-			<option value='subject' <?php if ($condition == 'subject') { echo $selected; } ?>>Subject</option>
-			<option value='language' <?php if ($condition == 'language') { echo $selected; } ?>>Language</option>
-			<option value='storage_location' <?php if ($condition == 'storage_location') { echo $selected; } ?>>Storage Location</option>
-			<option value='storage_number' <?php if ($condition == 'storage_number') { echo $selected; } ?>>Storage Number</option>
-			<option value='publication_number' <?php if ($condition == 'publication_number') { echo $selected; } ?>>Publication Number</option>
-		</select>
+			<?=$this->form->select('condition', $conditions_list, array('label' => '', 'value' => $condition)); ?>
 
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
@@ -86,7 +87,7 @@ $this->title('Publications');
 
 <div class="pagination">
     <ul>
-	<?php $query = $condition ? "?conditions=$condition&query=$query" : ''; ?>
+	<?php $query = "?conditions=$condition&query=$query"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
     <li><?=$this->html->link('«', "/publications/search/$prev$query");?></li> 

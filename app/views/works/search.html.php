@@ -2,6 +2,22 @@
 
 $this->title('Search Artwork');
 
+$conditions_list = array(
+	'' => 'Search by...',
+	'title' => 'Title',
+	'artist' => 'Artist',
+	'classification' => 'Classification',
+	'earliest_date' => 'Year',
+	'materials' => 'Materials',
+	'remarks' => 'Remarks',
+	'creation_number' => 'Artwork ID',
+	'annotation' => 'Annotation',
+);
+
+if ($auth->role->name == 'Admin') {
+	$conditions_list['location'] = 'Location';	
+}
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -69,23 +85,7 @@ $this->title('Search Artwork');
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
 
-		<?php $selected = 'selected="selected"'; ?>
-
-		<select name="conditions">
-			<option value='title'>Title</option>
-			<option value='artist' <?php if ($condition == 'artist') { echo $selected; } ?>>Artist</option>
-			<option value='classification' <?php if ($condition == 'classification') { echo $selected; } ?>>Classification</option>
-			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
-
-		<?php if($auth->role->name == 'Admin'): ?>
-			<option value='location' <?php if ($condition == 'location') { echo $selected; } ?>>Location</option>
-		<?php endif; ?>
-
-			<option value='materials' <?php if ($condition == 'materials') { echo $selected; } ?>>Materials</option>
-			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
-			<option value='creation_number' <?php if ($condition == 'creation_number') { echo $selected; } ?>>Artwork ID</option>
-			<option value='annotation' <?php if ($condition == 'annotation') { echo $selected; } ?>>Annotation</option>
-		</select>
+			<?=$this->form->select('condition', $conditions_list, array('label' => '', 'value' => $condition)); ?>
 
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
@@ -99,7 +99,7 @@ $this->title('Search Artwork');
 
 <div class="pagination">
     <ul>
-	<?php $query = $condition ? "?conditions=$condition&query=$query" : ''; ?>
+	<?php $query = "?condition=$condition&query=$query"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
     <li><?=$this->html->link('«', "/works/search/$prev$query");?></li> 

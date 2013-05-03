@@ -2,6 +2,19 @@
 
 $this->title('Search Architecture');
 
+$conditions_list = array(
+	'' => 'Search by...',
+	'title' => 'Title',
+	'client' => 'Client',
+	'project_lead' => 'Project Lead',
+	'earliest_date' => 'Year',
+	'status' => 'Status',
+	'location' => 'Location',
+	'city' => 'City',
+	'country' => 'Country',
+	'remarks' => 'Remarks',
+);
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -52,19 +65,7 @@ $this->title('Search Architecture');
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
 
-		<?php $selected = 'selected="selected"'; ?>
-
-		<select name="conditions">
-			<option value='title'>Title</option>
-			<option value='client' <?php if ($condition == 'client') { echo $selected; } ?>>Client</option>
-			<option value='project_lead' <?php if ($condition == 'project_lead') { echo $selected; } ?>>Project Lead</option>
-			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Year</option>
-			<option value='status' <?php if ($condition == 'status') { echo $selected; } ?>>Status</option>
-			<option value='location' <?php if ($condition == 'location') { echo $selected; } ?>>Location</option>
-			<option value='city' <?php if ($condition == 'city') { echo $selected; } ?>>City</option>
-			<option value='country' <?php if ($condition == 'country') { echo $selected; } ?>>Country</option>
-			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
-		</select>
+		<?=$this->form->select('condition', $conditions_list, array('label' => '', 'value' => $condition)); ?>
 
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
@@ -78,7 +79,7 @@ $this->title('Search Architecture');
 
 <div class="pagination">
     <ul>
-	<?php $query = $condition ? "?conditions=$condition&query=$query" : ''; ?>
+	<?php $query = "?conditions=$condition&query=$query"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
     <li><?=$this->html->link('«', "/architectures/search/$prev$query");?></li> 

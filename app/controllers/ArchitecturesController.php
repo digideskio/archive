@@ -108,15 +108,16 @@ class ArchitecturesController extends \lithium\action\Controller {
 
 		$data = $this->request->data ?: $this->request->query;
 
-		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
-			$condition = $data['conditions'];
-
-			if ($condition == 'year') {
-				$condition = 'earliest_date';
-			}
+		if (isset($data['query']) && $data['query']) {
+			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
-			$conditions = array("$condition" => array('LIKE' => "%$query%"));
+
+			if ($condition) {
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+			} else {
+				$conditions = "((`title` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+			}
 
 			$architectures = Architectures::find('all', array(
 				'with' => 'Archives',
@@ -132,9 +133,6 @@ class ArchitecturesController extends \lithium\action\Controller {
 				'conditions' => $conditions,
 			));
 
-			if ($condition == 'earliest_date') {
-				$condition = 'year';
-			}
 		}
 		return compact('architectures', 'condition', 'query', 'total', 'page', 'limit', 'auth');
 	}

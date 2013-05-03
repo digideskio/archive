@@ -2,6 +2,17 @@
 
 $this->title('Search Exhibitions');
 
+$conditions_list = array(
+	'' => 'Search by...',
+	'title' => 'Title',
+	'venue' => 'Venue',
+	'city' => 'City',
+	'country' => 'Country',
+	'curator' => 'Curator',
+	'earliest_date' => 'Year',
+	'remarks' => 'Remarks',
+);
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -47,17 +58,7 @@ $this->title('Search Exhibitions');
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">
 
-		<?php $selected = 'selected="selected"'; ?>
-
-		<select name="conditions">
-			<option value='title'>Title</option>
-			<option value='venue' <?php if ($condition == 'venue') { echo $selected; } ?>>Venue</option>
-			<option value='city' <?php if ($condition == 'city') { echo $selected; } ?>>City</option>
-			<option value='country' <?php if ($condition == 'country') { echo $selected; } ?>>Country</option>
-			<option value='curator' <?php if ($condition == 'curator') { echo $selected; } ?>>Curator</option>
-			<option value='year' <?php if ($condition == 'year') { echo $selected; } ?>>Opening Year</option>
-			<option value='remarks' <?php if ($condition == 'remarks') { echo $selected; } ?>>Remarks</option>
-		</select>
+			<?=$this->form->select('condition', $conditions_list, array('label' => '', 'value' => $condition)); ?>
 
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
@@ -91,7 +92,7 @@ $this->title('Search Exhibitions');
 
 <div class="pagination">
     <ul>
-	<?php $query = $condition ? "?conditions=$condition&query=$query&type=$type" : ''; ?>
+	<?php $query = "?conditions=$condition&query=$query&type=$type"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
     <li><?=$this->html->link('«', "/exhibitions/search/$prev$query");?></li> 

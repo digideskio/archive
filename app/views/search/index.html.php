@@ -61,7 +61,7 @@ $this->title('Search');
 		<?php if (sizeof($works) > 50): ?>
 
 		<div class="alert alert-error">
-			<p>Your search has returned too many Artworks. Please narrow your search criteria using the <a href="/works/search?conditions=title&query=<?=$query?>">Artworks search page</a>.</p>
+			<p>Your search has returned too many Artworks. Please narrow your search criteria using the <a href="/works/search?query=<?=$query?>">Artworks search page</a>.</p>
 		</div>
 
 		<?php else: ?>
@@ -77,7 +77,7 @@ $this->title('Search');
 		<?php if (sizeof($architectures) > 50): ?>
 
 		<div class="alert alert-error">
-			<p>Your search has returned too many Architectures project. Please narrow your search criteria using the <a href="/architectures/search?conditions=title&query=<?=$query?>">Architecture search page</a>.</p>
+			<p>Your search has returned too many Architectures project. Please narrow your search criteria using the <a href="/architectures/search?query=<?=$query?>">Architecture search page</a>.</p>
 		</div>
 
 		<?php else: ?>
@@ -93,7 +93,7 @@ $this->title('Search');
 		<?php if (sizeof($exhibitions) > 50): ?>
 
 		<div class="alert alert-error">
-			<p>Your search has returned too many Exhibitions. Please narrow your search criteria using the <a href="/exhibitions/search?conditions=title&query=<?=$query?>&type=All">Exhibitions search page</a>.</p>
+			<p>Your search has returned too many Exhibitions. Please narrow your search criteria using the <a href="/exhibitions/search?query=<?=$query?>&type=All">Exhibitions search page</a>.</p>
 		</div>
 
 		<?php else: ?>
@@ -109,7 +109,7 @@ $this->title('Search');
 		<?php if (sizeof($publications) > 50): ?>
 
 		<div class="alert alert-error">
-			<p>Your search has returned too many Publications. Please narrow your search criteria using the <a href="/publications/search?conditions=title&query=<?=$query?>">Publications search page</a>.</p>
+			<p>Your search has returned too many Publications. Please narrow your search criteria using the <a href="/publications/search?query=<?=$query?>">Publications search page</a>.</p>
 		</div>
 
 		<?php else: ?>
@@ -125,7 +125,7 @@ $this->title('Search');
 		<?php if (sizeof($works) > 50): ?>
 
 		<div class="alert alert-error">
-			<p>Your search has returned too many Documents. Please narrow your search criteria using the <a href="/documents/search?conditions=title&query=<?=$query?>">Documents search page</a>.</p>
+			<p>Your search has returned too many Documents. Please narrow your search criteria using the <a href="/documents/search?query=<?=$query?>">Documents search page</a>.</p>
 		</div>
 
 		<?php else: ?>

@@ -90,15 +90,16 @@ class DocumentsController extends \lithium\action\Controller {
 
 		$data = $this->request->data ?: $this->request->query;
 
-		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
-			$condition = $data['conditions'];
-
-			if ($condition == 'year') {
-				$condition = 'date_created';
-			}
+		if (isset($data['query']) && $data['query']) {
+			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
-			$conditions = array("$condition" => array('LIKE' => "%$query%"));
+
+			if ($condition) {
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+			} else {
+				$conditions = "((`title` LIKE '%$query%') OR (`date_created` LIKE '%$query%') OR (`repository` LIKE '%$query%') OR (`credit` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+			}
 
 			$documents = Documents::find('all', array(
 				'with' => array('Formats'),
@@ -112,9 +113,6 @@ class DocumentsController extends \lithium\action\Controller {
 				'conditions' => $conditions,
 			));
 
-			if ($condition == 'date_created') {
-				$condition = 'year';
-			}
 		}
 		return compact('documents', 'condition', 'query', 'total', 'page', 'limit', 'auth');
 	}

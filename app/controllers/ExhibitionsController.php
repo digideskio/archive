@@ -80,19 +80,24 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		$data = $this->request->data ?: $this->request->query;
 
-		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
-			$condition = $data['conditions'];
+		if (isset($data['query']) && $data['query']) {
+			$condition = isset($data['condition']) ? $data['condition'] : '';
 			$type = $data['type'];
 
-			if ($condition == 'year') {
-				$condition = 'Archives.earliest_date';
-			}
-
 			$query = $data['query'];
-			$conditions = array("$condition" => array('LIKE' => "%$query%"));
 
-			if($type != 'All') {
-				$conditions['Archives.type'] = $type;
+			if ($condition) {
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+
+				if ($type != 'All') {
+					$conditions['Archives.type'] = $type;
+				}
+			} else {
+				$conditions = "((`title` LIKE '%$query%') OR (`venue` LIKE '%$query%') OR (`curator` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+
+				if ($type != 'All') {
+					$conditions .= " AND `type` = '$type'";
+				}
 			}
 
 			//FIXME trying to find:: with => Components seems to mess up the conditions and page
@@ -109,10 +114,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'order' => $order,
 				'conditions' => $conditions,
 			));
-
-			if ($condition == 'Archives.earliest_date') {
-				$condition = 'year';
-			}
 
 		}
 

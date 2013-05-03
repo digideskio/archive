@@ -86,15 +86,16 @@ class WorksController extends \lithium\action\Controller {
 
 		$data = $this->request->data ?: $this->request->query;
 
-		if (isset($data['conditions']) && isset($data['query']) && $data['query']) {
-			$condition = $data['conditions'];
-
-			if ($condition == 'year') {
-				$condition = 'earliest_date';
-			}
+		if (isset($data['query']) && $data['query']) {
+			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
-			$conditions = array("$condition" => array('LIKE' => "%$query%"));
+
+			if ($condition) {
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+			} else {
+				$conditions = "((`title` LIKE '%$query%') OR (`artist` LIKE '%$query%') OR (`classification` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`materials` LIKE '%$query%') OR (`remarks` LIKE '%$query%') OR (`creation_number` LIKE '%$query%') OR (`annotation` LIKE '%$query%'))";
+			}
 
 			$works = Works::find('all', array(
 				'with' => 'Archives',
@@ -110,9 +111,6 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => $conditions,
 			));
 
-			if ($condition == 'earliest_date') {
-				$condition = 'year';
-			}
 		}
 
 		return compact('works', 'condition', 'query', 'total', 'page', 'limit', 'auth');
