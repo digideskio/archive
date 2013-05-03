@@ -37,9 +37,9 @@
 			<span class="label label-warning">No Image</span>
 		<?php } ?>
 	</td>
-    <td><?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?></td>
-    <td><?=$architecture->archive->years(); ?></td>
-    <td><?=$this->architecture->caption($architecture->archive, $architecture); ?></td>
+    <td class="info-title"><?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?></td>
+    <td class="info-earliest_date"><?=$architecture->archive->years(); ?></td>
+    <td class="info-architect info-location info-city info-country info-status"><?=$this->architecture->caption($architecture->archive, $architecture); ?></td>
 </tr>
     
 <?php endforeach; ?>

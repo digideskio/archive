@@ -27,7 +27,7 @@
 <?php foreach($publications as $publication): ?>
 
 <tr>
-	<td>
+	<td class="info-storage_location info-storage_number info-publication_number">
 		<?=$publication->publication_number?>
 			<?php 
 				if($publication->storage_number) {
@@ -53,11 +53,11 @@
 			<span class="label label-warning">No Image</span>
 		<?php } ?>
 	</td>-->
-	<td><?=$publication->byline(); ?></td>
+	<td class="info-author info-editor"><?=$publication->byline(); ?></td>
 	
-    <td><?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?></td>
-    <td><?=$publication->archive->dates(); ?></td>
-    <td><?=$publication->publisher ?></td>
+    <td class="info-title"><?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?></td>
+    <td class="info-earliest_date"><?=$publication->archive->dates(); ?></td>
+    <td class="info-publisher"><?=$publication->publisher ?></td>
 </tr>
     
 <?php endforeach; ?>

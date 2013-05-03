@@ -28,7 +28,7 @@
 <?php foreach($works as $work): ?>
 
 <tr>
-	<td><?=$work->creation_number?></td>
+	<td class="info-creation_number"><?=$work->creation_number?></td>
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 		<?php $document = $work->documents('first'); if($document && $document->id) { ?>	
@@ -39,9 +39,9 @@
 			<span class="label">No Preview</span>
 		<?php } ?>
 	</td>
-	<td><?=$this->artwork->caption($work->archive, $work, array('link' => true)); ?></td>
-	<td><?=$work->materials ?></td>
-    <td><?php echo $work->notes(); ?></td>
+	<td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work->archive, $work, array('link' => true)); ?></td>
+	<td class="info-materials"><?=$work->materials ?></td>
+    <td class="info-remarks info-annotation"><?php echo $work->notes(); ?></td>
     <td><?=$work->archive->classification ?></td>
 </tr>
     

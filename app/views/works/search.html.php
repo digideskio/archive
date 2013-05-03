@@ -95,21 +95,36 @@ if ($auth->role->name == 'Admin') {
 
 <?php if($total > 0): ?>
 
+<div id="search-results">
+
 <?=$this->partial->works(compact('works')); ?>
+
+</div>
 
 <div class="pagination">
     <ul>
-	<?php $query = "?condition=$condition&query=$query"; ?>
+	<?php $parameters = "?condition=$condition&query=$query"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/works/search/$prev$query");?></li> 
+    <li><?=$this->html->link('«', "/works/search/$prev$parameters");?></li> 
     <?php endif;?> 
         <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
      <?php if($total > ($limit * $page)):?>
 	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/works/search/$next$query");?></li>
+     <li><?=$this->html->link('»', "/works/search/$next$parameters");?></li>
      <?php endif;?> 
     </ul>
 </div>
 
+	<?php $condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column ?>
+
+	<script>
+
+		$(document).ready(function() {
+
+			$("#search-results .table <?=$condition_class?>, #search-results article <?=$condition_class?>").highlight("<?=$query?>");
+
+		 });
+
+	</script>
 <?php endif; ?>

@@ -88,21 +88,35 @@ $conditions_list = array(
 
 <?php if($total > 0): ?>
 
+<div id="search-results">
+
 <?=$this->partial->exhibitions(compact('exhibitions')); ?>
+
+</div>
 
 <div class="pagination">
     <ul>
-	<?php $query = "?conditions=$condition&query=$query&type=$type"; ?>
+	<?php $parameters = "?conditions=$condition&query=$query&type=$type"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/exhibitions/search/$prev$query");?></li> 
+    <li><?=$this->html->link('«', "/exhibitions/search/$prev$parameters");?></li> 
     <?php endif;?> 
         <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
      <?php if($total > ($limit * $page)):?>
 	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/exhibitions/search/$next$query");?></li>
+     <li><?=$this->html->link('»', "/exhibitions/search/$next$parameters");?></li>
      <?php endif;?> 
     </ul>
 </div>
+
+	<script>
+
+		$(document).ready(function() {
+
+			$("#search-results .table, #search-results article").highlight("<?=$query?>");
+
+		 });
+
+	</script>
 
 <?php endif; ?>

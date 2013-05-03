@@ -51,7 +51,7 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $work_conditions
 			));
 
-			$architecture_conditions = "((`title` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+			$architecture_conditions = "((`title` LIKE '%$query%') OR (`architect` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
 
 			$architectures = Architectures::find('all', array(
 				'with' => 'Archives',

@@ -5,6 +5,7 @@ $this->title('Search Architecture');
 $conditions_list = array(
 	'' => 'Search by...',
 	'title' => 'Title',
+	'architect' => 'Architect',
 	'client' => 'Client',
 	'project_lead' => 'Project Lead',
 	'earliest_date' => 'Year',
@@ -75,21 +76,37 @@ $conditions_list = array(
 
 <?php if($total > 0): ?>
 
+<div id="search-results">
+
 <?=$this->partial->architectures(compact('architectures')); ?>
+
+</div>
 
 <div class="pagination">
     <ul>
-	<?php $query = "?conditions=$condition&query=$query"; ?>
+	<?php $parameters = "?conditions=$condition&query=$query"; ?>
     <?php if($page > 1):?>
 	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/architectures/search/$prev$query");?></li> 
+    <li><?=$this->html->link('«', "/architectures/search/$prev$parameters");?></li> 
     <?php endif;?> 
         <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
      <?php if($total > ($limit * $page)):?>
 	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/architectures/search/$next$query");?></li>
+     <li><?=$this->html->link('»', "/architectures/search/$next$parameters");?></li>
      <?php endif;?> 
     </ul>
 </div>
+
+	<?php $condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column ?>
+
+	<script>
+
+		$(document).ready(function() {
+
+			$("#search-results .table <?=$condition_class?>, #search-results article <?=$condition_class?>").highlight("<?=$query?>");
+
+		 });
+
+	</script>
 
 <?php endif; ?>

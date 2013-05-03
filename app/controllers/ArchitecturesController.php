@@ -116,7 +116,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			if ($condition) {
 				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+				$conditions = "((`title` LIKE '%$query%') OR (`architect` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
 			}
 
 			$architectures = Architectures::find('all', array(
