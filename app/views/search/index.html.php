@@ -16,6 +16,10 @@ $this->title('Search');
 
 </div>
 
+<div class="alert alert-info">
+	<span class="meta">Search for:</span> <?=$this->html->link('Artworks',"/works/search?query=$query"); ?> / <?=$this->html->link('Architecture',"/architectures/search?query=$query"); ?> / <?=$this->html->link('Exhibitions', "/exhibitions/search?query=$query"); ?> / <?=$this->html->link('Publications', "/publications/search?query=$query"); ?> / <?=$this->html->link('Documents', "/documents/search?query=$query"); ?>
+</div>
+
 <div class="actions">
 	<ul class="nav nav-tabs">
 		<li class="active">
@@ -28,7 +32,7 @@ $this->title('Search');
 <div class="well">
 
 	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
-		<legend>Search the Archive</legend>
+		<legend>Search the Whole Archive</legend>
 
 		<?=$this->form->field('query', array('value' => $query, 'autocomplete' => 'off', 'placeholder' => 'Search…', 'template' => '{:input}')); ?>
 
