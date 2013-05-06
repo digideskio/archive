@@ -64,7 +64,7 @@ $this->title('Classifications');
 	<?php foreach ($classifications as $classification): ?>
 
 		<?php $query = urlencode($classification['name']); ?>
-		<p><?=$this->html->link($classification['name'], "/works/search?conditions=classification&query=$query"); ?> <span class="badge"><?=$classification['works'] ?></span></p>
+		<p><?=$this->html->link($classification['name'], "/works/search?condition=classification&query=$query"); ?> <span class="badge"><?=$classification['works'] ?></span></p>
 
 	<?php endforeach; ?>
 </div>

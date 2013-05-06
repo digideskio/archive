@@ -42,7 +42,7 @@
 	<td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work->archive, $work, array('link' => true)); ?></td>
 	<td class="info-materials"><?=$work->materials ?></td>
     <td class="info-remarks info-annotation"><?php echo $work->notes(); ?></td>
-    <td><?=$work->archive->classification ?></td>
+    <td class="info-classification"><?=$work->archive->classification ?></td>
 </tr>
     
 <?php endforeach; ?>
