@@ -100,14 +100,14 @@ $this->title($work->title);
 					<td class="meta">Classification</td>
 					<td><?=$work->archive->classification ?></td>
 				</tr>
-				<?php if($auth->role->name == 'Admin'): ?>
+				<?php if($inventory): ?>
 				<tr>
 					<td><i class="icon-globe"></i></td>
 					<td class="meta">Location</td>
 					<td><?=$work->location ?></td>
 				</tr>
 				<?php endif; ?>
-				<?php if($auth->role->name == 'Admin'): ?>
+				<?php if($inventory): ?>
 				<tr>
 					<td><i class="icon-gift"></i></td>
 					<td class="meta">Inventory</td>

@@ -71,6 +71,12 @@ Create a new file <code>app/config/bootstrap/connections.php</code>:
 
 	?>
 
+In the connections.php file you can also enable or disable the Inventory module depending on your environment:
+
+	Environment::set('production', array('inventory' => false));
+	Environment::set('development', array('inventory' => true));
+	Environment::set('test', array('inventory' => true));
+
 If you are setting up a production site, add this line to your Apache virtal host file:
 
 	SetEnv LITHIUM_ENVIRONMENT "production"

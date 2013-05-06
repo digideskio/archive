@@ -14,7 +14,7 @@ $conditions_list = array(
 	'annotation' => 'Annotation',
 );
 
-if ($auth->role->name == 'Admin') {
+if ($inventory) {
 	$conditions_list['location'] = 'Location';	
 }
 
@@ -51,7 +51,7 @@ if ($auth->role->name == 'Admin') {
 			<?=$this->html->link('Classifications','/works/classifications'); ?>
 		</li>
 
-		<?php if($auth->role->name == 'Admin'): ?>
+		<?php if($inventory): ?>
 
 			<li>
 				<?=$this->html->link('Locations','/works/locations'); ?>

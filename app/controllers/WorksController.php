@@ -19,6 +19,7 @@ use app\models\WorksLinks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 use li3_access\security\Access;
 
@@ -54,7 +55,9 @@ class WorksController extends \lithium\action\Controller {
 			'page' => $page
 		));
 
-		return compact('works', 'total', 'page', 'limit', 'auth');
+		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
+		return compact('works', 'total', 'page', 'limit', 'inventory', 'auth');
 	}
 
 	public function search() {
@@ -113,7 +116,9 @@ class WorksController extends \lithium\action\Controller {
 
 		}
 
-		return compact('works', 'condition', 'query', 'total', 'page', 'limit', 'auth');
+		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
+		return compact('works', 'condition', 'query', 'total', 'page', 'limit', 'inventory', 'auth');
 
 	}
 
@@ -144,7 +149,9 @@ class WorksController extends \lithium\action\Controller {
 			return array('name' => $wa->artist, 'works' => $wa->works);
 		}, array('collect' => false));
 
-		return compact('artists', 'auth');
+		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
+		return compact('artists', 'inventory', 'auth');
 
 	}
 
@@ -175,7 +182,9 @@ class WorksController extends \lithium\action\Controller {
 			return array('name' => $wc->classification, 'works' => $wc->works);
 		}, array('collect' => false));
 
-		return compact('classifications', 'auth');
+		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
+		return compact('classifications', 'inventory', 'auth');
 	}
 
 	public function locations() {
@@ -193,6 +202,11 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
+
+		//Check that inventory is enabled
+		if (!Environment::get('inventory')) {
+			return $this->redirect('Works::index'); 
+		}
 
 		//Define the access rules for this action
 		$rules = array(
@@ -244,7 +258,8 @@ class WorksController extends \lithium\action\Controller {
 			'page' => $page
 		));
 		
-		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'auth');
+		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'inventory', 'auth');
 	}
 
 	public function view() {
@@ -306,8 +321,10 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('date_modified' =>  'DESC')
 				));
 			
+				$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
 				//Send the retrieved data to the view
-				return compact('work', 'archives_documents', 'work_links', 'albums', 'exhibitions', 'auth');
+				return compact('work', 'archives_documents', 'work_links', 'albums', 'exhibitions', 'inventory', 'auth');
 			}
 		}
 		
@@ -371,7 +388,9 @@ class WorksController extends \lithium\action\Controller {
 			return $this->redirect(array('Works::view', 'args' => array($archive->slug)));
 		}
 
-		return compact('work', 'artists', 'classifications', 'locations', 'users', 'auth');
+		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
+		return compact('work', 'artists', 'classifications', 'locations', 'users', 'inventory', 'auth');
 	}
 
 	public function edit() {
@@ -498,6 +517,8 @@ class WorksController extends \lithium\action\Controller {
 					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
 				}
 		
+				$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
 				return compact(
 					'work', 
 					'archives_documents', 
@@ -510,6 +531,7 @@ class WorksController extends \lithium\action\Controller {
 					'classifications',
 					'locations',
 					'users',
+					'inventory',
 					'auth'
 				);
 			}	

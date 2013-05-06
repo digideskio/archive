@@ -137,7 +137,7 @@ foreach ($users as $user) {
 			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
 		</div>
 		
-			<?php if($auth->role->name == 'Admin'): ?>
+			<?php if($inventory): ?>
 
 				<div class="well">
 

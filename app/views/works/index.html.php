@@ -30,7 +30,7 @@ $this->title('Artwork');
 			<?=$this->html->link('Classifications','/works/classifications'); ?>
 		</li>
 
-		<?php if($auth->role->name == 'Admin'): ?>
+		<?php if($inventory): ?>
 
 			<li>
 				<?=$this->html->link('Locations','/works/locations'); ?>

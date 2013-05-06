@@ -162,7 +162,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 </div>
 </div>
 
-	<?php if($auth->role->name == 'Admin'): ?>
+	<?php if($inventory): ?>
 		<div class="span5">
 
 		<div class="well">
