@@ -17,6 +17,7 @@ use li3_filesystem\extensions\storage\FileSystem;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 class DocumentsController extends \lithium\action\Controller {
 
@@ -171,6 +172,8 @@ class DocumentsController extends \lithium\action\Controller {
 					'order' => 'earliest_date DESC'
 				));
 
+				$architecture = Environment::get('architecture');
+
 				//Send the retrieved data to the view
 				return compact(
 					'document', 
@@ -179,6 +182,7 @@ class DocumentsController extends \lithium\action\Controller {
 					'architectures',
 					'exhibitions',
 					'publications', 
+					'architecture',
 					'auth'
 				);
 

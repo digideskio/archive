@@ -17,6 +17,7 @@ use lithium\data\Model;
 
 use lithium\security\Auth;
 use lithium\action\DispatchException;
+use lithium\core\Environment;
 
 class MetricsController extends \lithium\action\Controller {
 
@@ -74,6 +75,8 @@ class MetricsController extends \lithium\action\Controller {
 			"select count(*) as records, languages.name as language from archives left join languages on archives.language_code = languages.code where controller = 'publications' and language_code != ''  group by languages.name order by records DESC"
 		);
 
+		$architecture = Environment::get('architecture');
+
 		return compact(
 			'albums', 
 			'albums_works', 
@@ -96,6 +99,7 @@ class MetricsController extends \lithium\action\Controller {
 			'publications_years',
 			'publications_languages',
 
+			'architecture',
 			'auth'
 		);
 	}

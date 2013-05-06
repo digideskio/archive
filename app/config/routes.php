@@ -94,13 +94,15 @@ Router::connect('/works/histories/{:page:[0-9]+}', array('Works::histories'));
 Router::connect('/works/search/{:page:[0-9]+}', array('Works::search'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
-Router::connect('/architectures/pages/{:page:[0-9]+}', array('Architectures::index'));
-Router::connect('/architectures/view/{:slug}', array('Architectures::view'));
-Router::connect('/architectures/edit/{:slug}', array('Architectures::edit'));
-Router::connect('/architectures/history/{:slug}', array('Architectures::history'));
-Router::connect('/architectures/histories/{:page:[0-9]+}', array('Architectures::histories'));
-Router::connect('/architectures/search/{:page:[0-9]+}', array('Architectures::search'));
-Router::connect('/architectures/delete/{:slug}', array('Architectures::delete'));
+if (Environment::get('architecture')) {
+	Router::connect('/architectures/pages/{:page:[0-9]+}', array('Architectures::index'));
+	Router::connect('/architectures/view/{:slug}', array('Architectures::view'));
+	Router::connect('/architectures/edit/{:slug}', array('Architectures::edit'));
+	Router::connect('/architectures/history/{:slug}', array('Architectures::history'));
+	Router::connect('/architectures/histories/{:page:[0-9]+}', array('Architectures::histories'));
+	Router::connect('/architectures/search/{:page:[0-9]+}', array('Architectures::search'));
+	Router::connect('/architectures/delete/{:slug}', array('Architectures::delete'));
+}
 
 Router::connect('/exhibitions/pages/{:page:[0-9]+}', array('Exhibitions::index'));
 Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));

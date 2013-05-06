@@ -2,6 +2,8 @@
 
 <?php $c = strtolower($this->request()->params['controller']); ?>
 
+<?php $architecture = \lithium\core\Environment::get('architecture'); ?>
+
 <div id="sidebar"  class="span2">
 <div class="row">
 	<div class="span2 affix">
@@ -9,8 +11,10 @@
 		<ul class="nav nav-list">
 			<li <?php if ($c == 'works') echo 'class="active"'; ?> >
 				<a href="/works"><i class="icon-picture"></i> Artwork</a></li>
+			<?php if ($architecture): ?>
 			<li <?php if ($c == 'architectures') echo 'class="active"'; ?> >
 				<a href="/architectures"><i class="icon-road"></i> Architecture</a></li>
+			<?php endif; ?>
 			<li <?php if ($c == 'exhibitions') echo 'class="active"'; ?> >
 				<a href="/exhibitions"><i class="icon-eye-open"></i> Exhibitions</a></li>
 			<li <?php if ($c == 'publications') echo 'class="active"'; ?> >

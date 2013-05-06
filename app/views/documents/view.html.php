@@ -81,6 +81,8 @@ $this->title($document->title);
 				</p>
 			</div>
 		<?php endforeach; ?>
+
+		<?php if ($architecture): ?>
 		
 		<?php foreach($architectures as $architecture): ?>
 	
@@ -97,6 +99,8 @@ $this->title($document->title);
 			</div>
 		
 		<?php endforeach; ?>
+
+		<?php endif; ?>
 	
 		<?php foreach($exhibitions as $exhibition): ?>
 	
@@ -201,7 +205,7 @@ $this->title($document->title);
 		<?php
 			$hasAlbums = sizeof($albums) > 0;
 			$hasArtwork = sizeof($works) > 0;
-			$hasArchitecture = sizeof($architectures) > 0;
+			$hasArchitecture = $architecture && sizeof($architectures) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasPublications = sizeof($publications) > 0;
 		?>

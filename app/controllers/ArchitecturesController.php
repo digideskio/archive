@@ -15,6 +15,7 @@ use app\models\ArchivesHistories;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 class ArchitecturesController extends \lithium\action\Controller {
 
@@ -27,13 +28,17 @@ class ArchitecturesController extends \lithium\action\Controller {
         if (!$check) {
             return $this->redirect('Sessions::add');
         }
-        
+
         // Look up the current user with his or her role
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
 
+		if (!Environment::get('architecture')) {
+			return $this->redirect('Pages::home');
+		}
+        
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('earliest_date' => 'DESC');

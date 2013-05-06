@@ -71,11 +71,16 @@ Create a new file <code>app/config/bootstrap/connections.php</code>:
 
 	?>
 
-In the connections.php file you can also enable or disable the Inventory module depending on your environment:
+In the connections.php file you can also enable or disable the Architecture and Inventory modules depending on your environment:
 
 	Environment::set('production', array('inventory' => false));
 	Environment::set('development', array('inventory' => true));
 	Environment::set('test', array('inventory' => true));
+
+	Environment::set('production', array('architecture' => true));
+	Environment::set('development', array('architecture' => true));
+	Environment::set('test', array('architecture' => true));
+
 
 If you are setting up a production site, add this line to your Apache virtal host file:
 

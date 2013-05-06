@@ -15,6 +15,7 @@ use app\models\Publications;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 class SearchController extends \lithium\action\Controller {
 
@@ -82,9 +83,11 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $doc_conditions
 			));
 
-			}
+		}
+
+		$architecture = Environment::get('architecture');		
         
-        return compact('works', 'architectures', 'exhibitions', 'publications', 'documents', 'query', 'auth');
+        return compact('works', 'architectures', 'exhibitions', 'publications', 'documents', 'query', 'architecture', 'auth');
         
 	}
 	

@@ -24,7 +24,7 @@ $this->title('Metrics');
 
 	<!--<p><strong><?=$albums ?></strong> <?php echo $albums == '1' ? 'album' : 'albums'; ?> comprising <strong><?=$albums_works ?></strong> artworks.</p>-->
 
-	<p><strong><?=$works ?></strong> <?php echo $works == '1' ? 'artwork' : 'artworks'; ?> and <strong><?=$architectures ?></strong> architecture <?php echo $architectures == '1' ? 'project' : 'projects'; ?>.</p>
+	<p><strong><?=$works ?></strong> <?php echo $works == '1' ? 'artwork' : 'artworks'; ?><?php if ($architecture): ?> and <strong><?=$architectures ?></strong> architecture <?php echo $architectures == '1' ? 'project' : 'projects'; ?><?php endif; ?>.</p>
 
 	<p><strong><?=$exhibitions ?></strong> <?php echo $exhibitions == '1' ? 'exhibition' : 'exhibitions'; ?> which featured <strong><?=$exhibitions_works ?></strong> <?php echo $exhibitions_works == '1' ? 'artwork' : 'artworks'; ?>, including <strong><?=$solo_shows ?></strong> solo <?php echo $solo_shows= '1' ? 'show' : 'shows'; ?> and <strong><?=$group_shows ?></strong> group <?php echo $group_shows == '1' ? 'show' : 'shows'; ?>.</p>
 
@@ -69,7 +69,7 @@ $this->title('Metrics');
 
 <?php endif; ?>
 
-<?php if(sizeof($architectures_years) > 0): ?>
+<?php if($architecture && sizeof($architectures_years) > 0): ?>
 
 <div class="hero-unit">
 

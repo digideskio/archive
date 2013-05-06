@@ -17,7 +17,7 @@ $this->title('Search');
 </div>
 
 <div class="alert alert-info">
-	<span class="meta">Search for:</span> <?=$this->html->link('Artworks',"/works/search?query=$query"); ?> / <?=$this->html->link('Architecture',"/architectures/search?query=$query"); ?> / <?=$this->html->link('Exhibitions', "/exhibitions/search?query=$query"); ?> / <?=$this->html->link('Publications', "/publications/search?query=$query"); ?> / <?=$this->html->link('Documents', "/documents/search?query=$query"); ?>
+	<span class="meta">Search for:</span> <?=$this->html->link('Artworks',"/works/search?query=$query"); ?> / <?php if ($architecture): ?> <?=$this->html->link('Architecture',"/architectures/search?query=$query"); ?> / <?php endif; ?> <?=$this->html->link('Exhibitions', "/exhibitions/search?query=$query"); ?> / <?=$this->html->link('Publications', "/publications/search?query=$query"); ?> / <?=$this->html->link('Documents', "/documents/search?query=$query"); ?>
 </div>
 
 <div class="actions">
