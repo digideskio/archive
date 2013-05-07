@@ -6,9 +6,9 @@ use \lithium\template\helper\Html;
 
 class Pagination extends \lithium\template\Helper {
 
-	public function pager($controller, $action, $page, $total, $limit, $query = array()) {
+	public function pager($controller, $action, $page, $total, $limit, $parameters = array()) {
 
-		$http_query = http_build_query($query);
+		$http_query = http_build_query($parameters);
 
 		$html = '<div class="pagination">';
 		$html .= '<ul>';

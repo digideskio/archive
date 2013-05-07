@@ -74,19 +74,6 @@ $this->title('Artwork');
 
 <?=$this->partial->works(compact('works')); ?>
 
-<div class="pagination">
-    <ul>
-	<?php $query = "?limit=$limit"; ?>
-    <?php if($page > 1):?>
-	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/works/pages/$prev$query");?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/works/pages/$next$query");?></li>
-     <?php endif;?> 
-    </ul>
-</div>
+<?=$this->pagination->pager('works', 'pages', $page, $total, $limit, array('limit' => $limit)); ?>
 
 <?php endif; ?>

@@ -53,17 +53,7 @@ $this->title('Documents');
 
 <?=$this->partial->documents(compact('documents')); ?>
 
-<div class="pagination">
-    <ul>
-    <?php if($page > 1):?>
-    <li><?=$this->html->link('«', array('Documents::index', 'page'=> $page - 1));?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-     <li><?=$this->html->link('»', array('Documents::index', 'page'=> $page + 1));?></li>
-     <?php endif;?> 
-    </ul>
-</div>
+<?=$this->pagination->pager('documents', 'pages', $page, $total, $limit); ?>
 
 <?php endif; ?>
 

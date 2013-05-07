@@ -70,19 +70,6 @@ $conditions_list = array(
 
 <?=$this->partial->documents(compact('documents')); ?>
 
-<div class="pagination">
-    <ul>
-	<?php $query = "?conditions=$condition&query=$query"; ?>
-    <?php if($page > 1):?>
-	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/documents/search/$prev$query");?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/documents/search/$next$query");?></li>
-     <?php endif;?> 
-    </ul>
-</div>
+<?=$this->pagination->pager('documents', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query)); ?>
 
 <?php endif; ?>

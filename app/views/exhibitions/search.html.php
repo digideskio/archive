@@ -94,20 +94,7 @@ $conditions_list = array(
 
 </div>
 
-<div class="pagination">
-    <ul>
-	<?php $parameters = "?conditions=$condition&query=$query&type=$type"; ?>
-    <?php if($page > 1):?>
-	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/exhibitions/search/$prev$parameters");?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/exhibitions/search/$next$parameters");?></li>
-     <?php endif;?> 
-    </ul>
-</div>
+<?=$this->pagination->pager('exhibitions', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'type' => $type)); ?>
 
 	<script>
 

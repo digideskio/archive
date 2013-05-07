@@ -70,19 +70,6 @@ $this->title('Publications');
 
 <?=$this->partial->publications(compact('publications')); ?>
 
-<div class="pagination">
-    <ul>
-	<?php $query = $classification ? "?classification=$classification" : ''; ?>
-    <?php if($page > 1):?>
-	 <?php $prev = $page - 1; ?>
-    <li><?=$this->html->link('«', "/publications/pages/$prev$query");?></li> 
-    <?php endif;?> 
-        <li class="active"><a href=""><?=$page ?> / <?= ceil($total / $limit); ?></a></li>
-     <?php if($total > ($limit * $page)):?>
-	 <?php $next = $page + 1; ?>
-     <li><?=$this->html->link('»', "/publications/pages/$next$query");?></li>
-     <?php endif;?> 
-    </ul>
-</div>
+<?=$this->pagination->pager('publications', 'pages', $page, $total, $limit, array('classification' => $classification)); ?>
 
 <?php endif; ?>
