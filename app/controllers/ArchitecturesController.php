@@ -117,11 +117,12 @@ class ArchitecturesController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
+			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$query%') OR (`architect` LIKE '%$query%') OR (`client` LIKE '%$query%') OR (`project_lead` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`status` LIKE '%$query%') OR (`location` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+				$conditions = "((`title` LIKE '%$esc_query%') OR (`architect` LIKE '%$esc_query%') OR (`client` LIKE '%$esc_query%') OR (`project_lead` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`status` LIKE '%$esc_query%') OR (`location` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
 			}
 
 			$architectures = Architectures::find('all', array(

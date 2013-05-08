@@ -93,11 +93,12 @@ class WorksController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
+			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$query%') OR (`artist` LIKE '%$query%') OR (`classification` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`materials` LIKE '%$query%') OR (`remarks` LIKE '%$query%') OR (`creation_number` LIKE '%$query%') OR (`annotation` LIKE '%$query%'))";
+				$conditions = "((`title` LIKE '%$esc_query%') OR (`artist` LIKE '%$esc_query%') OR (`classification` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`materials` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%') OR (`creation_number` LIKE '%$esc_query%') OR (`annotation` LIKE '%$esc_query%'))";
 			}
 
 			$works = Works::find('all', array(

@@ -132,11 +132,12 @@ class PublicationsController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
+			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$query%') OR (`author` LIKE '%$query%') OR (`publisher` LIKE '%$query%') OR (`editor` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`subject` LIKE '%$query%') OR (`language` LIKE '%$query%') OR (`storage_location` LIKE '%$query%') OR (`storage_number` LIKE '%$query%') OR (`publication_number` LIKE '%$query%'))";
+				$conditions = "((`title` LIKE '%$esc_query%') OR (`author` LIKE '%$esc_query%') OR (`publisher` LIKE '%$esc_query%') OR (`editor` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`subject` LIKE '%$esc_query%') OR (`language` LIKE '%$esc_query%') OR (`storage_location` LIKE '%$esc_query%') OR (`storage_number` LIKE '%$esc_query%') OR (`publication_number` LIKE '%$esc_query%'))";
 			}
 
 			$publications = Publications::find('all', array(

@@ -95,11 +95,12 @@ class DocumentsController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
+			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$query%') OR (`date_created` LIKE '%$query%') OR (`repository` LIKE '%$query%') OR (`credit` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+				$conditions = "((`title` LIKE '%$esc_query%') OR (`date_created` LIKE '%$esc_query%') OR (`repository` LIKE '%$esc_query%') OR (`credit` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
 			}
 
 			$documents = Documents::find('all', array(

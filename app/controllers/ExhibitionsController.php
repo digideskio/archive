@@ -85,15 +85,16 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$type = $data['type'];
 
 			$query = $data['query'];
+			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
 
 				if ($type != 'All') {
 					$conditions['Archives.type'] = $type;
 				}
 			} else {
-				$conditions = "((`title` LIKE '%$query%') OR (`venue` LIKE '%$query%') OR (`curator` LIKE '%$query%') OR (`earliest_date` LIKE '%$query%') OR (`city` LIKE '%$query%') OR (`country` LIKE '%$query%') OR (`remarks` LIKE '%$query%'))";
+				$conditions = "((`title` LIKE '%$esc_query%') OR (`venue` LIKE '%$esc_query%') OR (`curator` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
 
 				if ($type != 'All') {
 					$conditions .= " AND `type` = '$type'";
