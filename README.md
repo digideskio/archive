@@ -33,43 +33,25 @@ Make the resources folder writeable:
 
 	chmod -R 0777 app/resources
 
-Set up three databases: test, dev, and production
+Create a new database user for the archive using MySQL shell:
 
-Create a new file <code>app/config/bootstrap/connections.php</code>:
+	CREATE USER 'USER'@'localhost' IDENTIFIED BY 'PASSWORD';
 
-	<?php
+You must create a minimum of two databases for 'development' and 'test' purposes. You can also add a 'production' database if you have the need. Create each database in MySQL shell as following:
 
-	Connections::add('default', array(
-		'development' => array(
-			'type' => 'database',
-			'adapter' => 'MySql',
-			'host' => 'localhost',
-			'login' => 'USER'
-			'password' => 'PASSWORD',
-			'database' => 'dev',
-			'encoding' => 'UTF-8'
-		), 
-		'test' => array(
-			'type' => 'database',
-			'adapter' => 'MySql',
-			'host' => 'localhost',
-			'login' => 'USER',
-			'password' => 'PASSWORD',
-			'database' => 'test',
-			'encoding' => 'UTF-8'
-		),
-		'production' => array(
-			'type' => 'database',
-			'adapter' => 'MySql',
-			'host' => 'localhost',
-			'login' => 'USER',
-			'password' => 'PASSWORD',
-			'database' => 'production',
-			'encoding' => 'UTF-8'
-		)
-	));
+	CREATE DATABASE development DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
-	?>
+Next, give your database user the necessary privileges:
+
+	GRANT ALL PRIVILEGES ON development.* TO 'USERNAME'@'localhost';
+
+Repeat the above MySQL commands for 'test' and 'production' databases.
+
+Rename the connections-sample.php file to connections.php:
+
+	cp app/config/bootstrap/connections-sample.php app/config/bootstrap/connections.php
+
+Edit your new connections.php file, and fill in the access details for your databases.
 
 In the connections.php file you can also enable or disable the Architecture and Inventory modules depending on your environment:
 
@@ -81,8 +63,7 @@ In the connections.php file you can also enable or disable the Architecture and 
 	Environment::set('development', array('architecture' => true));
 	Environment::set('test', array('architecture' => true));
 
-
-If you are setting up a production site, add this line to your Apache virtal host file:
+If you are setting up a production site, add this line to your Apache virtual host file:
 
 	SetEnv LITHIUM_ENVIRONMENT "production"
 
