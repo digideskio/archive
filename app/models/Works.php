@@ -5,6 +5,7 @@ namespace app\models;
 use lithium\util\Inflector;
 use lithium\util\Validator;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 class Works extends \lithium\data\Model {
 
@@ -32,12 +33,21 @@ class Works extends \lithium\data\Model {
 	public static function __init() {
 		parent::__init();
 		static::finder('artworks', function($self, $params, $chain) {
-			$params['options']['order'] = array(
+
+			$order = array(
 				'-artist' => 'DESC',
 				'earliest_date' => 'DESC',
 				'title' => 'ASC',
 				'materials' => 'ASC'
 			);
+
+			$artworks = Environment::get('artworks');
+
+			if ($artworks && isset($artworks['order'])) {
+				$order = $artworks['order'];
+			}
+
+			$params['options']['order'] = $order;
 			$data = $chain->next($self, $params, $chain);
 			return $data ?: null;
 		});
