@@ -47,9 +47,8 @@ class SearchController extends \lithium\action\Controller {
 
 			$work_conditions = "((`title` LIKE '%$esc_query%') OR (`artist` LIKE '%$esc_query%') OR (`classification` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`materials` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%') OR (`creation_number` LIKE '%$esc_query%') OR (`annotation` LIKE '%$esc_query%'))";
 
-			$works = Works::find('all', array(
+			$works = Works::find('artworks', array(
 				'with' => 'Archives',
-				'order' => $order,
 				'conditions' => $work_conditions
 			));
 

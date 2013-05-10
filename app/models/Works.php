@@ -29,6 +29,20 @@ class Works extends \lithium\data\Model {
 			'key' => 'id'
 	));
 
+	public static function __init() {
+		parent::__init();
+		static::finder('artworks', function($self, $params, $chain) {
+			$params['options']['order'] = array(
+				'-artist' => 'DESC',
+				'earliest_date' => 'DESC',
+				'title' => 'ASC',
+				'materials' => 'ASC'
+			);
+			$data = $chain->next($self, $params, $chain);
+			return $data ?: null;
+		});
+	}
+
 	public $validates = array(
 		'title' => array(
 			array('notEmpty', 'message' => 'Please enter a title.')

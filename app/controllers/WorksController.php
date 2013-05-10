@@ -43,15 +43,13 @@ class WorksController extends \lithium\action\Controller {
 		
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
-		$order = array('earliest_date' => 'DESC');
 		$total = Works::count();
 
 		$limit = ($limit == 'all') ? $total : $limit;
 
-		$works = Works::find('all', array(
+		$works = Works::find('artworks', array(
 			'with' => 'Archives',
 			'limit' => $limit,
-			'order' => $order,
 			'page' => $page
 		));
 
@@ -78,8 +76,6 @@ class WorksController extends \lithium\action\Controller {
 
 		$works = array();
 
-		$order = array('earliest_date' => 'DESC');
-
 		$query = '';
 		$condition = '';
 
@@ -101,17 +97,15 @@ class WorksController extends \lithium\action\Controller {
 				$conditions = "((`title` LIKE '%$esc_query%') OR (`artist` LIKE '%$esc_query%') OR (`classification` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`materials` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%') OR (`creation_number` LIKE '%$esc_query%') OR (`annotation` LIKE '%$esc_query%'))";
 			}
 
-			$works = Works::find('all', array(
+			$works = Works::find('artworks', array(
 				'with' => 'Archives',
-				'order' => $order,
 				'conditions' => $conditions,
 				'limit' => $limit,
 				'page' => $page
 			));
 
-			$total = Works::count('all', array(
+			$total = Works::count('artworks', array(
 				'with' => 'Archives',
-				'order' => $order,
 				'conditions' => $conditions,
 			));
 
