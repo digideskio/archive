@@ -41,7 +41,7 @@ class WorksController extends \lithium\action\Controller {
 			'with' => array('Roles')
 		));
 		
-		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$total = Works::count();
 

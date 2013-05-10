@@ -55,6 +55,8 @@ blockquote {
 	background-color: #FFFF88;
 }
 
+.table-compact th,.table-compact td{padding:1px 5px;}
+
 @media (max-width: 979px) {
   body {
     padding-top: 0;

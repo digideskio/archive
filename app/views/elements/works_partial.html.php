@@ -10,6 +10,98 @@
 
 <?php endif; ?>
 
+<?php
+	$layout = 'table';
+	$artworks = \lithium\core\Environment::get('artworks');
+	if ($artworks && isset($artworks['layout'])) {
+		$layout = $artworks['layout'];
+	}
+
+	$inventory = \lithium\core\Environment::get('inventory');
+?>
+
+<?php if ($layout == 'compact'): ?>
+
+<?php $count = 1; ?>
+
+<?php foreach($works as $work): ?> 
+
+	<?php if ($count % 2 != 0): ?>
+		<div class="row">
+	<?php endif;?>
+
+		<div class="span2">
+				<?php $document = $work->documents('first'); ?>
+				<ul class="thumbnails">
+				
+					<?php if($document && $document->id): ?>
+						<li class="span2">
+							<a href="/works/view/<?=$work->archive->slug ?>" class="thumbnail">
+							<img style="max-height:120px;" src="/files/<?=$document->view(array('action' => 'small')); ?>" />
+							</a>
+						</li>
+					<?php else: ?>
+						<li class="span2">
+							<div class="thumbnail">
+								<span class="label">No Preview</span>
+							</div>
+						</li>
+					<?php endif; ?>
+
+				</ul>
+		</div>
+
+		<div class="span3" style="margin-left: 5px !important;">
+
+			<table class="table table-condensed table-compact">
+				<tr>
+					<td class="meta">Title</td>
+					<td class="info-title" colspan="3"><?=$work->title ?></td>
+				</tr>
+				<tr>
+					<td class="meta">Artist</td>
+					<td class="info-artist" colspan="3"><?=$work->artist ?></td>
+				</tr>
+				<tr>
+					<td class="meta">Year</td>
+					<td class="info-earliest_date"><?=$work->archive->years(); ?></td>
+					<td class="meta">Edition</td>
+					<td><?=$work->attribute('edition'); ?></td>
+				</tr>
+				<tr>
+					<td class="meta">Size</td>
+					<td colspan="3"><?=$work->dimensions(); ?></td>
+				</tr>
+				<tr>
+					<td class="meta">Materials</td>
+					<td colspan="3"><?=$work->materials; ?></td>
+				</tr>
+				<?php if ($inventory): ?>
+				<tr>
+					<td class="meta">Recieved</td>
+					<td><?=$work->attribute('in_time'); ?></td>
+					<td class="meta">Location</td>
+					<td><?=$work->location; ?></td>
+				</tr>
+				<?php endif; ?>
+			</table>
+
+		</div>
+
+	<?php if ($count % 2 == 0): ?>
+		</div><div class="row"> </div>
+	<?php endif;?>
+
+	<?php $count++; ?>
+
+<?php endforeach; ?>
+
+	<?php if ($count % 2 == 0): ?>
+		</div>
+	<?php endif; ?>
+
+<?php else: ?>
+
 <table class="table table-bordered">
 
 <thead>
@@ -24,6 +116,7 @@
 </thead>
 		
 <tbody>
+
 
 <?php foreach($works as $work): ?>
 
@@ -49,3 +142,5 @@
     
 </tbody>
 </table>
+
+<?php endif; ?>
