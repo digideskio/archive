@@ -35,7 +35,7 @@ class Works extends \lithium\data\Model {
 		static::finder('artworks', function($self, $params, $chain) {
 
 			$order = array(
-				'-artist' => 'DESC',
+				'artist' => 'ASC',
 				'earliest_date' => 'DESC',
 				'title' => 'ASC',
 				'materials' => 'ASC'
