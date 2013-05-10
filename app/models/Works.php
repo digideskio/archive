@@ -34,12 +34,7 @@ class Works extends \lithium\data\Model {
 		parent::__init();
 		static::finder('artworks', function($self, $params, $chain) {
 
-			$order = array(
-				'artist' => 'ASC',
-				'earliest_date' => 'DESC',
-				'title' => 'ASC',
-				'materials' => 'ASC'
-			);
+			$order = '(CASE WHEN artist = \'\' THEN 1 ELSE 0 END), artist ASC, earliest_date DESC, title, materials';
 
 			$artworks = Environment::get('artworks');
 
