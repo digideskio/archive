@@ -115,6 +115,19 @@ class Works extends \lithium\data\Model {
 
 	}
 
+	public function artists($entity) {
+		$artist = $entity->artist;
+
+		$artist_native_name_att = $entity->attribute('artist_native_name');
+		$artist_name_name = $artist_native_name_att ? '(' . $artist_native_name_att . ')' : '';
+
+		$artists = array_filter(array(
+			$artist,
+			$artist_name_name
+		));
+
+		return implode(' ', $artists);
+	}
 
     public function dimensions($entity) {
     	$hwd = array_filter(array($entity->height, $entity->width, $entity->depth));

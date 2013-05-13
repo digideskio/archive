@@ -60,7 +60,7 @@
 				</tr>
 				<tr>
 					<td class="meta">Artist</td>
-					<td class="info-artist" colspan="3"><?=$work->artist ?></td>
+					<td class="info-artist" colspan="3"><?=$work->artists(); ?></td>
 				</tr>
 				<tr>
 					<td class="meta">Year</td>

@@ -78,12 +78,11 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $wh->artist || $wh->attribute('artist_native_name') ): ?>
+				<?php if( $wh->artists()): ?>
 					<tr>
 					<td class="meta">Artist</td>
 					<td>
-						<?=$wh->artist ?>
-						<?php if ($wh->attribute('artist_native_name')) { echo '(' . $wh->attribute('artist_native_name') . ')'; } ?>
+						<?=$wh->artists(); ?>
 					</td>
 					</tr>
 				<?php endif; ?>
