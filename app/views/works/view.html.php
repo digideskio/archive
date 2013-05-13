@@ -76,9 +76,41 @@ $this->title($work->title);
 			</thead>
 			<tbody>
 				<tr>
+					<td><i class="icon-text-height"></i></td>
+					<td class="meta">Title</td>
+					<td class="info-title" colspan="3"><?=$work->archive->names(); ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-font"></i></td>
+					<td class="meta">Artist</td>
+					<td class="info-title" colspan="3"><?=$work->artists(); ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-calendar"></i></td>
+					<td class="meta">year</td>
+					<td class="info-title"><?=$work->archive->years(); ?></td>
+					<td class="meta">Edition</td>
+					<td><?=$work->attribute('edition'); ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-resize-full"></i></td>
+					<td class="meta">Size</td>
+					<td class="info-title" colspan="3"><?=$work->dimensions(); ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-tag"></i></td>
+					<td class="meta">Classification</td>
+					<td colspan="3"><?=$work->archive->classification ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-wrench"></i></td>
+					<td class="meta">Materials</td>
+					<td colspan="3"><?=$work->materials ?></td>
+				</tr>
+				<tr>
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">Artwork ID</td>
-					<td>
+					<td colspan="3">
 						<?php 
 						
 						if($work->creation_number) {
@@ -90,28 +122,18 @@ $this->title($work->title);
 						?>
 					</td>
 				</tr>
-				<tr>
-					<td><i class="icon-wrench"></i></td>
-					<td class="meta">Materials</td>
-					<td><?=$work->materials ?></td>
-				</tr>
-				<tr>
-					<td><i class="icon-tag"></i></td>
-					<td class="meta">Classification</td>
-					<td><?=$work->archive->classification ?></td>
-				</tr>
 				<?php if($inventory): ?>
 				<tr>
 					<td><i class="icon-globe"></i></td>
 					<td class="meta">Location</td>
-					<td><?=$work->location ?></td>
+					<td colspan="3"><?=$work->location ?></td>
 				</tr>
 				<?php endif; ?>
 				<?php if($inventory): ?>
 				<tr>
 					<td><i class="icon-gift"></i></td>
 					<td class="meta">Inventory</td>
-					<td>
+					<td colspan="3">
 						<?php
 							echo $work->inventory(); 
 						?>
@@ -121,7 +143,7 @@ $this->title($work->title);
 				<tr>
 					<td><i class="icon-info-sign"></i></td>
 					<td class="meta">Notes</td>
-					<td>
+					<td colspan="3">
 						<?php 
 						
 						echo $work->notes();
@@ -130,7 +152,7 @@ $this->title($work->title);
 					
 				</tr>
 			</tbody>
-		
+
 		</table>
 
 		<?php 
