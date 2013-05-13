@@ -87,12 +87,11 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $wh->title || $ah->native_name ): ?>
+				<?php if( $ah->names() ): ?>
 					<tr>
 					<td class="meta">Title</td>
 					<td>
-						<?=$wh->title ?>
-						<?php if ($ah->native_name) { echo '(' . $ah->native_name . ')'; } ?>
+						<?=$ah->names(); ?>
 					</td>
 					</tr>
 				<?php endif; ?>

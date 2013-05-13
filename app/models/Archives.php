@@ -206,6 +206,19 @@ class Archives extends \lithium\data\Model {
 
 	}
 
+	public function names($entity) {
+		$name = $entity->name;
+
+		$native_name = $entity->native_name ? '(' . $entity->native_name . ')' : '';
+
+		$names = array_filter(array(
+			$name,
+			$native_name
+		));
+
+		return implode(' ', $names);
+	}
+
     public function years($entity) {
     
     	$start_date = $entity->start_date();

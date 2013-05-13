@@ -56,7 +56,7 @@
 			<table class="table table-condensed table-compact">
 				<tr>
 					<td class="meta">Title</td>
-					<td class="info-title" colspan="3"><?=$work->title ?></td>
+					<td class="info-title" colspan="3"><?=$work->archive->names(); ?></td>
 				</tr>
 				<tr>
 					<td class="meta">Artist</td>
