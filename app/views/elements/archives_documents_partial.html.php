@@ -15,8 +15,8 @@
 			
 				<?php
 					$num_thumbs = sizeof($archives_documents);
-					$span = 'span3';// $span = $num_thumbs > 1 ? 'span3' : 'span6';
-					$size = 'thumb';// $size = $num_thumbs > 1 ? 'thumb' : 'small';
+					$span = $num_thumbs > 1 ? 'span3' : 'span6';
+					$size = $num_thumbs > 1 ? 'thumb' : 'small';
 				?>
 		
 			<?php foreach($archives_documents as $ad): ?>
