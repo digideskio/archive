@@ -82,7 +82,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		if (isset($data['query']) && $data['query']) {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
-			$type = $data['type'];
+			$type = isset($data['type']) ? $data['type'] : 'All';
 
 			$query = $data['query'];
 			$esc_query = mysql_escape_string($query);
