@@ -62,81 +62,51 @@ $this->title('Search');
 
 	<?php if ($has_works): ?>
 
-		<?php if (sizeof($works) > 50): ?>
-
-		<div class="alert alert-error">
-			<p>Your search has returned too many Artworks. Please narrow your search criteria using the <a href="/works/search?query=<?=$query?>">Artworks search page</a>.</p>
-		</div>
-
-		<?php else: ?>
-
 		<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
 
-		<?php endif; ?>
+		<p><a class="btn btn-large btn-block btn-success" href="/works/search?query=<?=$query?>">More Artworks &raquo;</a></p>
+
+		<hr/>
 
 	<?php endif; ?>
 
 	<?php if ($has_architectures): ?>
 
-		<?php if (sizeof($architectures) > 50): ?>
-
-		<div class="alert alert-error">
-			<p>Your search has returned too many Architectures project. Please narrow your search criteria using the <a href="/architectures/search?query=<?=$query?>">Architecture search page</a>.</p>
-		</div>
-
-		<?php else: ?>
-
 		<?=$this->partial->architectures(array('architectures' => $architectures, 'showBar' => true)); ?>
 
-		<?php endif; ?>
+		<p><a class="btn btn-large btn-block btn-warning" href="/architectures/search?query=<?=$query?>">More Architecture &raquo;</a></p>
+
+		<hr/>
 
 	<?php endif; ?>
 
 	<?php if ($has_exhibitions): ?>
 
-		<?php if (sizeof($exhibitions) > 50): ?>
-
-		<div class="alert alert-error">
-			<p>Your search has returned too many Exhibitions. Please narrow your search criteria using the <a href="/exhibitions/search?query=<?=$query?>&type=All">Exhibitions search page</a>.</p>
-		</div>
-
-		<?php else: ?>
-
 		<?=$this->partial->exhibitions(array('exhibitions' => $exhibitions, 'showBar' => true)); ?>
 
-		<?php endif; ?>
+		<p><a class="btn btn-large btn-block btn-info" href="/exhibitions/search?query=<?=$query?>">More Exhibitions &raquo;</a></p>
+
+		<hr/>
 
 	<?php endif; ?>
 
 	<?php if ($has_publications): ?>
 
-		<?php if (sizeof($publications) > 50): ?>
-
-		<div class="alert alert-error">
-			<p>Your search has returned too many Publications. Please narrow your search criteria using the <a href="/publications/search?query=<?=$query?>">Publications search page</a>.</p>
-		</div>
-
-		<?php else: ?>
-
 		<?=$this->partial->publications(array('publications' => $publications, 'showBar' => true)); ?>
 
-		<?php endif; ?>
+		<p><a class="btn btn-large btn-block btn-primary" href="/publications/search?query=<?=$query?>">More Publications &raquo;</a></p>
+
+		<hr/>
 
 	<?php endif; ?>
 
 	<?php if ($has_documents): ?>
 
-		<?php if (sizeof($works) > 50): ?>
-
-		<div class="alert alert-error">
-			<p>Your search has returned too many Documents. Please narrow your search criteria using the <a href="/documents/search?query=<?=$query?>">Documents search page</a>.</p>
-		</div>
-
-		<?php else: ?>
-
 		<?=$this->partial->documents(array('documents' => $documents, 'showBar' => true)); ?>
 
-		<?php endif; ?>
+		<p><a class="btn btn-large btn-block btn-inverse" href="/documents/search?query=<?=$query?>">More Documents &raquo;</a></p>
+
+		<hr/>
 
 	<?php endif; ?>
 

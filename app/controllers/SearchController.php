@@ -38,6 +38,7 @@ class SearchController extends \lithium\action\Controller {
 		$documents = array();
 
 		$query = '';
+		$limit = '10';
 
 		if (isset($data['query']) && $data['query']) {
 			$query = $data['query'];
@@ -49,7 +50,8 @@ class SearchController extends \lithium\action\Controller {
 
 			$works = Works::find('artworks', array(
 				'with' => 'Archives',
-				'conditions' => $work_conditions
+				'conditions' => $work_conditions,
+				'limit' => $limit,
 			));
 
 			$architecture_conditions = "((`title` LIKE '%$esc_query%') OR (`architect` LIKE '%$esc_query%') OR (`client` LIKE '%$esc_query%') OR (`project_lead` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`status` LIKE '%$esc_query%') OR (`location` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
@@ -58,6 +60,7 @@ class SearchController extends \lithium\action\Controller {
 				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $architecture_conditions,
+				'limit' => $limit,
 			));
 
 			$exhibition_conditions = "((`title` LIKE '%$esc_query%') OR (`venue` LIKE '%$esc_query%') OR (`curator` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
@@ -67,6 +70,7 @@ class SearchController extends \lithium\action\Controller {
 				'with' => array('Archives'),
 				'order' => $order,
 				'conditions' => $exhibition_conditions,
+				'limit' => $limit,
 			));
 
 			$publication_conditions = "((`title` LIKE '%$esc_query%') OR (`author` LIKE '%$esc_query%') OR (`publisher` LIKE '%$esc_query%') OR (`editor` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`subject` LIKE '%$esc_query%') OR (`language` LIKE '%$esc_query%') OR (`storage_location` LIKE '%$esc_query%') OR (`storage_number` LIKE '%$esc_query%') OR (`publication_number` LIKE '%$esc_query%'))";
@@ -75,19 +79,21 @@ class SearchController extends \lithium\action\Controller {
 				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $publication_conditions,
+				'limit' => $limit,
 			));
 
 			$doc_conditions = "((`title` LIKE '%$esc_query%') OR (`date_created` LIKE '%$esc_query%') OR (`repository` LIKE '%$esc_query%') OR (`credit` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
 
 			$documents = Documents::find('all', array(
-				'conditions' => $doc_conditions
+				'conditions' => $doc_conditions,
+				'limit' => $limit,
 			));
 
 		}
 
 		$architecture = Environment::get('architecture');		
         
-        return compact('works', 'architectures', 'exhibitions', 'publications', 'documents', 'query', 'architecture', 'auth');
+        return compact('works', 'architectures', 'exhibitions', 'publications', 'documents', 'query', 'limit', 'architecture', 'auth');
         
 	}
 	
