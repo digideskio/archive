@@ -56,11 +56,11 @@
 			<table class="table table-condensed table-compact">
 				<tr>
 					<td class="meta">Title</td>
-					<td class="info-title" colspan="3"><?=$work->archive->names(); ?></td>
+					<td class="info-title" colspan="3"><strong><?=$work->archive->names(); ?></strong></td>
 				</tr>
 				<tr>
 					<td class="meta">Artist</td>
-					<td class="info-artist" colspan="3"><?=$work->artists(); ?></td>
+					<td class="info-artist" colspan="3"><strong><?=$work->artists(); ?></strong></td>
 				</tr>
 				<tr>
 					<td class="meta">Year</td>
