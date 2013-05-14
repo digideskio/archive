@@ -385,7 +385,19 @@ class WorksController extends \lithium\action\Controller {
 
 		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
 
-		return compact('work', 'artists', 'classifications', 'locations', 'users', 'inventory', 'auth');
+		$documents = array();
+
+		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
+			$document_ids = $this->request->data['documents'];
+
+			$documents = Documents::find('all', array(
+				'with' => 'Formats',
+				'conditions' => array('Documents.id' => $document_ids),
+			));
+
+		}
+
+		return compact('work', 'artists', 'classifications', 'locations', 'users', 'inventory', 'documents', 'auth');
 	}
 
 	public function edit() {
@@ -534,6 +546,121 @@ class WorksController extends \lithium\action\Controller {
 		
 		$this->redirect(array('Works::index'));
 		
+	}
+
+	public function attachments() {
+
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		// If the user is not an Admin or Editor, redirect to the index
+		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+			return $this->redirect('Works::index');
+		}
+
+		if(isset($this->request->params['slug'])) {
+		
+			$work = Works::first(array(
+				'with' => 'Archives',
+				'conditions' => array('slug' => $this->request->params['slug']),
+			));
+		
+			if($work) {
+
+				$order = array('title' => 'ASC');
+
+				$albums = Albums::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'archive_id2' => $work->id,
+					),
+					'order' => $order
+				));
+
+				$album_ids = array();
+
+				foreach ($albums as $album) {
+					array_push($album_ids, $album->id);
+				}
+
+				//Find the albums the work is NOT in
+				$other_album_conditions = ($album_ids) ? array('Albums.id' => array('!=' => $album_ids)) : '';
+
+				$other_albums = Albums::find('all', array(
+					'with' => 'Archives',
+					'order' => $order,
+					'conditions' => $other_album_conditions
+				));
+	
+				$exhibitions = Exhibitions::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'archive_id2' => $work->id,
+					),
+					'order' => $order
+				));
+
+				$exhibition_ids = array();
+
+				foreach ($exhibitions as $exhibition) {
+					array_push($exhibition_ids, $exhibition->id);
+				}
+	
+				//Find the exhibitions the work is NOT in
+				$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
+
+				$other_exhibitions = Exhibitions::find('all', array(
+					'with' => 'Archives',
+					'order' => array('earliest_date' => 'DESC'),
+					'conditions' => $other_exhibition_conditions
+				));
+		
+				$archives_documents = ArchivesDocuments::find('all', array(
+					'with' => array(
+						'Documents',
+						'Formats'
+					),
+					'conditions' => array('archive_id' => $work->id),
+					'order' => array('slug' => 'ASC')
+				));
+
+				$work_links = WorksLinks::find('all', array(
+					'with' => array(
+						'Links'
+					),
+					'conditions' => array('work_id' => $work->id),
+					'order' => array('date_modified' =>  'DESC')
+				));
+
+				if (($this->request->data) && $work->save($this->request->data)) {
+					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
+				}
+		
+				$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
+
+				return compact(
+					'work', 
+					'archives_documents', 
+					'albums', 
+					'other_albums', 
+					'exhibitions', 
+					'other_exhibitions',
+					'work_links',
+					'auth'
+				);
+			}	
+		}																																		
+		
+		$this->redirect(array('Works::index'));
+
 	}
 
 	public function history() {

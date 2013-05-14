@@ -33,6 +33,7 @@ if($auth->timezone_id) {
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
 		<li><?=$this->html->link('Edit','/works/edit/'.$work->archive->slug); ?></li>
+		<li><?=$this->html->link('Attachments','/works/attachments/'.$work->archive->slug); ?></li>
 	
 	<?php endif; ?>
 

@@ -36,7 +36,7 @@ class WorksLinksController extends \lithium\action\Controller {
 			$works_links = WorksLinks::create();
 			$works_links->save($this->request->data);
 			
-			return $this->redirect(array('Works::edit', 'args' => array($this->request->data['work_slug'])));
+			return $this->redirect($this->request->env('HTTP_REFERER'));
 		}
 		return $this->redirect('Works::index');
 	}
@@ -66,9 +66,7 @@ class WorksLinksController extends \lithium\action\Controller {
 		
 		WorksLinks::find($this->request->id)->delete();
 		
-		return $this->redirect(array(
-    		'Works::edit', 'args' => array($this->request->data['work_slug']))
-    	);
+		return $this->redirect($this->request->env('HTTP_REFERER'));
 	}
 }
 

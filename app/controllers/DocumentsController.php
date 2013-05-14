@@ -332,6 +332,9 @@ class DocumentsController extends \lithium\action\Controller {
         if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
         	return $this->redirect('Documents::index');
         }
+
+		//Keep track of the resulting document_id to use in the response
+		$document_id = 0;
         
         // HTTP headers for no cache etc
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
@@ -512,12 +515,12 @@ class DocumentsController extends \lithium\action\Controller {
 			
 			$document = Documents::create();
 			$document->save($data);
+			$document_id = $document->id;
 
 			$options = $this->request->query;
 
 			if (isset($options['archive_id'])) {
 				$archive_id = $options['archive_id'];
-				$document_id = $document->id;
 
 				$data = compact('archive_id', 'document_id');
 				$ad = ArchivesDocuments::create();
@@ -527,7 +530,7 @@ class DocumentsController extends \lithium\action\Controller {
 
 
 		// Return JSON-RPC response
-		$response = array("jsonrpc" => "2.0", "result" => null, "id" => "id");
+		$response = array("jsonrpc" => "2.0", "result" => null, "id" => "id", "document_id" => "$document_id");
 		return $this->render(array('json' => $response));
 		
 	}

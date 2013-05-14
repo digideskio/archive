@@ -4,6 +4,16 @@ $this->title($work->title);
 
 $this->form->config(
     array( 
+		'label' => array(
+			'class' => 'control-label',
+		),
+		'field' => array(
+			'wrap' => array('class' => 'control-group'),
+			'template' => '<div{:wrap}>{:label}<div class="controls">{:input}{:error}</div></div>',
+		),
+		'checkbox' => array(
+			'wrap' => array('class' => 'control-group'),
+		),
         'templates' => array( 
             'error' => '<div class="help-inline">{:content}</div>' 
         )
@@ -11,8 +21,6 @@ $this->form->config(
 ); 
 
 $artist_names = json_encode($artists);
-
-$classification_names = json_encode($classifications);
 
 $work_classes_list = array_combine($classifications, $classifications);
 
@@ -23,6 +31,7 @@ $currencies = array('RMB', 'USD', 'EURO');
 $currencies_list = array_combine($currencies, $currencies);
 
 $location_names = json_encode($locations);
+$locations_list = array_combine($locations, $locations);
 
 $users_list = array();
 
@@ -62,22 +71,17 @@ foreach ($users as $user) {
 			Edit
 		</a>
 	</li>
+	<li><?=$this->html->link('Attachments','/works/attachments/'.$work->archive->slug); ?></li>
 	<li><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
 </ul>
 
-
-
 <div class="row">
 
+<?=$this->form->create($work, array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
+
 	<div class="span5">
-		<?=$this->form->create($work, array('id' => 'WorksForm')); ?>
 		<div class="well">
-			<legend>Info</legend>
-
-			<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
-
-			<?=$this->form->label('classification', 'Classification'); ?>
-			<?=$this->form->select('classification', $work_classes_list, array('value' => $work->archive->classification)); ?>
+			<legend>Artwork Info</legend>
 
     		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
 			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'value' => $work->attribute('artist_native_name')));?>
@@ -87,10 +91,38 @@ foreach ($users as $user) {
 			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
 
+			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
+		</div>
+
+		<div class="well">
+			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
+		</div>
+		
+	</div>
+	
+	<div class="span5">
+
+		<div class="well">
+			<legend>Details</legend>
+				<?=$this->form->field('annotation', array(
+					'type' => 'textarea', 
+					'rows' => '5', 
+					'style' => 'width:90%;',
+				));?>
+
+			<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
+
+			<div class="control-group">
+				<?=$this->form->label('classification', 'Classification', array('class' => 'control-label')); ?>
+				<div class="controls">
+					<?=$this->form->select('classification', $work_classes_list, array('value' => $work->archive->classification)); ?>
+				</div>
+			</div>
+
 			<?=$this->form->field('materials', array('type' => 'textarea'));?>
 			<?=$this->form->field('edition', array('autocomplete' => 'off', 'value' => $work->attribute('edition')));?>
 			<?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
+
 			<?=$this->form->field('height', array(
 				'label' => "Height (cm)",
 				'class' => 'dim two-d',
@@ -117,59 +149,116 @@ foreach ($users as $user) {
 			));?>
 			<?=$this->form->field('running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
 			<?=$this->form->field('measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
-			<label>Additional Notes</label>
-			<div class="signed">
-				<label class="checkbox">
-				<?=$this->form->checkbox('signed', array('class' => 'two-d', 'checked' => $work->attribute('signed')));?> Artwork is Signed
-				</label>
+
+			<div class="certification control-group" style="margin-bottom: 0">
+				<label class="control-label">Additional Notes</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('certification', array('checked' => $work->attribute('certification')));?> Certificate of Authenticity
+					</label>
+				</div>
 			</div>
-			<div class="framed">
-				<label class="checkbox">
-				<?=$this->form->checkbox('framed', array('class' => 'two-d', 'checked' => $work->attribute('framed')));?> Artwork is Framed
-				</label>
+			<div class="signed control-group" style="margin-bottom: 0;">
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('signed', array('class' => 'two-d', 'checked' => $work->attribute('signed')));?> Artwork is Signed
+					</label>
+				</div>
 			</div>
-			<div class="certification">
-				<label class="checkbox">
-				<?=$this->form->checkbox('certification', array('checked' => $work->attribute('certification')));?> Certificate of Authenticity
-				</label>
+			<div class="framed control-group" style="margin-bottom: 0;">
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('framed', array('class' => 'two-d', 'checked' => $work->attribute('framed')));?> Artwork is Framed
+					</label>
+				</div>
 			</div>
-			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
-		</div>
-		
+			<br/>
+
 			<?php if($inventory): ?>
+				<legend>Inventory Info</legend>
 
-				<div class="well">
+				<?php $packing_types_list = array_merge(array('' => 'Choose one...'), $packing_types_list); ?>
 
-					<legend>Inventory Info</legend>
-						<?php $packing_types_list = array_merge(array('' => 'choose one...'), $packing_types_list); ?>
-
-						<?=$this->form->label('packing_type', 'Packing Type'); ?>
+				<div class="control-group">
+					<?=$this->form->label('packing_type', 'Packing Type'); ?>
+					<div class="controls">
 						<?=$this->form->select('packing_type', $packing_types_list, array('value' => $work->attribute('packing_type'))); ?>
+					</div>
+				</div>
 
-						<?=$this->form->field('pack_price', array('label' => 'Packing Cost', 'autocomplete' => 'off', 'value' => $work->attribute('pack_price')));?>
+				<div class="control-group">
+					<label for="WorksPackPrice" class="control-label">Packing Cost</label>
+					<div class="controls control-row">
+						<input type="text" name="pack_price" autocomplete="off" id="WorksPackPrice" class="span1" value="<?=$work->attribute('pack_price');?>">
 
-						<?=$this->form->select('pack_price_per', $currencies_list, array('value' => $work->attribute('pack_price_per'))); ?>
-					
-						<?=$this->form->field('location', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $location_names));?>
+						<?=$this->form->select('pack_price_per', $currencies_list, array('value' => $work->attribute('pack_price_per'), 'class' => 'span1')); ?>
+					</div>
+				</div>
+			
+				<?php if ($locations && sizeof($locations) < 50): ?>
 
-						<?=$this->form->field('in_time', array('label' => 'Received Time', 'autocomplete' => 'off', 'value' => $work->attribute('in_time')));?>
-						<?=$this->form->field('in_from', array('label' => 'Sent From', 'autocomplete' => 'off', 'value' => $work->attribute('in_from')));?>
+					<?php $locations_list = array_merge(array('' => 'Select location...'), $locations_list); ?>
 
-						<?php $users_list = array_merge(array('' => 'choose one...'), $users_list); ?>
+					<div class="control-group">
+						<?=$this->form->label('location', 'Location', array('class' => 'control-label')); ?>
+						<div class="controls control-row">
+							<input type="text" name="location" autocomplete="off" class="span2" id="WorksLocation" value="<?=$work->location?>">
+							<?=$this->form->select('select_location', $locations_list, array('class' => 'span1', 'value' => $work->location)); ?>
+						</div>
+					</div>
+						<script>
+							
+							$(document).ready(function() {
 
-						<?=$this->form->label('in_operator', 'Received By'); ?>
+								$('#WorksSelectLocation').change(function() {
+									var location = $(this).val();
+									$('#WorksLocation').val(location);
+								});
+
+							});
+
+						</script>
+				<?php else: ?>
+					<?=$this->form->field('location', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $location_names));?>
+				<?php endif; ?>
+
+				<?=$this->form->field('in_time', array('label' => 'Received Time', 'autocomplete' => 'off', 'value' => $work->attribute('in_time')));?>
+				<?=$this->form->field('in_from', array('label' => 'Sent From', 'autocomplete' => 'off', 'value' => $work->attribute('in_from')));?>
+
+				<?php $users_list = array_merge(array('' => 'Choose one...'), $users_list); ?>
+
+				<div class="control-group">
+					<?=$this->form->label('in_operator', 'Received By'); ?>
+					<div class="controls">
 						<?=$this->form->select('in_operator', $users_list, array('value' => $work->attribute('in_operator'))); ?>
-					
-						<fieldset>
-						<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-						<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
-						</fieldset>
+					</div>
 				</div>
 
 			<?php endif; ?>
 
-		<?=$this->form->end(); ?>
+		</div>
+	</div>
+
+<?=$this->form->end(); ?>
+
+		
+</div>
+	
+<div class="row">
+	<div class="span5 offset5">
+		<div class="well">
+		
+			<legend>Edit</legend>
+		
+			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+				<i class="icon-white icon-trash"></i> Delete Artwork
+			</a>
+		
+		</div>
+	</div>
+</div>
+
 <script>
 
 $(document).ready(function() {
@@ -177,32 +266,32 @@ $(document).ready(function() {
 	function handleFields() {
 		var work = $('#WorksClassification').val();
 
-		$('#WorksForm .dim').parent().hide();
+		$('#WorksForm .dim').closest('.control-group').hide();
 
 		if (work) {
-			$('#WorksForm .dim.remarks').parent().fadeIn();
+			$('#WorksForm .dim.remarks').closest('.control-group').fadeIn();
 		} else {
-			$('#WorksForm .dim.remarks').parent().hide();
+			$('#WorksForm .dim.remarks').closest('.control-group').hide();
 		}
 
 		if (work == 'Audio' || work == 'Video') {
-			$('#WorksForm .four-d').parent().fadeIn();
+			$('#WorksForm .four-d').closest('.control-group').fadeIn();
 		} else {
-			$('#WorksForm .four-d').parent().hide();
+			$('#WorksForm .four-d').closest('.control-group').hide();
 		}
 
 		if (work == 'Painting' || work == 'Photography' || work == 'Poster and Design' || work == 'Works on Paper' ||
 				work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') { 
 			
-			$('#WorksForm .two-d').parent().fadeIn();
+			$('#WorksForm .two-d').closest('.control-group').fadeIn();
 		} else {
-			$('#WorksForm .two-d').parent().hide();
+			$('#WorksForm .two-d').closest('.control-group').hide();
 		}
 
 		if (work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') {
-			$('#WorksForm .three-d').parent().fadeIn();
+			$('#WorksForm .three-d').closest('.control-group').fadeIn();
 		} else {
-			$('#WorksForm .three-d').parent().hide();
+			$('#WorksForm .three-d').closest('.control-group').hide();
 		}
 			
 			
@@ -217,196 +306,6 @@ $(document).ready(function() {
 });
 
 </script>
-		<div class="well">
-		
-			<legend>Edit</legend>
-		
-			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-				<i class="icon-white icon-trash"></i> Delete Artwork
-			</a>
-		
-		</div>
-		
-		
-	</div>
-	
-	<div class="span5">
-	
-	<div class="well">
-		<legend>Annotation</legend>
-		<?=$this->form->create($work); ?>
-			<?=$this->form->field('annotation', array(
-				'type' => 'textarea', 
-				'rows' => '10', 
-				'style' => 'width:90%;',
-				'label' => ''
-			));?>
-
-			<?=$this->form->hidden('title'); ?>
-
-			<?php //FIXME set the dates in the annotation form; if they have no value, they will be set back to empty in the Archives class ?>
-			<?=$this->form->hidden('earliest_date', array('value' => $work->archive->start_date_formatted())); ?>
-			<?=$this->form->hidden('latest_date', array('value' => $work->archive->end_date_formatted())); ?>
-
-			<?=$this->form->hidden('edition', array('value' => $work->attribute('edition'))); ?>
-			<?=$this->form->hidden('signed', array('value' => $work->attribute('signed'))); ?>
-			<?=$this->form->hidden('framed', array('value' => $work->attribute('framed'))); ?>
-			<?=$this->form->hidden('artist_native_name', array('value' => $work->attribute('artist_native_name'))); ?>
-			<?=$this->form->hidden('packing_type', array('value' => $work->attribute('packing_type'))); ?>
-			<?=$this->form->hidden('pack_price', array('value' => $work->attribute('pack_price'))); ?>
-			<?=$this->form->hidden('pack_price_per', array('value' => $work->attribute('pack_price_per'))); ?>
-			<?=$this->form->hidden('in_time', array('value' => $work->attribute('in_time'))); ?>
-			<?=$this->form->hidden('in_from', array('value' => $work->attribute('in_from'))); ?>
-			<?=$this->form->hidden('in_operator', array('value' => $work->attribute('in_operator'))); ?>
-		
-		
-			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/works/view/'.$work->archive->slug, array('class' => 'btn')); ?>
-		<?=$this->form->end(); ?>
-		
-	</div>
-
-	<?=$this->partial->archives_links_edit(array(
-		'model' => $work,
-		'junctions' => $work_links,
-	)); ?>		
-
-	<div class="well">
-		<legend>Albums</legend>
-		<table class="table">
-		
-			<?php foreach($albums as $album): ?>
-			<?php $component = $album->components[0]; ?> 
-				<tr>
-					<td>
-						<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
-					</td>
-					<td align="right" style="text-align:right">
-			<?=$this->form->create($component, array('url' => $this->url(array('Components::delete', 'id' => $component->id)), 'method' => 'post')); ?>
-			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
-			<?=$this->form->end(); ?>
-					</td>
-				</tr>
-			
-			<?php endforeach; ?>
-			
-			<?php if(sizeof($other_albums) > 0): ?>
-			
-			<tr>
-				<td></td>
-				<td align="right" style="text-align:right">
-					<a data-toggle="modal" href="#albumModal" class="btn btn-mini btn-inverse">Add an Album</a>
-				</td>
-			</tr>
-			
-			<?php endif; ?>
-			
-			</table>
-		
-	</div>
-	
-	<div class="well">
-		<legend>Exhibitions</legend>
-		<table class="table">
-		
-			<?php foreach($exhibitions as $exhibition): ?>
-			<?php $component = $exhibition->components[0]; ?>
-				<tr>
-					<td>
-						<?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?>
-					</td>
-					<td align="right" style="text-align:right">
-			<?=$this->form->create($component, array('url' => $this->url(array('Components::delete', 'id' => $component->id)), 'method' => 'post')); ?>
-			<input type="hidden" name="work_slug" value="<?=$work->archive->slug ?>" />
-			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
-			<?=$this->form->end(); ?>
-					</td>
-				</tr>
-			
-			<?php endforeach; ?>
-			
-			<?php if(sizeof($other_exhibitions) > 0): ?>			
-			
-			<tr>
-				<td></td>
-				<td align="right" style="text-align:right">
-					<a data-toggle="modal" href="#exhibitionModal" class="btn btn-mini btn-inverse">Add an Exhibition</a>
-				</td>
-			</tr>
-			
-			<?php endif; ?>
-			
-			</table>
-		
-	</div>
-	
-<div class="modal fade hide" id="albumModal">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Add this Artwork to an Album</h3>
-		</div>
-		<div class="modal-body">
-			<table class="table"><tbody>
-			<?php foreach($other_albums as $oc): ?>
-				<tr>
-					<td>
-						<strong>
-							<?=$this->html->link($oc->title, $this->url(array('Albums::view', 'slug' => $oc->archive->slug))); ?>
-						</strong><br/>
-					</td>
-					<td align="right" style="text-align:right">
-			<?=$this->form->create($oc, array('url' => $this->url(array('Components::add')), 'method' => 'post')); ?>
-			<input type="hidden" name="archive_id1" value="<?=$oc->id ?>" />
-			<input type="hidden" name="archive_id2" value="<?=$work->id ?>" />
-			<input type="hidden" name="type" value="albums_works" />
-			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
-			<?=$this->form->end(); ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-			</tbody></table>
-			</div>
-			<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-	</div>
-</div>
-
-	<?=$this->partial->archives_documents_edit(array(
-		'model' => $work,
-		'archives_documents' => $archives_documents,
-	)); ?>		
-
-<div class="modal fade hide" id="exhibitionModal">
-	<div class="modal-header">
-		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Add this Artwork to an Exhibition</h3>
-		</div>
-		<div class="modal-body">
-			<table class="table"><tbody>
-			<?php foreach($other_exhibitions as $oe): ?>
-				<tr>
-					<td>
-						<a href="/exhibitions/view/<?=$oe->archive->slug ?>">
-							<strong><?=$oe->title ?></a></strong><br/>
-							<?=$oe->venue ?><br/>
-							<?=$oe->archive->dates() ?>
-					</td>
-					<td align="right" style="text-align:right">
-			<?=$this->form->create($oe, array('url' => $this->url(array('Components::add')), 'method' => 'post')); ?>
-			<input type="hidden" name="archive_id1" value="<?=$oe->id ?>" />
-			<input type="hidden" name="archive_id2" value="<?=$work->id ?>" />
-			<input type="hidden" name="type" value="exhibitions_works" />
-			<?=$this->form->submit('Add', array('class' => 'btn btn-mini btn-success')); ?>
-			<?=$this->form->end(); ?>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-			</tbody></table>
-			</div>
-			<div class="modal-footer">
-			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-	</div>
-</div>
 
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
