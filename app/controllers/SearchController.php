@@ -46,7 +46,36 @@ class SearchController extends \lithium\action\Controller {
         
 			$order = array('earliest_date' => 'DESC');
 
-			$work_conditions = "((`title` LIKE '%$esc_query%') OR (`artist` LIKE '%$esc_query%') OR (`classification` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`materials` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%') OR (`creation_number` LIKE '%$esc_query%') OR (`annotation` LIKE '%$esc_query%'))";
+			$artwork_ids = array();
+
+			$fields = array('title', 'artist', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+
+			foreach ($fields as $field) {
+				$matching_works = Works::find('artworks', array(
+					'with' => 'Archives',
+					'fields' => 'Works.id',
+					'conditions' => array("$field" => array('LIKE' => "%$esc_query%")),
+				));
+
+				if ($matching_works) {
+					$matching_ids = $matching_works->map(function($mw) {
+						return $mw->id;
+					}, array('collect' => false));
+
+					$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
+				}
+			}
+
+			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $esc_query);
+
+			$filter = '';
+
+			if (Environment::get('artworks')) {
+				$artworks = Environment::get('artworks');
+				$filter = isset($artworks['filter']) ? $artworks['filter'] : '';
+			}
+
+			$work_conditions = $filter ? array_merge($filter, $work_conditions) : $work_conditions;
 
 			$works = Works::find('artworks', array(
 				'with' => 'Archives',
