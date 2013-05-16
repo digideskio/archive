@@ -97,7 +97,10 @@ $this->title($work->title);
 			<?php $component = $exhibition->components[0]; ?>
 				<tr>
 					<td>
-						<?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?>
+						<strong><?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?></strong>
+						<?php if ($exhibition->archive->years()): ?>
+							<small><?=$exhibition->archive->dates(); ?></small>
+						<?php endif; ?>
 					</td>
 					<td align="right" style="text-align:right">
 			<?=$this->form->create($component, array('url' => $this->url(array('Components::delete', 'id' => $component->id)), 'method' => 'post')); ?>
