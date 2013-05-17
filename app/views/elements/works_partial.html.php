@@ -55,16 +55,16 @@
 
 			<table class="table table-condensed table-compact">
 				<tr>
+					<td class="meta">Artist</td>
+					<td class="info-artist" colspan="3"><strong><?=$work->artists(); ?></strong></td>
+				</tr>
+				<tr>
 					<td class="meta">Title</td>
 					<td class="info-title" colspan="3">
 						<strong>
 							<?=$this->html->link($work->archive->names(), '/works/view/'.$work->archive->slug); ?>
 						</strong>
 					</td>
-				</tr>
-				<tr>
-					<td class="meta">Artist</td>
-					<td class="info-artist" colspan="3"><strong><?=$work->artists(); ?></strong></td>
 				</tr>
 				<tr>
 					<td class="meta">Year</td>
