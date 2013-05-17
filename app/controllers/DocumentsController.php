@@ -537,7 +537,7 @@ class DocumentsController extends \lithium\action\Controller {
 
 
 		// Return JSON-RPC response
-		$response = array("jsonrpc" => "2.0", "result" => null, "id" => "id", "document_id" => "$document_id");
+		$response = array("jsonrpc" => "2.0", "result" => $document_id, "id" => "id");
 		return $this->render(array('json' => $response));
 		
 	}

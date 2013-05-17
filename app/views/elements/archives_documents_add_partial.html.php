@@ -214,7 +214,7 @@
                     
                     response = jQuery.parseJSON( response.response );
 
-					document_id = response.document_id;
+					document_id = response.result;
 
 					if (document_id) {
 						option = '<option value="' + document_id + '" selected="selected">' + file.name + '</option>';
