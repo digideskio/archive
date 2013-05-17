@@ -18,6 +18,22 @@ class Documents extends \lithium\data\Model {
 	public $hasMany = array("ArchivesDocuments");
 
 	public $validates = array();
+
+	public static function findDocumentIdByFile($file_path) {
+
+		if (!file_exists($file_path)) {
+			return false;
+		}
+
+		$hash = md5_file($file_path);	
+
+		$document = Documents::find('first', array(
+			'conditions' => array('hash' => $hash),
+		));
+
+		return $document ? $document->id : false;
+
+	}
 	
 	public function year($entity) {
 	

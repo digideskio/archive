@@ -510,12 +510,19 @@ class DocumentsController extends \lithium\action\Controller {
 			
 			$file_name = $originalFileName;
 			$file_path = $filePath;
+
+			//Check if a document already exists for this file
+			$document_id = Documents::findDocumentIdByFile($file_path);
+
+			if (!$document_id) {
 			
-			$data = compact('file_name', 'file_path');
+				$data = compact('file_name', 'file_path');
 			
-			$document = Documents::create();
-			$document->save($data);
-			$document_id = $document->id;
+				$document = Documents::create();
+				$document->save($data);
+				$document_id = $document->id;
+
+			}
 
 			$options = $this->request->query;
 
