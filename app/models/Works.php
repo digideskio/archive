@@ -72,19 +72,38 @@ class Works extends \lithium\data\Model {
 	);
 
 	public static function classifications() {
-		return array(
-			"Audio",
-			"Furniture",
-			"Installation",
-			"Object",
-			"Painting",
-			"Photography",
-			"Porcelain",
-			"Poster and Design",
-			"Pottery",
-			"Video",
-			"Works on Paper",
+
+		$classifications = array(
+			'Audio' => array(
+				'class' => 'four-d'
+			),
+			'Installation' => array(
+				'class' => 'two-d three-d' 
+			),
+			'Object' => array(
+				'class' => 'two-d three-d'
+			),
+			'Painting' => array(
+				'class' => 'two-d'
+			),
+			'Photography' => array(
+				'class' => 'two-d'
+			),
+			'Sculpture' => array(
+				'class' => 'two-d three-d'
+			),
+			'Video' => array(
+				'class' => 'four-d'
+			),
+			'Works on Paper' => array(
+				'class' => 'two-d'
+			),
+			'Other' => array(
+				'class' => 'two-d three-d four-d'
+			),
 		);
+
+		return $classifications;
 	}
 
 	public static function attributes() {

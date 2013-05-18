@@ -22,7 +22,8 @@ $this->form->config(
 
 $artist_names = json_encode($artists);
 
-$work_classes_list = array_combine($classifications, $classifications);
+$classification_names = array_keys($classifications);
+$work_classes_list = array_combine($classification_names, $classification_names);
 
 $packing_types = array('Crate', 'Paper Box', 'Simple', 'None', 'Other');
 $packing_types_list = array_combine($packing_types, $packing_types);
@@ -263,38 +264,31 @@ foreach ($users as $user) {
 
 $(document).ready(function() {
 
+	var classifications = <?php echo json_encode($classifications); ?>;
+
 	function handleFields() {
 		var work = $('#WorksClassification').val();
 
 		$('#WorksForm .dim').closest('.control-group').hide();
 
+		$('#WorksForm .two-d').closest('.control-group').hide();
+		$('#WorksForm .three-d').closest('.control-group').hide();
+		$('#WorksForm .four-d').closest('.control-group').hide();
+
 		if (work) {
 			$('#WorksForm .dim.remarks').closest('.control-group').fadeIn();
+
+			var classification_class = classifications[work]['class'];
+			var classes = classification_class.split(" ");
+
+			for(i=0,x=classes.length;i<x;i++){
+				$('#WorksForm .' + classes[i]).closest('.control-group').fadeIn();
+			}
+			
 		} else {
 			$('#WorksForm .dim.remarks').closest('.control-group').hide();
 		}
 
-		if (work == 'Audio' || work == 'Video') {
-			$('#WorksForm .four-d').closest('.control-group').fadeIn();
-		} else {
-			$('#WorksForm .four-d').closest('.control-group').hide();
-		}
-
-		if (work == 'Painting' || work == 'Photography' || work == 'Poster and Design' || work == 'Works on Paper' ||
-				work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') { 
-			
-			$('#WorksForm .two-d').closest('.control-group').fadeIn();
-		} else {
-			$('#WorksForm .two-d').closest('.control-group').hide();
-		}
-
-		if (work == 'Furniture' || work == 'Installation' || work == 'Object' || work == 'Porcelain' || work == 'Pottery') {
-			$('#WorksForm .three-d').closest('.control-group').fadeIn();
-		} else {
-			$('#WorksForm .three-d').closest('.control-group').hide();
-		}
-			
-			
 	}
 
 	$('#WorksClassification').change(function() {
