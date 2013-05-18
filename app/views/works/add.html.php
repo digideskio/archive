@@ -34,7 +34,7 @@ $currencies = array('RMB', 'USD', 'EURO');
 $currencies_list = array_combine($currencies, $currencies);
 
 $location_names = json_encode($locations);
-$locations_list = array_combine($locations, $locations);
+$locations_list = $locations ? array_combine($locations, $locations) : array();
 
 $users_list = array();
 
