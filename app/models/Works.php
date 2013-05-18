@@ -103,6 +103,12 @@ class Works extends \lithium\data\Model {
 			),
 		);
 
+		$artworks = Environment::get('artworks');
+
+		if ($artworks) {
+			$classifications = isset($artworks['classifications']) ? $artworks['classifications'] : $classifications;
+		}
+
 		return $classifications;
 	}
 
