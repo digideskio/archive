@@ -60,10 +60,18 @@ $this->title('Artists');
 		<?php endif; ?>
 	</div>
 
+	<?php if ($artists && sizeof($artists) > 20): ?>
+		<div style="-moz-column-count:3; -webkit-column-count:3; column-count:3;">
+	<?php else: ?>
+		<div>
+	<?php endif; ?>
+
 	<?php foreach ($artists as $artist): ?>
 
 		<?php $query = urlencode($artist['name']); ?>
 		<p><?=$this->html->link($artist['name'], "/works/search?conditions=artist&query=$query"); ?> <span class="badge"><?=$artist['works'] ?></span></p>
 
 	<?php endforeach; ?>
+
+	</div>
 </div>
