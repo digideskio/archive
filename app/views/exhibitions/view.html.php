@@ -34,32 +34,7 @@ $this->title($exhibition->title);
 
 </ul>
 
-	<div class="alert alert-info">
-	<h1><?=$exhibition->title ?></h1>
-	
-	<?php 
-		date_default_timezone_set('UTC');
-		
-		$location = $exhibition->location();
-		$dates = $exhibition->archive->dates();
-		$curator = $exhibition->curator;
-	?>
-	
-	<?php if($location) echo "<p>$location</p>"; ?>
-	<?php if($dates) echo "<p>$dates</p>"; ?>
-	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
-	
-	<p><?=$exhibition->remarks ?></p>
-
-	<?php if(sizeof($exhibitions_links) > 0): ?>
-
-		<?php foreach($exhibitions_links as $el): ?>
-			<p><?=$this->html->link($el->link->url, $el->link->url); ?></p>
-		<?php endforeach; ?>
-	<?php endif; ?>
-	
-	<p><span class="badge"><?=$exhibition->archive->type ?> Show</span></p>
-	</div>
+<?=$this->partial->exhibition(compact('exhibition')); ?>
 
 <?php if(sizeof($archives_documents) > 0): ?>
 
