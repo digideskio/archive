@@ -6,7 +6,9 @@ use app\models\Links;
 
 use app\models\Works;
 use app\models\WorksLinks;
+use app\models\Exhibitions;
 use app\models\ExhibitionsLinks;
+use app\models\Publications;
 use app\models\PublicationsLinks;
 
 use app\models\Users;
@@ -67,24 +69,24 @@ class LinksController extends \lithium\action\Controller {
 		$link = Links::first($this->request->id);
 
 		$works = Works::find('all', array(
-			'with' => array('WorksLinks'),
+			'with' => array('WorksLinks', 'Archives'),
 			'conditions' => array('link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
 
-		$exhibitions_links = ExhibitionsLinks::find('all', array(
-			'with' => array('Exhibitions'),
+		$exhibitions = Exhibitions::find('all', array(
+			'with' => array('ExhibitionsLinks', 'Archives'),
 			'conditions' => array('link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
 
-		$publications_links = PublicationsLinks::find('all', array(
-			'with' => array('Publications'),
+		$publications = Publications::find('all', array(
+			'with' => array('PublicationsLinks', 'Archives'),
 			'conditions' => array('link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
 
-		return compact('link', 'works', 'exhibitions_links', 'publications_links', 'auth');
+		return compact('link', 'works', 'exhibitions', 'publications', 'auth');
 	}
 
 	public function add() {
