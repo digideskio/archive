@@ -24,7 +24,12 @@
 	
 		$has_works = isset($exhibition->components[0]->id) ? true : false;
 	
-		if ($has_works) echo '<span class="label label-success">Has Artwork</span>';
+		if ($has_works) { 
+			echo '<span class="label label-success">';
+			echo sizeof($exhibition->components);
+			echo sizeof($exhibition->components) == '1' ? ' Artwork' : ' Artworks';
+			echo '</span>';
+		}
 		
 	?>
 	
