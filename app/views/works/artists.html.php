@@ -69,7 +69,7 @@ $this->title('Artists');
 	<?php foreach ($artists as $artist): ?>
 
 		<?php $query = urlencode($artist['name']); ?>
-		<p><?=$this->html->link($artist['name'], "/works/search?conditions=artist&query=$query"); ?> <span class="badge"><?=$artist['works'] ?></span></p>
+		<p><?=$this->html->link($artist['name'], "/works/search?condition=artist&query=$query"); ?> <span class="badge"><?=$artist['works'] ?></span></p>
 
 	<?php endforeach; ?>
 
