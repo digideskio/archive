@@ -121,6 +121,59 @@ class ExhibitionsController extends \lithium\action\Controller {
 		return compact('exhibitions', 'condition', 'type', 'query', 'total', 'page', 'limit', 'auth');
 	}
 
+	public function venues() {
+
+		// Check authorization
+		$check = (Auth::check('default')) ?: null;
+
+		// If the user is not authorized, redirect to the login screen
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+
+		// Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		$exhibitions_venues = Exhibitions::find('all', array(
+			'fields' => array('venue', 'count(venue) as exhibits'),
+			'group' => 'venue',
+			'conditions' => array('venue' => array('!=' => '')),
+			'order' => array('venue' => 'ASC')
+		));
+
+		$venues = $exhibitions_venues->map(function($ev) {
+			return array('name' => $ev->venue, 'count' => $ev->exhibits);
+		}, array('collect' => false));
+
+		$exhibitions_cities = Exhibitions::find('all', array(
+			'fields' => array('city', 'count(city) as cities'),
+			'group' => 'city',
+			'conditions' => array('city' => array('!=' => '')),
+			'order' => array('city' => 'ASC')
+		));
+
+		$cities = $exhibitions_cities->map(function($ec) {
+			return array('name' => $ec->city, 'count' => $ec->cities);
+		}, array('collect' => false));
+
+		$exhibitions_countries = Exhibitions::find('all', array(
+			'fields' => array('country', 'count(country) as countries'),
+			'group' => 'country',
+			'conditions' => array('country' => array('!=' => '')),
+			'order' => array('country' => 'ASC')
+		));
+
+		$countries = $exhibitions_countries->map(function($ec) {
+			return array('name' => $ec->country, 'count' => $ec->countries);
+		}, array('collect' => false));
+
+		return compact('venues', 'cities', 'countries', 'auth');
+
+	}
+
 	public function view() {
     
 	    $check = (Auth::check('default')) ?: null;
