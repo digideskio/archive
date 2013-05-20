@@ -10,6 +10,10 @@ $this->form->config(
 		'field' => array(
 			'wrap' => array('class' => 'control-group'),
 			'template' => '<div{:wrap}>{:label}<div class="controls">{:input}{:error}</div></div>',
+			'style' => 'max-width:100%'
+		),
+		'select' => array(
+			'style' => 'max-width:100%'
 		),
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
