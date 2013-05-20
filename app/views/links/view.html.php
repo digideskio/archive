@@ -81,7 +81,7 @@ $this->title($title);
 	<?php 
 		date_default_timezone_set('UTC');
 		
-		$location = $el->exhibition->location();
+		$location = $this->exhibition->location($exhibition->archive, $exhibition);
 		$dates = $el->exhibition->dates();
 		$curator = $el->exhibition->curator;
 	?>
