@@ -49,6 +49,12 @@ $conditions_list = array(
 		</li>
 
 		<li>
+			<?=$this->html->link('Languages','/publications/languages'); ?>
+		</li>
+		<li>
+			<?=$this->html->link('Subjects','/publications/subjects'); ?>
+		</li>
+		<li>
 			<?=$this->html->link('History','/publications/histories'); ?>
 		</li>
 		<li class="active">

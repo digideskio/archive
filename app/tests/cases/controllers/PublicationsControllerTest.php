@@ -42,6 +42,15 @@ class PublicationsControllerTest extends \lithium\test\Unit {
 		$response = $publications->search();
 		$this->assertEqual($response->headers["Location"], "/login");
 
+		$response = $publications->languages();
+		$this->assertEqual($response->headers["Location"], "/login");
+
+		$response = $publications->subjects();
+		$this->assertEqual($response->headers["Location"], "/login");
+
+		$response = $publications->search();
+		$this->assertEqual($response->headers["Location"], "/login");
+
 		$response = $publications->view();
 		$this->assertEqual($response->headers["Location"], "/login");
 		

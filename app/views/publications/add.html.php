@@ -42,6 +42,32 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 			<?=$this->html->link('Index','/publications'); ?>
 		</li>
 
+		<li class="dropdown">
+			<a class="dropdown-toggle" data-toggle="dropdown" href="#">Filter <b class="caret"></b></a>
+			<ul class="dropdown-menu">
+		<?php foreach($pub_classifications as $pc): ?>
+			<li>
+				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
+			</li>
+		<?php endforeach; ?>
+			</ul>
+		</li>
+
+		<li>
+			<?=$this->html->link('Languages','/publications/languages'); ?>
+		</li>
+		<li>
+			<?=$this->html->link('Subjects','/publications/subjects'); ?>
+		</li>
+		<li>
+			<?=$this->html->link('History','/publications/histories'); ?>
+		</li>
+
+		<li>
+			<?=$this->html->link('Search','/publications/search'); ?>
+		</li>
+
+
 	</ul>
 	<div class="btn-toolbar">
 			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
