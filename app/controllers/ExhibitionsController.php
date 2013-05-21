@@ -86,26 +86,41 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 			$type = isset($data['type']) ? $data['type'] : 'All';
 
-			$query = $data['query'];
-			$esc_query = mysql_escape_string($query);
+			$query = trim($data['query']);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
-
-				if ($type != 'All') {
-					$conditions['Archives.type'] = $type;
-				}
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$esc_query%') OR (`venue` LIKE '%$esc_query%') OR (`curator` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
 
-				if ($type != 'All') {
-					$conditions .= " AND `type` = '$type'";
+				$exhibition_ids = array();
+
+				$fields = array('title', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
+
+				foreach ($fields as $field) {
+					$matching_exhibits = Exhibitions::find('all', array(
+						'with' => 'Archives',
+						'fields' => 'Exhibitions.id',
+						'conditions' => array("$field" => array('LIKE' => "%$query%")),
+					));
+
+					if ($matching_exhibits) {
+						$matching_ids = $matching_exhibits->map(function($me) {
+							return $me->id;
+						}, array('collect' => false));
+
+						$exhibition_ids = array_unique(array_merge($exhibition_ids, $matching_ids));
+					}
 				}
+
+				$conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('title' => $query);
 			}
 
-			//FIXME trying to find:: with => Components seems to mess up the conditions and page
+			if ($type != 'All') {
+				$conditions['Archives.type'] = $type;
+			}
+
 			$exhibitions = Exhibitions::find('all', array(
-				'with' => array('Archives'),
+				'with' => array('Archives', 'Components'),
 				'order' => $order,
 				'conditions' => $conditions,
 				'limit' => $limit,

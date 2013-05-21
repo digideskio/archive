@@ -41,10 +41,10 @@ class SearchController extends \lithium\action\Controller {
 		$limit = '10';
 
 		if (isset($data['query']) && $data['query']) {
-			$query = $data['query'];
+			$query = trim($data['query']);
 			$esc_query = mysql_escape_string($query);
         
-			$order = array('earliest_date' => 'DESC');
+			$order = array('Archives.earliest_date' => 'DESC');
 
 			$artwork_ids = array();
 
@@ -54,7 +54,7 @@ class SearchController extends \lithium\action\Controller {
 				$matching_works = Works::find('artworks', array(
 					'with' => 'Archives',
 					'fields' => 'Works.id',
-					'conditions' => array("$field" => array('LIKE' => "%$esc_query%")),
+					'conditions' => array("$field" => array('LIKE' => "%$query%")),
 				));
 
 				if ($matching_works) {
@@ -66,7 +66,7 @@ class SearchController extends \lithium\action\Controller {
 				}
 			}
 
-			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $esc_query);
+			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $query);
 
 			$filter = '';
 
@@ -92,11 +92,30 @@ class SearchController extends \lithium\action\Controller {
 				'limit' => $limit,
 			));
 
-			$exhibition_conditions = "((`title` LIKE '%$esc_query%') OR (`venue` LIKE '%$esc_query%') OR (`curator` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
+			$exhibition_ids = array();
 
-			//FIXME trying to find:: with => Components seems to mess up the conditions and page
+			$fields = array('title', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
+
+			foreach ($fields as $field) {
+				$matching_exhibits = Exhibitions::find('all', array(
+					'with' => 'Archives',
+					'fields' => 'Exhibitions.id',
+					'conditions' => array("$field" => array('LIKE' => "%$query%")),
+				));
+
+				if ($matching_exhibits) {
+					$matching_ids = $matching_exhibits->map(function($me) {
+						return $me->id;
+					}, array('collect' => false));
+
+					$exhibition_ids = array_unique(array_merge($exhibition_ids, $matching_ids));
+				}
+			}
+
+			$exhibition_conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('title' => $query);
+
 			$exhibitions = Exhibitions::find('all', array(
-				'with' => array('Archives'),
+				'with' => array('Archives', 'Components'),
 				'order' => $order,
 				'conditions' => $exhibition_conditions,
 				'limit' => $limit,
