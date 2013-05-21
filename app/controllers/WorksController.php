@@ -100,10 +100,9 @@ class WorksController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
-			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
 
 				$artwork_ids = array();
@@ -114,7 +113,7 @@ class WorksController extends \lithium\action\Controller {
 					$matching_works = Works::find('artworks', array(
 						'with' => 'Archives',
 						'fields' => 'Works.id',
-						'conditions' => array("$field" => array('LIKE' => "%$esc_query%")),
+						'conditions' => array("$field" => array('LIKE' => "%$query%")),
 					));
 
 					if ($matching_works) {
@@ -126,7 +125,7 @@ class WorksController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $esc_query);
+				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $query);
 			}
 
 			$filter = '';
