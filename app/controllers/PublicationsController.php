@@ -131,13 +131,33 @@ class PublicationsController extends \lithium\action\Controller {
 		if (isset($data['query']) && $data['query']) {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
-			$query = $data['query'];
-			$esc_query = mysql_escape_string($query);
+			$query = trim($data['query']);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$esc_query%') OR (`author` LIKE '%$esc_query%') OR (`publisher` LIKE '%$esc_query%') OR (`editor` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`subject` LIKE '%$esc_query%') OR (`language` LIKE '%$esc_query%') OR (`storage_location` LIKE '%$esc_query%') OR (`storage_number` LIKE '%$esc_query%') OR (`publication_number` LIKE '%$esc_query%'))";
+
+				$publication_ids = array();
+
+				$fields = array('title', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
+
+				foreach ($fields as $field) {
+					$matching_pubs = Publications::find('all', array(
+						'with' => 'Archives',
+						'fields' => 'Publications.id',
+						'conditions' => array("$field" => array('LIKE' => "%$query%")),
+					));
+
+					if ($matching_pubs) {
+						$matching_ids = $matching_pubs->map(function($mp) {
+							return $mp->id;
+						}, array('collect' => false));
+
+						$publication_ids = array_unique(array_merge($publication_ids, $matching_ids));
+					}
+				}
+
+				$conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('title' => $query);
 			}
 
 			$publications = Publications::find('all', array(
