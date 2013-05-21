@@ -29,13 +29,24 @@ class ArchivesDocumentsController extends \lithium\action\Controller {
 			return $this->redirect('Pages::home');
         }
 
-		$archive_document = ArchivesDocuments::create();
+		if ($this->request->data) {
 
-		if (($this->request->data) && $archive_document->save($this->request->data)) {
-			return $this->redirect($this->request->env('HTTP_REFERER'));
+			$archive_id = $this->request->data['archive_id'];
+			$document_id = $this->request->data['document_id'];
+
+			$archive_document = ArchivesDocuments::find('first', array(
+				'conditions' => compact('archive_id', 'document_id'),
+			));
+
+			if (!$archive_document) {
+
+				$archive_document = ArchivesDocuments::create();
+				$archive_document->save($this->request->data);
+
+			}
 		}
 
-		return $this->redirect('Pages::home');
+		return $this->redirect($this->request->env('HTTP_REFERER'));
 	}
 
 
@@ -60,7 +71,11 @@ class ArchivesDocumentsController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 
-		ArchivesDocuments::find($this->request->id)->delete();
+		$archive_document = ArchivesDocuments::find($this->request->id);
+		
+		if ($archive_document) {
+			$archive_document->delete();
+		}
 
 		return $this->redirect($this->request->env('HTTP_REFERER'));
 	}

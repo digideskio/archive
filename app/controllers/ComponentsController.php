@@ -29,13 +29,24 @@ class ComponentsController extends \lithium\action\Controller {
 			return $this->redirect('Pages::home');
         }
 
-		$component = Components::create();
+		if ($this->request->data) {
 
-		if (($this->request->data) && $component->save($this->request->data)) {
-			return $this->redirect($this->request->env('HTTP_REFERER'));
+			$archive_id1 = $this->request->data['archive_id1'];
+			$archive_id2 = $this->request->data['archive_id2'];
+
+			$component = Components::find('first', array(
+				'conditions' => compact('archive_id1', 'archive_id2'),
+			));
+
+			if (!$component) {
+
+				$component = Components::create();
+				$component->save($this->request->data);
+
+			}
 		}
 
-		return $this->redirect('Pages::home');
+		return $this->redirect($this->request->env('HTTP_REFERER'));
 	}
 
 	public function delete() {
@@ -59,7 +70,11 @@ class ComponentsController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 
-		Components::find($this->request->id)->delete();
+		$component = Components::find($this->request->id);
+		
+		if ($component) {
+			$component->delete();
+		}
 
 		return $this->redirect($this->request->env('HTTP_REFERER'));
 	}
