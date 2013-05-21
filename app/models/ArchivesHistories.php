@@ -25,6 +25,12 @@ class ArchivesHistories extends \app\models\Archives {
 				'start_date' => 'start_date',
 				'archive_id' => 'album_id'
 		)),
+		'ExhibitionsHistories' => array (
+			'to' => 'app\models\ExhibitionsHistories',
+			'key' => array(
+				'start_date' => 'start_date',
+				'archive_id' => 'exhibition_id'
+		)),
 		'PublicationsHistories' => array (
 			'to' => 'app\models\PublicationsHistories',
 			'key' => array(

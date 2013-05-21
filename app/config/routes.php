@@ -108,6 +108,8 @@ if (Environment::get('architecture')) {
 Router::connect('/exhibitions/pages/{:page:[0-9]+}', array('Exhibitions::index'));
 Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));
 Router::connect('/exhibitions/edit/{:slug}', array('Exhibitions::edit'));
+Router::connect('/exhibitions/history/{:slug}', array('Exhibitions::history'));
+Router::connect('/exhibitions/histories/{:page:[0-9]+}', array('Exhibitions::histories'));
 Router::connect('/exhibitions/search/{:page:[0-9]+}', array('Exhibitions::search'));
 Router::connect('/exhibitions/delete/{:slug}', array('Exhibitions::delete'));
 

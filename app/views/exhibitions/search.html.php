@@ -40,6 +40,9 @@ $conditions_list = array(
 		<li>
 			<?=$this->html->link('Venues','/exhibitions/venues'); ?>
 		</li>
+		<li>
+			<?=$this->html->link('History','/exhibitions/histories'); ?>
+		</li>
 		<li class="active">
 			<?=$this->html->link('Search','/exhibitions/search'); ?>
 		</li>

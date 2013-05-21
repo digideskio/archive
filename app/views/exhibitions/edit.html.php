@@ -50,6 +50,7 @@ $country_data = json_encode($countries);
 			Edit
 		</a>
 	</li>
+	<li><?=$this->html->link('History','/exhibitions/history/'.$exhibition->archive->slug); ?></li>
 </ul>
 
 <div class="row">

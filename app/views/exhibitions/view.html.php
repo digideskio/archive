@@ -32,6 +32,8 @@ $this->title($exhibition->title);
 	
 	<?php endif; ?>
 
+		<li><?=$this->html->link('History','/exhibitions/history/'.$exhibition->archive->slug); ?></li>
+
 </ul>
 
 <?=$this->partial->exhibition(compact('exhibition')); ?>

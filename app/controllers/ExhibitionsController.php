@@ -3,7 +3,9 @@
 namespace app\controllers;
 
 use app\models\Archives;
+use app\models\ArchivesHistories;
 use app\models\Exhibitions;
+use app\models\ExhibitionsHistories;
 use app\models\Works;
 use app\models\Components;
 use app\models\ExhibitionsLinks;
@@ -119,6 +121,34 @@ class ExhibitionsController extends \lithium\action\Controller {
 		}
 
 		return compact('exhibitions', 'condition', 'type', 'query', 'total', 'page', 'limit', 'auth');
+	}
+
+	public function histories() {
+
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		$limit = 50;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('start_date' => 'DESC');
+		$total = ExhibitionsHistories::count();
+		$archives_histories = ArchivesHistories::find('all', array(
+			'with' => array('Users', 'Archives'),
+			'conditions' => array('ArchivesHistories.controller' => 'exhibitions'),
+			'limit' => $limit,
+			'order' => $order,
+			'page' => $page
+		));
+		
+		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'auth');
 	}
 
 	public function venues() {
@@ -360,8 +390,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		if (($this->request->data) && $exhibition->save($this->request->data)) {
 		
-			$exhibition->save($this->request->data);
-		
 			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->archive->slug)));
 		}
 
@@ -410,6 +438,53 @@ class ExhibitionsController extends \lithium\action\Controller {
 		}, array('collect' => false));
 		
 		return compact('exhibition', 'archives_documents', 'exhibition_links', 'titles', 'venues', 'cities', 'countries');
+	}
+
+	public function history() {
+	
+		$check = (Auth::check('default')) ?: null;
+	
+		if (!$check) {
+			return $this->redirect('Sessions::add');
+		}
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$exhibition = Exhibitions::first(array(
+				'with' => 'Archives',
+				'conditions' => array('slug' => $this->request->params['slug']),
+			));
+			
+			if($exhibition) {
+
+				$archives_histories = ArchivesHistories::find('all', array(
+					'conditions' => array('ArchivesHistories.archive_id' => $exhibition->id),
+					'order' => 'ArchivesHistories.start_date DESC',
+					'with' => array('Users', 'ExhibitionsHistories'),
+				));
+
+				//FIXME We can't actually guarantee that the start_date can be used as a foreign key for the histories,
+				//so for now let's grab the subclass history table, then iterate through it as well
+				$exhibitions_histories = ExhibitionsHistories::find('all', array(
+					'conditions' => array('exhibition_id' => $exhibition->id),
+					'order' => array('start_date' => 'DESC')
+				));
+		
+		
+				//Send the retrieved data to the view
+				return compact('auth', 'exhibition', 'archives_histories', 'exhibitions_histories', 'auth');
+			}
+		}
+		
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Works::index'));
 	}
 
 	public function delete() {

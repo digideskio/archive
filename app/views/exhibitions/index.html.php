@@ -25,6 +25,9 @@ $this->title('Exhibitions');
 			<?=$this->html->link('Venues','/exhibitions/venues'); ?>
 		</li>
 		<li>
+			<?=$this->html->link('History','/exhibitions/histories'); ?>
+		</li>
+		<li>
 			<?=$this->html->link('Search','/exhibitions/search'); ?>
 		</li>
 
