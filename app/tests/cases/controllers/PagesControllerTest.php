@@ -37,7 +37,9 @@ class PagesControllerTest extends \lithium\test\Unit {
 		$pages = new PagesController(array('request' => $this->request));
 		
 		$response = $pages->view();
-		
+		$this->assertEqual($response->headers["Location"], "/login");
+	
+		$response = $pages->home();
 		$this->assertEqual($response->headers["Location"], "/login");
 	
 	}

@@ -52,6 +52,14 @@ class PagesController extends \lithium\action\Controller {
 	}
 
 	public function home() {
+    
+    	// Check authorization
+	    $check = (Auth::check('default')) ?: null;
+	
+		// If the user is not authorized, redirect to the login screen
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
 
 		$path = 'home';
 
