@@ -10,21 +10,65 @@
 
 <?php endif; ?>
 
+<form action="/works/add" method="post">
 
-<ul class="thumbnails">
+	<table class="table table-bordered">
+	<tbody>
+	<tr><td>
+	<?=$this->form->submit('Create Artwork', array('class' => 'btn btn-small  batch-edit-btn', 'disabled' => 'disabled')); ?>
+	</td></tr>
+	</tbody>
+	</table>
 
-<?php foreach($documents as $document): ?>
+	<ul class="thumbnails">
 
-	<?php
-		$span = 'span2';
-	?>
-	
-	<li class="<?=$span?>">
-		<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
-			<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
-		</a>
-	</li>
+	<?php foreach($documents as $document): ?>
 
-<?php endforeach; ?>
+		<?php
+			$span = 'span2';
+		?>
+		
+		<li class="<?=$span?>">
+			<div style="position:relative;">
+			<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
+				<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
+			</a>
+			<label class="batch-checkbox" for="Document-<?=$document->id?>">
+			<?=$this->form->checkbox('documents[]', array('id' => "Document-$document->id", 'value' => $document->id, 'hidden' => false, 'class' => 'checkdocs'));?>
+			</label>
+		</li>
 
-</ul>
+	<?php endforeach; ?>
+
+	</ul>
+
+<?=$this->form->end(); ?>
+
+<script>
+
+$(document).ready(function() {
+
+	function handleButtons() {
+		if ($('.checkdocs:checked').length) {
+			$('.batch-edit-btn').removeAttr('disabled');
+		} else {
+			$('.batch-edit-btn').attr('disabled', 'disabled');
+		}
+	}
+
+	$('.checkdocs').change(function() {
+		if ($(this).attr('checked')) {
+			$(this).closest('.batch-checkbox').addClass('checked');
+		} else {
+			$(this).closest('.batch-checkbox').removeClass('checked');
+		}
+
+		handleButtons();
+
+	});
+
+	handleButtons();
+
+});
+
+</script>
