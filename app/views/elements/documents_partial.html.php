@@ -15,7 +15,21 @@
 	<table class="table table-bordered">
 	<tbody>
 	<tr><td>
-	<?=$this->form->submit('Create Artwork', array('class' => 'btn btn-small  batch-edit-btn', 'disabled' => 'disabled')); ?>
+	<div class="btn-toolbar">
+		<div id="select-docs" class="btn-group">
+		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+			<i class="icon-ok"></i> 
+			<span class="caret"></span>
+		  </a>
+		  <ul class="dropdown-menu">
+			<li id="select-all-docs"><a href="#"><i class="icon-ok"></i> Select All</a></li>
+			<li id="select-no-docs"><a href="#"><i class="icon-remove"></i> Select None</a></li>
+		  </ul>
+		</div>
+		<div class="btn-group">
+		<?=$this->form->submit('Create Artwork', array('class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		</div>
+	</div>
 	</td></tr>
 	</tbody>
 	</table>
@@ -48,11 +62,25 @@
 
 $(document).ready(function() {
 
+	$('#select-docs #select-all-docs').click(function() {
+		$('.checkdocs').attr('checked', true);
+		$('.batch-checkbox').addClass('checked');
+		handleButtons();
+	});
+
+	$('#select-docs #select-no-docs').click(function() {
+		$('.checkdocs').attr('checked', false);
+		$('.batch-checkbox').removeClass('checked');
+		handleButtons();
+	});
+
 	function handleButtons() {
 		if ($('.checkdocs:checked').length) {
 			$('.batch-edit-btn').removeAttr('disabled');
+			$('.batch-edit-btn').addClass('btn-success');
 		} else {
 			$('.batch-edit-btn').attr('disabled', 'disabled');
+			$('.batch-edit-btn').removeClass('btn-success');
 		}
 	}
 
