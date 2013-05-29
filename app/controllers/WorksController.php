@@ -387,6 +387,14 @@ class WorksController extends \lithium\action\Controller {
 		
 		$work = Works::create();
 
+		if (($this->request->data) && $work->save($this->request->data)) {
+			//The slug has been saved with the Archive object, so let's look it up
+			$archive = Archives::find('first', array(
+				'conditions' => array('id' => $work->id)
+			));
+			return $this->redirect(array('Works::view', 'args' => array($archive->slug)));
+		}
+
 		$works_artists = Works::find('all', array(
 			'fields' => array('artist', 'count(artist) as works'),
 			'group' => 'artist',
@@ -414,14 +422,6 @@ class WorksController extends \lithium\action\Controller {
 		));
 
 		$classifications = Works::classifications();
-
-		if (($this->request->data) && $work->save($this->request->data)) {
-			//The slug has been saved with the Archive object, so let's look it up
-			$archive = Archives::find('first', array(
-				'conditions' => array('id' => $work->id)
-			));
-			return $this->redirect(array('Works::view', 'args' => array($archive->slug)));
-		}
 
 		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
 
