@@ -72,8 +72,11 @@ class UsersControllerTest extends \lithium\test\Unit {
 	public function testDelete() {}
 	
 	public function testNonAdminAccess() {
+
+		$this->request = new Request();
+		$this->request->data = $this->editor_data;
 	
-		Auth::set('default', $this->editor_data);
+		Auth::check('default', $this->request);
 	
 		$this->request = new Request();
 		$this->request->params = array(

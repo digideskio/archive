@@ -27,6 +27,16 @@ class Users extends \lithium\data\Model {
         ),
     );
 
+	/**
+	 * Normally Auth will only store the User record in the session. We can include the Role as well
+	 * by writing this function and then adding 'query' => 'authenticate' to our Auth::config.
+	 *
+	 * @see app\config\bootstrap\session
+	*/
+	public static function authenticate (array $query) {
+	    return static::first($query + array('with' => 'Roles'));
+	}
+
 	public function initials($entity) {
 		
 		$initials = preg_replace('~\b(\w)|.~', '$1', $entity->name);

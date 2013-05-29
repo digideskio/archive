@@ -30,15 +30,14 @@ Access::config(array(
 
 
 Access::adapter('rule_based')->add('isAdminUser', function($user, $request, $options){
-
-	if($user['role_id'] == '1'){
+	if(isset($user['role']['name']) && $user['role']['name'] == 'Admin'){
 		return true;
 	}
 	return false;
 });
 
 Access::adapter('rule_based')->add('isEditorUser', function($user, $request, $options){
-	if($user['role'] == 'editor' ||  $user['role'] == 'admin'){
+	if(isset($user['role']['name']) && ($user['role']['name'] == 'Editor' ||  $user['role']['name'] == 'Admin')){
 		return true;
 	}
 	return false;

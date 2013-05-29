@@ -44,7 +44,8 @@ Auth::config(array(
 	'default' => array(
 		'adapter' => 'Form',
 		'model' => 'Users',
-		'fields' => array('username', 'password')
+		'fields' => array('username', 'password'),
+		'query' => 'authenticate',
 	)
 ));
 

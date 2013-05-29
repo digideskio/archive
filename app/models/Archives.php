@@ -322,7 +322,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 	$check = (Auth::check('default')) ?: null;
 
-	if($check) {
+	if($check && isset($check['id'])) {
 
 		$user_id = $check['id'];
 		$params['data']['user_id'] = $user_id;
