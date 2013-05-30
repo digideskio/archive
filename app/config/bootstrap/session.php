@@ -21,6 +21,34 @@ Session::config(array(
 ));
 
 /**
+ * This filter re-configures your session storage. It changes the default configuration
+ * based on an Environment variable. You can use a Cookie adapter with the Hmac strategy
+ * by adding the following code in your connections.php file:
+ * 
+ * {{{use lithium\core\Environment;
+ * 		$session = array('default' => array(
+ *			'adapter' => 'Cookie',
+ * 			'strategies' => array('Hmac' => array('secret' => 'YOUR_SECRET')),
+ *			'name' => 'YOUR_APP',
+ * 		));
+ *		Environment::set('production', compact('session'));
+ }}}
+ */
+use lithium\core\Environment;
+use lithium\action\Dispatcher;
+
+Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+
+	$session = Environment::get('session');
+
+	if ($session) {
+		Session::config($session);
+	}
+
+	return $chain->next($self, $params, $chain);
+});
+
+/**
  * Uncomment the lines below to enable forms-based authentication. This configuration will attempt
  * to authenticate users against a `Users` model. In a controller, run
  * `Auth::check('default', $this->request)` to authenticate a user. This will check the POST data of
