@@ -5,12 +5,11 @@ namespace app\controllers;
 use app\models\Users;
 
 use lithium\security\Auth;
+use lithium\storage\Session;
 
 class SessionsController extends \lithium\action\Controller {
 
     public function add() {
-
-        Auth::clear('default');
 
 		$message = '';
     	
@@ -25,6 +24,9 @@ class SessionsController extends \lithium\action\Controller {
         		$message = 'Wrong username or password.';
         	}
         }
+
+		Session::clear(array('default'));
+        Auth::clear('default');
         
         return $this->render(array('data' => compact('message'), 'layout' => 'simple'));
     }
@@ -32,6 +34,7 @@ class SessionsController extends \lithium\action\Controller {
     /* ... */
 
     public function delete() {
+		Session::clear(array('default'));
         Auth::clear('default');
 		return $this->render(array('layout' => 'simple'));
     }
