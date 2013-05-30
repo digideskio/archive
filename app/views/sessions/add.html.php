@@ -10,4 +10,8 @@
     <?=$this->form->submit('Log in'); ?>
 <?=$this->form->end(); ?>
 
-<?=$this->flashMessage->output(); ?>
+<?php if ($message): ?>
+
+	<p><?=$message; ?></p>
+
+<?php endif; ?>
