@@ -17,7 +17,8 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 			"password" => "abcd",
 			"name" => "Full Name",
 			"email" => "admin@example.com",
-			"role_id" => '1'
+			"role_id" => '1',
+			"timezone_id" => 'Europe/London',
 		),
 	);
 
@@ -58,7 +59,7 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 		$this->assertTrue(isset($check['id']));
 
 		$this->assertEqual($check['username'], $users[$username]['username']);
-
+		$this->assertEqual($check['timezone_id'], $users[$username]['timezone_id']);
 		$this->assertEqual($check['role_id'], $users[$username]['role_id']);
 
 		$role = Roles::first($users['admin']['role_id']);
