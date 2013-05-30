@@ -10,6 +10,8 @@ class SessionsController extends \lithium\action\Controller {
 
     public function add() {
 
+        Auth::clear('default');
+
 		$message = '';
     	
     	if(!Users::count()) {
@@ -31,7 +33,7 @@ class SessionsController extends \lithium\action\Controller {
 
     public function delete() {
         Auth::clear('default');
-        return $this->redirect('/login');
+		return $this->render(array('layout' => 'simple'));
     }
 }
 
