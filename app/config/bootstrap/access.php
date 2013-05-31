@@ -28,17 +28,29 @@ Access::config(array(
 	)
 ));
 
+use app\models\Users;
 
 Access::adapter('rule_based')->add('isAdminUser', function($user, $request, $options){
-	if(isset($user['role']['name']) && $user['role']['name'] == 'Admin'){
+
+	$auth = Users::find('first', array(
+		'with' => array('Roles'),
+		'conditions' => array('username' => $user['username']),
+	));
+
+	if($auth->role->name == 'Admin'){
 		return true;
 	}
 	return false;
 });
 
 Access::adapter('rule_based')->add('isEditorUser', function($user, $request, $options){
-	if(isset($user['role']['name']) && ($user['role']['name'] == 'Editor' ||  $user['role']['name'] == 'Admin')){
+
+	$auth = Users::find('first', array(
+		'with' => 'Roles',
+		'conditions' => array('username' => $user['username']),
+	));
+
+	if($auth->role->name == 'Admin' || $auth->role-name == 'Editor'){
 		return true;
 	}
-	return false;
 });

@@ -1,4 +1,13 @@
-<?php $check = lithium\security\Auth::check('default'); $role_id = $check['role_id']; ?>
+<?php
+	$check = lithium\security\Auth::check('default');
+
+	$auth = app\models\Users::find('first', array(
+		'with' => 'Roles',
+		'condition' => array('username' => $check['username']),
+	));
+
+	$role = $auth->role->name;
+?>
 
 <?php $c = strtolower($this->request()->params['controller']); ?>
 
@@ -27,7 +36,7 @@
 			<!--<li <?php if ($c == 'links') echo 'class="active"'; ?> >
 				<a href="/links"><i class="icon-bookmark"></i> Links</a></li>-->
 			<li class="divider"></li>
-			<?php if ($role_id == '1'): ?>
+			<?php if ($role == 'Admin'): ?>
 				<li <?php if ($c == 'users') echo 'class="active"'; ?> >
 					<a href="/users"><i class="icon-user"></i> Users</a></li>
 			<?php endif; ?>

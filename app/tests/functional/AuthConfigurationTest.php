@@ -54,17 +54,8 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 
 		$check = Auth::check('default', $this->request);
 
-		$this->assertFalse(isset($check['password']));
-
-		$this->assertTrue(isset($check['id']));
-
-		$this->assertEqual($check['username'], $users[$username]['username']);
-		$this->assertEqual($check['timezone_id'], $users[$username]['timezone_id']);
-		$this->assertEqual($check['role_id'], $users[$username]['role_id']);
-
-		$role = Roles::first($users['admin']['role_id']);
-
-		$this->assertEqual($check['role']['name'], $role->name);
+		$this->assertEqual(sizeof($check), 1);
+		$this->assertTrue($check['username'], $users[$username]['username']);
 
 	}
 }

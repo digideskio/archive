@@ -46,9 +46,9 @@ Auth::config(array(
 		'model' => 'Users',
 		'fields' => array('username', 'password'),
 		'session' => array(
-			'persist' => array('id', 'username', 'timezone_id', 'role_id', 'role')
+			'persist' => array('username')
 		),
-		'query' => 'authenticate',
+		//'query' => 'authenticate',
 	)
 ));
 

@@ -34,7 +34,7 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 			"username" => "viewer",
 			"password" => "abcd",
 			"name" => "Full Name",
-			"email" => "editor@example.com",
+			"email" => "viewer@example.com",
 			"role_id" => '3'
 		),
 	);
@@ -79,12 +79,10 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 
 		$username = 'admin';
 
-		$this->request = new Request();
-		$this->request->data = $users[$username]; 
+		$request = new Request();
+		$check = array('username' => $username);
 
-		$check = Auth::check('default', $this->request);
-
-	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
+	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
 
 		$this->assertTrue(empty($access));
 
@@ -94,12 +92,10 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 
 		$username = 'editor';
 
-		$this->request = new Request();
-		$this->request->data = $users[$username]; 
-
-		$check = Auth::check('default', $this->request);
+		$request = new Request();
+		$check = array('username' => $username);
 		
-	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
+	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
 
 		$this->assertEqual($access, $rules[0]);
 	}
