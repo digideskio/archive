@@ -21,6 +21,8 @@ use lithium\core\Libraries;
 use lithium\core\Environment;
 use lithium\action\Dispatcher;
 use lithium\storage\Session;
+use lithium\security\Auth;
+use lithium\storage\session\strategy\MissingSignatureException;
 
 /**
  * This filter intercepts the `run()` method of the `Dispatcher`, and first passes the `'request'`
@@ -31,6 +33,9 @@ use lithium\storage\Session;
  * Change this code if plugin routes must be loaded in a specific order (i.e. not the same order as
  * the plugins are added in your bootstrap configuration), or if application routes must be loaded
  * first (in which case the default catch-all routes should be removed).
+ *
+ * If `Dispatcher::run()` is called multiple times in the course of a single request, change the
+ * `include`s to `include_once`.
  *
  * This filter re-configures your session storage if it detects a 'session' Enviroment variable.
  * For example, you can use a Cookie adapter with the Hmac strategy by adding the following 
@@ -45,8 +50,8 @@ use lithium\storage\Session;
  *		Environment::set('production', compact('session'));
  * }}}
  *
- * If `Dispatcher::run()` is called multiple times in the course of a single request, change the
- * `include`s to `include_once`.
+ * The filter then checks authentication. If an Exception is thrown (by Hmac) then it will 
+ * clear the session (the cookie) and log the user out.
  *
  * @see lithium\action\Request
  * @see lithium\core\Environment
@@ -59,6 +64,16 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 
 	if ($session) {
 		Session::config($session);
+	}
+	
+	try {
+		Auth::check('default');
+	} catch (RuntimeException $e) {
+		Session::clear(array('default'));
+		Auth::clear('default');
+		Session::config(array(
+			'default' => array('adapter' => 'Php', 'session.name' => 'app')
+		));
 	}
 
 	foreach (array_reverse(Libraries::get()) as $name => $config) {
