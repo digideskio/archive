@@ -20,7 +20,7 @@ class SessionsController extends \lithium\action\Controller {
     
         if ($this->request->data) { 
         	if(Auth::check('default', $this->request)) {
-				$redirect = isset($this->request->data['path']) ? $this->request->data['path'] : '/home';
+				$redirect = isset($this->request->data['path']) && $this->request->data['path'] ? $this->request->data['path'] : '/home';
             	return $this->redirect($redirect);
         	} else {
         		$message = 'Wrong username or password.';
