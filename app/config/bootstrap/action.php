@@ -20,6 +20,7 @@
 use lithium\core\Libraries;
 use lithium\core\Environment;
 use lithium\action\Dispatcher;
+use lithium\storage\Session;
 
 /**
  * This filter intercepts the `run()` method of the `Dispatcher`, and first passes the `'request'`
@@ -31,6 +32,19 @@ use lithium\action\Dispatcher;
  * the plugins are added in your bootstrap configuration), or if application routes must be loaded
  * first (in which case the default catch-all routes should be removed).
  *
+ * This filter re-configures your session storage if it detects a 'session' Enviroment variable.
+ * For example, you can use a Cookie adapter with the Hmac strategy by adding the following 
+ * code in your connections.php file:
+ * 
+ * {{{use lithium\core\Environment;
+ * 		$session = array('default' => array(
+ *			'adapter' => 'Cookie',
+ * 			'strategies' => array('Hmac' => array('secret' => 'YOUR_SECRET')),
+ *			'name' => 'YOUR_APP',
+ * 		));
+ *		Environment::set('production', compact('session'));
+ * }}}
+ *
  * If `Dispatcher::run()` is called multiple times in the course of a single request, change the
  * `include`s to `include_once`.
  *
@@ -40,6 +54,12 @@ use lithium\action\Dispatcher;
  */
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
 	Environment::set($params['request']);
+
+	$session = Environment::get('session');
+
+	if ($session) {
+		Session::config($session);
+	}
 
 	foreach (array_reverse(Libraries::get()) as $name => $config) {
 		if ($name === 'lithium') {
