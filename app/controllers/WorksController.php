@@ -245,7 +245,7 @@ class WorksController extends \lithium\action\Controller {
 
 		//Define the access rules for this action
 		$rules = array(
-			array('rule' => 'isAdminUser', 'message' => 'You are not authorized', 'redirect' => "/works"),
+			array('rule' => 'allowAdminUser', 'message' => 'You are not authorized', 'redirect' => "/works"),
 		);
 		
 	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));

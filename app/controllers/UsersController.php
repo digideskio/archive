@@ -30,7 +30,7 @@ class UsersController extends \lithium\action\Controller {
 		
 		//Define the access rules for this action
 		$rules = array(
-			array('rule' => 'isAdminUser', 'message' => 'You cannot see these users!', 'redirect' => "/users/view/$auth->username"),
+			array('rule' => 'allowAdminUser', 'message' => 'You cannot see these users!', 'redirect' => "/users/view/$auth->username"),
 		);
 		
 	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
@@ -80,7 +80,7 @@ class UsersController extends \lithium\action\Controller {
 
 	public function add() {
 		$rules = array(
-			array('rule' => 'isAdminUser', 'message' => 'You cannot add a user!', 'redirect' => '/users'),
+			array('rule' => 'allowAdminUser', 'message' => 'You cannot add a user!', 'redirect' => '/users'),
 		);
 		
 	    $check = Auth::check('default');

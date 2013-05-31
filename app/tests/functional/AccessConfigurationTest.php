@@ -72,7 +72,7 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 
 		//Define the access rules for this action
 		$rules = array(
-			array('rule' => 'isAdminUser', 'message' => 'You are not an admin!', 'redirect' => "/home"),
+			array('rule' => 'allowAdminUser', 'message' => 'You are not an admin!', 'redirect' => "/home"),
 		);
 		
     	/* ... */

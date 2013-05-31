@@ -30,7 +30,7 @@ Access::config(array(
 
 use app\models\Users;
 
-Access::adapter('rule_based')->add('isAdminUser', function($user, $request, $options){
+Access::adapter('rule_based')->add('allowAdminUser', function($user, $request, $options){
 
 	$auth = Users::find('first', array(
 		'with' => array('Roles'),
