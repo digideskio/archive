@@ -18,6 +18,8 @@
  */
 use lithium\net\http\Router;
 use lithium\core\Environment;
+use lithium\action\Response;
+use lithium\security\Auth;
 
 /**
  * Here, we are connecting `'/'` (the base path) to controller called `'Pages'`,
@@ -28,7 +30,6 @@ use lithium\core\Environment;
  * @see app\controllers\PagesController
  */
 Router::connect('/', 'Pages::blank');
-Router::connect('/home', 'Pages::home');
 
 /**
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
@@ -44,6 +45,13 @@ Router::connect('/login', 'Sessions::add');
 Router::connect('/logout', 'Sessions::delete');
 
 Router::connect('/register', 'Users::register');
+
+//Check if the user is logged in
+$check = Auth::check('default');
+
+if ($check) {
+
+Router::connect('/home', 'Pages::home');
 
 /**
  * Add the testing routes. These routes are only connected in non-production environments, and allow
@@ -178,5 +186,19 @@ Router::connect('/notices/delete/{:id}', array('Notices::delete'));
  * a top-down fashion.
  */
 Router::connect('/{:controller}/{:action}/{:args}');
+
+}
+
+// redirect the user to a login if no other routes match
+//Router::connect('/{:args}', array(), function($request) { header('Location: /login?url='.$request->url); exit; });
+//Router::connect('/{:args}', 'Sessions::add');
+
+Router::connect('/{:args}', array(), function($request) {
+	$url = $request->url;
+	return new Response(array(
+		'headers' => array('location' => "/login?path=$url"),//?url=' . $request->url),
+		'body' => 'Hi'
+	));
+});
 
 ?>

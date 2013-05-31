@@ -12,6 +12,7 @@ class SessionsController extends \lithium\action\Controller {
     public function add() {
 
 		$message = '';
+		$path = isset($this->request->query['path']) ? $this->request->query['path'] : '';
     	
     	if(!Users::count()) {
     		return $this->redirect('/register');
@@ -19,7 +20,8 @@ class SessionsController extends \lithium\action\Controller {
     
         if ($this->request->data) { 
         	if(Auth::check('default', $this->request)) {
-            	return $this->redirect('/home');
+				$redirect = isset($this->request->data['path']) ? $this->request->data['path'] : '/home';
+            	return $this->redirect($redirect);
         	} else {
         		$message = 'Wrong username or password.';
         	}
@@ -28,7 +30,7 @@ class SessionsController extends \lithium\action\Controller {
 		Session::clear(array('default'));
         Auth::clear('default');
         
-        return $this->render(array('data' => compact('message'), 'layout' => 'simple'));
+        return $this->render(array('data' => compact('message', 'path'), 'layout' => 'simple'));
     }
 
     /* ... */

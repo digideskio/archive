@@ -61,6 +61,27 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		$this->assertTrue($check);
 	
 	}
+
+	public function testRedirect() {
+	
+		$this->request = new Request();
+		$this->request->params = array(
+			'controller' => 'sessions',
+			'action' => 'add'
+		);
+		$this->request->data = array(
+			'username' => 'test',
+			'password' => 'abcd',
+			'path' => '/works/histories'
+		);
+
+		$session = new SessionsController(array('request' => $this->request));
+		
+		$response = $session->add();
+		
+		$this->assertEqual($response->headers["Location"], "/works/histories");
+	
+	}
 	
 	public function testBadLogin() {
 	
