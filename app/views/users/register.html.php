@@ -17,5 +17,3 @@
     <?=$this->form->hidden('role_id', array('value' => '1'));?>
     <?=$this->form->submit('Register'); ?>
 <?=$this->form->end(); ?>
-
-<?=$this->flashMessage->output(); ?>
