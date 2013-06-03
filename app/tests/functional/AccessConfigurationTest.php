@@ -97,7 +97,7 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 		
 	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
 
-		$this->assertEqual($access, $rules[0]);
+		$this->assertFalse(empty($access));
 	}
 
 }

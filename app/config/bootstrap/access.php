@@ -8,12 +8,15 @@
  */
 
 /**
- * The access file configures the li_access plugin and adds our custom rules
+ * The access file configures the li_access plugin and adds our custom rules.
+ * It also adds a the user's "role" to the request parameters.
  *
  * @see lithium\core\Environment
  */
 
 use li3_access\security\Access;
+use lithium\security\Auth;
+use app\models\Users;
 
 Access::config(array(
 	'rule_based' => array(
@@ -21,6 +24,16 @@ Access::config(array(
 		// optional filters applied to check() method
 		'filters' => array(
 		function($self, $params, $chain) {
+
+			$check = $params['user'];
+
+			$auth = Users::find('first', array(
+				'with' => 'Roles',
+				'conditions' => array('username' => $check['username']),
+			));
+
+			$params['user']['role'] = $auth ? $auth->role->name : '';
+
 			// any config can define filters to do some stuff
 			return $chain->next($self, $params, $chain);
 		}
@@ -28,29 +41,16 @@ Access::config(array(
 	)
 ));
 
-use app\models\Users;
-
 Access::adapter('rule_based')->add('allowAdminUser', function($user, $request, $options){
 
-	$auth = Users::find('first', array(
-		'with' => array('Roles'),
-		'conditions' => array('username' => $user['username']),
-	));
+	return $user['role'] == 'Admin'; 
 
-	if($auth->role->name == 'Admin'){
-		return true;
-	}
-	return false;
 });
 
 Access::adapter('rule_based')->add('isEditorUser', function($user, $request, $options){
 
-	$auth = Users::find('first', array(
-		'with' => 'Roles',
-		'conditions' => array('username' => $user['username']),
-	));
+	return ($user['role'] == 'Admin' || $user['role'] == 'Editor'); 
 
-	if($auth->role->name == 'Admin' || $auth->role-name == 'Editor'){
-		return true;
-	}
 });
+
+?>
