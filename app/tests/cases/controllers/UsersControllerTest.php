@@ -73,46 +73,46 @@ class UsersControllerTest extends \lithium\test\Unit {
 	
 	public function testNonAdminAccess() {
 
-		$this->request = new Request();
-		$this->request->data = $this->editor_data;
+		$request = new Request();
+		$request->data = $this->editor_data;
 	
-		Auth::check('default', $this->request);
+		Auth::check('default', $request);
 	
-		$this->request = new Request();
-		$this->request->params = array(
+		$request = new Request();
+		$request->params = array(
 			'controller' => 'users'
 		);
 
-		$usersIndex = new UsersController(array('request' => $this->request));
+		$usersIndex = new UsersController(array('request' => $request));
 		
 		$response = $usersIndex->index();
 		$this->assertEqual($response->headers["Location"], "/users/view/editor");
 	
-		$usersAdd = new UsersController(array('request' => $this->request));
+		$usersAdd = new UsersController(array('request' => $request));
 		
 		$response = $usersAdd->add();
 		$this->assertEqual($response->headers["Location"], "/users");
 	
-		$this->request = new Request();
-		$this->request->params = array(
+		$request = new Request();
+		$request->params = array(
 			'controller' => 'users',
 			'action' => 'edit',
 			'username' => 'admin'
 		);
 
-		$usersEdit = new UsersController(array('request' => $this->request));
+		$usersEdit = new UsersController(array('request' => $request));
 		
 		$response = $usersEdit->edit();
 		$this->assertEqual($response->headers["Location"], "/users/view/admin");
 	
-		$this->request = new Request();
-		$this->request->params = array(
+		$request = new Request();
+		$request->params = array(
 			'controller' => 'users',
 			'action' => 'delete',
 			'username' => 'admin'
 		);
 
-		$usersDelete = new UsersController(array('request' => $this->request));
+		$usersDelete = new UsersController(array('request' => $request));
 		
 		$response = $usersDelete->delete();
 		$this->assertEqual($response->headers["Location"], "/users/view/admin");
@@ -121,12 +121,12 @@ class UsersControllerTest extends \lithium\test\Unit {
 	
 	public function testUnauthorizedAccess() {
 	
-		$this->request = new Request();
-		$this->request->params = array(
+		$request = new Request();
+		$request->params = array(
 			'controller' => 'users'
 		);
 
-		$users = new UsersController(array('request' => $this->request));
+		$users = new UsersController(array('request' => $request));
 		
 		$response = $users->index();
 		$this->assertEqual($response->headers["Location"], "/login");
@@ -149,12 +149,12 @@ class UsersControllerTest extends \lithium\test\Unit {
 	
 		Auth::set('default', $this->editor_data);
 	
-		$this->request = new Request();
-		$this->request->params = array(
+		$request = new Request();
+		$request->params = array(
 			'controller' => 'users'
 		);
 
-		$usersRegister = new UsersController(array('request' => $this->request));
+		$usersRegister = new UsersController(array('request' => $request));
 		
 		$response = $usersRegister->register();
 		$this->assertEqual($response->headers["Location"], "/login");
@@ -162,19 +162,19 @@ class UsersControllerTest extends \lithium\test\Unit {
 		Auth::clear('default');
 		Users::all()->delete();
 		//FIXME the response now rendering into the test suite
-		/*$usersRegister = new UsersController(array('request' => $this->request));
+		/*$usersRegister = new UsersController(array('request' => $request));
 		
 		$response = $usersRegister->register();
 		
 		$this->assertNull($response);*/
 	
-		$this->request = new Request();
-		$this->request->params = array(
+		$request = new Request();
+		$request->params = array(
 			'controller' => 'users'
 		);
-		$this->request->data = $this->admin_data;
+		$request->data = $this->admin_data;
 
-		$usersRegister = new UsersController(array('request' => $this->request));
+		$usersRegister = new UsersController(array('request' => $request));
 		
 		$response = $usersRegister->register();
 		$this->assertEqual($response->headers["Location"], "/home");

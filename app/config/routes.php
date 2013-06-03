@@ -35,7 +35,7 @@ Router::connect('/', 'Pages::blank');
  * Connect the rest of `PagesController`'s URLs. This will route URLs like `/pages/about` to
  * `PagesController`, rendering `/views/pages/about.html.php` as a static page.
  */
-Router::connect('/pages/{:args}', 'Pages::view');
+//Router::connect('/pages/{:args}', 'Pages::view');
 
 /**
  * Connect the login and logout URLs
@@ -189,9 +189,9 @@ Router::connect('/{:controller}/{:action}/{:args}');
 
 }
 
-// redirect the user to a login if no other routes match
-//Router::connect('/{:args}', array(), function($request) { header('Location: /login?url='.$request->url); exit; });
-//Router::connect('/{:args}', 'Sessions::add');
+/**
+ * Redirect the user to a login if no other routes match
+ */
 
 Router::connect('/{:args}', array(), function($request) {
 	$url = $request->url;
