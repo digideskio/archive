@@ -27,11 +27,10 @@ class RoutesTest extends \lithium\test\Integration {
 	public function tearDown() { 
 		Auth::set('default', array('username' => 'test'));	
 
-		$config = Libraries::get('app');
-
-		$file = "{$config['path']}/config/routes.php";
-
 		Router::reset();
+
+		$config = Libraries::get('app');
+		$file = "{$config['path']}/config/routes.php";
 		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null; 
 	}
 
@@ -52,11 +51,10 @@ class RoutesTest extends \lithium\test\Integration {
 		/*
 		 * The setUp has already cleared the current Auth. Next, reload the routes file.
 		 */
-		$config = Libraries::get('app');
-
-		$file = "{$config['path']}/config/routes.php";
-
 		Router::reset();
+
+		$config = Libraries::get('app');
+		$file = "{$config['path']}/config/routes.php";
 		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null; 
 
 		$routes = Router::get();
@@ -70,7 +68,6 @@ class RoutesTest extends \lithium\test\Integration {
 			$action = isset($export['params']['action']) ? $export['params']['action'] : '';
 
 			$connected_routes[$template] = $params;
-			//var_dump($params);
 		}
 
 		ksort($public_routes);
