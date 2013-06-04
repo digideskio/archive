@@ -9,7 +9,6 @@
 
 /**
  * The access file configures the li_access plugin and adds our custom rules.
- * It also adds a the user's "role" to the request parameters.
  *
  * @see lithium\core\Environment
  */
@@ -17,6 +16,8 @@
 use li3_access\security\Access;
 use lithium\security\Auth;
 use app\models\Users;
+use lithium\action\Dispatcher;
+use lithium\action\Response;
 
 Access::config(array(
 	'rule_based' => array(
@@ -45,22 +46,46 @@ Access::config(array(
 	)
 ));
 
-Access::adapter('rule_based')->add('denyNonUser', function($user, $request, $options) {
-
-	return $user != NULL;
-
-});
-
 Access::adapter('rule_based')->add('allowAdminUser', function($user, $request, $options){
 
 	return $user['role'] == 'Admin'; 
 
 });
 
-Access::adapter('rule_based')->add('isEditorUser', function($user, $request, $options){
+Access::adapter('rule_based')->add('allowEditorUser', function($user, $request, $options){
 
 	return ($user['role'] == 'Admin' || $user['role'] == 'Editor'); 
 
 });
+
+/**
+ * This filter intercepts the `_callable()` method of the `Dispatcher` after it finds a
+ * controller object but before it returns it to `Dispatcher::run()`. It examines the
+ * controller for a $rules property, which contains access rules for each action.
+ */
+
+ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+
+	$ctrl =  $chain->next($self, $params, $chain);
+	$request = isset($params['request']) ? $params['request'] : null;
+	$action  = $params['params']['action'];
+
+	if (isset($ctrl->rules) && isset($ctrl->rules[$action])) {
+		$rules = $ctrl->rules[$action];
+
+		$check = (Auth::check('default')) ?: null;
+
+		$access = Access::check('rule_based', $check, $request, array('rules' => $rules));
+
+        if (!empty($access)) {
+			return function() use ($request, $access) {
+				return new Response(compact('request') + array('location' => $access['redirect'], 'status' => '302'));
+			};
+        }
+	}
+
+	return $ctrl;
+
+ });
 
 ?>

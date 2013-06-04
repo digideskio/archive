@@ -67,36 +67,6 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 	
 	}
 
-	public function testNonUserRule() {
-		$users = $this->users;
-
-		//Define the access rules for this action
-		$rules = array(
-			array('rule' => 'denyNonUser', 'message' => 'You are not logged in.', 'redirect' => "/login"),
-		);
-
-    	/* ... */
-
-		$request = new Request();
-		$check = Auth::check('default');
-
-	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
-
-		$this->assertFalse(empty($access), "Access denyNonUser rule is not blocking non-authenticated users.");
-
-    	/* ... */
-
-		$username = 'editor';
-
-		$request = new Request();
-		$check = array('username' => $username);
-		
-	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
-
-		$this->assertTrue(empty($access), "Access denyNonUser rule is blocking authenticated users.");
-
-	}
-
 	public function testAdminRule() {
 		$users = $this->users;
 
