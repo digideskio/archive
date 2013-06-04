@@ -3,7 +3,7 @@
 
 	$auth = app\models\Users::find('first', array(
 		'with' => 'Roles',
-		'condition' => array('username' => $check['username']),
+		'conditions' => array('username' => $check['username']),
 	));
 
 	$role = $auth->role->name;
