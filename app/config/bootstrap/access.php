@@ -58,6 +58,12 @@ Access::adapter('rule_based')->add('allowEditorUser', function($user, $request, 
 
 });
 
+Access::adapter('rule_based')->add('allowUserEdits', function($user, $request, $options) {
+
+	return ($user['role'] == 'Admin' || $user['username'] == $request->params['username']);
+
+});
+
 /**
  * This filter intercepts the `_callable()` method of the `Dispatcher` after it finds a
  * controller object but before it returns it to `Dispatcher::run()`. It examines the

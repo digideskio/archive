@@ -12,32 +12,35 @@ use li3_access\security\Access;
 
 class UsersController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAdminUser', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowAdminUser', 'message' => 'Admin Access Denied.', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowUserEdits', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+		),
+		'delete' => array(
+			array('rule' => 'allowAdminUser', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+		),
+	);
+
 	public function index() {
 
     	// Check authorization
 	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+		
         // Look up the current user with his or her role
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
 		));
-		
-		//Define the access rules for this action
-		$rules = array(
-			array('rule' => 'allowAdminUser', 'message' => 'You cannot see these users!', 'redirect' => "/users/view/$auth->username"),
-		);
-		
-	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
-	    
-        if(!empty($access)){
-        	return $this->redirect($access['redirect']);
-        }
     
 		// Look up all users
 		$users = Users::find('all', array(
@@ -51,11 +54,7 @@ class UsersController extends \lithium\action\Controller {
 	public function view() {
     
 	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
@@ -79,26 +78,14 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-		$rules = array(
-			array('rule' => 'allowAdminUser', 'message' => 'You cannot add a user!', 'redirect' => '/users'),
-		);
-		
-	    $check = Auth::check('default');
 
-		if($check) {
-			$auth = Users::first(array(
-				'conditions' => array('username' => $check['username']),
-				'with' => array('Roles')
-			));
-		} else {
-			return $this->redirect('Sessions::add');
-		}
-	    
-	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
-	    
-        if(!empty($access)){
-        	return $this->redirect($access['redirect']);
-        }
+	    $check = (Auth::check('default')) ?: null;
+		
+        // Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
 		
 		$user = Users::create();
 		$roles = Roles::all();
@@ -115,13 +102,9 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
+
 	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
+		
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
@@ -169,10 +152,6 @@ class UsersController extends \lithium\action\Controller {
     
 	    $check = (Auth::check('default')) ?: null;
 	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
