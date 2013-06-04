@@ -78,6 +78,9 @@ if (!Environment::is('production')) {
 // Router::connect('/{:controller}/{:action}/{:id:\d+}.{:type}', array('id' => null));
 // Router::connect('/{:controller}/{:action}/{:id:\d+}');
 
+Router::connect('/users', array('Users::index'));
+Router::connect('/users/add', array('Users::add'));
+Router::connect('/users/register', array('Users::register'));
 Router::connect('/users/view/{:username}', array('Users::view'));
 Router::connect('/users/edit/{:username}', array('Users::edit'));
 Router::connect('/users/delete/{:username}', array('Users::delete'));
@@ -196,8 +199,7 @@ Router::connect('/{:controller}/{:action}/{:args}');
 Router::connect('/{:args}', array(), function($request) {
 	$url = $request->url;
 	return new Response(array(
-		'headers' => array('location' => "/login?path=$url"),//?url=' . $request->url),
-		'body' => 'Hi'
+		'headers' => array('location' => "/login?path=$url"),
 	));
 });
 
