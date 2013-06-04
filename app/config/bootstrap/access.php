@@ -27,12 +27,16 @@ Access::config(array(
 
 			$check = $params['user'];
 
-			$auth = Users::find('first', array(
-				'with' => 'Roles',
-				'conditions' => array('username' => $check['username']),
-			));
+			if ($check) {
 
-			$params['user']['role'] = $auth ? $auth->role->name : '';
+				$auth = Users::find('first', array(
+					'with' => 'Roles',
+					'conditions' => array('username' => $check['username']),
+				));
+
+				$params['user']['role'] = $auth ? $auth->role->name : '';
+
+			}
 
 			// any config can define filters to do some stuff
 			return $chain->next($self, $params, $chain);
@@ -40,6 +44,12 @@ Access::config(array(
 		)
 	)
 ));
+
+Access::adapter('rule_based')->add('denyNonUser', function($user, $request, $options) {
+
+	return $user != NULL;
+
+});
 
 Access::adapter('rule_based')->add('allowAdminUser', function($user, $request, $options){
 
