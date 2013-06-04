@@ -22,7 +22,6 @@ use lithium\core\Environment;
 use lithium\action\Dispatcher;
 use lithium\storage\Session;
 use lithium\security\Auth;
-use lithium\storage\session\strategy\MissingSignatureException;
 
 /**
  * This filter intercepts the `run()` method of the `Dispatcher`, and first passes the `'request'`
