@@ -41,7 +41,7 @@ $this->title('Exhibitions');
 	</div>
 </div>
 
-<?php if(sizeof($exhibitions) == 0): ?>
+<?php if($total == 0): ?>
 
 	<div class="alert alert-danger">There are no Exhibitions in the Archive.</div>
 

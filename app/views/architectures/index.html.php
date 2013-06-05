@@ -40,7 +40,7 @@ $this->title('Architecture');
 	</div>
 <div>
 
-<?php if(sizeof($architectures) == 0): ?>
+<?php if($total == 0): ?>
 
 	<div class="alert alert-danger">There is no Architecture in the Archive.</div>
 
@@ -52,7 +52,7 @@ $this->title('Architecture');
 
 <?php endif; ?>
 
-<?php if(sizeof($architectures) > 0): ?>
+<?php if($total > 0): ?>
 
 	<?=$this->partial->architectures(compact('architectures')); ?>
 
