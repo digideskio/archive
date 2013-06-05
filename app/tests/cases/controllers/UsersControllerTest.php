@@ -68,7 +68,7 @@ class UsersControllerTest extends \lithium\test\Unit {
 	public function testIndex() {}
 	public function testView() {}
 	public function testAdd() {}
-	public function testEdit() {}
+	public function testEdit() {} //TODO Test that non-Amins cannot change user role, and that usernames and ids can never be changed
 	public function testDelete() {}
 	
 	public function testRegister() {

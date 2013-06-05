@@ -1,14 +1,23 @@
 <?php
 
-$this->title($user->username);
+	$this->title($user->username);
 
-$this->form->config(
-    array( 
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
-        )
-    )
-); 
+	$check = lithium\security\Auth::check('default');
+
+	$auth = app\models\Users::find('first', array(
+		'with' => 'Roles',
+		'conditions' => array('username' => $check['username']),
+	));
+
+	$role = $auth->role->name;
+
+	$this->form->config(
+		array( 
+			'templates' => array( 
+				'error' => '<div class="help-inline">{:content}</div>' 
+			)
+		)
+	); 
 
 ?>
 

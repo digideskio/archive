@@ -1,6 +1,15 @@
 <?php 
 
-$this->title($user->username);
+	$this->title($user->username);
+
+	$check = lithium\security\Auth::check('default');
+
+	$auth = app\models\Users::find('first', array(
+		'with' => 'Roles',
+		'conditions' => array('username' => $check['username']),
+	));
+
+	$role = $auth->role->name;
 
 ?>
 
@@ -29,7 +38,7 @@ $this->title($user->username);
 			<?=$this->html->link('View','/users/view/'.$user->username); ?>
 		</li>
 
-		<?php if($auth->role->name == 'Admin' || $auth->username == $user->username): ?>
+		<?php if($role == 'Admin' || $auth->username == $user->username): ?>
 		<li>
 			<?=$this->html->link('Edit','/users/edit/'.$user->username); ?>
 		</li>

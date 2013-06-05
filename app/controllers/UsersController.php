@@ -33,32 +33,14 @@ class UsersController extends \lithium\action\Controller {
 
 	public function index() {
 
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-		
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-    
-		// Look up all users
 		$users = Users::find('all', array(
 			'with' => array('Roles')
 		));
 		
-		// Send a list of users, plus the current user, to the index view
-		return compact('users', 'auth');
+		return compact('users');
 	}
 
 	public function view() {
-    
-	    $check = (Auth::check('default')) ?: null;
-
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Dont run the query if no username is provided
 		if(isset($this->request->params['username'])) {
@@ -70,7 +52,7 @@ class UsersController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('user', 'auth');
+			return compact('user');
 		}
 		
 		//since no username was specified, redirect to the index page
@@ -79,14 +61,6 @@ class UsersController extends \lithium\action\Controller {
 
 	public function add() {
 
-	    $check = (Auth::check('default')) ?: null;
-		
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
 		$user = Users::create();
 		$roles = Roles::all();
 		$role_list = array();
@@ -137,18 +111,11 @@ class UsersController extends \lithium\action\Controller {
 		if (($this->request->data) && $user->save($this->request->data)) {
 			return $this->redirect(array('Users::view', 'args' => array($user->username)));
 		}
-		return compact('user', 'role_list', 'auth');
+		return compact('user', 'role_list');
 	}
 
 	public function delete() {
     
-	    $check = (Auth::check('default')) ?: null;
-	
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
 		$user = Users::first(array(
 			'conditions' => array('username' => $this->request->params['username']),
 			'with' => array('Roles')
