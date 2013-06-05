@@ -98,10 +98,12 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 
 			$user = $users[$test_rule['user']];
 
+			Auth::set('default', $user);
+
+			$check = Auth::check('default');
+
 			$request = new Request();
 			$request->params = isset($test_rule['params']) ? $test_rule['params'] : array();
-
-			$check = array('username' => $user['username']);
 
 	    	$access = Access::check('rule_based', $check, $request, array('rules' => $rules));
 
