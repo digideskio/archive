@@ -19,24 +19,42 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 		'admin' => array(
 			"username" => "admin",
 			"password" => "abcd",
-			"name" => "Full Name",
+			"name" => "an Admin User",
 			"email" => "admin@example.com",
 			"role_id" => '1'
 		),
 		'editor' => array(
 			"username" => "editor",
 			"password" => "abcd",
-			"name" => "Full Name",
+			"name" => "an Editor User",
 			"email" => "editor@example.com",
 			"role_id" => '2'
 		),
 		'viewer' => array(
 			"username" => "viewer",
 			"password" => "abcd",
-			"name" => "Full Name",
+			"name" => "A Viewer User",
 			"email" => "viewer@example.com",
 			"role_id" => '3'
 		),
+	);
+
+	public $test_rules = array(
+		array('rule' => 'allowAdminUser', 'user' => 'admin', 'access' => true),
+		array('rule' => 'allowAdminUser', 'user' => 'editor', 'access' => false),
+		array('rule' => 'allowAdminUser', 'user' => 'viewer', 'access' => false),
+
+		array('rule' => 'allowEditorUser', 'user' => 'admin', 'access' => true),
+		array('rule' => 'allowEditorUser', 'user' => 'editor', 'access' => true),
+		array('rule' => 'allowEditorUser', 'user' => 'viewer', 'access' => false),
+
+		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'admin', 'params' => array('username' => 'editor'), 'access' => true),
+		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'editor', 'params' => array('username' => 'editor'), 'access' => true),
+		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'editor', 'params' => array('username' => 'viewer'), 'access' => false),
+		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'viewer', 'params' => array('username' => 'viewer'), 'access' => true),
+
+		array('rule' => 'denyUserRequestingSelf', 'user' => 'admin', 'params' => array('username' => 'admin'), 'access' => false),
+		array('rule' => 'denyUserRequestingSelf', 'user' => 'admin', 'params' => array('username' => 'editor'), 'access' => true),
 	);
 
 	public function setUp() {
@@ -67,46 +85,30 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 	
 	}
 
-	public function testAdminRule() {
+	public function testRules() {
+
 		$users = $this->users;
+		$test_rules = $this->test_rules;
 
-		//Define the access rules for this action
-		$rules = array(
-			array('rule' => 'allowAdminUser', 'message' => 'You are not an admin!', 'redirect' => "/home"),
-		);
+		foreach ($test_rules as $test_rule) {
 
-    	/* ... */
+			$rules = array(
+				array('rule' => $test_rule['rule'])
+			);
 
-		$request = new Request();
-		$check = Auth::check('default');
+			$user = $users[$test_rule['user']];
 
-	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
+			$request = new Request();
+			$request->params = isset($test_rule['params']) ? $test_rule['params'] : array();
 
-		$this->assertFalse(empty($access), "Access allowAdminUser rule is not blocking non-authenticated users.");
+			$check = array('username' => $user['username']);
 
-    	/* ... */
+	    	$access = Access::check('rule_based', $check, $request, array('rules' => $rules));
 
-		$username = 'admin';
+			$this->assertEqual($test_rule['access'], empty($access), "The access rule {$test_rule['rule']} is not returning the expected result for {$user['name']}.");
 
-		$request = new Request();
-		$check = array('username' => $username);
+		}
 
-	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
-
-		$this->assertTrue(empty($access));
-
-    	/* ... */
-
-		Auth::clear('default');
-
-		$username = 'editor';
-
-		$request = new Request();
-		$check = array('username' => $username);
-		
-	    $access = Access::check('rule_based', $check, $request, array('rules' => $rules));
-
-		$this->assertFalse(empty($access));
 	}
 
 }

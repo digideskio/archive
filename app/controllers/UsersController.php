@@ -23,11 +23,11 @@ class UsersController extends \lithium\action\Controller {
 			array('rule' => 'allowAdminUser', 'message' => 'Admin Access Denied.', 'redirect' => "Pages::home"),
 		),
 		'edit' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
-			array('rule' => 'allowUserEdits', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+			array('rule' => 'allowAdminOrUserRequestingSelf', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
 		),
 		'delete' => array(
 			array('rule' => 'allowAdminUser', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+			array('rule' => 'denyUserRequestingSelf', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
 		),
 	);
 
@@ -126,14 +126,6 @@ class UsersController extends \lithium\action\Controller {
 			return $this->redirect('Users::index');
 		}
         
-        // If the user is not an Admin, or not editing his or her own profile,
-        // redirect to the user's view
-        if($auth->role->name != 'Admin' && $auth->username != $user->username) {
-        	return $this->redirect(array(
-        		'Users::view', 'args' => array($this->request->params['username']))
-        	);
-        }
-        
         // If the user is not an Admin, unset the role_id from form submit just in case
         if($auth->role->name != 'Admin' && isset($this->request->data['role_id'])) {
         	unset($this->request->data['role_id']);
@@ -161,14 +153,6 @@ class UsersController extends \lithium\action\Controller {
 			'conditions' => array('username' => $this->request->params['username']),
 			'with' => array('Roles')
 		));
-        
-        // If the user is not an Admin, or is trying to delete his or her own account
-        // redirect to the user's view
-        if($auth->role->name != 'Admin' || $auth->username == $user->username) {
-        	return $this->redirect(array(
-        		'Users::view', 'args' => array($this->request->params['username']))
-        	);
-        }
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT

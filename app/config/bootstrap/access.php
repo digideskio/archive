@@ -58,9 +58,15 @@ Access::adapter('rule_based')->add('allowEditorUser', function($user, $request, 
 
 });
 
-Access::adapter('rule_based')->add('allowUserEdits', function($user, $request, $options) {
+Access::adapter('rule_based')->add('allowAdminOrUserRequestingSelf', function($user, $request, $options) {
 
 	return ($user['role'] == 'Admin' || $user['username'] == $request->params['username']);
+
+});
+
+Access::adapter('rule_based')->add('denyUserRequestingSelf', function($user, $request, $options) {
+
+	return $user['username'] != $request->params['username'];
 
 });
 
