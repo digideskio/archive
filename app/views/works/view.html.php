@@ -78,21 +78,19 @@ $this->title($work->title);
 			</thead>
 			<tbody>
 				<tr>
-					<td><i class="icon-text-height"></i></td>
-					<td class="meta">Title</td>
-					<td class="info-title" colspan="3"><?=$work->archive->names(); ?></td>
-				</tr>
-				<tr>
 					<td><i class="icon-font"></i></td>
 					<td class="meta">Artist</td>
 					<td class="info-title" colspan="3"><?=$work->artists(); ?></td>
 				</tr>
 				<tr>
-					<td><i class="icon-calendar"></i></td>
-					<td class="meta">year</td>
-					<td class="info-title"><?=$work->archive->years(); ?></td>
-					<td class="meta">Edition</td>
-					<td><?=$work->attribute('edition'); ?></td>
+					<td><i class="icon-text-height"></i></td>
+					<td class="meta">Title</td>
+					<td class="info-title" colspan="3"><?=$work->archive->names(); ?></td>
+				</tr>
+				<tr>
+					<td><i class="icon-wrench"></i></td>
+					<td class="meta">Materials</td>
+					<td colspan="3"><?=$work->materials ?></td>
 				</tr>
 				<tr>
 					<td><i class="icon-resize-full"></i></td>
@@ -100,14 +98,16 @@ $this->title($work->title);
 					<td class="info-title" colspan="3"><?=$work->dimensions(); ?></td>
 				</tr>
 				<tr>
+				<tr>
+					<td><i class="icon-calendar"></i></td>
+					<td class="meta">year</td>
+					<td class="info-title"><?=$work->archive->years(); ?></td>
+					<td class="meta">Edition</td>
+					<td><?=$work->attribute('edition'); ?></td>
+				</tr>
 					<td><i class="icon-tag"></i></td>
 					<td class="meta">Classification</td>
 					<td colspan="3"><?=$work->archive->classification ?></td>
-				</tr>
-				<tr>
-					<td><i class="icon-wrench"></i></td>
-					<td class="meta">Materials</td>
-					<td colspan="3"><?=$work->materials ?></td>
 				</tr>
 				<tr>
 					<td><i class="icon-barcode"></i></td>
