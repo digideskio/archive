@@ -125,6 +125,11 @@ class Works extends \lithium\data\Model {
 			'in_time',
 			'in_from',
 			'in_operator',
+			'buy_price',
+			'buy_price_per',
+			'sell_price',
+			'sell_price_per',
+			'sell_date',
 		);
 
 		return $attributes;
@@ -189,6 +194,11 @@ class Works extends \lithium\data\Model {
 
 	public function inventory($entity) {
 
+		$buy_price = $entity->attribute('buy_price') ? 'Purchase Price: ' . $entity->attribute('buy_price') . ' <small>' . $entity->attribute('buy_price_per'). '</small>' : '';
+		$sell_price = $entity->attribute('sell_price') ? 'Sale Price: ' . $entity->attribute('sell_price') . ' <small>' . $entity->attribute('sell_price_per'). '</small>' : '';
+
+		$sell_date = $entity->attribute('sell_date') ? 'Date of Sale: ' . $entity->attribute('sell_date')  : '';
+
 		$packing_type = $entity->attribute('packing_type') ? 'Packing Type: ' . $entity->attribute('packing_type')  : '';
 		$pack_price = $entity->attribute('pack_price') ? 'Packing Cost: ' . $entity->attribute('pack_price') . ' <small>' . $entity->attribute('pack_price_per'). '</small>' : '';
 		$in_time = $entity->attribute('in_time') ? 'Received Time: ' . $entity->attribute('in_time')  : '';
@@ -196,6 +206,9 @@ class Works extends \lithium\data\Model {
 		$in_operator = $entity->attribute('in_operator') ? 'Received By: ' . $entity->attribute('in_operator')  : '';
 
 		$info = array_filter(array(
+			$buy_price,
+			$sell_price,
+			$sell_date,
 			$packing_type,
 			$pack_price,
 			$in_time,

@@ -231,7 +231,7 @@ foreach ($documents as $doc) {
 
 		<?php if($inventory): ?>
 			<legend>Inventory Info</legend>
-
+		
 			<?php $packing_types_list = array_merge(array('' => 'Choose one...'), $packing_types_list); ?>
 
 			<div class="control-group">
@@ -244,7 +244,7 @@ foreach ($documents as $doc) {
 			<div class="control-group">
 				<label for="WorksPackPrice" class="control-label">Packing Cost</label>
 				<div class="controls control-row">
-					<input type="text" name="pack_price" autocomplete="off" id="WorksPackPrice" class="span1">
+					<input type="text" name="pack_price" autocomplete="off" id="WorksPackPrice" class="span1" value="<?=$work->pack_price; ?>">
 
 					<?=$this->form->select('pack_price_per', $currencies_list, array('class' => 'span1')); ?>
 				</div>
@@ -288,6 +288,26 @@ foreach ($documents as $doc) {
 					<?=$this->form->select('in_operator', $users_list); ?>
 				</div>
 			</div>
+
+			<div class="control-group">
+				<label for="WorksBuyPrice" class="control-label">Purchase Price</label>
+				<div class="controls control-row">
+					<input type="text" name="buy_price" autocomplete="off" id="WorksBuyPrice" class="span1" value="<?=$work->buy_price; ?>">
+
+					<?=$this->form->select('buy_price_per', $currencies_list, array('class' => 'span1')); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label for="WorksSellPrice" class="control-label">Sale Price</label>
+				<div class="controls control-row">
+					<input type="text" name="sell_price" autocomplete="off" id="WorksSalePrice" class="span1" value="<?=$work->sell_price; ?>">
+
+					<?=$this->form->select('sell_price_per', $currencies_list, array('class' => 'span1')); ?>
+				</div>
+			</div>
+
+			<?=$this->form->field('sell_date', array('label' => 'Date of Sale', 'autocomplete' => 'off'));?>
 
 		<?php endif; ?>
 

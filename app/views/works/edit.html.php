@@ -240,6 +240,26 @@ foreach ($users as $user) {
 					</div>
 				</div>
 
+				<div class="control-group">
+					<label for="WorksBuyPrice" class="control-label">Purchase Price</label>
+					<div class="controls control-row">
+						<input type="text" name="buy_price" autocomplete="off" id="WorksBuyPrice" class="span1" value="<?=$work->attribute('buy_price'); ?>">
+
+						<?=$this->form->select('buy_price_per', $currencies_list, array('class' => 'span1', 'value' => $work->attribute('buy_price_per'))); ?>
+					</div>
+				</div>
+
+				<div class="control-group">
+					<label for="WorksSellPrice" class="control-label">Sale Price</label>
+					<div class="controls control-row">
+						<input type="text" name="sell_price" autocomplete="off" id="WorksSellPrice" class="span1" value="<?=$work->attribute('sell_price'); ?>">
+
+						<?=$this->form->select('sell_price_per', $currencies_list, array('class' => 'span1', 'value' => $work->attribute('sell_price_per'))); ?>
+					</div>
+				</div>
+
+				<?=$this->form->field('sell_date', array('label' => 'Date of Sale', 'autocomplete' => 'off', 'value' => $work->attribute('sell_date')));?>
+
 			<?php endif; ?>
 
 		</div>
