@@ -26,7 +26,19 @@ $this->form->config(
 
 $artist_names = json_encode($artists);
 
-$artist = $work->artist ?: $artists[0];
+$default_artist = $artists[0];
+$artworks = \lithium\core\Environment::get('artworks');
+if ($artworks && isset($artworks['artist']) && isset($artworks['artist']['default'])) {
+	if ($artworks['artist']['default']) {
+		$default_artist = $artworks['artist']['default'] === true ? $default_artist : $artworks['artist']['default'];
+	} else {
+		$default_artist = '';
+	}
+}
+
+$artist = $work->artist ?: $default_artist;
+
+$inventory = \lithium\core\Environment::get('inventory');
 
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
