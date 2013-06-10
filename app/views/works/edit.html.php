@@ -26,13 +26,24 @@ $this->form->config(
 
 $artist_names = array();
 $artist_native_names = array();
+$artist_names_assoc = array();
 
 foreach ($artists as $artist) {
 	if ($artist['name']) {
 		array_push($artist_names, $artist['name']);
+		$artist_name = $artist['name'];
+
+		if (!isset($artist_names_assoc[$artist_name]) || $artist_names_assoc[$artist_name] == '') {
+			$artist_names_assoc[$artist_name] = $artist['native_name'];
+		}
 	}
 	if ($artist['native_name']) {
 		array_push($artist_native_names, $artist['native_name']);
+		$artist_native_name = $artist['native_name'];
+
+		if (!isset($artist_names_assoc[$artist_native_name]) || $artist_names_assoc[$artist_native_name] == '') {
+			$artist_names_assoc[$artist_native_name] = $artist['name'];
+		}
 	}
 }
 
@@ -41,6 +52,8 @@ $artist_names_data = json_encode($artist_names);
 
 $artist_native_names = array_values(array_unique($artist_native_names));
 $artist_native_names_data = json_encode($artist_native_names);
+
+$artist_names_assoc_data = json_encode($artist_names_assoc);
 
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
@@ -299,6 +312,42 @@ foreach ($users as $user) {
 		</div>
 	</div>
 </div>
+
+<script>
+
+$(document).ready(function() {
+
+	var artist_names =	<?php echo $artist_names_data; ?>;
+	var artist_native_names = <?php echo $artist_native_names_data; ?>;
+	var artist_names_assoc = <?php echo $artist_names_assoc_data; ?>;
+
+	$('#WorksArtist').typeahead(
+		{
+			source: artist_names,
+			updater: function (item) {
+				if (artist_names_assoc[item] != undefined) {
+					$('#WorksArtistNativeName').val(artist_names_assoc[item]);
+				}
+				return item;
+			}
+		}
+	);
+
+	$('#WorksArtistNativeName').typeahead(
+		{
+			source: artist_native_names,
+			updater: function (item) {
+				if (artist_names_assoc[item] != undefined) {
+					$('#WorksArtist').val(artist_names_assoc[item]);
+				}
+				return item;
+			}
+		}
+	);
+
+});
+
+</script>
 
 <script>
 

@@ -24,16 +24,26 @@ $this->form->config(
     )
 ); 
 
-
 $artist_names = array();
 $artist_native_names = array();
+$artist_names_assoc = array();
 
 foreach ($artists as $artist) {
 	if ($artist['name']) {
 		array_push($artist_names, $artist['name']);
+		$artist_name = $artist['name'];
+
+		if (!isset($artist_names_assoc[$artist_name]) || $artist_names_assoc[$artist_name] == '') {
+			$artist_names_assoc[$artist_name] = $artist['native_name'];
+		}
 	}
 	if ($artist['native_name']) {
 		array_push($artist_native_names, $artist['native_name']);
+		$artist_native_name = $artist['native_name'];
+
+		if (!isset($artist_names_assoc[$artist_native_name]) || $artist_names_assoc[$artist_native_name] == '') {
+			$artist_names_assoc[$artist_native_name] = $artist['name'];
+		}
 	}
 }
 
@@ -43,7 +53,10 @@ $artist_names_data = json_encode($artist_names);
 $artist_native_names = array_values(array_unique($artist_native_names));
 $artist_native_names_data = json_encode($artist_native_names);
 
+$artist_names_assoc_data = json_encode($artist_names_assoc);
+
 $default_artist = $artists[0];
+
 $artworks = \lithium\core\Environment::get('artworks');
 if ($artworks && isset($artworks['artist']) && isset($artworks['artist']['default'])) {
 	if ($artworks['artist']['default']) {
@@ -53,7 +66,10 @@ if ($artworks && isset($artworks['artist']) && isset($artworks['artist']['defaul
 	}
 }
 
+$default_artist_native_name = isset($artist_names_assoc[$default_artist]) ? $artist_names_assoc[$default_artist] : '';
+
 $artist = $work->artist ?: $default_artist;
+$artist_native_name = $work->artist_native_name ?: $default_artist_native_name;
 
 $inventory = \lithium\core\Environment::get('inventory');
 
@@ -151,8 +167,8 @@ foreach ($documents as $doc) {
 		<div class="well">
 			<legend>Artwork Info</legend>
 
-			<?=$this->form->field('artist', array('value' => $artist, 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names_data));?>
-			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_native_names_data));?>
+			<?=$this->form->field('artist', array('value' => $artist, 'autocomplete' => 'off'));?>
+			<?=$this->form->field('artist_native_name', array('value' => $artist_native_name, 'label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
 
 			<?=$this->form->field('title', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off'));?>
@@ -334,6 +350,42 @@ foreach ($documents as $doc) {
 
 <?=$this->form->end(); ?>
 </div>
+
+<script>
+
+$(document).ready(function() {
+
+	var artist_names =	<?php echo $artist_names_data; ?>;
+	var artist_native_names = <?php echo $artist_native_names_data; ?>;
+	var artist_names_assoc = <?php echo $artist_names_assoc_data; ?>;
+
+	$('#WorksArtist').typeahead(
+		{
+			source: artist_names,
+			updater: function (item) {
+				if (artist_names_assoc[item] != undefined) {
+					$('#WorksArtistNativeName').val(artist_names_assoc[item]);
+				}
+				return item;
+			}
+		}
+	);
+
+	$('#WorksArtistNativeName').typeahead(
+		{
+			source: artist_native_names,
+			updater: function (item) {
+				if (artist_names_assoc[item] != undefined) {
+					$('#WorksArtist').val(artist_names_assoc[item]);
+				}
+				return item;
+			}
+		}
+	);
+
+});
+
+</script>
 
 <script>
 
