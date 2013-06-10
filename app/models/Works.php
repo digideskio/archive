@@ -118,7 +118,6 @@ class Works extends \lithium\data\Model {
 			'framed',
 			'certification',
 			'edition',
-			'artist_native_name',
 			'packing_type',
 			'pack_price',
 			'pack_price_per',
@@ -147,13 +146,11 @@ class Works extends \lithium\data\Model {
 
 	public function artists($entity) {
 		$artist = $entity->artist;
-
-		$artist_native_name_att = $entity->attribute('artist_native_name');
-		$artist_name_name = $artist_native_name_att ? '(' . $artist_native_name_att . ')' : '';
+		$artist_native_name = $entity->artist_native_name ? "($entity->artist_native_name)" : '';
 
 		$artists = array_filter(array(
 			$artist,
-			$artist_name_name
+			$artist_native_name
 		));
 
 		return implode(' ', $artists);

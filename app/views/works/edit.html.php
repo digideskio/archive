@@ -89,7 +89,7 @@ foreach ($users as $user) {
 			<legend>Artwork Info</legend>
 
     		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
-			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'value' => $work->attribute('artist_native_name')));?>
+			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
     		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
 			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
