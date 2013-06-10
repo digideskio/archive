@@ -95,12 +95,32 @@ class DocumentsController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
-			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$esc_query%') OR (`date_created` LIKE '%$esc_query%') OR (`repository` LIKE '%$esc_query%') OR (`credit` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
+
+				$document_ids = array();
+
+				$fields = array('title', 'date_created', 'repository', 'credit', 'remarks');
+
+				foreach ($fields as $field) {
+					$matching_docs = Documents::find('all', array(
+						'fields' => 'Documents.id',
+						'conditions' => array($field => array('LIKE' => "%$query%")),
+					));
+
+					if ($matching_docs) {
+						$matching_ids = $matching_docs->map(function($md) {
+							return $md->id;
+						}, array('collect' => false));
+
+						$document_ids = array_unique(array_merge($document_ids, $matching_ids));
+					}
+				}
+
+				$conditions = $document_ids ?  array('Documents.id' => $document_ids) : array('title' => $query);
+
 			}
 
 			$documents = Documents::find('all', array(

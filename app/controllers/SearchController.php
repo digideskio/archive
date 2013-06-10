@@ -42,7 +42,6 @@ class SearchController extends \lithium\action\Controller {
 
 		if (isset($data['query']) && $data['query']) {
 			$query = trim($data['query']);
-			$esc_query = mysql_escape_string($query);
         
 			$order = array('Archives.earliest_date' => 'DESC');
 
@@ -170,7 +169,26 @@ class SearchController extends \lithium\action\Controller {
 				'limit' => $limit,
 			));
 
-			$doc_conditions = "((`title` LIKE '%$esc_query%') OR (`date_created` LIKE '%$esc_query%') OR (`repository` LIKE '%$esc_query%') OR (`credit` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
+			$document_ids = array();
+
+			$fields = array('title', 'date_created', 'repository', 'credit', 'remarks');
+
+			foreach ($fields as $field) {
+				$matching_docs = Documents::find('all', array(
+					'fields' => 'Documents.id',
+					'conditions' => array($field => array('LIKE' => "%$query%")),
+				));
+
+				if ($matching_docs) {
+					$matching_ids = $matching_docs->map(function($md) {
+						return $md->id;
+					}, array('collect' => false));
+
+					$document_ids = array_unique(array_merge($document_ids, $matching_ids));
+				}
+			}
+
+			$doc_conditions = $document_ids ?  array('Documents.id' => $document_ids) : array('title' => $query);
 
 			$documents = Documents::find('all', array(
 				'conditions' => $doc_conditions,
