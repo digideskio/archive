@@ -101,13 +101,17 @@ class WorksController extends \lithium\action\Controller {
 
 			$query = $data['query'];
 
-			if ($condition) {
+			if ($condition && $condition != 'artist') {
 				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
 
 				$artwork_ids = array();
 
-				$fields = array('title', 'artist', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+				if ($condition == 'artist') {
+					$fields = array('artist', 'artist_native_name');
+				} else {
+					$fields = array('title', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+				}
 
 				foreach ($fields as $field) {
 					$matching_works = Works::find('artworks', array(
@@ -125,7 +129,7 @@ class WorksController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $query);
+				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('artist' => $query);
 			}
 
 			$filter = '';
@@ -174,15 +178,18 @@ class WorksController extends \lithium\action\Controller {
 		));
 
 		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'count(artist) as works'),
-			'group' => 'artist',
-			'conditions' => array('artist' => array('!=' => '')),
-			'order' => array('artist' => 'ASC')
+			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
+			'group' => array('artist', 'artist_native_name'),
+			'order' => array('artist' => 'ASC', 'artist_native_name' => 'ASC')
 		));
 
 		$artists = $works_artists->map(function($wa) {
-			return array('name' => $wa->artist, 'works' => $wa->works);
+			if ($wa->artist || $wa->artist_native_name) {
+				return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
+			}
 		}, array('collect' => false));
+
+		$artists = array_filter($artists);
 
 		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
 

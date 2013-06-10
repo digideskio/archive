@@ -68,8 +68,20 @@ $this->title('Artists');
 
 	<?php foreach ($artists as $artist): ?>
 
-		<?php $query = urlencode($artist['name']); ?>
-		<p><?=$this->html->link($artist['name'], "/works/search?condition=artist&query=$query"); ?> <span class="badge"><?=$artist['works'] ?></span></p>
+		<p>
+		<?php if ($artist['name']): ?>
+			<?php $query = urlencode($artist['name']); ?>
+			<?=$this->html->link($artist['name'], "/works/search?condition=artist&query=$query"); ?>
+		<?php endif; ?>
+
+		<?php if ($artist['native_name']): ?>
+			<?php $query = urlencode($artist['native_name']); ?>
+			<?=$this->html->link($artist['native_name'], "/works/search?condition=artist&query=$query"); ?>
+		<?php endif; ?>
+
+		<?php if ($artist['works']): ?>
+			<span class="badge"><?=$artist['works'] ?></span></p>
+		<?php endif; ?>
 
 	<?php endforeach; ?>
 
