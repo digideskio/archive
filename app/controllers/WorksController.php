@@ -403,15 +403,18 @@ class WorksController extends \lithium\action\Controller {
 		}
 
 		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'count(artist) as works'),
-			'group' => 'artist',
-			'conditions' => array('artist' => array('!=' => '')),
+			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
+			'group' => array('artist', 'artist_native_name'),
 			'order' => array('works' => 'DESC')
 		));
 
 		$artists = $works_artists->map(function($wa) {
-			return $wa->artist;
+			if ($wa->artist || $wa->artist_native_name) {
+				return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
+			}
 		}, array('collect' => false));
+
+		$artists = array_filter($artists);
 
 		$works_locations = Works::find('all', array(
 			'fields' => array('location'),
@@ -475,15 +478,18 @@ class WorksController extends \lithium\action\Controller {
 			if($work) {
 
 				$works_artists = Works::find('all', array(
-					'fields' => array('artist', 'count(artist) as works'),
-					'group' => 'artist',
-					'conditions' => array('artist' => array('!=' => '')),
+					'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
+					'group' => array('artist', 'artist_native_name'),
 					'order' => array('works' => 'DESC')
 				));
 
 				$artists = $works_artists->map(function($wa) {
-					return $wa->artist;
+					if ($wa->artist || $wa->artist_native_name) {
+						return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
+					}
 				}, array('collect' => false));
+
+				$artists = array_filter($artists);
 
 				$classifications = Works::classifications();
 		

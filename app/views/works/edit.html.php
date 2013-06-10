@@ -24,7 +24,23 @@ $this->form->config(
     )
 ); 
 
-$artist_names = json_encode($artists);
+$artist_names = array();
+$artist_native_names = array();
+
+foreach ($artists as $artist) {
+	if ($artist['name']) {
+		array_push($artist_names, $artist['name']);
+	}
+	if ($artist['native_name']) {
+		array_push($artist_native_names, $artist['native_name']);
+	}
+}
+
+$artist_names = array_values(array_unique($artist_names));
+$artist_names_data = json_encode($artist_names);
+
+$artist_native_names = array_values(array_unique($artist_native_names));
+$artist_native_names_data = json_encode($artist_native_names);
 
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
@@ -88,8 +104,8 @@ foreach ($users as $user) {
 		<div class="well">
 			<legend>Artwork Info</legend>
 
-    		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names));?>
-			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
+    		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names_data));?>
+			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_native_names_data));?>
     		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
 			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
