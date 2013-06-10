@@ -63,12 +63,14 @@
 $(document).ready(function() {
 
 	$('#select-docs #select-all-docs').click(function() {
+		event.preventDefault();
 		$('.checkdocs').attr('checked', true);
 		$('.batch-checkbox').addClass('checked');
 		handleButtons();
 	});
 
 	$('#select-docs #select-no-docs').click(function() {
+		event.preventDefault();
 		$('.checkdocs').attr('checked', false);
 		$('.batch-checkbox').removeClass('checked');
 		handleButtons();
