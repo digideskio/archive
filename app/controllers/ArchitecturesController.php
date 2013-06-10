@@ -117,12 +117,33 @@ class ArchitecturesController extends \lithium\action\Controller {
 			$condition = isset($data['condition']) ? $data['condition'] : '';
 
 			$query = $data['query'];
-			$esc_query = mysql_escape_string($query);
 
 			if ($condition) {
-				$conditions = array("$condition" => array('LIKE' => "%$esc_query%"));
+				$conditions = array("$condition" => array('LIKE' => "%$query%"));
 			} else {
-				$conditions = "((`title` LIKE '%$esc_query%') OR (`architect` LIKE '%$esc_query%') OR (`client` LIKE '%$esc_query%') OR (`project_lead` LIKE '%$esc_query%') OR (`earliest_date` LIKE '%$esc_query%') OR (`status` LIKE '%$esc_query%') OR (`location` LIKE '%$esc_query%') OR (`city` LIKE '%$esc_query%') OR (`country` LIKE '%$esc_query%') OR (`remarks` LIKE '%$esc_query%'))";
+
+				$architecture_ids = array();
+
+				$fields = array('title', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
+
+				foreach ($fields as $field) {
+					$matching_works = Architectures::find('all', array(
+						'with' => 'Archives',
+						'fields' => 'Architectures.id',
+						'conditions' => array($field => array('LIKE' => "%$query%")),
+					));
+
+					if ($matching_works) {
+						$matching_ids = $matching_works->map(function($mw) {
+							return $mw->id;
+						}, array('collect' => false));
+
+						$architecture_ids = array_unique(array_merge($architecture_ids, $matching_ids));
+					}
+				}
+
+				$conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('title' => $query);
+
 			}
 
 			$architectures = Architectures::find('all', array(
