@@ -55,7 +55,7 @@ $artist_native_names_data = json_encode($artist_native_names);
 
 $artist_names_assoc_data = json_encode($artist_names_assoc);
 
-$default_artist = $artists[0];
+$default_artist = $artist_names ? $artist_names[0] : '';
 
 $artworks = \lithium\core\Environment::get('artworks');
 if ($artworks && isset($artworks['artist']) && isset($artworks['artist']['default'])) {
