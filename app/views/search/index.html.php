@@ -64,7 +64,9 @@ $this->title('Search');
 
 		<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
 
-		<p><a class="btn btn-large btn-block btn-success" href="/works/search?query=<?=$query?>">More Artworks &raquo;</a></p>
+		<?php if ($works_total > $limit): ?>
+			<p><a class="btn btn-large btn-block btn-success" href="/works/search?query=<?=$query?>">More Artworks &raquo;</a></p>
+		<?php endif; ?>
 
 		<hr/>
 
@@ -74,7 +76,9 @@ $this->title('Search');
 
 		<?=$this->partial->architectures(array('architectures' => $architectures, 'showBar' => true)); ?>
 
-		<p><a class="btn btn-large btn-block btn-warning" href="/architectures/search?query=<?=$query?>">More Architecture &raquo;</a></p>
+		<?php if ($architectures_total > $limit): ?>
+			<p><a class="btn btn-large btn-block btn-warning" href="/architectures/search?query=<?=$query?>">More Architecture &raquo;</a></p>
+		<?php endif; ?>
 
 		<hr/>
 
@@ -84,7 +88,9 @@ $this->title('Search');
 
 		<?=$this->partial->exhibitions(array('exhibitions' => $exhibitions, 'showBar' => true)); ?>
 
-		<p><a class="btn btn-large btn-block btn-info" href="/exhibitions/search?query=<?=$query?>">More Exhibitions &raquo;</a></p>
+		<?php if ($exhibitions_total > $limit): ?>
+			<p><a class="btn btn-large btn-block btn-info" href="/exhibitions/search?query=<?=$query?>">More Exhibitions &raquo;</a></p>
+		<?php endif; ?>
 
 		<hr/>
 
@@ -94,7 +100,9 @@ $this->title('Search');
 
 		<?=$this->partial->publications(array('publications' => $publications, 'showBar' => true)); ?>
 
-		<p><a class="btn btn-large btn-block btn-primary" href="/publications/search?query=<?=$query?>">More Publications &raquo;</a></p>
+		<?php if ($publications_total > $limit): ?>
+			<p><a class="btn btn-large btn-block btn-primary" href="/publications/search?query=<?=$query?>">More Publications &raquo;</a></p>
+		<?php endif; ?>
 
 		<hr/>
 
@@ -104,7 +112,9 @@ $this->title('Search');
 
 		<?=$this->partial->documents(array('documents' => $documents, 'showBar' => true)); ?>
 
-		<p><a class="btn btn-large btn-block btn-inverse" href="/documents/search?query=<?=$query?>">More Documents &raquo;</a></p>
+		<?php if ($documents_total > $limit): ?>
+			<p><a class="btn btn-large btn-block btn-inverse" href="/documents/search?query=<?=$query?>">More Documents &raquo;</a></p>
+		<?php endif; ?>
 
 		<hr/>
 

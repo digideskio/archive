@@ -76,6 +76,11 @@ class SearchController extends \lithium\action\Controller {
 
 			$work_conditions = $filter ? array_merge($filter, $work_conditions) : $work_conditions;
 
+			$works_total = Works::count('artworks', array(
+				'with' => 'Archives',
+				'conditions' => $work_conditions,
+			));
+
 			$works = Works::find('artworks', array(
 				'with' => 'Archives',
 				'conditions' => $work_conditions,
@@ -103,6 +108,11 @@ class SearchController extends \lithium\action\Controller {
 			}
 
 			$architecture_conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('title' => $query);
+
+			$architectures_total = Architectures::count('all', array(
+				'with' => 'Archives',
+				'conditions' => $architecture_conditions,
+			));
 
 			$architectures = Architectures::find('all', array(
 				'with' => 'Archives',
@@ -133,6 +143,11 @@ class SearchController extends \lithium\action\Controller {
 
 			$exhibition_conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('title' => $query);
 
+			$exhibitions_total = Exhibitions::count('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => $exhibition_conditions,
+			));
+
 			$exhibitions = Exhibitions::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'order' => $order,
@@ -162,6 +177,11 @@ class SearchController extends \lithium\action\Controller {
 
 			$publication_conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('title' => $query);
 
+			$publications_total = Publications::count('all', array(
+				'with' => 'Archives',
+				'conditions' => $publication_conditions,
+			));
+
 			$publications = Publications::find('all', array(
 				'with' => 'Archives',
 				'order' => $order,
@@ -190,6 +210,10 @@ class SearchController extends \lithium\action\Controller {
 
 			$doc_conditions = $document_ids ?  array('Documents.id' => $document_ids) : array('title' => $query);
 
+			$documents_total = Documents::count('all', array(
+				'conditions' => $doc_conditions,
+			));
+
 			$documents = Documents::find('all', array(
 				'conditions' => $doc_conditions,
 				'limit' => $limit,
@@ -199,7 +223,22 @@ class SearchController extends \lithium\action\Controller {
 
 		$architecture = Environment::get('architecture');		
         
-        return compact('works', 'architectures', 'exhibitions', 'publications', 'documents', 'query', 'limit', 'architecture', 'auth');
+        return compact(
+			'works',
+			'works_total',
+			'architectures',
+			'architectures_total',
+			'exhibitions',
+			'exhibitions_total',
+			'publications',
+			'publications_total',
+			'documents',
+			'documents_total',
+			'query',
+			'limit',
+			'architecture',
+			'auth'
+		);
         
 	}
 	
