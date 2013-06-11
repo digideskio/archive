@@ -76,6 +76,8 @@ $inventory = \lithium\core\Environment::get('inventory');
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
 
+$materials_data = json_encode($materials);
+
 $packing_types = array('Crate', 'Paper Box', 'Simple', 'None', 'Other');
 $packing_types_list = array_combine($packing_types, $packing_types);
 
@@ -358,6 +360,7 @@ $(document).ready(function() {
 	var artist_names =	<?php echo $artist_names_data; ?>;
 	var artist_native_names = <?php echo $artist_native_names_data; ?>;
 	var artist_names_assoc = <?php echo $artist_names_assoc_data; ?>;
+	var materials = <?php echo $materials_data; ?>
 
 	$('#WorksArtist').typeahead(
 		{
@@ -380,6 +383,12 @@ $(document).ready(function() {
 				}
 				return item;
 			}
+		}
+	);
+
+	$('#WorksMaterials').typeahead(
+		{
+			source: materials
 		}
 	);
 

@@ -433,6 +433,17 @@ class WorksController extends \lithium\action\Controller {
 
 		$artists = array_filter($artists);
 
+		$works_materials = Works::find('all', array(
+			'fields' => array('materials', 'count(materials) as works'),
+			'group' => 'materials',
+			'conditions' => array('materials' => array('!=' => '')),
+			'order' => array('works' => 'DESC', 'materials' => 'ASC')
+		));
+
+		$materials = $works_materials->map(function($wm) {
+			return $wm->materials;
+		}, array('collect' => false));
+
 		$works_locations = Works::find('all', array(
 			'fields' => array('location'),
 			'group' => 'location',
@@ -464,7 +475,7 @@ class WorksController extends \lithium\action\Controller {
 
 		}
 
-		return compact('work', 'artists', 'classifications', 'locations', 'users', 'inventory', 'documents', 'auth');
+		return compact('work', 'artists', 'classifications', 'materials', 'locations', 'users', 'inventory', 'documents', 'auth');
 	}
 
 	public function edit() {
@@ -507,6 +518,17 @@ class WorksController extends \lithium\action\Controller {
 				}, array('collect' => false));
 
 				$artists = array_filter($artists);
+
+				$works_materials = Works::find('all', array(
+					'fields' => array('materials', 'count(materials) as works'),
+					'group' => 'materials',
+					'conditions' => array('materials' => array('!=' => '')),
+					'order' => array('works' => 'DESC', 'materials' => 'ASC')
+				));
+
+				$materials = $works_materials->map(function($wm) {
+					return $wm->materials;
+				}, array('collect' => false));
 
 				$classifications = Works::classifications();
 		
@@ -606,6 +628,7 @@ class WorksController extends \lithium\action\Controller {
 					'work_links',
 					'artists',
 					'classifications',
+					'materials',
 					'locations',
 					'users',
 					'inventory',
