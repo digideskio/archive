@@ -82,7 +82,7 @@ $conditions_list = array(
 
 </div>
 
-<?=$this->pagination->pager('architectures', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query)); ?>
+<?=$this->pagination->pager('architectures', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'limit' => $limit)); ?>
 
 	<?php $condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column ?>
 

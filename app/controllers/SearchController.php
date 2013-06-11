@@ -38,7 +38,15 @@ class SearchController extends \lithium\action\Controller {
 		$documents = array();
 
 		$query = '';
-		$limit = '10';
+
+		$limit = 40;
+
+		if (Environment::get('search')) {
+			$search = Environment::get('search');
+			$limit = isset($search['limit']) ? $search['limit'] : $limit;
+		}
+
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : $limit;
 
 		if (isset($data['query']) && $data['query']) {
 			$query = trim($data['query']);
@@ -81,10 +89,13 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $work_conditions,
 			));
 
+			//Interpret any non-integer limit to mean 'All' results
+			$work_limit = !(intval($limit)) ? $works_total : $limit;
+
 			$works = Works::find('artworks', array(
 				'with' => 'Archives',
 				'conditions' => $work_conditions,
-				'limit' => $limit,
+				'limit' => $work_limit,
 			));
 
 			$architecture_ids = array();
@@ -114,11 +125,13 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $architecture_conditions,
 			));
 
+			$architecture_limit = !(intval($limit)) ? $architectures_total : $limit;
+
 			$architectures = Architectures::find('all', array(
 				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $architecture_conditions,
-				'limit' => $limit,
+				'limit' => $architecture_limit,
 			));
 
 			$exhibition_ids = array();
@@ -148,11 +161,13 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $exhibition_conditions,
 			));
 
+			$exhibition_limit = !(intval($limit)) ? $exhibitions_total : $limit;
+
 			$exhibitions = Exhibitions::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'order' => $order,
 				'conditions' => $exhibition_conditions,
-				'limit' => $limit,
+				'limit' => $exhibition_limit,
 			));
 
 			$publication_ids = array();
@@ -182,11 +197,13 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $publication_conditions,
 			));
 
+			$publication_limit = !(intval($limit)) ? $publications_total : $limit;
+
 			$publications = Publications::find('all', array(
 				'with' => 'Archives',
 				'order' => $order,
 				'conditions' => $publication_conditions,
-				'limit' => $limit,
+				'limit' => $publication_limit,
 			));
 
 			$document_ids = array();
@@ -214,11 +231,14 @@ class SearchController extends \lithium\action\Controller {
 				'conditions' => $doc_conditions,
 			));
 
+			$document_limit = !(intval($limit)) ? $documents_total : $limit;
+
 			$documents = Documents::find('all', array(
 				'conditions' => $doc_conditions,
-				'limit' => $limit,
+				'limit' => $document_limit,
 			));
 
+			$limit = !(intval($limit)) ? max(array($works_total, $architectures_total, $exhibitions_total, $publications_total, $documents_total)) : $limit;
 		}
 
 		$architecture = Environment::get('architecture');		

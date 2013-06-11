@@ -70,6 +70,6 @@ $conditions_list = array(
 
 <?=$this->partial->documents(compact('documents')); ?>
 
-<?=$this->pagination->pager('documents', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query)); ?>
+<?=$this->pagination->pager('documents', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'limit' => $limit)); ?>
 
 <?php endif; ?>

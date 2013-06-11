@@ -85,7 +85,7 @@ class DocumentsController extends \lithium\action\Controller {
 		$query = '';
 		$condition = '';
 
-		$limit = 50;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$total = 0;
 

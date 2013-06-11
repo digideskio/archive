@@ -100,7 +100,7 @@ $conditions_list = array(
 
 </div>
 
-<?=$this->pagination->pager('exhibitions', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'type' => $type)); ?>
+<?=$this->pagination->pager('exhibitions', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'type' => $type, 'limit' => $limit)); ?>
 
 	<script>
 

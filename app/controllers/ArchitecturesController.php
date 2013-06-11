@@ -39,7 +39,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			return $this->redirect('Pages::home');
 		}
         
-		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 50;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('earliest_date' => 'DESC');
 		$total = Architectures::count();
@@ -107,7 +107,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 		$query = '';
 		$condition = '';
 
-		$limit = 50;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$total = 0;
 

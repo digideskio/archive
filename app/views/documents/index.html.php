@@ -53,7 +53,7 @@ $this->title('Documents');
 
 <?=$this->partial->documents(compact('documents')); ?>
 
-<?=$this->pagination->pager('documents', 'pages', $page, $total, $limit); ?>
+<?=$this->pagination->pager('documents', 'pages', $page, $total, $limit, array('limit' => $limit)); ?>
 
 <?php endif; ?>
 

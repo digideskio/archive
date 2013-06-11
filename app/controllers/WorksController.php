@@ -55,7 +55,8 @@ class WorksController extends \lithium\action\Controller {
 			'conditions' => $filter,
 		));
 
-		$limit = ($limit == 'all') ? $total : $limit;
+		//Interpret any non-integer limit to mean 'All' results
+		$limit = !(intval($limit)) ? $total : $limit;
 
 		$works = Works::find('artworks', array(
 			'with' => 'Archives',
@@ -90,7 +91,20 @@ class WorksController extends \lithium\action\Controller {
 		$query = '';
 		$condition = '';
 
-		$limit = 50;
+		$limit = 40;
+
+		if (Environment::get('artworks')) {
+			$artworks = Environment::get('artworks');
+			$filter = isset($artworks['filter']) ? $artworks['filter'] : '';
+			
+			if (isset($artworks['search'])) {
+				$search = $artworks['search'];
+				$limit = isset($search['limit']) ? $search['limit'] : $limit;
+			}
+		}
+		
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : $limit;
+
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$total = 0;
 
@@ -141,16 +155,19 @@ class WorksController extends \lithium\action\Controller {
 
 			$conditions = $filter ? array_merge($filter, $conditions) : $conditions;
 
+			$total = Works::count('artworks', array(
+				'with' => 'Archives',
+				'conditions' => $conditions,
+			));
+
+			//Interpret any non-integer limit to mean 'All' results
+			$limit = !(intval($limit)) ? $total : $limit;
+
 			$works = Works::find('artworks', array(
 				'with' => 'Archives',
 				'conditions' => $conditions,
 				'limit' => $limit,
 				'page' => $page
-			));
-
-			$total = Works::count('artworks', array(
-				'with' => 'Archives',
-				'conditions' => $conditions,
 			));
 
 		}
