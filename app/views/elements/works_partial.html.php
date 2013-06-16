@@ -74,21 +74,25 @@
 						<td><?=$work->attribute('edition'); ?></td>
 					<?php endif; ?>
 				</tr>
+				<?php if ($dimensions = $work->dimensions()): ?>
 				<tr>
-					<td class="meta">Size</td>
-					<td colspan="3"><?=$work->dimensions(); ?></td>
+					<td class="meta">DIM.</td>
+					<td colspan="3"><?=$dimensions; ?></td>
 				</tr>
+					<?php endif; ?>
+				<?php if ($work->materials): ?>
 				<tr>
 					<td class="meta">Materials</td>
 					<td colspan="3"><?=$work->materials; ?></td>
 				</tr>
+				<?php endif; ?>
 				<?php if ($inventory): ?>
 				<tr>
-					<?php if ($work->attribute('in_time')): ?>
+					<?php if ($in_time = $work->attribute('in_time')): ?>
 					<td class="meta">Recieved</td>
-					<td><?=$work->attribute('in_time'); ?></td>
+					<td><?=$in_time; ?></td>
 					<?php endif; ?>
-					<?php if ($work->attribute('location')): ?>
+					<?php if ($work->location): ?>
 					<td class="meta">Location</td>
 					<td><?=$work->location; ?></td>
 					<?php endif; ?>
