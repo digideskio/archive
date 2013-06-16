@@ -10,6 +10,8 @@ $this->form->config(
     )
 ); 
 
+$pages_list = array('' => 'Choose one...', 'home' => 'Home');
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -48,8 +50,11 @@ $this->form->config(
 	<legend>Notice</legend>
     <?=$this->form->field('subject', array('autocomplete' => 'off'));?>
     <?=$this->form->field('body', array('type' => 'textarea'));?>
-    <?=$this->form->hidden('path', array('value' => 'home'));?>
+	<?=$this->form->label('path', 'Page'); ?>
+	<?=$this->form->select('path', $pages_list); ?>
+	<fieldset>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/notices', array('class' => 'btn')); ?>
+	</fieldset>
 <?=$this->form->end(); ?>
 </div>
