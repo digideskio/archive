@@ -46,15 +46,12 @@ $this->title('Exhibition Venues');
 	</div>
 </div>
 
-
+<div class="row">
 	<?php if ($venues): ?>
+	<div class="span4">
 	<h3>Venues</h3>
 
-	<?php if (sizeof($venues) > 20): ?>
-		<div style="-moz-column-count:3; -webkit-column-count:3; column-count:3; -moz-column-gap:40px; -webkit-column-gap:40px; column-gap: 40px;">
-	<?php else: ?>
 		<div>
-	<?php endif; ?>
 
 	<?php foreach ($venues as $venue): ?>
 
@@ -64,18 +61,15 @@ $this->title('Exhibition Venues');
 	<?php endforeach; ?>
 
 		</div>
-		<hr/>
+	</div>
 	<?php endif; ?>
 
 	<?php if ($cities): ?>
+	<div class="span3">
 
 		<h3>Cities</h5>
 
-	<?php if (sizeof($cities) > 20): ?>
-		<div style="-moz-column-count:3; -webkit-column-count:3; column-count:3; -moz-column-gap:40px; -webkit-column-gap:40px; column-gap: 40px;">
-	<?php else: ?>
 		<div>
-	<?php endif; ?>
 
 	<?php foreach ($cities as $city): ?>
 
@@ -85,18 +79,15 @@ $this->title('Exhibition Venues');
 	<?php endforeach; ?>
 
 		</div>
-		<hr/>
+	</div>
 	<?php endif; ?>
 
 	<?php if ($countries): ?>
+	<div class="span3">
 
 		<h3>Countries</h5>
 
-	<?php if (sizeof($countries) > 20): ?>
-		<div style="-moz-column-count:3; -webkit-column-count:3; column-count:3; -moz-column-gap:40px; -webkit-column-gap:40px; column-gap: 40px;">
-	<?php else: ?>
 		<div>
-	<?php endif; ?>
 
 	<?php foreach ($countries as $country): ?>
 
@@ -106,5 +97,6 @@ $this->title('Exhibition Venues');
 	<?php endforeach; ?>
 
 		</div>
-		<hr/>
+	</div>
 	<?php endif; ?>
+</div>
