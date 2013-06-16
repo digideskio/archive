@@ -100,6 +100,7 @@ foreach ($users as $user) {
 
 </div>
 
+<div class="actions">
 <ul class="nav nav-tabs">
 	<li><?=$this->html->link('View','/works/view/'.$work->archive->slug); ?></li>
 	<li class="active">
@@ -110,6 +111,13 @@ foreach ($users as $user) {
 	<li><?=$this->html->link('Attachments','/works/attachments/'.$work->archive->slug); ?></li>
 	<li><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
 </ul>
+
+	<div class="btn-toolbar">
+			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+				<i class="icon-white icon-trash"></i> Delete Artwork
+			</a>
+	</div>
+</div>
 
 <div class="row">
 
@@ -299,20 +307,6 @@ foreach ($users as $user) {
 <?=$this->form->end(); ?>
 
 		
-</div>
-	
-<div class="row">
-	<div class="span5 offset5">
-		<div class="well">
-		
-			<legend>Edit</legend>
-		
-			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-				<i class="icon-white icon-trash"></i> Delete Artwork
-			</a>
-		
-		</div>
-	</div>
 </div>
 
 <script>
