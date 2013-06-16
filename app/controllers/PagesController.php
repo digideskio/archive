@@ -68,7 +68,8 @@ class PagesController extends \lithium\action\Controller {
 
 		$notices = Notices::find('all', array(
 			'conditions' => $conditions,
-			'order' => $order
+			'order' => $order,
+			'limit' => 1
 		));
 
 		return compact('notices');
