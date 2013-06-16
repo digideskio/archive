@@ -69,8 +69,10 @@
 				<tr>
 					<td class="meta">Year</td>
 					<td class="info-earliest_date"><?=$work->archive->years(); ?></td>
-					<td class="meta">Edition</td>
-					<td><?=$work->attribute('edition'); ?></td>
+					<?php if ($work->attribute('edition')): ?>
+						<td class="meta">Edition</td>
+						<td><?=$work->attribute('edition'); ?></td>
+					<?php endif; ?>
 				</tr>
 				<tr>
 					<td class="meta">Size</td>
@@ -82,10 +84,14 @@
 				</tr>
 				<?php if ($inventory): ?>
 				<tr>
+					<?php if ($work->attribute('in_time')): ?>
 					<td class="meta">Recieved</td>
 					<td><?=$work->attribute('in_time'); ?></td>
+					<?php endif; ?>
+					<?php if ($work->attribute('location')): ?>
 					<td class="meta">Location</td>
 					<td><?=$work->location; ?></td>
+					<?php endif; ?>
 				</tr>
 				<?php endif; ?>
 			</table>
