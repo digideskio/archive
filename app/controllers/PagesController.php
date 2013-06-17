@@ -9,6 +9,8 @@
 namespace app\controllers;
 
 use app\models\Notices;
+use app\models\Archives;
+use app\models\Documents;
 
 use lithium\security\Auth;
 
@@ -72,7 +74,34 @@ class PagesController extends \lithium\action\Controller {
 			'limit' => 1
 		));
 
-		return compact('notices');
+		$works = Archives::find('all', array(
+			'with' => 'Users',
+			'conditions' => array('controller' => 'works'),
+			'order' => $order,
+			'limit' => 10,
+		));
+
+		$exhibitions = Archives::find('all', array(
+			'with' => 'Users',
+			'conditions' => array('controller' => 'exhibitions'),
+			'order' => $order,
+			'limit' => 10,
+		));
+
+		$publications = Archives::find('all', array(
+			'with' => 'Users',
+			'conditions' => array('controller' => 'publications'),
+			'order' => $order,
+			'limit' => 10,
+		));
+
+        $documents = Documents::find('all', array(
+			'with' => array('Formats'),
+			'limit' => 10,
+			'order' => $order,
+		));
+
+		return compact('notices', 'works', 'exhibitions', 'publications', 'documents');
 
 	}
 	

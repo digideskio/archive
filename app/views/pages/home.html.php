@@ -4,10 +4,9 @@ $this->title('Home');
 
 ?>
 
-<div class="hero-unit" style="margin-bottom: 14px;">
+<div class="well" style="margin-bottom: 14px;">
 	<h1>Welcome to the Archive.</h1>
-	<p>All of our Artworks, Architectural projects, and Exhibitions are collected here. Use the sidebar to navigate through the archive.</p>
-	<p><a class="btn btn-inverse btn-large" href="<?=$this->url(array('Albums::index')); ?>">Browse the Albums »</a></p>
+	<p>All of our Artworks, Documents, and Exhibitions are collected here. Use the sidebar to navigate through the archive.</p>
 </div>
 
 <?php foreach ($notices as $notice): ?>
@@ -18,3 +17,169 @@ $this->title('Home');
 	</div>
 
 <?php endforeach; ?>
+
+<div class="row">
+
+	<div class="span3">
+
+		<div class="breadcrumb">
+
+			<h3><?=$this->html->link('Artwork', 'Works::index'); ?></h3>
+
+			<?php if (!$works || sizeof($works) == 0): ?>
+
+				<?=$this->html->link('Add an artwork', 'Works::add'); ?> to the Archive.	
+
+			<?php endif; ?>
+
+			<?php if ($works && sizeof($works) > 0): ?>
+
+				<table class="table table-condensed update-table">
+
+					<tbody>
+
+						<?php foreach ($works as $work): ?>
+							<tr>
+								<td class="initials">
+								<span style="font-size: smaller;">
+									<?=$this->html->link($work->user->initials(), array('Users::view',  'username' => $work->user->username)); ?>
+								</span>
+								</td>
+								<td class="title">
+								<div class="no-wrap">
+								<strong style="font-size: smaller;">
+									<?=$this->html->link($work->name, array('Works::view', 'slug' => $work->slug)); ?>
+								</strong>
+								</div>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+
+					</tbody>
+
+				</table>
+
+			<?php endif; ?>
+
+		</div>
+
+	</div>
+	
+	<div class="span4">
+
+		<div class="breadcrumb">
+
+			<h3><?=$this->html->link('Exhibitions', 'Exhibitions::index'); ?></h3>
+
+			<?php if (!$exhibitions || sizeof($exhibitions) == 0): ?>
+
+				<?=$this->html->link('Add an exhibition', 'Exhibitions::add'); ?> to the Archive.	
+
+			<?php endif; ?>
+
+			<?php if ($exhibitions && sizeof($exhibitions) > 0): ?>
+
+				<table class="table table-condensed update-table">
+
+					<tbody>
+
+						<?php foreach ($exhibitions as $exhibition): ?>
+							<tr>
+								<td class="initials">
+								<span style="font-size: smaller;">
+									<?=$this->html->link($exhibition->user->initials(), array('Users::view',  'username' => $exhibition->user->username)); ?>
+								</span>
+								</td>
+								<td class="title">
+								<div class="no-wrap">
+								<strong style="font-size: smaller;">
+									<?=$this->html->link($exhibition->name, array('Exhibitions::view', 'slug' => $exhibition->slug)); ?>
+								</strong>
+								</div>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+
+					</tbody>
+
+				</table>
+
+			<?php endif; ?>
+
+		</div>
+
+	</div>
+
+	<div class="span3">
+
+		<div class="breadcrumb">
+
+			<h3><?=$this->html->link('Publications', 'Publications::index'); ?></h3>
+
+			<?php if (!$publications || sizeof($publications) == 0): ?>
+
+				<?=$this->html->link('Add a publication', 'Publications::add'); ?> to the Archive.	
+
+			<?php endif; ?>
+
+			<?php if ($publications && sizeof($publications) > 0): ?>
+
+				<table class="table table-condensed update-table">
+
+					<tbody>
+
+						<?php foreach ($publications as $publication): ?>
+							<tr>
+								<td class="initials">
+								<span style="font-size: smaller;">
+									<?=$this->html->link($publication->user->initials(), array('Users::view',  'username' => $publication->user->username)); ?>
+								</span>
+								</td>
+								<td class="title">
+								<div class="no-wrap">
+								<strong style="font-size: smaller;">
+									<?=$this->html->link($publication->name, array('Publications::view', 'slug' => $publication->slug)); ?>
+								</strong>
+								</div>
+								</td>
+							</tr>
+						<?php endforeach; ?>
+
+					</tbody>
+
+				</table>
+
+			<?php endif; ?>
+
+		</div>
+
+	</div>
+
+</div>
+
+<?php if ($documents && (sizeof($documents) > 0)): ?>
+
+	<?=$this->partial->documents(compact('documents')); ?>
+
+<?php endif; ?>
+
+<style>
+
+	.update-table {
+		table-layout:fixed;
+		width: 100%;
+	}
+
+	.update-table .initials {
+		width: 15%;
+	}
+
+	.update-table .title {
+		width: 85%;
+	}
+
+	.update-table .title .no-wrap {
+		text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+	}
+
+</style>
