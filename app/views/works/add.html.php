@@ -184,7 +184,7 @@ foreach ($documents as $doc) {
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('documents', $documents_list, array('multiple' => true)); ?>
+					<?=$this->form->select('documents', $documents_list, array('id' => 'ArchivesDocuments', 'multiple' => true)); ?>
 				</div>
 			</div>
 

@@ -4,6 +4,20 @@ $this->title($publication->title);
 
 $this->form->config(
     array( 
+		'label' => array(
+			'class' => 'control-label',
+		),
+		'field' => array(
+			'wrap' => array('class' => 'control-group'),
+			'template' => '<div{:wrap}>{:label}<div class="controls control-row">{:input}{:error}</div></div>',
+			'style' => 'max-width:100%'
+		),
+		'select' => array(
+			'style' => 'max-width:100%'
+		),
+		'checkbox' => array(
+			'wrap' => array('class' => 'control-group'),
+		),
         'templates' => array( 
             'error' => '<div class="help-inline">{:content}</div>' 
         )
@@ -39,74 +53,104 @@ $language_list = json_encode($language_names);
 
 </div>
 
-<ul class="nav nav-tabs">
-	<li><?=$this->html->link('View','/publications/view/'.$publication->archive->slug); ?></li>
-	<li class="active">
-		<a href="#">
-			Edit
-		</a>
-	</li>
-	<li>
-		<?=$this->html->link('History', $this->url(array('Publications::history', 'slug' => $publication->archive->slug))); ?>
-	</li>
-</ul>
+<div class="actions">
+	<ul class="nav nav-tabs">
+		<li><?=$this->html->link('View','/publications/view/'.$publication->archive->slug); ?></li>
+		<li class="active">
+			<a href="#">
+				Edit
+			</a>
+		</li>
+		<li><?=$this->html->link('Attachments','/publications/attachments/'.$publication->archive->slug); ?></li>
+		<li>
+			<?=$this->html->link('History', $this->url(array('Publications::history', 'slug' => $publication->archive->slug))); ?>
+		</li>
+	</ul>
+
+	<div class="btn-toolbar">
+			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+				<i class="icon-white icon-trash"></i> Delete Publication
+			</a>
+	</div>
+</div>
 
 <div class="row">
+<?=$this->form->create($publication, array('id' => 'PublicationsForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
-
-	<div class="well">
-	<?=$this->form->create($publication, array('id' => 'PublicationsForm')); ?>
-		<legend>Publication Info</legend>
-
-		<?php $pub_classes_list = array_merge(array('' => 'Choose one...'), $pub_classes_list); ?>
-
-		<?=$this->form->label('classification', 'Category'); ?>
-		<?=$this->form->select('classification', $pub_classes_list, array('value' => $publication->archive->classification)); ?>
-
-		<div class="interview">
-			<span class="help-block">Is the publication an interview?</span>
+		<div class="well">
+			<legend>Publication Info</legend>
 			
-			<label class="checkbox">
-			<?=$this->form->checkbox('type', array('value' => 'Interview', 'checked' => $publication->archive->type == 'Interview' ));?> Interview
-			</label>
+			<?=$this->form->field('author', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('title', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('remarks', array('autocomplete' => 'off', 'type' => 'textarea'));?>
+			<?=$this->form->field('storage_location', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('storage_number', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('publication_number', array('autocomplete' => 'off', 'label' => 'Publication ID'));?>
+
 		</div>
-		
-		<?=$this->form->field('author', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('book_title', array('autocomplete' => 'off', 'placeholder' => 'Book the essay is in....', 'class' => 'essay'));?>
-		<?=$this->form->field('publisher', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('location', array('autocomplete' => 'off', 'label' => 'Publisher Location', 'placeholder' => 'City, Country', 'class' => 'book', 'data-provide' => 'typeahead', 'data-source' => $location_list));?>
-		<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $publication->archive->start_date_formatted()));?>
-		<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'class' => 'journal', 'value' => $publication->archive->end_date_formatted()));?>
-		<?=$this->form->field('number', array('autocomplete' => 'off', 'class' => 'journal', 'placeholder' => 'Issue number'));?>
-		<?=$this->form->field('volume', array('autocomplete' => 'off', 'placeholder' => 'e.g., Spring 2008', 'class' => 'journal'));?>
-		<?=$this->form->field('editor', array('autocomplete' => 'off', 'class' => 'book'));?>
-		<?=$this->form->field('translator', array('autocomplete' => 'off', 'class' => 'book'));?>
-		<?=$this->form->field('pages', array('autocomplete' => 'off', 'class' => 'pages'));?>
-		<?=$this->form->field('edition', array('autocomplete' => 'off', 'class' => 'book'));?>
-		<?=$this->form->field('access_date', array('autocomplete' => 'off', 'value' => $publication->access_date, 'class' => 'web'));?>
-		<?=$this->form->field('subject', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('remarks', array('autocomplete' => 'off', 'type' => 'textarea'));?>
-		<?=$this->form->field('language', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
-		<?=$this->form->field('storage_location', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('storage_number', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('publication_number', array('autocomplete' => 'off', 'label' => 'Publication ID'));?>
-		<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-		<?=$this->html->link('Cancel','/publications/view/' . $publication->archive->slug, array('class' => 'btn')); ?>
-	<?=$this->form->end(); ?>
+
+		<div class="well">
+			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
+		</div>
+
 	</div>
+
+	<div class="span5">
+		<div class="well">
+			<legend>Details</legend>
+
+			<?php $pub_classes_list = array_merge(array('' => 'Choose one...'), $pub_classes_list); ?>
+
+			<div class="control-group">
+				<?=$this->form->label('classification', 'Category', array('class' => 'control-label')); ?>
+				<div class="controls">
+					<?=$this->form->select('classification', $pub_classes_list, array('value' => $publication->archive->classification)); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="controls">
+					<div class="interview">
+						<label class="checkbox">
+<?=$this->form->checkbox('type', array('value' => 'Interview', 'checked' => $publication->archive->type == 'Interview' ));?> Publication is an Interview
+						</label>
+					</div>
+				</div>
+			</div>
+
+			<?=$this->form->field('book_title', array('autocomplete' => 'off', 'placeholder' => 'Book the essay is in....', 'class' => 'essay'));?>
+			<?=$this->form->field('publisher', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('location', array('autocomplete' => 'off', 'label' => 'Publisher Location', 'placeholder' => 'City, Country', 'class' => 'book', 'data-provide' => 'typeahead', 'data-source' => $location_list));?>
+			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $publication->archive->start_date_formatted()));?>
+			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'class' => 'journal', 'value' => $publication->archive->end_date_formatted()));?>
+			<?=$this->form->field('number', array('autocomplete' => 'off', 'class' => 'journal', 'placeholder' => 'Issue number'));?>
+			<?=$this->form->field('volume', array('autocomplete' => 'off', 'placeholder' => 'e.g., Spring 2008', 'class' => 'journal'));?>
+			<?=$this->form->field('editor', array('autocomplete' => 'off', 'class' => 'book'));?>
+			<?=$this->form->field('translator', array('autocomplete' => 'off', 'class' => 'book'));?>
+			<?=$this->form->field('pages', array('autocomplete' => 'off', 'class' => 'pages'));?>
+			<?=$this->form->field('edition', array('autocomplete' => 'off', 'class' => 'book'));?>
+			<?=$this->form->field('url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web'));?>
+			<?=$this->form->field('access_date', array('autocomplete' => 'off', 'value' => $publication->access_date, 'class' => 'web'));?>
+			<?=$this->form->field('subject', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('language', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
+			
+		</div>
+	</div>
+
+<?=$this->form->end(); ?>
+</div>
 
 <script>
 
 $(document).ready(function() {
 
-	$('#PublicationsForm .book').parent().hide();
-	$('#PublicationsForm .essay').parent().hide();
-	$('#PublicationsForm .web').parent().hide();
-	$('#PublicationsForm .journal').parent().hide();
-	$('#PublicationsForm .pages').parent().hide();
-	$('#PublicationsForm .interview').hide();
+	$('#PublicationsForm .book').closest('.control-group').hide();
+	$('#PublicationsForm .essay').closest('.control-group').hide();
+	$('#PublicationsForm .web').closest('.control-group').hide();
+	$('#PublicationsForm .journal').closest('.control-group').hide();
+	$('#PublicationsForm .pages').closest('.control-group').hide();
+	$('#PublicationsForm .interview').closest('.control-group').hide();
 
 	$("#PublicationsForm label[for='PublicationsEarliestDate']").html('Date');
 	
@@ -114,9 +158,9 @@ $(document).ready(function() {
 		var pub = $('#PublicationsClassification').val();
 
 		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book") {
-			$('#PublicationsForm .book').parent().fadeIn();
+			$('#PublicationsForm .book').closest('.control-group').fadeIn();
 		} else {
-			$('#PublicationsForm .book').parent().hide();
+			$('#PublicationsForm .book').closest('.control-group').hide();
 		}
 
 		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Essay in Book') { 
@@ -129,32 +173,32 @@ $(document).ready(function() {
 		}
 
 		if (pub == 'Journal' || pub == 'Magazine') {
-			$('#PublicationsForm .journal').parent().fadeIn();
+			$('#PublicationsForm .journal').closest('.control-group').fadeIn();
 			$('#PublicationsForm #PublicationsEarliestDate').attr('placeholder', 'Month and Year');
 			$("#PublicationsForm label[for='PublicationsEarliestDate']").html('Earliest Date');
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Journal or Magazine');
 		} else {
-			$('#PublicationsForm .journal').parent().hide();
+			$('#PublicationsForm .journal').closest('.control-group').hide();
 			$("#PublicationsForm label[for='PublicationsEarliestDate']").html('Date');
 		}
 
 		if (pub == 'Newspaper' || pub == 'Website') {
-			$('#PublicationsForm .web').parent().fadeIn(); 
+			$('#PublicationsForm .web').closest('.control-group').fadeIn();
 			$('#PublicationsForm #PublicationsEarliestDate').attr('placeholder', 'YYYY-MM-DD');
 		} else {
-			$('#PublicationsForm .web').parent().hide();
+			$('#PublicationsForm .web').closest('.control-group').hide();
 		}
 
 		if (pub == 'Essay in Book') {
-			$('#PublicationsForm .essay').parent().fadeIn();
+			$('#PublicationsForm .essay').closest('.control-group').fadeIn();
 		} else {
-			$('#PublicationsForm .essay').parent().hide();
+			$('#PublicationsForm .essay').closest('.control-group').hide();
 		}
 
 		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Newspaper' || pub == 'Essay in Book') {
-			$('#PublicationsForm .pages').parent().fadeIn();
+			$('#PublicationsForm .pages').closest('.control-group').fadeIn();
 		} else {
-			$('#PublicationsForm .pages').parent().hide();
+			$('#PublicationsForm .pages').closest('.control-group').hide();
 		}
 
 		if (pub == 'Website') {
@@ -162,12 +206,17 @@ $(document).ready(function() {
 		} 
 
 		if (pub == 'Journal' || pub == 'Magazine' || pub == 'Website' || pub == 'Newspaper') {
-			$('#PublicationsForm .interview').fadeIn(); 
+			$('#PublicationsForm .interview').closest('.control-group').fadeIn(); 
 		} else {
-			$('#PublicationsForm .interview').hide(); 
+			$('#PublicationsForm .interview').closest('.control-group').hide(); 
+		}
+
+		if (pub == '') {
+			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher');
 		}
 
 	}
+
 
 	$('#PublicationsClassification').change(function() {
 		handleFields();
@@ -176,30 +225,8 @@ $(document).ready(function() {
 	handleFields();
 
 });
-				
+
 </script>
-		<div class="well">
-
-			<legend>Edit</legend>
-
-			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-				<i class="icon-white icon-trash"></i> Delete Publication
-			</a>
-
-		</div>
-	</div>
-
-	<div class="span5">
-
-	<?=$this->partial->archives_links_edit(array(
-		'model' => $publication,
-		'junctions' => $publication_links,
-	)); ?>		
-
-	<?=$this->partial->archives_documents_edit(array(
-		'model' => $publication,
-		'archives_documents' => $archives_documents,
-	)); ?>		
 
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">

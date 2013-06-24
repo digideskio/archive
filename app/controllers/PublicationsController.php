@@ -9,6 +9,7 @@ use app\models\PublicationsLinks;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\ArchivesDocuments;
+use app\models\Documents;
 
 use app\models\Languages;
 
@@ -349,7 +350,19 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$pub_classifications = Publications::classifications();
 
-		return compact('publication', 'pub_classifications', 'pub_classes_list', 'locations', 'language_names');
+		$documents = array();
+
+		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
+			$document_ids = $this->request->data['documents'];
+
+			$documents = Documents::find('all', array(
+				'with' => 'Formats',
+				'conditions' => array('Documents.id' => $document_ids),
+			));
+
+		}
+
+		return compact('publication', 'pub_classifications', 'pub_classes_list', 'locations', 'language_names', 'documents');
 	}
 
 	public function edit() {
@@ -426,6 +439,60 @@ class PublicationsController extends \lithium\action\Controller {
 
 		
 		return compact('publication', 'pub_classes_list', 'archives_documents', 'publication_links', 'locations', 'language_names');
+	}
+
+	public function attachments() {
+
+	    $check = (Auth::check('default')) ?: null;
+	
+        if (!$check) {
+            return $this->redirect('Sessions::add');
+        }
+        
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+		
+        // If the user is not an Admin or Editor, redirect to the record view
+        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
+        	return $this->redirect(array(
+        		'Publications::view', 'args' => array($this->request->params['slug']))
+        	);
+        }
+
+		$publication = Publications::first(array(
+			'with' => 'Archives',
+			'conditions' => array('slug' => $this->request->params['slug'])
+		));
+
+		if (!$publication) {
+			return $this->redirect('Publications::index');
+		}
+
+		if (($this->request->data) && $publication->save($this->request->data)) {
+			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
+		}
+
+		$archives_documents = ArchivesDocuments::find('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('archive_id' => $publication->id),
+			'order' => array('slug' => 'ASC')
+		));
+
+		$publication_links = PublicationsLinks::find('all', array(
+			'with' => array(
+				'Links'
+			),
+			'conditions' => array('publication_id' => $publication->id),
+			'order' => array('date_modified' =>  'DESC')
+		));
+
+		return compact('publication', 'archives_documents', 'publication_links');
+
 	}
 
 	public function history() {

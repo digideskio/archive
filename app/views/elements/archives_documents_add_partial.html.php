@@ -218,7 +218,7 @@
 
 					if (document_id) {
 						option = '<option value="' + document_id + '" selected="selected">' + file.name + '</option>';
-						$('#WorksDocuments').append(option);
+						$('#ArchivesDocuments').append(option);
 					}
                      
                 });

@@ -36,7 +36,7 @@ class PublicationsLinksController extends \lithium\action\Controller {
 			$works_links = PublicationsLinks::create();
 			$works_links->save($this->request->data);
 			
-			return $this->redirect(array('Publications::edit', 'args' => array($this->request->data['publication_slug'])));
+			return $this->redirect(array('Publications::attachments', 'args' => array($this->request->data['publication_slug'])));
 
 		}
 		return $this->redirect('Publications::index');
@@ -68,7 +68,7 @@ class PublicationsLinksController extends \lithium\action\Controller {
 		PublicationsLinks::find($this->request->id)->delete();
 		
 		return $this->redirect(array(
-    		'Publications::edit', 'args' => array($this->request->data['publication_slug']))
+    		'Publications::attachments', 'args' => array($this->request->data['publication_slug']))
     	);
 	}
 }
