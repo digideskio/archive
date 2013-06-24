@@ -10,6 +10,7 @@
 ?>
 
 <?php $c = strtolower($this->request()->params['controller']); ?>
+<?php $a = strtolower($this->request()->params['action']); ?>
 
 <?php $architecture = \lithium\core\Environment::get('architecture'); ?>
 
@@ -18,6 +19,9 @@
 	<div class="span2 affix">
 	<div class="well" style="padding: 8px 0;">
 		<ul class="nav nav-list">
+			<li <?php if ($c == 'pages' && $a == 'home') echo 'class="active"'; ?> >
+				<a href="/home"><i class="icon-home"></i> Home</a></li>
+			<li class="divider"></li>
 			<li <?php if ($c == 'works') echo 'class="active"'; ?> >
 				<a href="/works"><i class="icon-picture"></i> Artwork</a></li>
 			<?php if ($architecture): ?>
