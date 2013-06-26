@@ -50,6 +50,7 @@
 			<label class="batch-checkbox" for="Document-<?=$document->id?>">
 			<?=$this->form->checkbox('documents[]', array('id' => "Document-$document->id", 'value' => $document->id, 'hidden' => false, 'class' => 'checkdocs'));?>
 			</label>
+			</div>
 		</li>
 
 	<?php endforeach; ?>
