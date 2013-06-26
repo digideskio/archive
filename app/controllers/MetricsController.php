@@ -114,14 +114,14 @@ class MetricsController extends \lithium\action\Controller {
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
 		);
 
-		$daily_edits_last_two_months = Model::connection()->read(
-			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories WHERE UNIX_TIMESTAMP(DATE(date_modified)) * 1000 > '1364774400000' group by milliseconds order by milliseconds ASC"
+		$daily_edits_last_three_months = Model::connection()->read(
+			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories WHERE UNIX_TIMESTAMP(DATE(date_modified)) * 1000 > (UNIX_TIMESTAMP() * 1000 - 8035200000) group by milliseconds order by milliseconds ASC"
 		);
 
 		return compact(
 			'monthly_edits',
 			'daily_edits',
-			'daily_edits_last_two_months'
+			'daily_edits_last_three_months'
 		);
 		
 	}

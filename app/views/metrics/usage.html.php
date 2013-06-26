@@ -39,14 +39,14 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The archive has been maintained over a <strong><?php echo sizeof($monthly_edits); ?></strong> month period. Here is the activity for the last two months:</p>
+<p>The archive has been maintained over a <strong><?php echo sizeof($monthly_edits); ?></strong> month period. Here is the activity for the last three months:</p>
 
 <div id="edits" style="width:100%;height:300px"></div>
 
 <script type="text/javascript">
 	$(function () {
 
-	var recordsEdits = [<?php foreach ($daily_edits_last_two_months as $edits): echo '[' . $edits['milliseconds'] . ', ' . $edits['records'] . '], '; endforeach; ?>];
+	var recordsEdits = [<?php foreach ($daily_edits_last_three_months as $edits): echo '[' . $edits['milliseconds'] . ', ' . $edits['records'] . '], '; endforeach; ?>];
 
 	var options = {
 		xaxis: {
