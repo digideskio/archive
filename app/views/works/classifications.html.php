@@ -73,7 +73,7 @@ $this->title('Classifications');
 
 		<li class="span3">
 			<a href="/works/search?condition=classification&query=<?=$query ?>" class="thumbnail" title="<?=$classification_name ?>">
-				<span class="label label-info"><?=$classification_name ?></span>
+				<span class="label label-info" style="font-size:1.2em; padding: 2px 8px 4px;"><?=$classification_name ?></span>
 				<?php if($document_slug): ?>
 					<img src="/files/thumb/<?=$document_slug ?>.jpeg" alt="<?=$classification_name ?>">
 				<?php endif; ?>
