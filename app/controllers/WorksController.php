@@ -238,7 +238,25 @@ class WorksController extends \lithium\action\Controller {
 		));
 
 		$classifications = $works_classifications->map(function($wc) {
-			return array('name' => $wc->classification, 'works' => $wc->works);
+			$archives = Archives::find('all', array(
+				'fields' => 'id',
+				'conditions' => array('classification' => $wc->classification, 'controller' => 'works'),
+				'order' => array('date_created' => 'DESC'),
+			));
+
+			$archives_ids = $archives->map(function($ai) {
+				return $ai->id;
+			}, array('collect' => false));
+
+			$document = Documents::find('first', array(
+				'with' => array('Formats', 'ArchivesDocuments'),
+				'conditions' => array('ArchivesDocuments.archive_id' => $archives_ids),
+				'order' => array('date_modified' => 'DESC')
+			));
+
+			$document_slug = $document ? $document->slug : '';
+
+			return array('name' => $wc->classification, 'works' => $wc->works, 'document' => $document_slug);
 		}, array('collect' => false));
 
 		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
