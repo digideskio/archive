@@ -16,6 +16,16 @@ $this->title('Metrics');
 
 </div>
 
+<ul class="nav nav-tabs">
+	<li class="active">
+		<a href="#">Data</a>
+	</li>
+
+	<li>
+		<?=$this->html->link('Usage','/metrics/usage'); ?>
+	</li>
+</ul>
+
 <div class="hero-unit">
 
 	<h1>The Archive holds:</h1>

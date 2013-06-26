@@ -13,7 +13,8 @@
 	<?php echo $this->html->script(array(
 		'jquery.flot.js',
 		'jquery.flot.resize.js',
-		'jquery.flot.pie.js'
+		'jquery.flot.pie.js',
+		'jquery.flot.time.js'
 	)); ?>
 	
 		<?php echo $this->html->script(array(

@@ -104,6 +104,28 @@ class MetricsController extends \lithium\action\Controller {
 		);
 	}
 
+	public function usage() {
+
+		$monthly_edits = Model::connection()->read(
+			"select count(*) AS records, UNIX_TIMESTAMP(DATE_FORMAT(date_modified, '%Y-%m-01')) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
+		);
+
+		$daily_edits = Model::connection()->read(
+			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
+		);
+
+		$daily_edits_last_two_months = Model::connection()->read(
+			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories WHERE UNIX_TIMESTAMP(DATE(date_modified)) * 1000 > '1364774400000' group by milliseconds order by milliseconds ASC"
+		);
+
+		return compact(
+			'monthly_edits',
+			'daily_edits',
+			'daily_edits_last_two_months'
+		);
+		
+	}
+
 }
 
 ?>
