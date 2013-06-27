@@ -9,6 +9,7 @@ use app\models\Exhibitions;
 use app\models\Publications;
 use app\models\Documents;
 use app\models\Components;
+use app\models\ArchivesHistories;
 
 use app\models\Users;
 use app\models\Roles;
@@ -118,10 +119,18 @@ class MetricsController extends \lithium\action\Controller {
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories WHERE UNIX_TIMESTAMP(DATE(date_modified)) * 1000 > (UNIX_TIMESTAMP() * 1000 - 8035200000) group by milliseconds order by milliseconds ASC"
 		);
 
+		$archives_histories_count = ArchivesHistories::count();
+
+		$daily_creates = Model::connection()->read(
+			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_created)) * 1000 as milliseconds FROM archives group by milliseconds order by milliseconds ASC"
+		);
+
 		return compact(
 			'monthly_edits',
 			'daily_edits',
-			'daily_edits_last_three_months'
+			'daily_edits_last_three_months',
+			'archives_histories_count',
+			'daily_creates'
 		);
 		
 	}
