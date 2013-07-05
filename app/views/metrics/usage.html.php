@@ -76,7 +76,7 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The archive has been edited over <strong><?=$archives_histories_count; ?></strong> Times. Here is the daily activity for the last three months:</p>
+<p>The archive has been edited over <strong><?=$archives_histories_count; ?></strong> times. Here is the daily activity for the last three months:</p>
 
 <div id="edits" style="width:100%;height:300px"></div>
 
@@ -98,6 +98,233 @@ $this->title('Metrics');
 	});
 
 </script>
+
+</div>
+
+<h1>Stats</h1>
+
+<div class="row">
+
+	<div class="span3">
+		<table class="table table-bordered">
+			<caption><strong>Total</strong></caption>
+			<tbody>
+				<tr>
+					<td class="meta">
+						Reporting Period
+					</td>
+					<td>
+						<?=$total_days ?> days
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Contributors
+					</td>
+					<td>
+						<?=$contributors['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Artworks
+					</td>
+					<td>
+						<?=$works['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Exhibitions
+					</td>
+					<td>
+						<?=$exhibitions['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Publications
+					</td>
+					<td>
+						<?=$publications['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Uploads
+					</td>
+					<td>
+						<?=$documents['total'] ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td class="meta">Name</td>
+					<td class="meta">Edits</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($contributions['total'] as $contribution): ?>
+					<tr>
+						<td><?=$contribution['name'] ?></td>
+						<td><?=$contribution['records'] ?></td>
+					</tr>
+
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+
+	<div class="span3">
+		<table class="table table-bordered">
+			<caption><strong>Last Month</strong></caption>
+			<tbody>
+				<tr>
+					<td class="meta">
+						Reporting Period
+					</td>
+					<td>
+						28 days
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Contributors
+					</td>
+					<td>
+						<?=$contributors['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Artworks
+					</td>
+					<td>
+						<?=$works['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Exhibitions
+					</td>
+					<td>
+						<?=$exhibitions['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Publications
+					</td>
+					<td>
+						<?=$publications['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Uploads
+					</td>
+					<td>
+						<?=$documents['month'] ?>
+					</td>
+				</tr>
+			</tbody>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td class="meta">Name</td>
+					<td class="meta">Edits</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($contributions['month'] as $contribution): ?>
+					<tr>
+						<td><?=$contribution['name'] ?></td>
+						<td><?=$contribution['records'] ?></td>
+					</tr>
+
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="span3">
+		<table class="table table-bordered">
+			<caption><strong>Last Week</strong></caption>
+			<tbody>
+				<tr>
+					<td class="meta">
+						Reporting Period
+					</td>
+					<td>
+						7 days
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Contributors
+					</td>
+					<td>
+						<?=$contributors['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Artworks
+					</td>
+					<td>
+						<?=$works['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Exhibitions
+					</td>
+					<td>
+						<?=$exhibitions['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Publications
+					</td>
+					<td>
+						<?=$publications['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Uploads
+					</td>
+					<td>
+						<?=$documents['week'] ?>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<table class="table table-bordered">
+			<thead>
+				<tr>
+					<td class="meta">Name</td>
+					<td class="meta">Edits</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($contributions['week'] as $contribution): ?>
+					<tr>
+						<td><?=$contribution['name'] ?></td>
+						<td><?=$contribution['records'] ?></td>
+					</tr>
+
+				<?php endforeach; ?>
+			</tbody>
+	</div>
 
 </div>
 

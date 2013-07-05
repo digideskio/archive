@@ -125,12 +125,136 @@ class MetricsController extends \lithium\action\Controller {
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_created)) * 1000 as milliseconds FROM archives group by milliseconds order by milliseconds ASC"
 		);
 
+		$earliest_record = Model::connection()->read(
+			"select date_modified from archives_histories order by date_modified ASC limit 1"	
+		);
+
+		$earliest_date = new \DateTime($earliest_record[0]['date_modified']);
+		$now = new \DateTime();
+		$interval = $now->diff($earliest_date);
+		$total_days = $interval->days;
+
+		$contributors_total = Model::connection()->read(
+			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0'"
+		);
+
+		$contributors_month = Model::connection()->read(
+			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
+		);
+
+		$contributors_week = Model::connection()->read(
+			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
+		);
+
+		$contributors = array(
+			'total' => $contributors_total[0]['records'],
+			'month' => $contributors_month[0]['records'],
+			'week' => $contributors_week[0]['records']
+		);
+
+		$contributions_total = Model::connection()->read(
+			"SELECT users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' GROUP BY user_id ORDER BY records DESC"
+		);
+
+		$contributions_month = Model::connection()->read(
+			"SELECT users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200) GROUP BY user_id ORDER BY records DESC"
+		);
+
+		$contributions_week = Model::connection()->read(
+			"SELECT users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800) GROUP BY user_id ORDER BY records DESC"
+		);
+
+		$contributions = array(
+			'total' => $contributions_total,
+			'month' => $contributions_month,
+			'week' => $contributions_week
+		);
+
+		$artworks_total = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='works'"
+		);
+
+		$artworks_month = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='works' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
+		);
+
+		$artworks_week = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='works' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
+		);
+
+		$works = array(
+			'total' => $artworks_total[0]['records'],
+			'month' => $artworks_month[0]['records'],
+			'week' => $artworks_week[0]['records']
+		);
+
+		$exhibitions_total = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='exhibitions'"
+		);
+
+		$exhibitions_month = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='exhibitions' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
+		);
+
+		$exhibitions_week = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='exhibitions' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
+		);
+
+		$exhibitions = array(
+			'total' => $exhibitions_total[0]['records'],
+			'month' => $exhibitions_month[0]['records'],
+			'week' => $exhibitions_week[0]['records']
+		);
+
+		$publications_total = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='publications'"
+		);
+
+		$publications_month = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='publications' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
+		);
+
+		$publications_week = Model::connection()->read(
+			"SELECT count(id) as records FROM archives WHERE controller='publications' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
+		);
+
+		$publications = array(
+			'total' => $publications_total[0]['records'],
+			'month' => $publications_month[0]['records'],
+			'week' => $publications_week[0]['records']
+		);
+
+		$documents_total = Model::connection()->read(
+			"SELECT count(id) as records FROM documents" 
+		);
+
+		$documents_month = Model::connection()->read(
+			"SELECT count(id) as records FROM documents WHERE UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
+		);
+
+		$documents_week = Model::connection()->read(
+			"SELECT count(id) as records FROM documents WHERE UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
+		);
+
+		$documents = array(
+			'total' => $documents_total[0]['records'],
+			'month' => $documents_month[0]['records'],
+			'week' => $documents_week[0]['records']
+		);
+
 		return compact(
 			'monthly_edits',
 			'daily_edits',
 			'daily_edits_last_three_months',
 			'archives_histories_count',
-			'daily_creates'
+			'daily_creates',
+			'total_days',
+			'works',
+			'exhibitions',
+			'publications',
+			'documents',
+			'contributors',
+			'contributions'
 		);
 		
 	}
