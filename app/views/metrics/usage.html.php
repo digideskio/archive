@@ -157,16 +157,11 @@ $this->title('Metrics');
 						<?=$documents['total'] ?>
 					</td>
 				</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered">
-			<thead>
+				<tr><td colspan="2"></td></tr>
 				<tr>
 					<td class="meta">Name</td>
 					<td class="meta">Edits</td>
 				</tr>
-			</thead>
-			<tbody>
 				<?php foreach ($contributions['total'] as $contribution): ?>
 					<tr>
 						<td><?=$contribution['name'] ?></td>
@@ -184,7 +179,7 @@ $this->title('Metrics');
 
 	<div class="span3">
 		<table class="table table-bordered">
-			<caption><strong>Last Month</strong></caption>
+			<caption><strong>This Month</strong></caption>
 			<tbody>
 				<tr>
 					<td class="meta">
@@ -234,15 +229,11 @@ $this->title('Metrics');
 						<?=$documents['month'] ?>
 					</td>
 				</tr>
-			</tbody>
-		<table class="table table-bordered">
-			<thead>
+				<tr><td colspan="2"></td></tr>
 				<tr>
 					<td class="meta">Name</td>
 					<td class="meta">Edits</td>
 				</tr>
-			</thead>
-			<tbody>
 				<?php foreach ($contributions['month'] as $contribution): ?>
 					<tr>
 						<td><?=$contribution['name'] ?></td>
@@ -256,7 +247,7 @@ $this->title('Metrics');
 
 	<div class="span3">
 		<table class="table table-bordered">
-			<caption><strong>Last Week</strong></caption>
+			<caption><strong>This Week</strong></caption>
 			<tbody>
 				<tr>
 					<td class="meta">
@@ -306,16 +297,11 @@ $this->title('Metrics');
 						<?=$documents['week'] ?>
 					</td>
 				</tr>
-			</tbody>
-		</table>
-		<table class="table table-bordered">
-			<thead>
+				<tr><td colspan="2"></td></tr>
 				<tr>
 					<td class="meta">Name</td>
 					<td class="meta">Edits</td>
 				</tr>
-			</thead>
-			<tbody>
 				<?php foreach ($contributions['week'] as $contribution): ?>
 					<tr>
 						<td><?=$contribution['name'] ?></td>
