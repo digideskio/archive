@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Users;
 use app\models\Roles;
+use app\models\ArchivesHistories;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -50,9 +51,24 @@ class UsersController extends \lithium\action\Controller {
 				'conditions' => array('username' => $this->request->params['username']),
 				'with' => array('Roles')
 			));
+
+			$limit = 50;
+			$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+			$order = array('start_date' => 'DESC');
+			$total = ArchivesHistories::find('count', array(
+				'with' => array('Users', 'Archives'),
+				'conditions' => array('username' => $user->username),
+			));
+			$archives_histories = ArchivesHistories::find('all', array(
+				'with' => array('Users', 'Archives'),
+				'conditions' => array('username' => $user->username),
+				'limit' => $limit,
+				'order' => $order,
+				'page' => $page
+			));
 			
 			//Send the retrieved data to the view
-			return compact('user');
+			return compact('user', 'archives_histories', 'total', 'page', 'limit');
 		}
 		
 		//since no username was specified, redirect to the index page

@@ -82,6 +82,7 @@ Router::connect('/users', array('Users::index'));
 Router::connect('/users/add', array('Users::add'));
 Router::connect('/users/register', array('Users::register'));
 Router::connect('/users/view/{:username}', array('Users::view'));
+Router::connect('/users/view/{:username}/{:page:[0-9]+}', array('Users::view'));
 Router::connect('/users/edit/{:username}', array('Users::edit'));
 Router::connect('/users/delete/{:username}', array('Users::delete'));
 
