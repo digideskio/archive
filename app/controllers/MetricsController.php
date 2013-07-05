@@ -153,15 +153,15 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		$contributions_total = Model::connection()->read(
-			"SELECT users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' GROUP BY user_id ORDER BY records DESC"
+			"SELECT username, users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' GROUP BY user_id ORDER BY records DESC"
 		);
 
 		$contributions_month = Model::connection()->read(
-			"SELECT users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200) GROUP BY user_id ORDER BY records DESC"
+			"SELECT username, users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200) GROUP BY user_id ORDER BY records DESC"
 		);
 
 		$contributions_week = Model::connection()->read(
-			"SELECT users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800) GROUP BY user_id ORDER BY records DESC"
+			"SELECT username, users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800) GROUP BY user_id ORDER BY records DESC"
 		);
 
 		$contributions = array(

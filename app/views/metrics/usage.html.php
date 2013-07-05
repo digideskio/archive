@@ -107,7 +107,7 @@ $this->title('Metrics');
 
 	<div class="span3">
 		<table class="table table-bordered">
-			<caption><strong>Total</strong></caption>
+			<caption><strong>All Time</strong></caption>
 			<tbody>
 				<tr>
 					<td class="meta">
@@ -164,7 +164,9 @@ $this->title('Metrics');
 				</tr>
 				<?php foreach ($contributions['total'] as $contribution): ?>
 					<tr>
-						<td><?=$contribution['name'] ?></td>
+						<td>
+							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
+						</td>
 						<td><?=$contribution['records'] ?></td>
 					</tr>
 
@@ -236,7 +238,9 @@ $this->title('Metrics');
 				</tr>
 				<?php foreach ($contributions['month'] as $contribution): ?>
 					<tr>
-						<td><?=$contribution['name'] ?></td>
+						<td>
+							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
+						</td>
 						<td><?=$contribution['records'] ?></td>
 					</tr>
 
@@ -304,7 +308,9 @@ $this->title('Metrics');
 				</tr>
 				<?php foreach ($contributions['week'] as $contribution): ?>
 					<tr>
-						<td><?=$contribution['name'] ?></td>
+						<td>
+							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
+						</td>
 						<td><?=$contribution['records'] ?></td>
 					</tr>
 
