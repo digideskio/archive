@@ -106,6 +106,18 @@ class MetricsController extends \lithium\action\Controller {
 	}
 
 	public function usage() {
+    	// Check authorization
+	    $check = (Auth::check('default')) ?: null;
+	
+        // Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		if($auth->timezone_id) {
+			$tz = new \DateTimeZone($auth->timezone_id);
+		}
 
 		$monthly_edits = Model::connection()->read(
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE_FORMAT(date_modified, '%Y-%m-01')) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
@@ -129,10 +141,50 @@ class MetricsController extends \lithium\action\Controller {
 			"select date_modified from archives_histories order by date_modified ASC limit 1"	
 		);
 
-		$earliest_date = new \DateTime($earliest_record[0]['date_modified']);
-		$now = new \DateTime();
-		$interval = $now->diff($earliest_date);
+		$all_time_date = new \DateTime($earliest_record[0]['date_modified']);
+		$now_date = new \DateTime();
+		$interval = $now_date->diff($all_time_date);
 		$total_days = $interval->days;
+
+		$month_date = $now_date->sub(new \DateInterval('P28D'));
+		$now_date = new \DateTime();
+		$month_date_interval = $now_date->diff($month_date);
+		$month_days = $month_date_interval->days;
+
+		$month_date = $total_days > $month_days ? $month_date : $all_time_date;
+
+		$month_date_interval = $now_date->diff($month_date);
+		$month_days = $month_date_interval->days;
+
+		$week_date = $now_date->sub(new \DateInterval('P7D'));
+		$now_date = new \DateTime();
+		$week_date_interval = $now_date->diff($week_date);
+		$week_days = $week_date_interval->days;
+
+		$week_date = $total_days > $week_days ? $week_date : $all_time_date;
+
+		$week_date_interval = $now_date->diff($week_date);
+		$week_days = $week_date_interval->days;
+
+		if (isset($tz)) {
+			$now_date->setTimeZone($tz);
+			$all_time_date->setTimeZone($tz);
+			$month_date->setTimeZone($tz);
+			$week_date->setTimeZone($tz);
+		};
+
+		$dates = array(
+			'now' => $now_date->format('Y-m-d'),
+			'all_time' => $all_time_date->format('Y-m-d'),
+			'month' => $month_date->format('Y-m-d'),
+			'week' => $week_date->format('Y-m-d')
+		);
+
+		$intervals = array(
+			'all_time' => $total_days,
+			'month' => $month_date_interval->days,
+			'week' => $week_date_interval->days
+		);
 
 		$contributors_total = Model::connection()->read(
 			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0'"
@@ -243,6 +295,8 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		return compact(
+			'dates',
+			'intervals',
 			'monthly_edits',
 			'daily_edits',
 			'daily_edits_last_three_months',

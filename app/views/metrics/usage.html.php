@@ -33,6 +33,247 @@ $this->title('Metrics');
 
 <?php if(sizeof($daily_creates) > 0): ?>
 
+<style>
+	td.stat {
+		text-align: right;
+	}
+</style>
+
+<h1>Stats</h1>
+
+<p class="lead"><?=$dates['now'] ?></p>
+
+<div class="row">
+
+	<div class="span3">
+		<table class="table table-bordered">
+			<caption><strong>All Time</strong></caption>
+			<caption class="meta"><?=$dates['all_time'] . ' :: ' . $dates['now'] ?></caption>
+			<tbody>
+				<tr>
+					<td class="meta">
+						Reporting Period
+					</td>
+					<td class="stat">
+						<?=$total_days ?> days
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Contributors
+					</td>
+					<td class="stat">
+						<?=$contributors['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Artworks
+					</td>
+					<td class="stat">
+						<?=$works['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Exhibitions
+					</td>
+					<td class="stat">
+						<?=$exhibitions['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Publications
+					</td>
+					<td class="stat">
+						<?=$publications['total'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Uploads
+					</td>
+					<td class="stat">
+						<?=$documents['total'] ?>
+					</td>
+				</tr>
+				<tr><td colspan="2"></td></tr>
+				<tr>
+					<td class="meta">Name</td>
+					<td class="meta">Edits</td>
+				</tr>
+				<?php foreach ($contributions['total'] as $contribution): ?>
+					<tr>
+						<td>
+							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
+						</td>
+						<td class="stat">
+							<?=$contribution['records'] ?>
+						</td>
+					</tr>
+
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+			<tbody>
+				
+			</tbody>
+		</table>
+	</div>
+
+	<div class="span3">
+		<table class="table table-bordered">
+			<caption><strong>This Month</strong></caption>
+			<caption class="meta"><?=$dates['month'] . ' :: ' . $dates['now'] ?></caption>
+			<tbody>
+				<tr>
+					<td class="meta">
+						Reporting Period
+					</td>
+					<td class="stat">
+						<?=$intervals['month'] ?> days
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Contributors
+					</td>
+					<td class="stat">
+						<?=$contributors['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Artworks
+					</td>
+					<td class="stat">
+						<?=$works['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Exhibitions
+					</td>
+					<td class="stat">
+						<?=$exhibitions['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Publications
+					</td>
+					<td class="stat">
+						<?=$publications['month'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Uploads
+					</td>
+					<td class="stat">
+						<?=$documents['month'] ?>
+					</td>
+				</tr>
+				<tr><td colspan="2"></td></tr>
+				<tr>
+					<td class="meta">Name</td>
+					<td class="meta">Edits</td>
+				</tr>
+				<?php foreach ($contributions['month'] as $contribution): ?>
+					<tr>
+						<td>
+							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
+						</td>
+						<td class="stat">
+							<?=$contribution['records'] ?>
+						</td>
+					</tr>
+
+				<?php endforeach; ?>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="span3">
+		<table class="table table-bordered">
+			<caption><strong>This Week</strong></caption>
+			<caption class="meta"><?=$dates['week'] . ' :: ' . $dates['now'] ?></caption>
+			<tbody>
+				<tr>
+					<td class="meta">
+						Reporting Period
+					</td>
+					<td class="stat">
+						7 days
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Contributors
+					</td>
+					<td class="stat">
+						<?=$contributors['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Artworks
+					</td>
+					<td class="stat">
+						<?=$works['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Exhibitions
+					</td>
+					<td class="stat">
+						<?=$exhibitions['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Publications
+					</td>
+					<td class="stat">
+						<?=$publications['week'] ?>
+					</td>
+				</tr>
+				<tr>
+					<td class="meta">
+						Uploads
+					</td>
+					<td class="stat">
+						<?=$documents['week'] ?>
+					</td>
+				</tr>
+				<tr><td colspan="2"></td></tr>
+				<tr>
+					<td class="meta">Name</td>
+					<td class="meta">Edits</td>
+				</tr>
+				<?php foreach ($contributions['week'] as $contribution): ?>
+					<tr>
+						<td>
+							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
+						</td>
+						<td class="stat">
+							<?=$contribution['records'] ?>
+						</td>
+					</tr>
+
+				<?php endforeach; ?>
+			</tbody>
+			</table>
+	</div>
+
+</div>
+
+<?php endif; ?>
+
+<?php if(sizeof($daily_creates) > 0): ?>
+
 <div class="hero-unit">
 
 <h1>Records</h1>
@@ -100,224 +341,4 @@ $this->title('Metrics');
 </script>
 
 </div>
-
-<h1>Stats</h1>
-
-<div class="row">
-
-	<div class="span3">
-		<table class="table table-bordered">
-			<caption><strong>All Time</strong></caption>
-			<tbody>
-				<tr>
-					<td class="meta">
-						Reporting Period
-					</td>
-					<td>
-						<?=$total_days ?> days
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Contributors
-					</td>
-					<td>
-						<?=$contributors['total'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Artworks
-					</td>
-					<td>
-						<?=$works['total'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Exhibitions
-					</td>
-					<td>
-						<?=$exhibitions['total'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Publications
-					</td>
-					<td>
-						<?=$publications['total'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Uploads
-					</td>
-					<td>
-						<?=$documents['total'] ?>
-					</td>
-				</tr>
-				<tr><td colspan="2"></td></tr>
-				<tr>
-					<td class="meta">Name</td>
-					<td class="meta">Edits</td>
-				</tr>
-				<?php foreach ($contributions['total'] as $contribution): ?>
-					<tr>
-						<td>
-							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
-						</td>
-						<td><?=$contribution['records'] ?></td>
-					</tr>
-
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-			<tbody>
-				
-			</tbody>
-		</table>
-	</div>
-
-	<div class="span3">
-		<table class="table table-bordered">
-			<caption><strong>This Month</strong></caption>
-			<tbody>
-				<tr>
-					<td class="meta">
-						Reporting Period
-					</td>
-					<td>
-						28 days
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Contributors
-					</td>
-					<td>
-						<?=$contributors['month'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Artworks
-					</td>
-					<td>
-						<?=$works['month'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Exhibitions
-					</td>
-					<td>
-						<?=$exhibitions['month'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Publications
-					</td>
-					<td>
-						<?=$publications['month'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Uploads
-					</td>
-					<td>
-						<?=$documents['month'] ?>
-					</td>
-				</tr>
-				<tr><td colspan="2"></td></tr>
-				<tr>
-					<td class="meta">Name</td>
-					<td class="meta">Edits</td>
-				</tr>
-				<?php foreach ($contributions['month'] as $contribution): ?>
-					<tr>
-						<td>
-							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
-						</td>
-						<td><?=$contribution['records'] ?></td>
-					</tr>
-
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-	</div>
-
-	<div class="span3">
-		<table class="table table-bordered">
-			<caption><strong>This Week</strong></caption>
-			<tbody>
-				<tr>
-					<td class="meta">
-						Reporting Period
-					</td>
-					<td>
-						7 days
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Contributors
-					</td>
-					<td>
-						<?=$contributors['week'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Artworks
-					</td>
-					<td>
-						<?=$works['week'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Exhibitions
-					</td>
-					<td>
-						<?=$exhibitions['week'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Publications
-					</td>
-					<td>
-						<?=$publications['week'] ?>
-					</td>
-				</tr>
-				<tr>
-					<td class="meta">
-						Uploads
-					</td>
-					<td>
-						<?=$documents['week'] ?>
-					</td>
-				</tr>
-				<tr><td colspan="2"></td></tr>
-				<tr>
-					<td class="meta">Name</td>
-					<td class="meta">Edits</td>
-				</tr>
-				<?php foreach ($contributions['week'] as $contribution): ?>
-					<tr>
-						<td>
-							<?=$this->html->link($contribution['name'], $this->url(array("Users::view", "username" => $contribution['username']))); ?>
-						</td>
-						<td><?=$contribution['records'] ?></td>
-					</tr>
-
-				<?php endforeach; ?>
-			</tbody>
-	</div>
-
-</div>
-
 <?php endif; ?>
