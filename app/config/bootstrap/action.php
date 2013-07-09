@@ -85,4 +85,61 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 	return $chain->next($self, $params, $chain);
 });
 
+
+use app\models\Users;
+use app\models\Requests;
+
+/**
+ * This filter intercepts the `_callable()` method of the `Dispatcher` and saves details about the
+ * request to the `Requests` model.
+ */
+Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
+
+	$check = (Auth::check('default')) ?: null;
+
+	if ($check) {
+		
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+		));
+
+		$user_id = $auth->id;
+
+	} else {
+		$user_id = 0;
+	}
+
+	$request = $params['request'];
+	
+	$url = $request->url;
+
+	$parameters = $request->params;
+
+	$controller = $parameters['controller'];
+	$action = $parameters['action'];
+	
+	// Each request has at most one key, we just need to figure out which one
+	$id = !empty($parameters['id']) ? $parameters['id'] : '';
+	$slug = !empty($parameters['slug']) ? $parameters['slug'] : '';
+	$file = !empty($parameters['file']) ? $parameters['file']  : '';
+	$username = !empty($parameters['username']) ? $parameters['username'] : '';
+
+	$keys = array_filter(array($id, $slug, $file, $username));
+	$identifier = !empty($keys) ? array_shift($keys) : '';
+
+	$referer = $request->referer();
+	$user_agent = $request->env('HTTP_USER_AGENT');
+	$request_method = $request->env('REQUEST_METHOD');
+	$remote_addr = $request->env('REMOTE_ADDR'); // FIXME The IP address always appears to be localhost
+	$request_time = $request->env('REQUEST_TIME');
+
+	$data = compact('url', 'controller', 'action', 'identifier', 'referer', 'user_agent', 'request_method', 'remote_addr', 'request_time', 'user_id');
+
+	$req = Requests::create();
+	$req->save($data);
+
+	return $chain->next($self, $params, $chain);
+
+});
+
 ?>
