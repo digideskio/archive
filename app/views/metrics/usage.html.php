@@ -272,6 +272,43 @@ $this->title('Metrics');
 
 <?php endif; ?>
 
+<?php if(sizeof($daily_views) > 0): ?>
+
+<div class="hero-unit">
+
+<h1>Views</h1>
+
+<hr/>
+
+<p>The following graph shows the daily growth of the number of page views.</p>
+
+<div id="views" style="width:100%;height:300px"></div>
+
+<script type="text/javascript">
+	$(function () {
+
+	<?php $total = 0; ?>
+
+	var records = [<?php foreach ($daily_views as $record): $total += $record['records']; echo '[' . $record['milliseconds'] . ', ' . $total . '], '; endforeach; ?>];
+
+	var options = {
+		xaxis: {
+			mode: "time",
+			tickLength: 5
+		}
+	};
+
+	var plot = $.plot("#views", [records], options);
+
+
+	});
+
+</script>
+
+</div>
+
+<?php endif; ?>
+
 <?php if(sizeof($daily_creates) > 0): ?>
 
 <div class="hero-unit">

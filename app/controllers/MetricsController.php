@@ -119,6 +119,10 @@ class MetricsController extends \lithium\action\Controller {
 			$tz = new \DateTimeZone($auth->timezone_id);
 		}
 
+		$daily_views = Model::connection()->read(
+			"(select count(*) AS records, (request_time - MOD(request_time, 86400)) * 1000 as milliseconds FROM requests group by milliseconds order by milliseconds ASC) UNION (select 0 as records, UNIX_TIMESTAMP() * 1000 as milliseconds)"
+		);
+
 		$monthly_edits = Model::connection()->read(
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE_FORMAT(date_modified, '%Y-%m-01')) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
 		);
@@ -297,6 +301,7 @@ class MetricsController extends \lithium\action\Controller {
 		return compact(
 			'dates',
 			'intervals',
+			'daily_views',
 			'monthly_edits',
 			'daily_edits',
 			'daily_edits_last_three_months',
