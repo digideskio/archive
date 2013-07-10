@@ -280,7 +280,7 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The following graph shows the daily growth of the number of page views.</p>
+<p>The following graph shows the total growth in the number of page views.</p>
 
 <div id="views" style="width:100%;height:300px"></div>
 
@@ -305,6 +305,30 @@ $this->title('Metrics');
 
 </script>
 
+<hr/>
+
+<p>The following graph shows daily page views over the last three months:</p>
+
+<div id="daily-views" style="width:100%;height:300px"></div>
+
+<script type="text/javascript">
+	$(function () {
+
+	var records = [<?php foreach ($daily_views_last_three_months as $record): echo '[' . $record['milliseconds'] . ', ' . $record['records'] . '], '; endforeach; ?>];
+
+	var options = {
+		xaxis: {
+			mode: "time",
+			tickLength: 5
+		}
+	};
+
+	var plot = $.plot("#daily-views", [records], options);
+
+
+	});
+
+</script>
 </div>
 
 <?php endif; ?>
@@ -343,6 +367,7 @@ $this->title('Metrics');
 </script>
 
 </div>
+
 
 <?php endif; ?>
 
