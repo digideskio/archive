@@ -120,7 +120,7 @@ class MetricsController extends \lithium\action\Controller {
 		}
 
 		$daily_views = Model::connection()->read(
-			"(select count(*) AS records, (request_time - MOD(request_time, 86400)) * 1000 as milliseconds FROM requests group by milliseconds order by milliseconds ASC) UNION (select 0 as records, UNIX_TIMESTAMP() * 1000 as milliseconds)"
+			"(select count(*) AS records, (request_time - MOD(request_time, 3600)) * 1000 as milliseconds FROM requests where controller != 'Files' group by milliseconds order by milliseconds ASC) UNION (select 0 as records, UNIX_TIMESTAMP() * 1000 as milliseconds)"
 		);
 
 		$monthly_edits = Model::connection()->read(
