@@ -3,6 +3,7 @@
 namespace app\models;
 
 use lithium\util\Inflector;
+use lithium\security\Auth;
 
 use Imagine;
 
@@ -140,6 +141,23 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 	
 		// Set the date created
 		$params['data']['date_created'] = date("Y-m-d H:i:s");
+
+		// Save the user_id of the uploader
+		$user_id = 0;
+		$check = (Auth::check('default')) ?: null;
+
+		if($check && isset($check['username'])) {
+
+			$user = Users::find('first', array(
+				'conditions' => array('username' => $check['username'])
+			));
+
+			if ($user) {
+				$user_id = $user->id;
+				$params['data']['user_id'] = $user->id;
+			}
+			
+		}
 		
 		if ($params['data'] && isset($params['data']['file_path']) && isset($params['data']['file_name'])) {
 
@@ -228,7 +246,7 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			
 			$format_id = $format->id;
 					
-			$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height');
+			$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height', 'user_id');
 
 			//Give the file a unique filename based on its md5sum
 			$hash_name = $hash . '.' . $format->extension;
