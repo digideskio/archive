@@ -20,6 +20,8 @@ use lithium\security\Auth;
 use lithium\action\DispatchException;
 use lithium\core\Environment;
 
+use lithium\core\Libraries;
+
 class MetricsController extends \lithium\action\Controller {
 
 	public function index() {
@@ -302,6 +304,10 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $documents_week[0]['records']
 		);
 
+		$li3_pdf = Libraries::get("li3_pdf");
+		$pdf = 'Archive-Metrics-' . $dates['now'] . '.pdf';
+		$content = compact('pdf');
+
 		return compact(
 			'dates',
 			'intervals',
@@ -318,7 +324,10 @@ class MetricsController extends \lithium\action\Controller {
 			'publications',
 			'documents',
 			'contributors',
-			'contributions'
+			'contributions',
+			'li3_pdf',
+			'pdf',
+			'content'
 		);
 		
 	}

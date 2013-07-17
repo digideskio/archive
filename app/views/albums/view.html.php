@@ -51,9 +51,9 @@ $this->title($album->title);
 			</ul>
 		</div>
 	</div>
+	<?php endif; ?>
 </div>
 
-	<?php endif; ?>
 <?php if($album->remarks): ?>
 	<div class="alert alert-info">
 	<p><?=$album->remarks ?></p>
