@@ -27,6 +27,7 @@ $this->Pdf->SetAutoPageBreak(true, 20);
 
 $this->Pdf->AddPage('P', 'A4');
 $this->Pdf->SetTextColor(0, 0, 0);
+$this->Pdf->SetFont('kozminproregular');
 
 $html = <<<EOD
 
@@ -48,8 +49,8 @@ $html = <<<EOD
 			margin-bottom: 0;
 		}
 
-		h3 .title {
-			font-weight: bold;
+		h3 .venue {
+			color: gray;
 		}
 
 		.titles {
@@ -91,7 +92,7 @@ $html .= <<<EOD
 
 	 <tr style="page-break-inside: avoid;">
 	 	<td class="titles">
-			<h3><span class="title">$exhibition_title</span> $exhibition_venue <small class="meta">$location</small></h3>
+			<h3><span class="title">$exhibition_title</span> <span class="venue">$exhibition_venue</span> <small>$location</small></h3>
 		</td>
 		<td class="dates $exhibition_type-show">
 			<small>$dates</small><br/>
