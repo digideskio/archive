@@ -17,6 +17,8 @@ use app\models\Roles;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
+use lithium\core\Libraries;
+
 class ExhibitionsController extends \lithium\action\Controller {
 
 	public function index() {
@@ -46,10 +48,14 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'with' => array('Archives', 'Components'),
 			'order' => $order,
 			'limit' => $limit,
-			'page' => $page
+			'page' => $page,
 		));
 		
-		return compact('exhibitions', 'total', 'page', 'limit', 'auth');
+		$li3_pdf = Libraries::get("li3_pdf");
+		$pdf = "Exhibitions-" . date('Y-m-d') . ".pdf";
+		$content = compact('pdf');
+
+		return compact('exhibitions', 'total', 'page', 'limit', 'auth', 'pdf', 'li3_pdf', 'content');
 	}
 
 	public function search() {

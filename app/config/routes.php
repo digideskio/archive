@@ -117,6 +117,7 @@ if (Environment::get('architecture')) {
 	Router::connect('/architectures/delete/{:slug}', array('Architectures::delete'));
 }
 
+Router::connect('/exhibitions/{:file}.{:type}', array('Exhibitions::index'));
 Router::connect('/exhibitions/pages/{:page:[0-9]+}', array('Exhibitions::index'));
 Router::connect('/exhibitions/view/{:slug}', array('Exhibitions::view'));
 Router::connect('/exhibitions/edit/{:slug}', array('Exhibitions::edit'));

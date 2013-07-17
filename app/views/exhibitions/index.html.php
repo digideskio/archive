@@ -38,6 +38,9 @@ $this->title('Exhibitions');
 				<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
 		
 		<?php endif; ?>
+		<?php if($li3_pdf): ?>
+			<a class="btn btn-inverse" href="<?=$this->url(array('Exhibitions::index')); ?>/<?=$pdf ?>?limit=all"><i class="icon-print icon-white"></i> Print</a>
+		<?php endif; ?>
 	</div>
 </div>
 
