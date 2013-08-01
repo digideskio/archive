@@ -25,7 +25,7 @@ Clone these extra libraries if you want support for PDFs and database migrations
 	git clone https://github.com/nashape/ruckusing-migrations.git
 	git clone git://github.com/masom/li3_pdf.git
 
-Finally, downlaod [[http://www.tcpdf.org/ TCPDF]] and extract it into app/libraries.
+Finally, download [TCPDF](http://www.tcpdf.org) and extract it into app/libraries.
 
 ### Setup
 
