@@ -80,12 +80,12 @@ $hasLinks = sizeof($publication_links) > 0;
 			</thead>
 			<tbody>
 				<?php
-					if($publication->type):
+					if($publication->archive->classification):
 				?>
 				<tr>
 					<td><i class="icon-tag"></i></td>
 					<td class="meta">Category</td>
-					<td><?=$publication->type ?></td>
+					<td><?=$publication->archive->classification ?></td>
 				</tr>
 				<?php endif; ?>
 				<tr>
