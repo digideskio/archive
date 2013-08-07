@@ -32,7 +32,7 @@ $city_data = json_encode($cities);
 
 $country_data = json_encode($countries);
 
-$show_types_list = array('Solo', 'Group');
+$show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
 ?>
 
