@@ -4,6 +4,20 @@ $this->title($exhibition->title);
 
 $this->form->config(
     array( 
+		'label' => array(
+			'class' => 'control-label',
+		),
+		'field' => array(
+			'wrap' => array('class' => 'control-group'),
+			'template' => '<div{:wrap}>{:label}<div class="controls">{:input}{:error}</div></div>',
+			'style' => 'max-width:100%'
+		),
+		'select' => array(
+			'style' => 'max-width:100%'
+		),
+		'checkbox' => array(
+			'wrap' => array('class' => 'control-group'),
+		),
         'templates' => array( 
             'error' => '<div class="help-inline">{:content}</div>' 
         )
@@ -17,6 +31,8 @@ $venue_data = json_encode($venues);
 $city_data = json_encode($cities);
 
 $country_data = json_encode($countries);
+
+$show_types_list = array('Solo', 'Group');
 
 ?>
 
@@ -43,6 +59,7 @@ $country_data = json_encode($countries);
 
 </div>
 
+<div class="actions">
 <ul class="nav nav-tabs">
 	<li><?=$this->html->link('View','/exhibitions/view/'.$exhibition->archive->slug); ?></li>
 	<li class="active">
@@ -53,11 +70,20 @@ $country_data = json_encode($countries);
 	<li><?=$this->html->link('Attachments','/exhibitions/attachments/'.$exhibition->archive->slug); ?></li>
 	<li><?=$this->html->link('History','/exhibitions/history/'.$exhibition->archive->slug); ?></li>
 </ul>
+	<div class="btn-toolbar">
+			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+				<i class="icon-white icon-trash"></i> Delete Artwork
+			</a>
+	</div>
+</div>
 
 <div class="row">
+
+<?=$this->form->create($exhibition, array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
+
 	<div class="span5">
 		<div class="well">
-		<?=$this->form->create($exhibition); ?>
+			<legend>Exhibition Info</legend>
 			<?=$this->form->field('title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data));?>
 			<?=$this->form->field('curator', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data));?>
@@ -73,28 +99,24 @@ $country_data = json_encode($countries);
 				'label' => 'Closing Date',
 				'value' => $exhibition->archive->end_date_formatted()
 			));?>
-			<?=$this->form->label('Show Type');?>
-			<?=$this->form->select('type', array('Solo' => 'Solo', 'Group' => 'Group'), array('value' => $exhibition->archive->type)); ?>
+			<div class="control-group">
+				<?=$this->form->label('type', 'Show Type', array('class' => 'control-label')); ?>
+				<div class="controls">
+					<?=$this->form->select('type', $show_types_list, array('value' => $exhibition->archive->type)); ?>
+				</div>
+			</div>
 			<?=$this->form->field('remarks', array(
 				'type' => 'textarea',
 			));?>
-			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/exhibitions/view/'.$exhibition->archive->slug, array('class' => 'btn')); ?>
-		<?=$this->form->end(); ?>
 		</div>
 
-
-				
 		<div class="well">
-
-			<legend>Edit</legend>
-
-			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-				<i class="icon-white icon-trash"></i> Delete Exhibition
-			</a>
-
+			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
 		</div>
+				
 	</div>
+
+<?=$this->form->end(); ?>
 
 </div>
 

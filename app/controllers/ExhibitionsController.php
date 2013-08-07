@@ -371,6 +371,18 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $con->country;
 		}, array('collect' => false));
 
+		$documents = array();
+
+		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
+			$document_ids = $this->request->data['documents'];
+
+			$documents = Documents::find('all', array(
+				'with' => 'Formats',
+				'conditions' => array('Documents.id' => $document_ids),
+			));
+
+		}
+
 		return compact('exhibition', 'titles', 'venues', 'cities', 'countries');
 	}
 
