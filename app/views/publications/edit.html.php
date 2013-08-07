@@ -157,7 +157,7 @@ $(document).ready(function() {
 	function handleFields() {
 		var pub = $('#PublicationsClassification').val();
 
-		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book") {
+		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == "Other") {
 			$('#PublicationsForm .book').closest('.control-group').fadeIn();
 		} else {
 			$('#PublicationsForm .book').closest('.control-group').hide();
@@ -182,7 +182,7 @@ $(document).ready(function() {
 			$("#PublicationsForm label[for='PublicationsEarliestDate']").html('Date');
 		}
 
-		if (pub == 'Newspaper' || pub == 'Website') {
+		if (pub == 'Newspaper' || pub == 'Website' || pub == "Other") {
 			$('#PublicationsForm .web').closest('.control-group').fadeIn();
 			$('#PublicationsForm #PublicationsEarliestDate').attr('placeholder', 'YYYY-MM-DD');
 		} else {
@@ -195,7 +195,7 @@ $(document).ready(function() {
 			$('#PublicationsForm .essay').closest('.control-group').hide();
 		}
 
-		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Newspaper' || pub == 'Essay in Book') {
+		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Newspaper' || pub == 'Essay in Book' || pub == "Other") {
 			$('#PublicationsForm .pages').closest('.control-group').fadeIn();
 		} else {
 			$('#PublicationsForm .pages').closest('.control-group').hide();

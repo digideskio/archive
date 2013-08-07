@@ -55,7 +55,8 @@ class Publications extends \lithium\data\Model {
 			"Magazine", 
 			"Journal", 
 			"Essay in Book", 
-			"Website"
+			"Website",
+			"Other"
 		);
 	}
 
