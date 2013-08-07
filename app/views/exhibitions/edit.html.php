@@ -72,7 +72,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 </ul>
 	<div class="btn-toolbar">
 			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-				<i class="icon-white icon-trash"></i> Delete Artwork
+				<i class="icon-white icon-trash"></i> Delete Exhibition
 			</a>
 	</div>
 </div>
