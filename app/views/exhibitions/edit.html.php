@@ -96,17 +96,7 @@ $country_data = json_encode($countries);
 		</div>
 	</div>
 
-	<div class="span5">
-
-	<?=$this->partial->archives_links_edit(array(
-		'model' => $exhibition,
-		'junctions' => $exhibition_links,
-	)); ?>		
-
-	<?=$this->partial->archives_documents_edit(array(
-		'model' => $exhibition,
-		'archives_documents' => $archives_documents,
-	)); ?>		
+</div>
 
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">

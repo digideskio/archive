@@ -492,7 +492,22 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $this->redirect('Exhibitions::index');
 		}
 
-		return compact('exhibition');
+		$exhibition_links = ExhibitionsLinks::find('all', array(
+			'with' => 'Links',
+			'conditions' => array('exhibition_id' => $exhibition->id),
+			'order' => array('date_modified' =>  'DESC')
+		));
+
+		$archives_documents = ArchivesDocuments::find('all', array(
+			'with' => array(
+				'Documents',
+				'Formats'
+			),
+			'conditions' => array('archive_id' => $exhibition->id),
+			'order' => array('slug' => 'ASC')
+		));
+
+		return compact('exhibition', 'exhibition_links', 'archives_documents', 'auth');
 
 	}
 
