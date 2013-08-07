@@ -10,7 +10,7 @@
 
 <?php endif; ?>
 
-<form action="/works/add" method="post">
+<form method="post">
 
 	<table class="table table-bordered">
 	<tbody>
@@ -27,7 +27,8 @@
 		  </ul>
 		</div>
 		<div class="btn-group">
-		<?=$this->form->submit('Create Artwork', array('class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		<?=$this->form->submit('Create Artwork', array('onclick' => "this.form.action='works/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		<?=$this->form->submit('Create Publication', array('onclick' => "this.form.action='publications/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
 	</div>
 	</td></tr>
