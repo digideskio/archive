@@ -29,6 +29,7 @@ $this->title($exhibition->title);
 	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 	
 		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$exhibition->archive->slug); ?></li>
+		<li><?=$this->html->link('Attachments','/exhibitions/attachments/'.$exhibition->archive->slug); ?></li>
 	
 	<?php endif; ?>
 
