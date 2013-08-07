@@ -173,6 +173,11 @@ Publications::applyFilter('delete', function($self, $params, $chain) {
 	))->delete();
 		
 	//Delete any relationships
+	Components::find('all', array(
+		'conditions' => array('archive_id2' => $work_id)
+	))->delete();
+	
+	//Delete any relationships
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $publication_id)
 	))->delete();
