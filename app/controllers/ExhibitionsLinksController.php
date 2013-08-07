@@ -67,7 +67,7 @@ class ExhibitionsLinksController extends \lithium\action\Controller {
 		ExhibitionsLinks::find($this->request->id)->delete();
 		
 		return $this->redirect(array(
-    		'Exhibitions::edit', 'args' => array($this->request->data['exhibition_slug']))
+    		'Exhibitions::attachments', 'args' => array($this->request->data['exhibition_slug']))
     	);
 	}
 }
