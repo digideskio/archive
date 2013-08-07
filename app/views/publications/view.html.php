@@ -4,6 +4,7 @@ $this->title($publication->title);
 
 $hasDocuments = sizeof($archives_documents) > 0;
 $hasLinks = sizeof($publication_links) > 0;
+$hasExhibitions = sizeof($exhibitions) > 0;
 
 ?>
 
@@ -136,7 +137,7 @@ $hasLinks = sizeof($publication_links) > 0;
 		
 		</table>
 	
-		<?php if ($hasDocuments || $hasLinks): ?>
+		<?php if ($hasDocuments || $hasLinks || $hasExhibitions): ?>
 
 			<table class="table">
 				<thead>
@@ -147,6 +148,24 @@ $hasLinks = sizeof($publication_links) > 0;
 					</tr>
 				</thead>
 				<tbody>
+					<?php if ($hasExhibitions) : ?>
+					<tr>
+						<td><i class="icon-eye-open"></i></td>
+						<td class="meta">Exhibitions</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+							
+								<?php foreach($exhibitions as $exhibition): ?>
+								<li><strong><?=$this->html->link(
+									$exhibition->title,
+									'/exhibitions/view/'.$exhibition->archive->slug
+								);?></strong></li>
+								<?php endforeach; ?>
+							
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
 
 					<?php if ($hasDocuments) : ?>
 					<tr>

@@ -50,3 +50,9 @@ $this->title($exhibition->title);
 <?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
 
 <?php endif; ?>
+
+<?php if(sizeof($publications) > 0): ?>
+
+	<?=$this->partial->publications(array('publications' => $publications, 'showBar' => true)); ?>
+
+<?php endif; ?>

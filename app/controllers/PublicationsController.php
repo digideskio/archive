@@ -10,6 +10,7 @@ use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\ArchivesDocuments;
 use app\models\Documents;
+use app\models\Exhibitions;
 
 use app\models\Languages;
 
@@ -287,9 +288,17 @@ class PublicationsController extends \lithium\action\Controller {
 					'conditions' => array('publication_id' => $publication->id),
 					'order' => array('date_modified' =>  'DESC')
 				));
+
+				$exhibitions = Exhibitions::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'archive_id2' => $publication->id,
+					),
+					'order' => $order
+				));
 			
 				//Send the retrieved data to the view
-				return compact('publication', 'archives_documents', 'publication_links','auth');
+				return compact('publication', 'archives_documents', 'publication_links', 'exhibitions', 'auth');
 
 			}
 		}
@@ -437,8 +446,14 @@ class PublicationsController extends \lithium\action\Controller {
 			return $lang->name;
 		}, array('collect' => false));
 
-		
-		return compact('publication', 'pub_classes_list', 'archives_documents', 'publication_links', 'locations', 'language_names');
+		return compact(
+			'publication',
+			'pub_classes_list',
+			'archives_documents',
+			'publication_links',
+			'locations',
+			'language_names'
+		);
 	}
 
 	public function attachments() {
@@ -491,7 +506,38 @@ class PublicationsController extends \lithium\action\Controller {
 			'order' => array('date_modified' =>  'DESC')
 		));
 
-		return compact('publication', 'archives_documents', 'publication_links');
+		$order = array('title' => 'ASC');
+
+		$exhibitions = Exhibitions::find('all', array(
+			'with' => array('Archives', 'Components'),
+			'conditions' => array(
+				'archive_id2' => $publication->id,
+			),
+			'order' => $order
+		));
+
+		$exhibition_ids = array();
+
+		foreach ($exhibitions as $exhibition) {
+			array_push($exhibition_ids, $exhibition->id);
+		}
+
+		//Find the exhibitions the work is NOT in
+		$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
+
+		$other_exhibitions = Exhibitions::find('all', array(
+			'with' => 'Archives',
+			'order' => array('earliest_date' => 'DESC'),
+			'conditions' => $other_exhibition_conditions
+		));
+		
+		return compact(
+			'publication',
+			'archives_documents',
+			'publication_links',
+			'exhibitions',
+			'other_exhibitions'
+		);
 
 	}
 

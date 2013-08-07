@@ -7,6 +7,7 @@ use app\models\ArchivesHistories;
 use app\models\Exhibitions;
 use app\models\ExhibitionsHistories;
 use app\models\Works;
+use app\models\Publications;
 use app\models\Components;
 use app\models\ExhibitionsLinks;
 use app\models\ArchivesDocuments;
@@ -275,6 +276,31 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 			$total = $works ? $works->count() : 0;
 
+			$exhibitions_publications = Components::find('all', array(
+				'fields' => 'archive_id2',
+				'conditions' => array(
+					'archive_id1' => $exhibition->id,
+					'type' => 'exhibitions_publications'
+				),
+			));
+
+			$publications = array();
+
+			if ($exhibitions_publications->count()) {
+
+				//Get all the IDs in a plain array
+				$pub_ids = $exhibitions_publications->map(function($ep) {
+					return $ep->archive_id2;
+				}, array('collect' => false));
+
+				$publications = Publications::find('all', array(
+					'with' => 'Archives',
+					'conditions' => array('Publications.id' => $pub_ids),
+					'order' => 'earliest_date DESC'
+				));
+
+			}
+
 			$exhibitions_links = ExhibitionsLinks::find('all', array(
 				'with' => 'Links',
 				'conditions' => array('exhibition_id' => $exhibition->id),
@@ -291,7 +317,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'works', 'total', 'archives_documents', 'exhibitions_links', 'auth');
+			return compact('exhibition', 'works', 'total', 'publications', 'archives_documents', 'exhibitions_links', 'auth');
 		}
 		
 		//since no record was specified, redirect to the index page
