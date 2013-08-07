@@ -174,7 +174,7 @@ Publications::applyFilter('delete', function($self, $params, $chain) {
 		
 	//Delete any relationships
 	Components::find('all', array(
-		'conditions' => array('archive_id2' => $work_id)
+		'conditions' => array('archive_id2' => $publication_id)
 	))->delete();
 	
 	//Delete any relationships
