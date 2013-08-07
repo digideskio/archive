@@ -250,7 +250,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 		
 			$exhibitions_works = Components::find('all', array(
 				'fields' => 'archive_id2',
-				'conditions' => array('archive_id1' => $exhibition->id),
+				'conditions' => array(
+					'archive_id1' => $exhibition->id,
+					'type' => 'exhibitions_works'
+				),
 			));
 
 			$works = array();
