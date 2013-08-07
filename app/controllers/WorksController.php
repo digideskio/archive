@@ -730,7 +730,7 @@ class WorksController extends \lithium\action\Controller {
 
 				$other_exhibitions = Exhibitions::find('all', array(
 					'with' => 'Archives',
-					'order' => array('earliest_date' => 'DESC'),
+					'order' => $order,
 					'conditions' => $other_exhibition_conditions
 				));
 		
