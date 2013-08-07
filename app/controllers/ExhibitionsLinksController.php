@@ -36,7 +36,7 @@ class ExhibitionsLinksController extends \lithium\action\Controller {
 			$exhibitions_links = ExhibitionsLinks::create();
 			$exhibitions_links->save($this->request->data);
 			
-			return $this->redirect(array('Exhibitions::edit', 'args' => array($this->request->data['exhibition_slug'])));
+			return $this->redirect(array('Exhibitions::attachments', 'args' => array($this->request->data['exhibition_slug'])));
 		}
 		return $this->redirect('Exhibitions::index');
 	}
