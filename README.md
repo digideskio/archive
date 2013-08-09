@@ -27,6 +27,22 @@ Clone these extra libraries if you want support for PDFs and database migrations
 
 Finally, download [TCPDF](http://www.tcpdf.org) and extract it into app/libraries.
 
+After you install ImageMagick for your platform, you also need the imagick extension.
+
+	sudo apt-get install php5-dev libmagick9-dev
+	sudo pecl channel-update pecl.php.net
+	sudo pecl install Imagick
+
+Edit `/etc/php5/apache2/conf.d/imagick.ini` and add the line: 
+
+	extension=imagick.so
+
+To check the settings you can run:
+
+	sudo apache2ctl configtest
+
+Then restart Apache.
+
 ### Setup
 
 Make the resources folder writeable:
