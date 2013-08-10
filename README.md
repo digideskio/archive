@@ -97,3 +97,17 @@ To set up the database, I prefer to use the original ruckusing migrations instea
 Finally, navigate to the /login page of your new site. You will be prompted to create a new admin account.
 
 Happy Archiving!
+
+### Customizations
+
+There are some customization options that are set via environment variables.
+
+The most important and recommened customization is to add the Hmac strategy to the cookie adapter. Edit the `app/config/bootstrap/connections.php` file with the following:
+
+	$session = array('default' => array(
+		'adapter' => 'Cookie',
+		'strategies' => array('Hmac' => array('secret' => 'YOUR_SECRET')),
+		'name' => 'Archive',
+	));
+
+	Environment::set('production', compact('session'));
