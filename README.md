@@ -111,3 +111,19 @@ The most important and recommened customization is to add the Hmac strategy to t
 	));
 
 	Environment::set('production', compact('session'));
+
+Other session variables are:
+
+	'inventory =>       true/false
+	'architecture' =>   true/false
+	
+	'artworks' => array(
+			'classifications' => array(
+				'Artwork Classification Name' => array(
+					'class' => 'two-d three-d four-d' //to be able to enter height/width, depth, time, respectively
+				)
+			),
+			'artist' => array(
+				'default' => 'Default Artist Name'
+			)
+	)	
