@@ -124,6 +124,15 @@ Other session variables are:
 				)
 			),
 			'artist' => array(
-				'default' => 'Default Artist Name'
-			)
-	)	
+				'default' => 'Default Artist Name' //can be set to false to disable this feature
+			),
+			'order' => '(CASE WHEN artist = \'\' THEN 1 ELSE 0 END), artist ASC, title, earliest_date DESC, materials', // SQL order by clause for artworks
+			'filter' => array('location' => array('!=' => 'Out')), // exclude artworks in index views that match this condition
+			'search' => array(
+				'limit' => 'all' // Don't paginate search results; also accepts an integer
+			),
+	)
+
+	'search' => array(
+		'limit' => 'all' // Don't paginate search results; also accepts an integer
+	)
