@@ -165,31 +165,31 @@ class DocumentsController extends \lithium\action\Controller {
 
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
-					'conditions' => array('document_id' => $document->id),
+					'conditions' => array('ArchivesDocuments.document_id' => $document->id),
 					'order' => 'earliest_date DESC'
 				));
 
 				$works = Works::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
-					'conditions' => array('document_id' => $document->id),
+					'conditions' => array('ArchivesDocuments.document_id' => $document->id),
 					'order' => 'earliest_date DESC'
 				));
 
 				$architectures = Architectures::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
-					'conditions' => array('document_id' => $document->id),
+					'conditions' => array('ArchivesDocuments.document_id' => $document->id),
 					'order' => 'earliest_date DESC'
 				));
 
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
-					'conditions' => array('document_id' => $document->id),
+					'conditions' => array('ArchivesDocuments.document_id' => $document->id),
 					'order' => 'earliest_date DESC'
 				));
 
 				$publications = Publications::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
-					'conditions' => array('document_id' => $document->id),
+					'conditions' => array('ArchivesDocuments.document_id' => $document->id),
 					'order' => 'earliest_date DESC'
 				));
 
@@ -268,7 +268,7 @@ class DocumentsController extends \lithium\action\Controller {
 
 		$albums = Albums::find('all', array(
 			'with' => array('Archives', 'ArchivesDocuments'),
-			'conditions' => array('document_id' => $document->id),
+			'conditions' => array('ArchivesDocuments.document_id' => $document->id),
 			'order' => $order
 		));
 

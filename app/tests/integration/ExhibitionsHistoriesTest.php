@@ -52,7 +52,7 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 
 		$exhibition = Exhibitions::first();
 
-		$this->assertTrue($exhibition);
+		$this->assertTrue(!empty($exhibition));
 
 		$exhibition_history = ExhibitionsHistories::first();
 
@@ -110,7 +110,7 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 
 		$exhibition_history = ExhibitionsHistories::first();
 
-		$this->assertTrue($exhibition_history->end_date);
+		$this->assertTrue(!empty($exhibition_history->end_date));
 
 	}
 }

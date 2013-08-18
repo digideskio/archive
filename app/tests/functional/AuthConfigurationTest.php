@@ -55,7 +55,7 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 		$check = Auth::check('default', $this->request);
 
 		$this->assertEqual(sizeof($check), 1);
-		$this->assertTrue($check['username'], $users[$username]['username']);
+		$this->assertEqual($check['username'], $users[$username]['username']);
 
 	}
 }

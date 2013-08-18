@@ -53,7 +53,7 @@ class Architectures extends \lithium\data\Model {
 				'ArchivesDocuments',
 				'Formats'
 			),
-			'conditions' => array('archive_id' => $entity->id),
+			'conditions' => array('ArchivesDocuments.archive_id' => $entity->id),
 		));
 
 		return $documents;

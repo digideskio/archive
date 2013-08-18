@@ -21,7 +21,7 @@
 	
 	<?php 
 	
-		$has_components = isset($exhibition->components[0]->id) ? true : false;
+		$has_components = isset($exhibition->components) && $exhibition->components->count() ? true : false;
 	
 		if ($has_components) { 
 			$work_count = 0;

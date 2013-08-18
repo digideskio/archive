@@ -108,7 +108,7 @@ class ArchivesHistoriesTest extends \lithium\test\Integration {
 
 		$archive_history = ArchivesHistories::first();
 
-		$this->assertTrue($archive_history->end_date);
+		$this->assertTrue(!empty($archive_history->end_date));
 
 	}
 

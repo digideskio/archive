@@ -87,7 +87,7 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 
 		$album_history = AlbumsHistories::first();
 
-		$this->assertTrue($album_history->end_date);
+		$this->assertTrue(!empty($album_history->end_date));
 
 	}
 

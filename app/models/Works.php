@@ -30,24 +30,6 @@ class Works extends \lithium\data\Model {
 			'key' => 'id'
 	));
 
-	public static function __init() {
-		parent::__init();
-		static::finder('artworks', function($self, $params, $chain) {
-
-			$order = '(CASE WHEN artist = \'\' THEN 1 ELSE 0 END), artist ASC, earliest_date DESC, title, materials';
-
-			$artworks = Environment::get('artworks');
-
-			if ($artworks && isset($artworks['order'])) {
-				$order = $artworks['order'];
-			}
-
-			$params['options']['order'] = $order;
-			$data = $chain->next($self, $params, $chain);
-			return $data ?: null;
-		});
-	}
-
 	public $validates = array(
 		'title' => array(
 			array('notEmpty', 'message' => 'Please enter a title.')
@@ -219,7 +201,7 @@ class Works extends \lithium\data\Model {
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
 		
-		$conditions['archive_id'] = $entity->id;
+		$conditions['ArchivesDocuments.archive_id'] = $entity->id;
 
 		$documents = Documents::find($type, array(
 			'with' => array(
@@ -233,6 +215,21 @@ class Works extends \lithium\data\Model {
 	}
 
 }
+
+Works::finder('artworks', function($self, $params, $chain) {
+
+	$order = '(CASE WHEN artist = \'\' THEN 1 ELSE 0 END), artist ASC, earliest_date DESC, title, materials';
+
+	$artworks = Environment::get('artworks');
+
+	if ($artworks && isset($artworks['order'])) {
+		$order = $artworks['order'];
+	}
+
+	$params['options']['order'] = $order;
+	$data = $chain->next($self, $params, $chain);
+	return $data ?: null;
+});
 
 Works::applyFilter('save', function($self, $params, $chain) {
 

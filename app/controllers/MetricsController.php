@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Archives;
 use app\models\Albums;
 use app\models\Works;
 use app\models\Architectures;
@@ -10,6 +11,8 @@ use app\models\Publications;
 use app\models\Documents;
 use app\models\Components;
 use app\models\ArchivesHistories;
+use app\models\ArchivesDocuments;
+use app\models\Requests;
 
 use app\models\Users;
 use app\models\Roles;
@@ -48,33 +51,32 @@ class MetricsController extends \lithium\action\Controller {
 		$exhibitions = Exhibitions::count();
 		$solo_shows = Exhibitions::count('all', array(
 			'with' => 'Archives',
-			'conditions' => array('type' => 'Solo')
+			'conditions' => array('Archives.type' => 'Solo')
 		));
 		$group_shows = Exhibitions::count('all', array(
 			'with' => 'Archives',
-			'conditions' => array('type' => 'Group')
+			'conditions' => array('Archives.type' => 'Group')
 		));
 		$exhibitions_works = Components::find('count', array(
 			'conditions' => array('type' => 'exhibitions_works')
 		));
 		$documents = Documents::count();
 		$publications = Publications::count();
-
-		$publications_archives_documents = Model::connection()->read("SELECT count(*) as records FROM archives_documents WHERE archive_id IN (SELECT id FROM publications)");
+		$publications_archives_documents = ArchivesDocuments::connection()->read("SELECT count(*) as records FROM archives_documents WHERE archive_id IN (SELECT id FROM publications)");
 		$pad = $publications_archives_documents[0];
 		$publications_documents = $pad['records'];
 
 		$no_date = array('earliest_date' => '0000-00-00');
 
-		$works_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'works' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$works_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'works' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
-		$architectures_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'architectures' and  YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$architectures_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'architectures' and  YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
-		$exhibitions_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'exhibitions' AND YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$exhibitions_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'exhibitions' AND YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
-		$publications_years = Model::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'publications' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$publications_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'publications' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
 
-		$publications_languages = Model::connection()->read(
+		$publications_languages = Archives::connection()->read(
 			"select count(*) as records, languages.name as language from archives left join languages on archives.language_code = languages.code where controller = 'publications' and language_code != ''  group by languages.name order by records DESC"
 		);
 
@@ -121,33 +123,33 @@ class MetricsController extends \lithium\action\Controller {
 			$tz = new \DateTimeZone($auth->timezone_id);
 		}
 
-		$daily_views = Model::connection()->read(
+		$daily_views = Requests::connection()->read(
 			"SELECT count(*) AS records, (request_time - MOD(request_time, 86400)) * 1000 AS milliseconds FROM requests WHERE controller != 'Files' AND url != 'login' GROUP BY milliseconds ORDER BY milliseconds ASC"
 		);
 
-		$daily_views_last_three_months = Model::connection()->read(
+		$daily_views_last_three_months = Requests::connection()->read(
 			"SELECT count(*) AS records, (request_time - MOD(request_time, 86400)) * 1000 AS milliseconds FROM requests WHERE (request_time > (UNIX_TIMESTAMP() - 7257600)) AND controller != 'Files' AND url != 'login' GROUP BY milliseconds ORDER BY milliseconds ASC"
 		);
 
-		$monthly_edits = Model::connection()->read(
+		$monthly_edits = ArchivesHistories::connection()->read(
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE_FORMAT(date_modified, '%Y-%m-01')) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
 		);
 
-		$daily_edits = Model::connection()->read(
+		$daily_edits = ArchivesHistories::connection()->read(
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories group by milliseconds order by milliseconds ASC"
 		);
 
-		$daily_edits_last_three_months = Model::connection()->read(
+		$daily_edits_last_three_months = ArchivesHistories::connection()->read(
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_modified)) * 1000 as milliseconds FROM archives_histories WHERE UNIX_TIMESTAMP(DATE(date_modified)) * 1000 > (UNIX_TIMESTAMP() * 1000 - 8035200000) group by milliseconds order by milliseconds ASC"
 		);
 
 		$archives_histories_count = ArchivesHistories::count();
 
-		$daily_creates = Model::connection()->read(
+		$daily_creates = Archives::connection()->read(
 			"select count(*) AS records, UNIX_TIMESTAMP(DATE(date_created)) * 1000 as milliseconds FROM archives group by milliseconds order by milliseconds ASC"
 		);
 
-		$earliest_record = Model::connection()->read(
+		$earliest_record = ArchivesHistories::connection()->read(
 			"select date_modified from archives_histories order by date_modified ASC limit 1"	
 		);
 
@@ -196,15 +198,15 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $week_date_interval->days
 		);
 
-		$contributors_total = Model::connection()->read(
+		$contributors_total = Archives::connection()->read(
 			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0'"
 		);
 
-		$contributors_month = Model::connection()->read(
+		$contributors_month = Archives::connection()->read(
 			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
 		);
 
-		$contributors_week = Model::connection()->read(
+		$contributors_week = Archives::connection()->read(
 			"SELECT COUNT(DISTINCT user_id) as records FROM archives WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
 		);
 
@@ -214,15 +216,15 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $contributors_week[0]['records']
 		);
 
-		$contributions_total = Model::connection()->read(
+		$contributions_total = Archives::connection()->read(
 			"SELECT username, users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' GROUP BY user_id ORDER BY records DESC"
 		);
 
-		$contributions_month = Model::connection()->read(
+		$contributions_month = Archives::connection()->read(
 			"SELECT username, users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200) GROUP BY user_id ORDER BY records DESC"
 		);
 
-		$contributions_week = Model::connection()->read(
+		$contributions_week = Archives::connection()->read(
 			"SELECT username, users.name as name, count(*) as records FROM archives LEFT JOIN users ON archives.user_id = users.id WHERE user_id IS NOT NULL AND user_id != '0' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800) GROUP BY user_id ORDER BY records DESC"
 		);
 
@@ -232,15 +234,15 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $contributions_week
 		);
 
-		$artworks_total = Model::connection()->read(
+		$artworks_total = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='works'"
 		);
 
-		$artworks_month = Model::connection()->read(
+		$artworks_month = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='works' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
 		);
 
-		$artworks_week = Model::connection()->read(
+		$artworks_week = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='works' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
 		);
 
@@ -250,15 +252,15 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $artworks_week[0]['records']
 		);
 
-		$exhibitions_total = Model::connection()->read(
+		$exhibitions_total = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='exhibitions'"
 		);
 
-		$exhibitions_month = Model::connection()->read(
+		$exhibitions_month = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='exhibitions' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
 		);
 
-		$exhibitions_week = Model::connection()->read(
+		$exhibitions_week = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='exhibitions' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
 		);
 
@@ -268,15 +270,15 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $exhibitions_week[0]['records']
 		);
 
-		$publications_total = Model::connection()->read(
+		$publications_total = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='publications'"
 		);
 
-		$publications_month = Model::connection()->read(
+		$publications_month = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='publications' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
 		);
 
-		$publications_week = Model::connection()->read(
+		$publications_week = Archives::connection()->read(
 			"SELECT count(id) as records FROM archives WHERE controller='publications' AND UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
 		);
 
@@ -286,15 +288,15 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $publications_week[0]['records']
 		);
 
-		$documents_total = Model::connection()->read(
+		$documents_total = Documents::connection()->read(
 			"SELECT count(id) as records FROM documents" 
 		);
 
-		$documents_month = Model::connection()->read(
+		$documents_month = Documents::connection()->read(
 			"SELECT count(id) as records FROM documents WHERE UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 2419200)"
 		);
 
-		$documents_week = Model::connection()->read(
+		$documents_week = Documents::connection()->read(
 			"SELECT count(id) as records FROM documents WHERE UNIX_TIMESTAMP(date_modified) > (UNIX_TIMESTAMP() - 604800)"
 		);
 

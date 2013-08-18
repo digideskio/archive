@@ -246,7 +246,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$exhibition = Exhibitions::find('first', array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'slug' => $this->request->params['slug'],
+					'Archives.slug' => $this->request->params['slug'],
 			)));
 		
 			$exhibitions_works = Components::find('all', array(
@@ -310,10 +310,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$archives_documents = ArchivesDocuments::find('all', array(
 				'with' => array(
 					'Documents',
-					'Formats'
+					'Documents.Formats'
 				),
-				'conditions' => array('archive_id' => $exhibition->id),
-				'order' => array('slug' => 'ASC')
+				'conditions' => array('ArchivesDocuments.archive_id' => $exhibition->id),
+				'order' => array('Documents.slug' => 'ASC')
 			));
 			
 			//Send the retrieved data to the view
@@ -428,7 +428,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 		)));
 
 		if (!$exhibition) {
@@ -444,10 +444,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
-				'Formats'
+				'Documents.Formats'
 			),
-			'conditions' => array('archive_id' => $exhibition->id),
-			'order' => array('slug' => 'ASC')
+			'conditions' => array('ArchivesDocuments.archive_id' => $exhibition->id),
+			'order' => array('Documents.slug' => 'ASC')
 		));
 
 		if (($this->request->data) && $exhibition->save($this->request->data)) {
@@ -523,7 +523,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 		)));
 
 		if (!$exhibition) {
@@ -539,9 +539,9 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
-				'Formats'
+				'Documents.Formats'
 			),
-			'conditions' => array('archive_id' => $exhibition->id),
+			'conditions' => array('ArchivesDocuments.archive_id' => $exhibition->id),
 			'order' => array('slug' => 'ASC')
 		));
 
@@ -568,7 +568,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$exhibition = Exhibitions::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 			
 			if($exhibition) {

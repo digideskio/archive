@@ -37,7 +37,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 			'slug' => 'the-title',
 		);
 
-		Model::connection()->create("INSERT INTO documents (title, hash, format_id, slug) VALUES ('The Title', '1234', '783', 'the-title')");
+		Documents::connection()->create("INSERT INTO documents (title, hash, format_id, slug) VALUES ('The Title', '1234', '783', 'the-title')");
 	}
 
 	public function tearDown() {
@@ -79,7 +79,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document->delete();
 
-		$this->assertFalse(ArchivesDocuments::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
 
 
 	}
@@ -107,7 +107,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$work->delete();
 
-		$this->assertFalse(ArchivesDocuments::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
 	
@@ -134,7 +134,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$architecture->delete();
 
-		$this->assertFalse(ArchivesDocuments::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
 	
@@ -161,7 +161,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$album->delete();
 
-		$this->assertFalse(ArchivesDocuments::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
 	
@@ -188,7 +188,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$exhibit->delete();
 
-		$this->assertFalse(ArchivesDocuments::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
 	
@@ -215,7 +215,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$pub->delete();
 
-		$this->assertFalse(ArchivesDocuments::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
 }

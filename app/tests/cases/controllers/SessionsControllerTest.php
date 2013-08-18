@@ -58,7 +58,7 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		
 		$check = (Auth::check('default')) ?: null;
 		
-		$this->assertTrue($check);
+		$this->assertTrue(!empty($check));
 	
 	}
 
@@ -102,7 +102,7 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		
 		$check = (Auth::check('default')) ?: null;
 		
-		$this->assertFalse($check);
+		$this->assertNull($check);
 		
 		Auth::clear('default');
 	

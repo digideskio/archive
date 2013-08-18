@@ -47,8 +47,7 @@ class PublicationsController extends \lithium\action\Controller {
 		$options = $this->request->query;
 
 		if (isset($options['classification'])) {
-			$classification = $options['classification'];
-			$conditions = compact('classification');
+			$conditions = array('Archives.classification' => $options['classification']);
 		}
 
 		$total = Publications::count('all', array(
@@ -267,7 +266,7 @@ class PublicationsController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$publication = Publications::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 
 			if($publication) {
@@ -275,10 +274,10 @@ class PublicationsController extends \lithium\action\Controller {
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
-						'Formats'
+						'Documents.Formats'
 					),
 					'conditions' => array('archive_id' => $publication->id),
-					'order' => array('slug' => 'ASC')
+					'order' => array('Documents.slug' => 'ASC')
 				));
 
 				$publication_links = PublicationsLinks::find('all', array(
@@ -292,9 +291,9 @@ class PublicationsController extends \lithium\action\Controller {
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $publication->id,
+						'Components.archive_id2' => $publication->id,
 					),
-					'order' => $order
+					'order' => array('title' =>  'ASC')
 				));
 			
 				//Send the retrieved data to the view
@@ -396,7 +395,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$publication = Publications::first(array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $this->request->params['slug'])
+			'conditions' => array('Archives.slug' => $this->request->params['slug'])
 		));
 
 		$pub_classifications = Publications::classifications();
@@ -413,10 +412,10 @@ class PublicationsController extends \lithium\action\Controller {
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
-				'Formats'
+				'Documents.Formats'
 			),
 			'conditions' => array('archive_id' => $publication->id),
-			'order' => array('slug' => 'ASC')
+			'order' => array('Documents.slug' => 'ASC')
 		));
 
 		$publication_links = PublicationsLinks::find('all', array(
@@ -478,7 +477,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$publication = Publications::first(array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $this->request->params['slug'])
+			'conditions' => array('Archives.slug' => $this->request->params['slug'])
 		));
 
 		if (!$publication) {
@@ -492,10 +491,10 @@ class PublicationsController extends \lithium\action\Controller {
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
-				'Formats'
+				'Documents.Formats'
 			),
 			'conditions' => array('archive_id' => $publication->id),
-			'order' => array('slug' => 'ASC')
+			'order' => array('Documents.slug' => 'ASC')
 		));
 
 		$publication_links = PublicationsLinks::find('all', array(
@@ -511,7 +510,7 @@ class PublicationsController extends \lithium\action\Controller {
 		$exhibitions = Exhibitions::find('all', array(
 			'with' => array('Archives', 'Components'),
 			'conditions' => array(
-				'archive_id2' => $publication->id,
+				'Components.archive_id2' => $publication->id,
 			),
 			'order' => $order
 		));
@@ -560,7 +559,7 @@ class PublicationsController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$publication = Publications::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 			
 			if($publication) {

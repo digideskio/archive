@@ -26,7 +26,6 @@ class PublicationTest extends \lithium\test\Unit {
 
 		$citation = $helper->citation($archive, $publication);
 
-		$this->assertTrue($citation);
 		$this->assertEqual('<em>Book Title</em>.', $citation);
 
 		$data['author'] = 'Author Name';

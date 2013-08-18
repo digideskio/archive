@@ -26,7 +26,6 @@ class ArtworkTest extends \lithium\test\Unit {
 
 		$caption = $helper->caption($archive, $work);
 
-		$this->assertTrue($caption);
 		$this->assertEqual('<em>Artwork Title</em>.', $caption);
 
 		$data['artist'] = 'Artist Name';

@@ -57,7 +57,8 @@ class RoutesTest extends \lithium\test\Integration {
 		$file = "{$config['path']}/config/routes.php";
 		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null; 
 
-		$routes = Router::get();
+		$configurations = Router::get();
+		$routes = $configurations[0];
 		$connected_routes = array();
 
 		foreach ($routes as $route) {
@@ -68,6 +69,7 @@ class RoutesTest extends \lithium\test\Integration {
 			$action = isset($export['params']['action']) ? $export['params']['action'] : '';
 
 			$connected_routes[$template] = $params;
+
 		}
 
 		ksort($public_routes);

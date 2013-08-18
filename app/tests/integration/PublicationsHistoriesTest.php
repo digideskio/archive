@@ -72,7 +72,7 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 
 		$publication = Publications::first();
 
-		$this->assertTrue($publication);
+		$this->assertTrue(!empty($publication));
 
 		$publication_history = PublicationsHistories::first();
 
@@ -151,7 +151,7 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 
 		$publication_history = PublicationsHistories::first();
 
-		$this->assertTrue($publication_history->end_date);
+		$this->assertTrue(!empty($publication_history->end_date));
 
 	}
 }

@@ -139,7 +139,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 
 		$work_history = WorksHistories::first();
 
-		$this->assertTrue($work_history->end_date);
+		$this->assertTrue(!empty($work_history->end_date));
 
 	}
 

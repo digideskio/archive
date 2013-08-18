@@ -73,9 +73,9 @@ $(document).ready(function() {
 			<?=$this->html->link($title, $link->url); ?>
 
 				<?php 
-					$has_works = isset($link->works_links[0]->id) ? true : false; 
-					$has_exhibitions = isset($link->exhibitions_links[0]->id) ? true : false; 
-					$has_publications = isset($link->publications_links[0]->id) ? true : false; 
+					$has_works = sizeof($link->works_links) ? true : false; 
+					$has_exhibitions = sizeof($link->exhibitions_links) ? true : false; 
+					$has_publications = sizeof($link->publications_links) ? true : false; 
 				?>
 				<?php if($has_works): ?>
 					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has artwork" class="model-tip">

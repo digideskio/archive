@@ -358,7 +358,7 @@ class WorksController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$work = Works::find('first', array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 
 			if($work) {
@@ -368,16 +368,16 @@ class WorksController extends \lithium\action\Controller {
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
-						'Formats'
+						'Documents.Formats'
 					),
-					'conditions' => array('archive_id' => $work->id),
-					'order' => array('slug' => 'ASC')
+					'conditions' => array('ArchivesDocuments.archive_id' => $work->id),
+					'order' => array('Documents.slug' => 'ASC')
 				));
 		
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $work->id,
+						'Components.archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -385,7 +385,7 @@ class WorksController extends \lithium\action\Controller {
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $work->id,
+						'Components.archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -518,7 +518,7 @@ class WorksController extends \lithium\action\Controller {
 		
 			$work = Works::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 		
 			if($work) {
@@ -570,7 +570,7 @@ class WorksController extends \lithium\action\Controller {
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $work->id,
+						'Components.archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -593,7 +593,7 @@ class WorksController extends \lithium\action\Controller {
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $work->id,
+						'Components.archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -616,10 +616,10 @@ class WorksController extends \lithium\action\Controller {
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
-						'Formats'
+						'Documents.Formats'
 					),
 					'conditions' => array('archive_id' => $work->id),
-					'order' => array('slug' => 'ASC')
+					'order' => array('Documents.slug' => 'ASC')
 				));
 
 				$work_links = WorksLinks::find('all', array(
@@ -681,7 +681,7 @@ class WorksController extends \lithium\action\Controller {
 		
 			$work = Works::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 		
 			if($work) {
@@ -691,7 +691,7 @@ class WorksController extends \lithium\action\Controller {
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $work->id,
+						'Components.archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -714,7 +714,7 @@ class WorksController extends \lithium\action\Controller {
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
-						'archive_id2' => $work->id,
+						'Components.archive_id2' => $work->id,
 					),
 					'order' => $order
 				));
@@ -737,10 +737,10 @@ class WorksController extends \lithium\action\Controller {
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
-						'Formats'
+						'Documents.Formats'
 					),
 					'conditions' => array('archive_id' => $work->id),
-					'order' => array('slug' => 'ASC')
+					'order' => array('Documents.slug' => 'ASC')
 				));
 
 				$work_links = WorksLinks::find('all', array(
@@ -793,7 +793,7 @@ class WorksController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$work = Works::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 			
 			if($work) {
@@ -836,7 +836,7 @@ class WorksController extends \lithium\action\Controller {
 		
 		$work = Works::find('first', array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $this->request->params['slug']),
+			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
 		
 		// If the user is not an Admin or Editor, redirect to the record view

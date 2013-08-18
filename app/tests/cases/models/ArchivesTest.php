@@ -26,6 +26,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$slug = "Archive-Title";
 		
 		$this->assertTrue($archive->save($data));
+
 		$this->assertEqual($slug, $archive->slug);
 		
 		$second_archive = Archives::create();

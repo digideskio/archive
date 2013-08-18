@@ -60,7 +60,7 @@ $this->title($work->title);
 		<table class="table">
 		
 			<?php foreach($albums as $album): ?>
-			<?php $component = $album->components[0]; ?> 
+			<?php $component = $album->components->first(); ?> 
 				<tr>
 					<td>
 						<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
@@ -94,7 +94,7 @@ $this->title($work->title);
 		<table class="table">
 		
 			<?php foreach($exhibitions as $exhibition): ?>
-			<?php $component = $exhibition->components[0]; ?>
+			<?php $component = $exhibition->components->first(); ?>
 				<tr>
 					<td>
 						<strong><?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?></strong>

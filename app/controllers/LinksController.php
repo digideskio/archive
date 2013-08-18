@@ -70,19 +70,19 @@ class LinksController extends \lithium\action\Controller {
 
 		$works = Works::find('all', array(
 			'with' => array('WorksLinks', 'Archives'),
-			'conditions' => array('link_id' => $link->id),
+			'conditions' => array('WorksLinks.link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
 
 		$exhibitions = Exhibitions::find('all', array(
 			'with' => array('ExhibitionsLinks', 'Archives'),
-			'conditions' => array('link_id' => $link->id),
+			'conditions' => array('ExhibitionsLinks.link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
 
 		$publications = Publications::find('all', array(
 			'with' => array('PublicationsLinks', 'Archives'),
-			'conditions' => array('link_id' => $link->id),
+			'conditions' => array('PublicationsLinks.link_id' => $link->id),
 			'order' => array('earliest_date' => 'DESC')
 		));
 

@@ -26,7 +26,6 @@ class ArchitectureTest extends \lithium\test\Unit {
 
 		$caption = $helper->caption($archive, $architecture);
 
-		$this->assertTrue($caption);
 		$this->assertEqual('<em>Building Title</em>.', $caption);
 
 		$data['architect'] = 'Architect Name';

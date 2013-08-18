@@ -29,7 +29,6 @@ class Archives extends \lithium\data\Model {
 			'key' => 'id'
 		),
 	);
-
 	public $validates = array(
 		'title' => array(
 			array('notEmpty', 'message' => "You can't leave this blank."),
@@ -52,120 +51,6 @@ class Archives extends \lithium\data\Model {
 			)
 		)
     );
-	
-
-	public static function __init(array $options = array()) {
-
-		parent::__init($options);
-
-		static::applyFilter('save', function($self, $params, $chain) {
-			// Custom pre-dispatch logic goes here
-			date_default_timezone_set('UTC');
-
-			// Check if this is a new record
-			if(!$params['entity']->exists()) {
-
-				// Set the date created
-				$params['data']['date_created'] = date("Y-m-d H:i:s");
-
-			}
-
-			// Set the date modified
-			$params['data']['date_modified'] = date("Y-m-d H:i:s");
-
-			return $chain->next($self, $params, $chain);
-
-		});
-
-		static::applyFilter('save', function($self, $params, $chain) {
-
-			if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
-				$earliest_date = $params['data']['earliest_date'];
-				$earliest_date_filtered = Archives::filterDate($earliest_date);
-				$params['data']['earliest_date'] = $earliest_date_filtered['date'];
-				$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
-			} else {
-				//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
-				//So let's make sure the value is at least empty if it is not set
-				//This has only been necessary since the extra date format code was added
-				$params['data']['earliest_date'] = '';
-			}
-
-			if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
-				$latest_date = $params['data']['latest_date'];
-				$latest_date_filtered = Archives::filterDate($latest_date);
-				$params['data']['latest_date'] = $latest_date_filtered['date'];
-				$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
-			} else {
-				$params['data']['latest_date'] = '';
-			}
-
-			return $chain->next($self, $params, $chain);
-
-		});
-
-		//Some models allow a URL to be saved during an add, which creates a Link object and/or a link relation
-		//In order for the validation to work properly in the Archives model, the URL cannot be unset
-		static::applyFilter('save', function($self, $params, $chain) {
-
-			if (!isset($params['data']['url'])) {
-				$params['data']['url'] = '';
-			}
-
-			return $chain->next($self, $params, $chain);
-
-		});
-
-		//TODO	The generic Archive will use name instead of title. However, a lot of models which extend Archives
-		//		rely on title to validate and for tests. When those models are migrated, we can remove the following filter
-
-		static::applyFilter('save', function($self, $params, $chain) {
-			if(isset($params['data']['name'])) {
-				$params['data']['title'] = $params['data']['name'];
-			} else {
-				$params['data']['name'] = isset($params['data']['title']) ? $params['data']['title'] : '';
-			}
-			return $chain->next($self, $params, $chain);
-		});
-
-		static::applyFilter('save', function($self, $params, $chain) {
-
-			if(!$params['entity']->exists()) { 
-
-				$name = $params['data']['name'];
-
-				if( isset($params['data']['venue']) ) {
-					$name = $name . " " . $params['data']['venue'];
-				}
-
-				/* FIXME we should respect that slugs are varchar(255). Limit slugs to 200 characters? */
-				$slug = Inflector::slug($name);
-
-				$conditions = array('slug' => $slug);
-
-				$conflicts = $self::count(compact('conditions'));
-
-				if($conflicts){
-					$i = 0;
-					$newSlug = '';
-					while($conflicts){
-						$i++;
-						$newSlug = "{$slug}-{$i}";
-						$conditions = array('slug' => $newSlug);
-						$conflicts = $self::count(compact('conditions'));
-					}
-					$slug = $newSlug;
-				}
-
-				$params['data']['slug'] = $slug;
-				
-			}
-
-			return $chain->next($self, $params, $chain);
-
-		});
-
-	}
 
 	public static function filterDate($date) {
 
@@ -317,6 +202,113 @@ class Archives extends \lithium\data\Model {
 	}
 	
 }
+
+Archives::applyFilter('save', function($self, $params, $chain) {
+	// Custom pre-dispatch logic goes here
+	date_default_timezone_set('UTC');
+
+	// Check if this is a new record
+	if(!$params['entity']->exists()) {
+
+		// Set the date created
+		$params['data']['date_created'] = date("Y-m-d H:i:s");
+
+	}
+
+	// Set the date modified
+	$params['data']['date_modified'] = date("Y-m-d H:i:s");
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+Archives::applyFilter('save', function($self, $params, $chain) {
+
+	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
+		$earliest_date = $params['data']['earliest_date'];
+		$earliest_date_filtered = Archives::filterDate($earliest_date);
+		$params['data']['earliest_date'] = $earliest_date_filtered['date'];
+		$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
+	} else {
+		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
+		//So let's make sure the value is at least empty if it is not set
+		//This has only been necessary since the extra date format code was added
+		$params['data']['earliest_date'] = '';
+	}
+
+	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
+		$latest_date = $params['data']['latest_date'];
+		$latest_date_filtered = Archives::filterDate($latest_date);
+		$params['data']['latest_date'] = $latest_date_filtered['date'];
+		$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
+	} else {
+		$params['data']['latest_date'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+//Some models allow a URL to be saved during an add, which creates a Link object and/or a link relation
+//In order for the validation to work properly in the Archives model, the URL cannot be unset
+Archives::applyFilter('save', function($self, $params, $chain) {
+
+	if (!isset($params['data']['url'])) {
+		$params['data']['url'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+//TODO	The generic Archive will use name instead of title. However, a lot of models which extend Archives
+//		rely on title to validate and for tests. When those models are migrated, we can remove the following filter
+
+Archives::applyFilter('save', function($self, $params, $chain) {
+	if(isset($params['data']['name'])) {
+		$params['data']['title'] = $params['data']['name'];
+	} else {
+		$params['data']['name'] = isset($params['data']['title']) ? $params['data']['title'] : '';
+	}
+	return $chain->next($self, $params, $chain);
+});
+
+Archives::applyFilter('save', function($self, $params, $chain) {
+
+	if(!$params['entity']->exists()) { 
+
+		$name = $params['data']['name'];
+
+		if( isset($params['data']['venue']) ) {
+			$name = $name . " " . $params['data']['venue'];
+		}
+
+		/* FIXME we should respect that slugs are varchar(255). Limit slugs to 200 characters? */
+		$slug = Inflector::slug($name);
+
+		$conditions = array('slug' => $slug);
+
+		$conflicts = $self::count(compact('conditions'));
+
+		if($conflicts){
+			$i = 0;
+			$newSlug = '';
+			while($conflicts){
+				$i++;
+				$newSlug = "{$slug}-{$i}";
+				$conditions = array('slug' => $newSlug);
+				$conflicts = $self::count(compact('conditions'));
+			}
+			$slug = $newSlug;
+		}
+
+		$params['data']['slug'] = $slug;
+		
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
 
 Archives::applyFilter('save', function($self, $params, $chain) {
 

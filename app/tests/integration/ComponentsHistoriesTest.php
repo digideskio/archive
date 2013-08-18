@@ -102,7 +102,7 @@ class ComponentsHistoriesTest extends \lithium\test\Integration {
 
 		$component_history = ComponentsHistories::first();
 
-		$this->assertTrue($component_history->end_date);
+		$this->assertTrue(!empty($component_history->end_date));
 
 	}
 

@@ -66,14 +66,14 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 			'with' => 'Components'
 		));
 
-		$comp = $find_work->components[0];
+		$comp = $find_work->components->first();
 
 		$this->assertEqual($archive_id1, $comp->archive_id1);
 		$this->assertEqual($archive_id2, $comp->archive_id2);
 
 		$work->delete();
 
-		$this->assertFalse(Components::count());
+		$this->assertEqual(0, Components::count());
 	
 	}
 
@@ -103,14 +103,14 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 			'with' => 'Components'
 		));
 
-		$comp = $find_album->components[0];
+		$comp = $find_album->components->first();
 
 		$this->assertEqual($album->id, $comp->archive_id1);
 		$this->assertEqual($work->id, $comp->archive_id2);
 
 		$album->delete();
 
-		$this->assertFalse(Components::count());
+		$this->assertEqual(0, Components::count());
 
 	}
 
@@ -140,14 +140,14 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 			'with' => 'Components'
 		));
 
-		$comp = $find_exhibition->components[0];
+		$comp = $find_exhibition->components->first();
 
 		$this->assertEqual($exhibition->id, $comp->archive_id1);
 		$this->assertEqual($work->id, $comp->archive_id2);
 
 		$exhibition->delete();
 
-		$this->assertFalse(Components::count());
+		$this->assertEqual(0, Components::count());
 	}
 
 }

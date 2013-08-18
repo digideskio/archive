@@ -17,9 +17,9 @@ class Links extends \lithium\data\Model {
 		),
 	);
 
-	public static function __init(array $options = array()) {
+	public function _init() {
 
-		parent::__init($options);
+		parent::_init($options);
 
 		static::applyFilter('save', function($self, $params, $chain) {
 			// Custom pre-dispatch logic goes here

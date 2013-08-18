@@ -3,7 +3,6 @@
 namespace app\tests\cases\models;
 
 use app\models\Users;
-use app\tests\mocks\data\MockUsers;
 
 use lithium\security\Password;
 
@@ -104,14 +103,6 @@ class UsersTest extends \lithium\test\Unit {
 		));
 		
 		$this->assertFalse($user->save());
-	}
-	
-	public function testFindUser() {
-	
-		$user = MockUsers::find('first');
-		
-		$this->assertEqual("user1", $user['username']);
-	
 	}
 
 	public function testInitials() {

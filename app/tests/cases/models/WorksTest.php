@@ -88,7 +88,7 @@ class WorksTest extends \lithium\test\Unit {
 
 		$work = Works::create();
 
-		$this->assertFalse($work->dimensions());
+		$this->assertEqual('', $work->dimensions());
 
 		$data = array(
 			'height' => 40,
@@ -211,7 +211,7 @@ class WorksTest extends \lithium\test\Unit {
 		$link = Links::first();
 		$link_count = Links::count();
 
-		$this->assertTrue($link);
+		$this->assertTrue(!empty($link));
 		$this->assertEqual(1, $link_count);
 
 		$this->assertEqual($work->title, $link->title);
@@ -219,7 +219,7 @@ class WorksTest extends \lithium\test\Unit {
 		$work_link = WorksLinks::first();
 		$work_link_count = WorksLinks::count();
 
-		$this->assertTrue($work_link);
+		$this->assertTrue(!empty($work_link));
 		$this->assertEqual(1, $work_link_count);
 
 		$this->assertEqual($work->id, $work_link->work_id);

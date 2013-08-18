@@ -90,7 +90,7 @@ class Publications extends \lithium\data\Model {
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
 		
-		$conditions['archive_id'] = $entity->id;
+		$conditions['ArchivesDocuments.archive_id'] = $entity->id;
 
 		$documents = Documents::find($type, array(
 			'with' => array(

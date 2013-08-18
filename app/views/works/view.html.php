@@ -225,7 +225,7 @@ $this->title($work->title);
 						<?php foreach($archives_documents as $ad): ?>
 				
 								<li><a href="/documents/view/<?=$ad->document->slug?>">
-									<strong><?=$ad->document->slug?>.<?=$ad->format->extension?></strong>
+									<strong><?=$ad->document->slug?>.<?=$ad->document->format->extension?></strong>
 								</a></li>
 				
 						<?php endforeach; ?>

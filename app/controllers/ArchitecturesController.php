@@ -48,7 +48,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 		
 		$architectures = Architectures::find('all', array(
 			'with' => 'Archives',
-			'order' => array('earliest_date' => 'DESC'),
+			'order' => array('Archives.earliest_date' => 'DESC'),
 			'limit' => $limit,
 			'page' => $page
 		));
@@ -183,7 +183,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$architecture = Architectures::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 			
 			if(!$architecture) {
@@ -193,10 +193,10 @@ class ArchitecturesController extends \lithium\action\Controller {
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
-						'Formats'
+						'Documents.Formats'
 					),
-					'conditions' => array('archive_id' => $architecture->id),
-					'order' => array('slug' => 'ASC')
+					'conditions' => array('ArchivesDocuments.archive_id' => $architecture->id),
+					'order' => array('Documents.slug' => 'ASC')
 				));
 			
 				//Send the retrieved data to the view
@@ -254,16 +254,16 @@ class ArchitecturesController extends \lithium\action\Controller {
 		
 		$architecture = Architectures::first(array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $this->request->params['slug']),
+			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
 		
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
-				'Formats'
+				'Documents.Formats'
 			),
-			'conditions' => array('archive_id' => $architecture->id),
-			'order' => array('slug' => 'ASC')
+			'conditions' => array('ArchivesDocuments.archive_id' => $architecture->id),
+			'order' => array('Documents.slug' => 'ASC')
 		));
 
 		if (!$architecture) {
@@ -295,7 +295,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 			//Get single record from the database where the slug matches the URL
 			$architecture = Architectures::first(array(
 				'with' => 'Archives',
-				'conditions' => array('slug' => $this->request->params['slug']),
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 			
 			if($architecture) {
@@ -338,7 +338,7 @@ class ArchitecturesController extends \lithium\action\Controller {
         
 		$architecture = Architectures::first(array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $this->request->params['slug']),
+			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
         
         // If the user is not an Admin or Editor, redirect to the record view

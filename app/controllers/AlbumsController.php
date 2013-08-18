@@ -69,7 +69,7 @@ class AlbumsController extends \lithium\action\Controller {
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 			)));
 			
 			if($album) {
@@ -93,7 +93,7 @@ class AlbumsController extends \lithium\action\Controller {
 					$works = Works::find('all', array(
 						'with' => 'Archives',
 						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'earliest_date DESC'
+						'order' => 'Archives.earliest_date DESC'
 					));
 
 				}
@@ -101,10 +101,10 @@ class AlbumsController extends \lithium\action\Controller {
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
-						'Formats'
+						'Documents.Formats'
 					),
 					'conditions' => array('archive_id' => $album->id),
-					'order' => array('slug' => 'ASC')
+					'order' => array('Documents.slug' => 'ASC')
 				));
 
 				$li3_pdf = Libraries::get("li3_pdf");
@@ -165,7 +165,7 @@ class AlbumsController extends \lithium\action\Controller {
 		$album = Albums::first(array(
 			'with' => 'Archives',
 			'conditions' => array(
-			'slug' => $this->request->params['slug'],
+			'Archives.slug' => $this->request->params['slug'],
 		)));
 
 		if (!$album) {
@@ -178,10 +178,10 @@ class AlbumsController extends \lithium\action\Controller {
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
-				'Formats'
+				'Documents.Formats'
 			),
 			'conditions' => array('archive_id' => $album->id),
-			'order' => array('slug' => 'ASC')
+			'order' => array('Documents.slug' => 'ASC')
 		));
 
 		return compact('album', 'archives_documents');
@@ -207,7 +207,7 @@ class AlbumsController extends \lithium\action\Controller {
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 			)));
 			
 			if($album) {
@@ -271,7 +271,7 @@ class AlbumsController extends \lithium\action\Controller {
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 			)));
 			
 			if($album) {
@@ -290,7 +290,7 @@ class AlbumsController extends \lithium\action\Controller {
 						'Formats'
 					),
 					'conditions' => array(
-						'archive_id' => $album->id,
+						'ArchivesDocuments.archive_id' => $album->id,
 						'published' => '1',
 					),
 				));
@@ -379,7 +379,7 @@ class AlbumsController extends \lithium\action\Controller {
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 			)));
 			
 			if($album) {
@@ -435,7 +435,7 @@ class AlbumsController extends \lithium\action\Controller {
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'slug' => $this->request->params['slug'],
+				'Archives.slug' => $this->request->params['slug'],
 			)));
 		
 			if($album) {

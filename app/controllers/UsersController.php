@@ -57,11 +57,11 @@ class UsersController extends \lithium\action\Controller {
 			$order = array('start_date' => 'DESC');
 			$total = ArchivesHistories::find('count', array(
 				'with' => array('Users', 'Archives'),
-				'conditions' => array('username' => $user->username),
+				'conditions' => array('Users.username' => $user->username),
 			));
 			$archives_histories = ArchivesHistories::find('all', array(
 				'with' => array('Users', 'Archives'),
-				'conditions' => array('username' => $user->username),
+				'conditions' => array('Users.username' => $user->username),
 				'limit' => $limit,
 				'order' => $order,
 				'page' => $page

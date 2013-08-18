@@ -105,10 +105,10 @@ class ArchivesSubclassesTest extends \lithium\test\Integration {
 
 		$work = Works::find('first', array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $slug)
+			'conditions' => array('Archives.slug' => $slug)
 		));
 
-		$this->assertTrue($work);
+		$this->assertTrue(!empty($work));
 
 		$this->assertEqual('series', $work->archive->catalog_level);
 		$this->assertEqual('2012', $work->archive->years());
@@ -177,10 +177,10 @@ class ArchivesSubclassesTest extends \lithium\test\Integration {
 
 		$album = Albums::find('first', array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $slug)
+			'conditions' => array('Archives.slug' => $slug)
 		));
 
-		$this->assertTrue($album);
+		$this->assertTrue(!empty($album));
 
 		$this->assertEqual('album', $album->archive->catalog_level);
 		$this->assertEqual('2012', $album->archive->years());
@@ -249,10 +249,10 @@ class ArchivesSubclassesTest extends \lithium\test\Integration {
 
 		$publication = Publications::find('first', array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $slug)
+			'conditions' => array('Archives.slug' => $slug)
 		));
 
-		$this->assertTrue($publication);
+		$this->assertTrue(!empty($publication));
 
 		$this->assertEqual('series', $publication->archive->catalog_level);
 		$this->assertEqual('2002', $publication->archive->years());
@@ -321,10 +321,10 @@ class ArchivesSubclassesTest extends \lithium\test\Integration {
 
 		$architecture = Architectures::find('first', array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $slug)
+			'conditions' => array('Archives.slug' => $slug)
 		));
 
-		$this->assertTrue($architecture);
+		$this->assertTrue(!empty($architecture));
 
 		$this->assertEqual('complex', $architecture->archive->catalog_level);
 		$this->assertEqual('2012', $architecture->archive->years());
@@ -393,10 +393,10 @@ class ArchivesSubclassesTest extends \lithium\test\Integration {
 
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
-			'conditions' => array('slug' => $slug)
+			'conditions' => array('Archives.slug' => $slug)
 		));
 
-		$this->assertTrue($exhibition);
+		$this->assertTrue(!empty($exhibition));
 
 		$this->assertEqual('item', $exhibition->archive->catalog_level);
 		$this->assertEqual('2012', $exhibition->archive->years());

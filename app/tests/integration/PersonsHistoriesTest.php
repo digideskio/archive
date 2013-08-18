@@ -97,7 +97,7 @@ class PersonsHistoriesTest extends \lithium\test\Integration {
 
 		$person_history = PersonsHistories::first();
 
-		$this->assertTrue($person_history->end_date);
+		$this->assertTrue(!empty($person_history->end_date));
 
 	}
 

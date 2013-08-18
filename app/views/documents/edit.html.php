@@ -87,7 +87,7 @@ $this->form->config(
 			<table class="table">
 			
 				<?php foreach($albums as $album): ?>
-				<?php $archive_doc = $album->archives_documents[0]; ?> 
+				<?php $archive_doc = $album->archives_documents->first(); ?> 
 					<tr>
 						<td>
 							<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>

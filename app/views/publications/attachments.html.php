@@ -68,7 +68,7 @@ $this->title($publication->title);
 		<table class="table">
 		
 			<?php foreach($exhibitions as $exhibition): ?>
-			<?php $component = $exhibition->components[0]; ?>
+			<?php $component = $exhibition->components->first(); ?>
 				<tr>
 					<td>
 						<strong><?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?></strong>

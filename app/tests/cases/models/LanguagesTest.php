@@ -14,8 +14,6 @@ class LanguagesTest extends \lithium\test\Unit {
 
 		$count = Languages::count();
 
-		$this->assertTrue($count);
-
 		$this->assertEqual('247', $count);
 
 		$english = Languages::find('first', array(

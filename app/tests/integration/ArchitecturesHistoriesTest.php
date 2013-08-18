@@ -130,7 +130,7 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 
 		$architecture_history = ArchitecturesHistories::first();
 
-		$this->assertTrue($architecture_history->end_date);
+		$this->assertTrue(!empty($architecture_history->end_date));
 
 	}
 
