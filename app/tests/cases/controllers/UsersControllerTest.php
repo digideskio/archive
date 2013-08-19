@@ -110,7 +110,7 @@ class UsersControllerTest extends \lithium\test\Unit {
 	public function testRules() {
 
 		$ctrl = new UsersController();
-		$rules = $ctrl->rules;
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
 		$this->assertTrue(!empty($rules));
 
