@@ -112,6 +112,8 @@ class UsersControllerTest extends \lithium\test\Unit {
 		$ctrl = new UsersController();
 		$rules = $ctrl->rules;
 
+		$this->assertTrue(!empty($rules));
+
 		$this->assertEqual(1, sizeof($rules['index']));
 		$this->assertEqual('allowAdminUser', $rules['index'][0]['rule']);
 
