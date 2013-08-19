@@ -2,12 +2,7 @@
 
 	$this->title($user->username);
 
-	$check = lithium\security\Auth::check('default');
-
-	$auth = app\models\Users::find('first', array(
-		'with' => 'Roles',
-		'conditions' => array('username' => $check['username']),
-	));
+	$auth = $this->authority->auth();
 
 	$role = $auth->role->name;
 

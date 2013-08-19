@@ -2,15 +2,6 @@
 
 	$this->title('Users'); 
 
-	$check = lithium\security\Auth::check('default');
-
-	$auth = app\models\Users::find('first', array(
-		'with' => 'Roles',
-		'conditions' => array('username' => $check['username']),
-	));
-
-	$role = $auth->role->name;
-	 
 ?>
 
 <div id="location" class="row-fluid">
@@ -35,7 +26,7 @@
 
 	<div class="btn-toolbar">
 
-	<?php if($role == 'Admin'): ?>
+	<?php if($this->authority->isAdmin()): ?>
 
 		<div class="action btn-group">
 
