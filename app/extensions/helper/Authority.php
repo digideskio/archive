@@ -41,6 +41,13 @@ class Authority extends \lithium\template\Helper {
 
 	}
 
+	public function matches($username) {
+	
+		$auth = $this->_auth();
+		return $username == $auth->username;
+
+	}
+
 	public function timezone() {
 
 		$auth = $this->_auth();

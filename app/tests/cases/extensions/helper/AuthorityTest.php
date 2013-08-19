@@ -75,6 +75,8 @@ class AuthorityTest extends \lithium\test\Unit {
 		$this->assertEqual('Admin', $helper->role()); 
 		$this->assertTrue($helper->isAdmin());
 		$this->assertTrue($helper->canEdit());
+		$this->assertTrue($helper->matches('admin'));
+		$this->assertFalse($helper->matches('editor'));
 
 		Auth::set('default', $editor);
 		$this->assertFalse($helper->isAdmin());
