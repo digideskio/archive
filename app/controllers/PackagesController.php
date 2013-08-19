@@ -77,11 +77,12 @@ class PackagesController extends \lithium\action\Controller {
 						$slug = $document->slug;
 						$extension = $document->format->extension;
 						$document_file = $document->file();
-						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
 
-						$document_localname = $work->archive->years() . '-' . $work->archive->slug . '-' . $slug . '.' . $extension;
-
-						$zip->addFile($document_path, $document_localname);
+						if (FileSystem::exists('documents', $document_file)) {
+							$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
+							$document_localname = $work->archive->years() . '-' . $work->archive->slug . '-' . $slug . '.' . $extension;
+							$zip->addFile($document_path, $document_localname);
+						}
 					}
 				}
 			}
@@ -102,11 +103,12 @@ class PackagesController extends \lithium\action\Controller {
 					$slug = $document->slug;
 					$extension = $document->format->extension;
 					$document_file = $document->file();
-					$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
 
-					$document_localname = $slug . '.' . $extension;
-
-					$zip->addFile($document_path, $document_localname);
+					if (FileSystem::exists('documents', $document_file)) {
+						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
+						$document_localname = $slug . '.' . $extension;
+						$zip->addFile($document_path, $document_localname);
+					}
 				}
 			}
 
