@@ -30,18 +30,19 @@ class MetricsControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 
-	public function testUnauthorizedAccess() {
-	/*	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'metrics'
-		);
+	public function testRules() {
+	
+		$ctrl = new MetricsController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$metrics = new MetricsController(array('request' => $this->request));
-		
-		$response = $metrics->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['usage']));
+		$this->assertEqual('allowAnyUser', $rules['usage'][0]['rule']);
+
 	}
 }
 

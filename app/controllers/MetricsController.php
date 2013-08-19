@@ -27,20 +27,16 @@ use lithium\core\Libraries;
 
 class MetricsController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'usage' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+	);
+
 	public function index() {
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$albums = Albums::count();
 		$albums_works = Components::find('count', array(
@@ -104,13 +100,11 @@ class MetricsController extends \lithium\action\Controller {
 			'publications_years',
 			'publications_languages',
 
-			'architecture',
-			'auth'
+			'architecture'
 		);
 	}
 
 	public function usage() {
-    	// Check authorization
 	    $check = (Auth::check('default')) ?: null;
 	
         // Look up the current user with his or her role
