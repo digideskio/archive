@@ -32,7 +32,7 @@ $this->title('Album History');
 		<?=$this->html->link('View', $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($this->authority->canEdit()): ?>
 	
 		<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->archive->slug))); ?></li>
 	

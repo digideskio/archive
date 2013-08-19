@@ -67,13 +67,6 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public function view() {
 
-	    $check = (Auth::check('default')) ?: null;
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
@@ -122,7 +115,7 @@ class AlbumsController extends \lithium\action\Controller {
 				$li3_pdf = Libraries::get("li3_pdf");
 
 				//Send the retrieved data to the view
-				return compact('album', 'works', 'archives_documents', 'auth', 'li3_pdf');
+				return compact('album', 'works', 'archives_documents', 'li3_pdf');
 				
 			}
 		}
@@ -174,13 +167,6 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public function history() {
 
-		$check = (Auth::check('default')) ?: null;
-	
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
@@ -216,7 +202,7 @@ class AlbumsController extends \lithium\action\Controller {
 				}
 
 				//Send the retrieved data to the view
-				return compact('album', 'archives_histories', 'auth');
+				return compact('album', 'archives_histories');
 				
 			}
 		}
@@ -289,13 +275,6 @@ class AlbumsController extends \lithium\action\Controller {
 	}
 
 	public function packages() {
-
-	    $check = (Auth::check('default')) ?: null;
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		$test_packages = Packages::all();
 
@@ -317,18 +296,11 @@ class AlbumsController extends \lithium\action\Controller {
 		));
 
 		//Send the retrieved data to the view
-		return compact('auth', 'packages', 'auth');
+		return compact('packages');
 		
 	}
 
 	public function package() {
-
-	    $check = (Auth::check('default')) ?: null;
-	
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -370,7 +342,7 @@ class AlbumsController extends \lithium\action\Controller {
 				)));
 
 				//Send the retrieved data to the view
-				return compact('album', 'packages', 'auth');
+				return compact('album', 'packages');
 			}
 		
 		}
@@ -390,13 +362,6 @@ class AlbumsController extends \lithium\action\Controller {
 			)));
 		
 			if($album) {
-		    
-				// If the user is not an Admin or Editor, redirect to the record view
-				if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-					return $this->redirect(array(
-						'Albums::view', 'args' => array($this->request->params['slug']))
-					);
-				}
 				
 				// For the following to work, the delete form must have an explicit 'method' => 'post'
 				// since the default method is PUT

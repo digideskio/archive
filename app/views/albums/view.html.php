@@ -28,7 +28,7 @@ $this->title($album->title);
 			<a href="#">View</a>
 		</li>
 
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($this->authority->canEdit()): ?>
 		
 			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->archive->slug))); ?></li>
 		

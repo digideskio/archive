@@ -2,8 +2,8 @@
 
 $this->title('Packages');
 
-if($auth->timezone_id) {
-	$tz = new DateTimeZone($auth->timezone_id);
+if($this->authority->timezone()) {
+	$tz = new DateTimeZone($this->authority->timezone());
 }
 
 ?>
@@ -42,7 +42,9 @@ if($auth->timezone_id) {
 		<th style="width:14px"><i class="icon-eye-close"></i></th>
 		<th>Package</th>
 		<th>Date</th>
+		<?php if($this->authority->canEdit()): ?>
 		<th>Delete</th>
+		<?php endif; ?>
 	</tr>
 </thead>
 
@@ -76,11 +78,13 @@ if($auth->timezone_id) {
 	</td>
 	<td><?=$this->html->link($package->name, $package->url()); ?></td>
 	<td><?=$package_date_display ?></td>
+	<?php if($this->authority->canEdit()): ?>
 	<td>
 			<?=$this->form->create($package, array('url' => "/packages/delete/$package->id", 'method' => 'post', 'style' => 'margin-bottom:0;')); ?>
 			<?=$this->form->submit('Delete', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
 	</td>
+	<?php endif; ?>
 
 </tr>
 
