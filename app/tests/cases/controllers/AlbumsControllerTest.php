@@ -31,42 +31,39 @@ class AlbumsControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedAccess() {
-	/*	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'albums'
-		);
+	public function testRules() {
+	
+		$ctrl = new AlbumsController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$albums = new AlbumsController(array('request' => $this->request));
-		
-		$response = $albums->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $albums->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $albums->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $albums->edit();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $albums->history();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertTrue(!empty($rules));
 
-		$response = $albums->publish();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
 
-		$response = $albums->packages();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
 
-		$response = $albums->package();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
 
-		$response = $albums->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowEditorUser', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['history']));
+		$this->assertEqual('allowAnyUser', $rules['history'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['publish']));
+		$this->assertEqual('allowAnyUser', $rules['publish'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['packages']));
+		$this->assertEqual('allowAnyUser', $rules['packages'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['package']));
+		$this->assertEqual('allowAnyUser', $rules['package'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 

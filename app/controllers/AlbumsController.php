@@ -24,17 +24,40 @@ use lithium\core\Libraries;
 
 class AlbumsController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowEditorUser', 'message' => 'Edit Access Denied.', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowEditorUser', 'message' => 'Edit Access Denied.', 'redirect' => "Pages::home"),
+		),
+		'history' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'publish' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'packages' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'package' => array(
+			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+		),
+		'delete' => array(
+			array('rule' => 'allowEditorUser', 'message' => 'Edit Access Denied.', 'redirect' => "Pages::home"),
+		),
+	);
+
 	public function index() {
     
-    	// Check authorization
 	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
+
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
@@ -52,10 +75,6 @@ class AlbumsController extends \lithium\action\Controller {
 	public function view() {
 
 	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
@@ -120,23 +139,7 @@ class AlbumsController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Albums::index');
-        }
-        
+
 		$album = Albums::create();
 
 		if (($this->request->data) && $album->save($this->request->data)) {
@@ -150,18 +153,7 @@ class AlbumsController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
+
 		$album = Albums::first(array(
 			'with' => 'Archives',
 			'conditions' => array(
@@ -191,10 +183,6 @@ class AlbumsController extends \lithium\action\Controller {
 
 		$check = (Auth::check('default')) ?: null;
 	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
@@ -245,17 +233,6 @@ class AlbumsController extends \lithium\action\Controller {
 	}
 
 	public function publish() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -321,10 +298,6 @@ class AlbumsController extends \lithium\action\Controller {
 	public function packages() {
 
 	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
@@ -359,10 +332,6 @@ class AlbumsController extends \lithium\action\Controller {
 
 	    $check = (Auth::check('default')) ?: null;
 	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
 			'with' => array('Roles')
@@ -419,17 +388,6 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public function delete() {
     
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
 		if(isset($this->request->params['slug'])) {
         
 			$album = Albums::first(array(
