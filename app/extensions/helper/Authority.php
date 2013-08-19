@@ -28,8 +28,17 @@ class Authority extends \lithium\template\Helper {
 	}
 
 	public function canEdit() {
+
 		$auth = $this->_auth();
 		return ('Admin' === $auth->role->name || 'Editor' === $auth->role->name);
+
+	}
+
+	public function timezone() {
+
+		$auth = $this->_auth();
+		return $auth->timezone_id ?: '';
+
 	}
 
 }
