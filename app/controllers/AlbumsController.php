@@ -26,31 +26,31 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public $rules = array(
 		'index' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'view' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'add' => array(
-			array('rule' => 'allowEditorUser', 'message' => 'Edit Access Denied.', 'redirect' => "Pages::home"),
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
 		),
 		'edit' => array(
-			array('rule' => 'allowEditorUser', 'message' => 'Edit Access Denied.', 'redirect' => "Pages::home"),
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
 		),
 		'history' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'publish' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'packages' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'package' => array(
-			array('rule' => 'allowAnyUser', 'message' => 'You are not logged in.', 'redirect' => "Sessions::add"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'delete' => array(
-			array('rule' => 'allowEditorUser', 'message' => 'Edit Access Denied.', 'redirect' => "Pages::home"),
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
 		),
 	);
 
