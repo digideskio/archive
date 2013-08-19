@@ -2,17 +2,27 @@
 
 namespace app\extensions\helper;
 
+use app\models\Users;
+use lithium\security\Auth;
+
 class Authority extends \lithium\template\Helper {
 
-	public function role() {
+	protected function _auth() {
 
-		$check = \lithium\security\Auth::check('default');
+		$check = Auth::check('default');
 
-		$auth = \app\models\Users::find('first', array(
+		$auth = Users::find('first', array(
 			'with' => 'Roles',
 			'conditions' => array('username' => $check['username']),
 		));
 
+		return $auth;
+		
+	}
+
+	public function role() {
+
+		$auth = $this->_auth();
 		return $auth->role->name;
 
 	}
