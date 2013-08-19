@@ -98,7 +98,8 @@ class RoutesTest extends \lithium\test\Integration {
 		$request = Router::parse($request);
 		$host = 'http://' . $request->env('HTTP_HOST');
 
-		$routes = Router::get();
+		$configurations = Router::get();
+		$routes = $configurations[0];
 
 		foreach ($routes as $route) {
 			$export = $route->export();
