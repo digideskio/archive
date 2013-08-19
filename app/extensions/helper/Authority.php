@@ -20,6 +20,13 @@ class Authority extends \lithium\template\Helper {
 		
 	}
 
+	public function auth() {
+
+		return $this->_auth();
+
+	}
+		
+
 	public function role() {
 
 		$auth = $this->_auth();
