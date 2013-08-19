@@ -27,6 +27,13 @@ class Authority extends \lithium\template\Helper {
 
 	}
 
+	public function canAdmin() {
+
+		$auth = $this->_auth();
+		return ('Admin' === $auth->role->name);
+
+	}
+
 	public function canEdit() {
 
 		$auth = $this->_auth();
