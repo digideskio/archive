@@ -24,7 +24,7 @@ $this->title('Notices');
 	</ul>
 
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin'): ?>
+		<?php if($this->authority->isAdmin()): ?>
 
 				<a class="btn btn-inverse" href="/notices/add"><i class="icon-plus-sign icon-white"></i> Write a Notice</a>
 		
@@ -56,7 +56,7 @@ $this->title('Notices');
 				<p>
 					<small style="font-size: smaller;"><?=$notice->date_modified ?></small>
 
-					<?php if($auth->role->name == 'Admin'): ?>
+					<?php if($this->authority->isAdmin()): ?>
 
 					<a href="/notices/edit/<?=$notice->id ?>" title="Edit Notice"><i class="icon icon-edit"></i></a>
 			
