@@ -1,12 +1,5 @@
 <?php
-	$check = lithium\security\Auth::check('default');
-
-	$auth = app\models\Users::find('first', array(
-		'with' => 'Roles',
-		'conditions' => array('username' => $check['username']),
-	));
-
-	$role = $auth->role->name;
+	$role = $this->authority->role();
 ?>
 
 <?php $c = strtolower($this->request()->params['controller']); ?>
