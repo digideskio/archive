@@ -56,20 +56,13 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public function index() {
     
-	    $check = (Auth::check('default')) ?: null;
-
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-
 		$order = array('title' => 'ASC'); 
 		
 		$albums = Albums::find('all', array(
 			'with' => 'Archives',
 			'order' => $order
 		));
-		return compact('albums', 'auth');
+		return compact('albums');
 	}
 
 	public function view() {

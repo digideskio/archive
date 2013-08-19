@@ -27,7 +27,7 @@ $this->title('Albums');
 	</ul>
 
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($this->authority->canEdit()): ?>
 
 				<a class="btn btn-inverse" href="<?=$this->url(array('Albums::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add an Album</a>
 		
@@ -39,7 +39,7 @@ $this->title('Albums');
 
 	<div class="alert alert-danger">There are no Albums in the Archive.</div>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($this->authority->canEdit()): ?>
 
 		<div class="alert alert-success">You can create the first Album by clicking the <strong><?=$this->html->link('Add an Album',$this->url(array('Albums::add'))); ?></strong> button.</div>
 
