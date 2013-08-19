@@ -31,15 +31,16 @@ use lithium\security\Auth;
  */
 class PagesController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'home' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+	);
+
 	public function view() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
 		$options = array();
 		$path = func_get_args();
@@ -54,14 +55,6 @@ class PagesController extends \lithium\action\Controller {
 	}
 
 	public function home() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
 
 		$path = 'home';
 

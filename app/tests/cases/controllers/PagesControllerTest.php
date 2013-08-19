@@ -26,22 +26,19 @@ class PagesControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedView() {
-	/*	
-		$this->request = new Request();
-		$this->request->url = '/home';
-		$this->request->params = array(
-			'controller' => 'pages'
-		);
-
-		$pages = new PagesController(array('request' => $this->request));
-		
-		$response = $pages->view();
-		$this->assertEqual($response->headers["Location"], "/login");
+	public function testRules() {
 	
-		$response = $pages->home();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$ctrl = new PagesController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
+
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['home']));
+		$this->assertEqual('allowAnyUser', $rules['home'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
 	}
 }
 
