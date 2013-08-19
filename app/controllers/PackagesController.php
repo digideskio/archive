@@ -92,7 +92,7 @@ class PackagesController extends \lithium\action\Controller {
 					'Formats'
 				),
 				'conditions' => array(
-					'archive_id' => $album->id,
+					'ArchivesDocuments.archive_id' => $album->id,
 					'published' => '1',
 				),
 			));

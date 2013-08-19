@@ -105,7 +105,7 @@ foreach ($documents as $doc) {
 
 		$doc_work = \app\models\Works::first('all', array(
 			'with' => array('Archives', 'ArchivesDocuments'),
-			'conditions' => array('document_id' => $doc->id),
+			'conditions' => array('ArchivesDocuments.document_id' => $doc->id),
 			'order' => 'earliest_date DESC'
 		));
 
