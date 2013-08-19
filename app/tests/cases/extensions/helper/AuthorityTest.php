@@ -18,6 +18,20 @@ class AuthorityTest extends \lithium\test\Unit {
 			"email" => "admin@example.com",
 			"role_id" => '1'
 		),
+		'editor' => array(
+			"username" => "editor",
+			"password" => "abcd",
+			"name" => "an Editor User",
+			"email" => "editor@example.com",
+			"role_id" => '2'
+		),
+		'viewer' => array(
+			"username" => "viewer",
+			"password" => "abcd",
+			"name" => "A Viewer User",
+			"email" => "viewer@example.com",
+			"role_id" => '3'
+		),
 	);
 
 	public function setUp() {
@@ -33,6 +47,12 @@ class AuthorityTest extends \lithium\test\Unit {
 		$admin = Users::create();
 		$admin->save($users['admin']);
 	
+		$editor = Users::create();
+		$editor->save($users['editor']);
+	
+		$viewer = Users::create();
+		$viewer->save($users['viewer']);
+	
 	}
 
 	public function tearDown() {
@@ -42,16 +62,26 @@ class AuthorityTest extends \lithium\test\Unit {
 	
 	}
 
-	public function testRole() {
+	public function testAuthority() {
 	
 		$users = $this->users;
-		$user = $users['admin'];
-		Auth::set('default', $user);
-		
+		$admin = $users['admin'];
+		$editor = $users['editor'];
+		$viewer = $users['viewer'];
+
 		$helper = new Authority();
 
+		Auth::set('default', $admin);
 		$this->assertEqual('Admin', $helper->role()); 
+		$this->assertTrue($helper->canEdit());
+
+		Auth::set('default', $editor);
+		$this->assertTrue($helper->canEdit());
+
+		Auth::set('default', $viewer);
+		$this->assertFalse($helper->canEdit());
 	}
+
 }
 
 ?>
