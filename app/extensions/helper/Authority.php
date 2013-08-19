@@ -27,7 +27,7 @@ class Authority extends \lithium\template\Helper {
 
 	}
 
-	public function canAdmin() {
+	public function isAdmin() {
 
 		$auth = $this->_auth();
 		return ('Admin' === $auth->role->name);
