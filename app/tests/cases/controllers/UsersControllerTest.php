@@ -105,6 +105,28 @@ class UsersControllerTest extends \lithium\test\Unit {
 		$response = $usersRegister->register();
 		$this->assertEqual($response->headers["Location"], "/home");
 		
+	}
+
+	public function testRules() {
+
+		$ctrl = new UsersController();
+		$rules = $ctrl->rules;
+
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAdminUser', $rules['index'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowAdminUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowAdminOrUserRequestingSelf', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(2, sizeof($rules['delete']));
+		$this->assertEqual('allowAdminUser', $rules['delete'][0]['rule']);
+		$this->assertEqual('denyUserRequestingSelf', $rules['delete'][1]['rule']);
 	
 	}
 }
