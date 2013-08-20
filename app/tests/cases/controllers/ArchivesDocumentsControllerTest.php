@@ -25,23 +25,18 @@ class ArchivesDocumentsControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedAccess() {
-	/*	
-		Auth::clear('default');
+	public function testRules() {
 	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'archives_documents'
-		);
+		$ctrl = new ArchivesDocumentsController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$archives_documents = new ArchivesDocumentsController(array('request' => $this->request));
-		
-		$response = $archives_documents->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $archives_documents->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 
