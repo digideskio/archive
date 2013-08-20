@@ -22,103 +22,58 @@ class WorksControllerTest extends \lithium\test\Unit {
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-		
-		$this->user = Users::create();
-		$data = array(
-			"username" => "test",
-			"password" => "abcd",
-			"name" => "Full Name",
-			"email" => "email@example.com",
-			"role_id" => '1'
-		);
-		$this->user->save($data);
-
-		Auth::set('default', array('username' => 'test'));
 	}
 
-	public function tearDown() {
-	
-		Users::all()->delete();
-		Works::all()->delete();
-		WorksHistories::all()->delete();
-		Archives::all()->delete();
-		ArchivesHistories::all()->delete();
-
-		Auth::clear('default');
-		
-	}
+	public function tearDown() {}
 
 	public function testIndex() {}
 	public function testView() {}
-	public function testAdd() {
-
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'works'
-		);
-		$this->request->data = array(
-			'title' => 'Test Title'
-		);
-		
-		$works = new WorksController(array('request' => $this->request));
-
-		//FIXME this test should (and does) pass, but throws an exception Undefined index:id
-		//somewhere when $work->save($this->request->data) is called in Works::add();
-
-		//$response = $works->add();
-		//$this->assertEqual($response->headers["Location"], "/works/view/Test-Title");
-
-	}
+	public function testAdd() {}
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedAccess() {
+	public function testRules() {
 	
-		Auth::clear('default');
-	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'works'
-		);
-		/*
-		$works = new WorksController(array('request' => $this->request));
-		
-		$response = $works->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->search();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->artists();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->classifications();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->locations();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->edit();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->attachments();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works->history();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$ctrl = new WorksController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$response = $works->histories();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertTrue(!empty($rules));
 
-		$response = $works->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-		*/	
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['search']));
+		$this->assertEqual('allowAnyUser', $rules['search'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['artists']));
+		$this->assertEqual('allowAnyUser', $rules['artists'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['classifications']));
+		$this->assertEqual('allowAnyUser', $rules['classifications'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['locations']));
+		$this->assertEqual('allowAdminUser', $rules['locations'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['histories']));
+		$this->assertEqual('allowAnyUser', $rules['histories'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowEditorUser', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['attachments']));
+		$this->assertEqual('allowEditorUser', $rules['attachments'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['history']));
+		$this->assertEqual('allowAnyUser', $rules['history'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 

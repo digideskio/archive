@@ -2,6 +2,10 @@
 
 $this->title($work->title);
 
+$auth = $this->authority->auth();
+
+$authority_can_edit = $this->authority->canEdit();
+
 if($auth->timezone_id) {
 	$tz = new DateTimeZone($auth->timezone_id);
 }
@@ -30,7 +34,7 @@ if($auth->timezone_id) {
 		<li><?=$this->html->link('View','/works/view/'.$work->archive->slug); ?></li>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 	
 		<li><?=$this->html->link('Edit','/works/edit/'.$work->archive->slug); ?></li>
 		<li><?=$this->html->link('Attachments','/works/attachments/'.$work->archive->slug); ?></li>

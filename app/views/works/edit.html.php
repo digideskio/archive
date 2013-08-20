@@ -2,6 +2,10 @@
 
 $this->title($work->title);
 
+$authority_is_admin = $this->authority->isAdmin();
+
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+
 $this->form->config(
     array( 
 		'label' => array(

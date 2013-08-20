@@ -2,6 +2,11 @@
 
 $this->title($work->title);
 
+$authority_can_edit = $this->authority->canEdit();
+$authority_is_admin = $this->authority->isAdmin();
+
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -26,7 +31,7 @@ $this->title($work->title);
 		<a href="#">View</a>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 	
 		<li><?=$this->html->link('Edit','/works/edit/'.$work->archive->slug); ?></li>
 

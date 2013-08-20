@@ -25,21 +25,46 @@ use li3_access\security\Access;
 
 class WorksController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'search' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'artists' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'classifications' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'locations' => array(
+			array('rule' => 'allowAdminUser', 'redirect' => "Works::index"),
+		),
+		'histories' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'attachments' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'history' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'delete' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+	);
+
 	public function index() {
-	
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-	   	// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$filter = '';
 
@@ -65,26 +90,10 @@ class WorksController extends \lithium\action\Controller {
 			'page' => $page
 		));
 
-		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
-
-		return compact('works', 'total', 'page', 'limit', 'inventory', 'auth');
+		return compact('works', 'total', 'page', 'limit');
 	}
 
 	public function search() {
-		
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$works = array();
 
@@ -172,27 +181,11 @@ class WorksController extends \lithium\action\Controller {
 
 		}
 
-		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
-
-		return compact('works', 'condition', 'query', 'total', 'page', 'limit', 'inventory', 'auth');
+		return compact('works', 'condition', 'query', 'total', 'page', 'limit');
 
 	}
 
 	public function artists() {
-		
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$works_artists = Works::find('all', array(
 			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
@@ -208,27 +201,11 @@ class WorksController extends \lithium\action\Controller {
 
 		$artists = array_filter($artists);
 
-		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
-
-		return compact('artists', 'inventory', 'auth');
+		return compact('artists');
 
 	}
 
 	public function classifications() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$works_classifications = Archives::find('all', array(
 			'fields' => array('classification', 'count(classification) as works'),
@@ -259,42 +236,15 @@ class WorksController extends \lithium\action\Controller {
 			return array('name' => $wc->classification, 'works' => $wc->works, 'document' => $document_slug);
 		}, array('collect' => false));
 
-		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
-
-		return compact('classifications', 'inventory', 'auth');
+		return compact('classifications');
 	}
 
 	public function locations() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		//Check that inventory is enabled
 		if (!Environment::get('inventory')) {
 			return $this->redirect('Works::index'); 
 		}
-
-		//Define the access rules for this action
-		$rules = array(
-			array('rule' => 'allowAdminUser', 'message' => 'You are not authorized', 'redirect' => "/works"),
-		);
-		
-	    $access = Access::check('rule_based', $check, $this->request, array('rules' => $rules));
-	    
-        if(!empty($access)){
-        	return $this->redirect($access['redirect']);
-        }
     
 		$works_locations = Works::find('all', array(
 			'fields' => array('location', 'count(location) as works'),
@@ -307,21 +257,10 @@ class WorksController extends \lithium\action\Controller {
 			return array('name' => $wc->location, 'works' => $wc->works);
 		}, array('collect' => false));
 
-		return compact('locations', 'auth');
+		return compact('locations');
 	}
 
 	public function histories() {
-
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$limit = 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -335,22 +274,10 @@ class WorksController extends \lithium\action\Controller {
 			'page' => $page
 		));
 		
-		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
-		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'inventory', 'auth');
+		return compact('archives_histories', 'total', 'page', 'limit');
 	}
 
 	public function view() {
-	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -397,11 +324,8 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array('work_id' => $work->id),
 					'order' => array('date_modified' =>  'DESC')
 				));
-			
-				$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
 
-				//Send the retrieved data to the view
-				return compact('work', 'archives_documents', 'work_links', 'albums', 'exhibitions', 'inventory', 'auth');
+				return compact('work', 'archives_documents', 'work_links', 'albums', 'exhibitions');
 			}
 		}
 		
@@ -410,22 +334,6 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
-		// If the user is not an Admin or Editor, redirect to the index
-		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-			return $this->redirect('Works::index');
-		}
 		
 		$work = Works::create();
 
@@ -479,8 +387,6 @@ class WorksController extends \lithium\action\Controller {
 
 		$classifications = Works::classifications();
 
-		$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
-
 		$documents = array();
 
 		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
@@ -493,26 +399,10 @@ class WorksController extends \lithium\action\Controller {
 
 		}
 
-		return compact('work', 'artists', 'classifications', 'materials', 'locations', 'users', 'inventory', 'documents', 'auth');
+		return compact('work', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
 	}
 
 	public function edit() {
-	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
-		// If the user is not an Admin or Editor, redirect to the index
-		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-			return $this->redirect('Works::index');
-		}
 		
 		if(isset($this->request->params['slug'])) {
 		
@@ -633,8 +523,6 @@ class WorksController extends \lithium\action\Controller {
 				if (($this->request->data) && $work->save($this->request->data)) {
 					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
 				}
-		
-				$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
 
 				return compact(
 					'work', 
@@ -648,9 +536,7 @@ class WorksController extends \lithium\action\Controller {
 					'classifications',
 					'materials',
 					'locations',
-					'users',
-					'inventory',
-					'auth'
+					'users'
 				);
 			}	
 		}																																		
@@ -660,22 +546,6 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function attachments() {
-
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-
-		// If the user is not an Admin or Editor, redirect to the index
-		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-			return $this->redirect('Works::index');
-		}
 
 		if(isset($this->request->params['slug'])) {
 		
@@ -754,8 +624,6 @@ class WorksController extends \lithium\action\Controller {
 				if (($this->request->data) && $work->save($this->request->data)) {
 					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
 				}
-		
-				$inventory = (Environment::get('inventory') && ($auth->role->name == 'Admin'));
 
 				return compact(
 					'work', 
@@ -764,8 +632,7 @@ class WorksController extends \lithium\action\Controller {
 					'other_albums', 
 					'exhibitions', 
 					'other_exhibitions',
-					'work_links',
-					'auth'
+					'work_links'
 				);
 			}	
 		}																																		
@@ -775,17 +642,6 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function history() {
-	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -811,9 +667,8 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('start_date' => 'DESC')
 				));
 		
-		
 				//Send the retrieved data to the view
-				return compact('auth', 'work', 'archives_histories', 'works_histories', 'auth');
+				return compact('work', 'archives_histories', 'works_histories');
 			}
 		}
 		
@@ -822,29 +677,11 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$work = Works::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
-		
-		// If the user is not an Admin or Editor, redirect to the record view
-		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-			return $this->redirect(array(
-				'Works::view', 'args' => array($this->request->params['slug']))
-			);
-		}
 		
 		// For the following to work, the delete form must have an explicit 'method' => 'post'
 		// since the default method is PUT

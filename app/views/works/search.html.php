@@ -18,6 +18,11 @@ if ($inventory) {
 	$conditions_list['location'] = 'Location';	
 }
 
+$authority_can_edit = $this->authority->canEdit();
+$authority_is_admin = $this->authority->isAdmin();
+
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -70,7 +75,7 @@ if ($inventory) {
 	</ul>
 	
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
 		

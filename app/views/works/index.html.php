@@ -2,6 +2,11 @@
 
 $this->title('Artwork');
 
+$authority_can_edit = $this->authority->canEdit();
+$authority_is_admin = $this->authority->isAdmin();
+
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -49,7 +54,7 @@ $this->title('Artwork');
 	</ul>
 
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
 		
@@ -62,7 +67,7 @@ $this->title('Artwork');
 
 	<div class="alert alert-danger">There is no Artwork in the Archive.</div>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 
 		<div class="alert alert-success">You can add the first Artwork by clicking the <strong><?=$this->html->link('Add Artwork','/works/add/'); ?></strong> button.</div>
 

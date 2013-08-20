@@ -2,6 +2,10 @@
 
 $this->title('Add Artwork');
 
+$authority_is_admin = $this->authority->isAdmin();
+
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+
 $this->form->config(
     array( 
 		'label' => array(
@@ -70,8 +74,6 @@ $default_artist_native_name = isset($artist_names_assoc[$default_artist]) ? $art
 
 $artist = $work->artist ?: $default_artist;
 $artist_native_name = $work->artist_native_name ?: $default_artist_native_name;
-
-$inventory = \lithium\core\Environment::get('inventory');
 
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
@@ -153,11 +155,9 @@ foreach ($documents as $doc) {
 
 	</ul>
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
 
 			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
 		
-		<?php endif; ?>
 	</div>
 </div>
 
