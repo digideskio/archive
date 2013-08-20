@@ -30,30 +30,30 @@ class FilesControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedAccess() {
-	/*	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'files'
-		);
+	public function testRules() {
+	
+		$ctrl = new FilesController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$files = new FilesController(array('request' => $this->request));
-		
-		$response = $files->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $files->small();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $files->thumb();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $files->download();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertTrue(!empty($rules));
 
-		$response = $files->secure();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['small']));
+		$this->assertEqual('allowAnyUser', $rules['small'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['thumb']));
+		$this->assertEqual('allowAnyUser', $rules['thumb'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['download']));
+		$this->assertEqual('allowAnyUser', $rules['download'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['package']));
+		$this->assertEqual('allowAll', $rules['package'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['secure']));
+		$this->assertEqual('allowAnyUser', $rules['secure'][0]['rule']);
 	}
 }
 

@@ -11,18 +11,33 @@ use lithium\security\Auth;
  
 class FilesController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'small' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'thumb' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'download' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'package' => array(
+			array('rule' => 'allowAll', 'redirect' => "Sessions::add"),
+		),
+		'secure' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+	);
+
 	public function __construct(array $config = array()) {
 		$defaults = array('render' => array('auto' => false));
 		return parent::__construct($config + $defaults);
 	}
  
 	public function view() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
         //Don't run the query if no slug is provided
 		if (isset($this->request->params['file'])) {
@@ -59,12 +74,6 @@ class FilesController extends \lithium\action\Controller {
 	}
  
 	public function small() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
         //Don't run the query if no slug is provided
 		if (isset($this->request->params['file'])) {
@@ -100,12 +109,6 @@ class FilesController extends \lithium\action\Controller {
 	}
  
 	public function thumb() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
         //Don't run the query if no slug is provided
 		if (isset($this->request->params['file'])) {
@@ -140,12 +143,6 @@ class FilesController extends \lithium\action\Controller {
 	}
 
 	public function download() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
         
         //Don't run the query if no slug is provided
 		if (isset($this->request->params['file'])) {
@@ -219,12 +216,6 @@ class FilesController extends \lithium\action\Controller {
 	}
 
 	public function secure() {
-
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
     
 		if (isset($this->request->params['file'])) {
  
