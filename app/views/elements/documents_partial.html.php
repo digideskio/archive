@@ -1,3 +1,7 @@
+<?php
+	$authority_can_edit = $this->authority->canEdit();
+?>
+
 <?php if (isset($showBar) && $showBar): ?>
 
 <div class="navbar">
@@ -10,6 +14,7 @@
 
 <?php endif; ?>
 
+<?php if($authority_can_edit): ?>
 <form method="post">
 
 	<table class="table table-bordered">
@@ -36,6 +41,7 @@
 	</td></tr>
 	</tbody>
 	</table>
+<?php endif; ?>
 
 	<ul class="thumbnails">
 
@@ -50,9 +56,11 @@
 			<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
 				<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
 			</a>
+	<?php if($authority_can_edit): ?>
 			<label class="batch-checkbox" for="Document-<?=$document->id?>">
 			<?=$this->form->checkbox('documents[]', array('id' => "Document-$document->id", 'value' => $document->id, 'hidden' => false, 'class' => 'checkdocs'));?>
 			</label>
+	<?php endif; ?>
 			</div>
 		</li>
 
@@ -60,6 +68,7 @@
 
 	</ul>
 
+<?php if($authority_can_edit): ?>
 <?=$this->form->end(); ?>
 
 <script>
@@ -106,3 +115,4 @@ $(document).ready(function() {
 });
 
 </script>
+<?php endif; ?>
