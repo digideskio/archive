@@ -2,9 +2,13 @@
 
 $this->title($architecture->title);
 
+$auth = $this->authority->auth();
+
 if($auth->timezone_id) {
 	$tz = new DateTimeZone($auth->timezone_id);
 }
+
+$authority_can_edit = $this->authority->canEdit();
 
 ?>
 
@@ -34,7 +38,7 @@ if($auth->timezone_id) {
 <ul class="nav nav-tabs">
 	<li><?=$this->html->link('View','/architectures/view/'.$architecture->archive->slug); ?></li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 	
 		<li><?=$this->html->link('Edit','/architectures/edit/'.$architecture->archive->slug); ?></li>
 	

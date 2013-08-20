@@ -19,21 +19,34 @@ use lithium\core\Environment;
 
 class ArchitecturesController extends \lithium\action\Controller {
 
-	public function index() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'search' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'histories' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'history' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'delete' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+	);
 
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
+	public function index() {
 
 		if (!Environment::get('architecture')) {
 			return $this->redirect('Pages::home');
@@ -53,21 +66,10 @@ class ArchitecturesController extends \lithium\action\Controller {
 			'page' => $page
 		));
 
-		return compact('architectures', 'total', 'page', 'limit', 'auth');
+		return compact('architectures', 'total', 'page', 'limit');
 	}
 
 	public function histories() {
-
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$limit = 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -81,24 +83,10 @@ class ArchitecturesController extends \lithium\action\Controller {
 			'page' => $page
 		));
 
-		return compact('auth', 'archives_histories', 'total', 'page', 'limit');
+		return compact('archives_histories', 'total', 'page', 'limit');
 	}
 
 	public function search() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$architectures = array();
 
@@ -161,21 +149,10 @@ class ArchitecturesController extends \lithium\action\Controller {
 			));
 
 		}
-		return compact('architectures', 'condition', 'query', 'total', 'page', 'limit', 'auth');
+		return compact('architectures', 'condition', 'query', 'total', 'page', 'limit');
 	}
 
 	public function view() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -200,7 +177,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('architecture', 'archives_documents', 'auth');
+				return compact('architecture', 'archives_documents');
 			
 			}
 		}
@@ -210,22 +187,6 @@ class ArchitecturesController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Architectures::index');
-        }
         
 		$architecture = Architectures::create();
 
@@ -240,17 +201,6 @@ class ArchitecturesController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$architecture = Architectures::first(array(
 			'with' => 'Archives',
@@ -278,17 +228,6 @@ class ArchitecturesController extends \lithium\action\Controller {
 
 	public function history() {
 
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
@@ -314,7 +253,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 				));
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'architecture', 'archives_histories', 'architectures_histories');
+				return compact('architecture', 'archives_histories', 'architectures_histories');
 			}
 		}
 		
@@ -324,29 +263,11 @@ class ArchitecturesController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
         
 		$architecture = Architectures::first(array(
 			'with' => 'Archives',
 			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
-        
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Architectures::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT

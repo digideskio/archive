@@ -2,6 +2,8 @@
 
 $this->title($architecture->title);
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -26,7 +28,7 @@ $this->title($architecture->title);
 		<a href="#">View</a>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 	
 		<li><?=$this->html->link('Edit','/architectures/edit/'.$architecture->archive->slug); ?></li>
 	

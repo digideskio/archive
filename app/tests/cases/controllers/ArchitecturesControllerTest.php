@@ -27,43 +27,39 @@ class ArchitecturesControllerTest extends \lithium\test\Unit {
 	public function testAdd() {}
 	public function testEdit() {}
 	public function testDelete() {}
-	
-	public function testUnauthorizedAccess() {
-	/*	
-		Auth::clear('default');
-	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'architectures'
-		);
 
-		$architectures = new ArchitecturesController(array('request' => $this->request));
-		
-		$response = $architectures->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->histories();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->search();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->edit();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->history();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $architectures->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+	public function testRules() {
+	
+		$ctrl = new ArchitecturesController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
+
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['search']));
+		$this->assertEqual('allowAnyUser', $rules['search'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['histories']));
+		$this->assertEqual('allowAnyUser', $rules['histories'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowEditorUser', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['history']));
+		$this->assertEqual('allowAnyUser', $rules['history'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
+	
 }
 
 ?>
