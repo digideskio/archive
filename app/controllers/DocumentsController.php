@@ -21,26 +21,36 @@ use lithium\core\Environment;
 
 class DocumentsController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'search' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'upload' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'delete' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+	);
+
 	protected function _init() {
 		// the negotiate option tells li3 to serve up the proper content type
 		$this->_render['negotiate'] = true; parent::_init();
 	}
 
 	public function index() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$conditions = isset($this->request->query['search']) ? array('title' => array('LIKE' => '%' . $this->request->query['search'] . '%')) : null;
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 20;
@@ -59,24 +69,10 @@ class DocumentsController extends \lithium\action\Controller {
 
 		$search = isset($this->request->query['search']) ? $this->request->query['search'] : '';
 		
-		return compact('documents', 'page', 'limit', 'total', 'search', 'auth');
+		return compact('documents', 'page', 'limit', 'total', 'search');
 	}
 
 	public function search() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$documents = array();
 
@@ -136,22 +132,11 @@ class DocumentsController extends \lithium\action\Controller {
 			));
 
 		}
-		return compact('documents', 'condition', 'query', 'total', 'page', 'limit', 'auth');
+		return compact('documents', 'condition', 'query', 'total', 'page', 'limit');
 	}
 
 	public function view() {
     
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
@@ -203,8 +188,7 @@ class DocumentsController extends \lithium\action\Controller {
 					'architectures',
 					'exhibitions',
 					'publications', 
-					'architecture',
-					'auth'
+					'architecture'
 				);
 
 			}
@@ -216,37 +200,9 @@ class DocumentsController extends \lithium\action\Controller {
 
 	public function add() {
     
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Documents::index');
-        }
-        
-		return compact('auth');
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$document = Documents::first(array(
 			'conditions' => array('slug' => $this->request->params['slug'])
@@ -293,28 +249,10 @@ class DocumentsController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
         
 		$document = Documents::first(array(
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
-        
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Documents::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
@@ -336,22 +274,6 @@ class DocumentsController extends \lithium\action\Controller {
 	}
 	
 	public function upload() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Documents::index');
-        }
 
 		//Keep track of the resulting document_id to use in the response
 		$document_id = 0;

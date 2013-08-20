@@ -26,7 +26,7 @@ $this->title($document->title);
 		<a href="#">View</a>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($this->authority->canEdit()): ?>
 	
 		<li><?=$this->html->link('Edit','/documents/edit/'.$document->slug); ?></li>
 	

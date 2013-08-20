@@ -28,7 +28,7 @@ $this->title('Documents');
 	</ul>
 
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($this->authority->canEdit()): ?>
 
 				<a class="btn btn-inverse" href="/documents/add"><i class="icon-plus-sign icon-white"></i> Add a Document</a>
 		
@@ -41,7 +41,7 @@ $this->title('Documents');
 
 	<div class="alert alert-danger">There are no Documents in the Archive.</div>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($this->authority->canEdit()): ?>
 
 		<div class="alert alert-success">You can add the first Document by clicking the <strong><?=$this->html->link('Add a Document','/documents/add/'); ?></strong> button.</div>
 

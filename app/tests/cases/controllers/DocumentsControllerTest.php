@@ -28,35 +28,33 @@ class DocumentsControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedAccess() {
-	/*	
-		Auth::clear('default');
+	public function testRules() {
 	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'documents'
-		);
+		$ctrl = new DocumentsController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$documents = new DocumentsController(array('request' => $this->request));
-		
-		$response = $documents->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $documents->search();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $documents->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $documents->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $documents->edit();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $documents->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['search']));
+		$this->assertEqual('allowAnyUser', $rules['search'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowEditorUser', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['upload']));
+		$this->assertEqual('allowEditorUser', $rules['upload'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 
