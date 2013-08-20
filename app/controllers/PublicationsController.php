@@ -22,21 +22,40 @@ use lithium\security\Auth;
 
 class PublicationsController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'search' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'languages' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'subjects' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'histories' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'history' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'delete' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+	);
+
 	public function index() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -65,21 +84,10 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$pub_classifications = Publications::classifications();
 
-		return compact('publications', 'pub_classifications', 'total', 'page', 'limit', 'auth', 'options');
+		return compact('publications', 'pub_classifications', 'total', 'page', 'limit', 'options');
 	}
 	
 	public function histories() {
-
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$limit = 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -95,24 +103,10 @@ class PublicationsController extends \lithium\action\Controller {
 		
 		$pub_classifications = Publications::classifications();
 
-		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'pub_classifications');
+		return compact('archives_histories', 'total', 'page', 'limit', 'pub_classifications');
 	}
 
 	public function search() {
-
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$publications = array();
 
@@ -178,24 +172,10 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$pub_classifications = Publications::classifications();
 
-		return compact('publications', 'pub_classifications', 'condition', 'query', 'total', 'page', 'limit', 'auth');
+		return compact('publications', 'pub_classifications', 'condition', 'query', 'total', 'page', 'limit');
 	}
 
 	public function languages() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$pub_languages = Publications::find('all', array(
 			'fields' => array('language', 'count(language) as langs'),
@@ -210,25 +190,11 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$pub_classifications = Publications::classifications();
 
-		return compact('pub_classifications', 'languages', 'auth');
+		return compact('pub_classifications', 'languages');
 
 	}
 
 	public function subjects() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$pub_subjects = Publications::find('all', array(
 			'fields' => array('subject', 'count(subject) as subjects'),
@@ -243,22 +209,11 @@ class PublicationsController extends \lithium\action\Controller {
 
 		$pub_classifications = Publications::classifications();
 
-		return compact('pub_classifications', 'subjects', 'auth');
+		return compact('pub_classifications', 'subjects');
 
 	}
 
 	public function view() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -297,7 +252,7 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('publication', 'archives_documents', 'publication_links', 'exhibitions', 'auth');
+				return compact('publication', 'archives_documents', 'publication_links', 'exhibitions');
 
 			}
 		}
@@ -307,22 +262,6 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Publications::index');
-        }
 
 		$publication = Publications::create();
 
@@ -374,24 +313,6 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Publications::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
 
 		$publication = Publications::first(array(
 			'with' => 'Archives',
@@ -456,24 +377,6 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function attachments() {
-
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Publications::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
 
 		$publication = Publications::first(array(
 			'with' => 'Archives',
@@ -542,17 +445,6 @@ class PublicationsController extends \lithium\action\Controller {
 
 	public function history() {
 	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
@@ -578,7 +470,7 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'publication', 'archives_histories', 'publications_histories');
+				return compact('publication', 'archives_histories', 'publications_histories');
 			}
 		}
 		
@@ -587,29 +479,11 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
         
 		$publication = Publications::first(array(
 			'with' => 'Archives',
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
-        
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-			return $this->redirect(array(
-        		'Publications::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT

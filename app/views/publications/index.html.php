@@ -4,6 +4,8 @@ $classification = isset($options['classification']) ? $options['classification']
 
 $this->title('Publications');
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -51,9 +53,9 @@ $this->title('Publications');
 
 	</ul>
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
-				<a class="btn btn-inverse" href="/publications/add"><i class="icon-plus-sign icon-white"></i> Add a Publication</a>
+				<a class="btn btn-inverse" href="/publications/add"><i class="icon-plus-sign icon-white"></i> Add Publication</a>
 		
 		<?php endif; ?>
 
@@ -64,7 +66,7 @@ $this->title('Publications');
 
 	<div class="alert alert-danger">There are no Publications in the Archive.</div>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 
 		<div class="alert alert-success">You can add the first Publication by clicking the <strong><?=$this->html->link('Add a Publication','/publications/add/'); ?></strong> button.</div>
 

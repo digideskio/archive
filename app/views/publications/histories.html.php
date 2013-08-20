@@ -2,9 +2,12 @@
 
 $this->title('Publication History');
 
+$auth = $this->authority->auth();
+
 if($auth->timezone_id) {
 	$tz = new DateTimeZone($auth->timezone_id);
 }
+$authority_can_edit = $this->authority->canEdit();
 
 ?>
 
@@ -59,7 +62,7 @@ if($auth->timezone_id) {
 	</ul>
 	
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="/publications/add/"><i class="icon-plus-sign icon-white"></i> Add Publication</a>
 		

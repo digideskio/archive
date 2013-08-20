@@ -2,9 +2,13 @@
 
 $this->title($publication->title);
 
+$auth = $this->authority->auth();
+
 if($auth->timezone_id) {
 	$tz = new DateTimeZone($auth->timezone_id);
 }
+
+$authority_can_edit = $this->authority->canEdit();
 
 ?>
 
@@ -35,7 +39,7 @@ if($auth->timezone_id) {
 		<?=$this->html->link('View', $this->url(array('Publications::view', 'slug' => $publication->archive->slug))); ?>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 	
 		<li><?=$this->html->link('Edit','/publications/edit/'.$publication->archive->slug); ?></li>
 		<li><?=$this->html->link('Attachments','/publications/attachments/'.$publication->archive->slug); ?></li>

@@ -27,46 +27,44 @@ class PublicationsControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 	
-	public function testUnauthorizedAccess() {
-	/*	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'publications'
-		);
+	public function testRules() {
+	
+		$ctrl = new PublicationsController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$publications = new PublicationsController(array('request' => $this->request));
-		
-		$response = $publications->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $publications->search();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertTrue(!empty($rules));
 
-		$response = $publications->languages();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
 
-		$response = $publications->subjects();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertEqual(1, sizeof($rules['search']));
+		$this->assertEqual('allowAnyUser', $rules['search'][0]['rule']);
 
-		$response = $publications->search();
-		$this->assertEqual($response->headers["Location"], "/login");
+		$this->assertEqual(1, sizeof($rules['languages']));
+		$this->assertEqual('allowAnyUser', $rules['languages'][0]['rule']);
 
-		$response = $publications->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $publications->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $publications->edit();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $publications->history();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $publications->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertEqual(1, sizeof($rules['subjects']));
+		$this->assertEqual('allowAnyUser', $rules['subjects'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['histories']));
+		$this->assertEqual('allowAnyUser', $rules['histories'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowEditorUser', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['history']));
+		$this->assertEqual('allowAnyUser', $rules['history'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
+	
 }
 
 ?>

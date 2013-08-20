@@ -6,6 +6,8 @@ $hasDocuments = sizeof($archives_documents) > 0;
 $hasLinks = sizeof($publication_links) > 0;
 $hasExhibitions = sizeof($exhibitions) > 0;
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -30,7 +32,7 @@ $hasExhibitions = sizeof($exhibitions) > 0;
 		<a href="#">View</a>
 	</li>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 	
 		<li><?=$this->html->link('Edit','/publications/edit/'.$publication->archive->slug); ?></li>
 		<li><?=$this->html->link('Attachments','/publications/attachments/'.$publication->archive->slug); ?></li>
