@@ -19,20 +19,25 @@ use lithium\security\Auth;
 
 class LinksController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'add' => array(
+			array('rule' => 'allowAdminUser', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowAdminUser', 'redirect' => "Pages::home"),
+		),
+		'delete' => array(
+			array('rule' => 'allowAdminUser', 'redirect' => "Pages::home"),
+		),
+	);
+
 	public function index() {
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$saved = isset($this->request->query['saved']) ? $this->request->query['saved'] : '';
 
@@ -48,23 +53,10 @@ class LinksController extends \lithium\action\Controller {
 			'order' => $order,
 			'page' => $page
 		));
-		return compact('links', 'total', 'page', 'limit', 'auth', 'saved');
+		return compact('links', 'total', 'page', 'limit', 'saved');
 	}
 
 	public function view() {
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$link = Links::first($this->request->id);
 
@@ -86,27 +78,10 @@ class LinksController extends \lithium\action\Controller {
 			'order' => array('earliest_date' => 'DESC')
 		));
 
-		return compact('link', 'works', 'exhibitions', 'publications', 'auth');
+		return compact('link', 'works', 'exhibitions', 'publications');
 	}
 
 	public function add() {
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Links::index');
-        }
 
 		$link = Links::create();
 
@@ -118,25 +93,6 @@ class LinksController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		// If the user is not authorized, redirect to the login screen
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-		
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Links::view', 'args' => array($this->request->id))
-        	);
-        }
 
 		$link = Links::find($this->request->id);
 		$redirect = isset($this->request->query['work']) ? '/works/edit/'.$this->request->query['work'] : '';
@@ -154,33 +110,15 @@ class LinksController extends \lithium\action\Controller {
 	      		return $this->redirect("/links?saved=$link->id");
 			}
 		}
-		return compact('link', 'auth', 'redirect');
+		return compact('link', 'redirect');
 	}
 
 	public function delete() {
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Links::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Links::view', 'args' => array($this->request->id))
-        	);
-        }
 
 		Links::find($this->request->id)->delete();
 		return $this->redirect('Links::index');

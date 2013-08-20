@@ -29,30 +29,27 @@ class LinksControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 
-	public function testUnauthorizedAccess() {
-	/*	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'links'
-		);
+	public function testRules() {
+	
+		$ctrl = new LinksController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$links = new LinksController(array('request' => $this->request));
-		
-		$response = $links->index();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $links->view();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $links->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $links->edit();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $links->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['index']));
+		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['view']));
+		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowAdminUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['edit']));
+		$this->assertEqual('allowAdminUser', $rules['edit'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowAdminUser', $rules['delete'][0]['rule']);
 	}
 }
 

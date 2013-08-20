@@ -4,6 +4,8 @@ $title = $link->title ?: "Link";
 
 $this->title($title);
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 
@@ -31,7 +33,7 @@ $this->title($title);
 			<?=$this->html->link('View','/links/view/'.$link->id); ?>
 		</li>
 
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 		<li>
 			<?=$this->html->link('Edit','/links/edit/'.$link->id); ?>
 		</li>

@@ -2,6 +2,8 @@
 
 $this->title('Links');
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -30,7 +32,7 @@ $this->title('Links');
 
 	</ul>
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/links/add"><i class="icon-plus-sign icon-white"></i> Add a Link</a>
 		
@@ -95,7 +97,7 @@ $(document).ready(function() {
 					</a>
 				<?php endif; ?>
 
-				<?php if($auth->role->name == 'Admin'): ?>
+				<?php if($authority_can_edit): ?>
 
 				<?php if ($link->id == $saved): ?>
 					<span class="label">Saved</span>
