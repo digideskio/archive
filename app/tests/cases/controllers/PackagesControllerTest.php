@@ -24,27 +24,21 @@ class PackagesControllerTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
-//	public function testIndex() {}
-//	public function testView() {}
 	public function testAdd() {}
-//	public function testEdit() {}
 	public function testDelete() {}
 
-	public function testUnauthorizedAccess() {
-	/*	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'packages'
-		);
+	public function testRules() {
+	
+		$ctrl = new PackagesController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$albums = new PackagesController(array('request' => $this->request));
-		
-		$response = $albums->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $albums->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 
