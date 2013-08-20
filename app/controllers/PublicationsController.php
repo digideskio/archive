@@ -47,6 +47,9 @@ class PublicationsController extends \lithium\action\Controller {
 		'edit' => array(
 			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
 		),
+		'attachments' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
 		'history' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),

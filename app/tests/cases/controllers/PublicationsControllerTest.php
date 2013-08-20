@@ -58,6 +58,9 @@ class PublicationsControllerTest extends \lithium\test\Unit {
 		$this->assertEqual(1, sizeof($rules['edit']));
 		$this->assertEqual('allowEditorUser', $rules['edit'][0]['rule']);
 
+		$this->assertEqual(1, sizeof($rules['attachments']));
+		$this->assertEqual('allowEditorUser', $rules['attachments'][0]['rule']);
+
 		$this->assertEqual(1, sizeof($rules['history']));
 		$this->assertEqual('allowAnyUser', $rules['history'][0]['rule']);
 
