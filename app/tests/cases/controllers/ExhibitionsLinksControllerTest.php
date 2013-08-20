@@ -19,29 +19,21 @@ class ExhibitionsLinksControllerTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
-	public function testIndex() {}
-	public function testView() {}
 	public function testAdd() {}
-	public function testEdit() {}
 	public function testDelete() {}
 
-	public function testUnauthorizedAccess() {
-	/*	
-		Auth::clear('default');
+	public function testRules() {
 	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'exhibitions_links'
-		);
+		$ctrl = new ExhibitionsLinksController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$exhibitions_links = new ExhibitionsLinksController(array('request' => $this->request));
-		
-		$response = $exhibitions_links->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $exhibitions_links->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 

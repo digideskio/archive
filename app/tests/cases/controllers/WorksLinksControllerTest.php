@@ -25,23 +25,18 @@ class WorksLinksControllerTest extends \lithium\test\Unit {
 	public function testEdit() {}
 	public function testDelete() {}
 
-	public function testUnauthorizedAccess() {
-	/*	
-		Auth::clear('default');
+	public function testRules() {
 	
-		$this->request = new Request();
-		$this->request->params = array(
-			'controller' => 'works_links'
-		);
+		$ctrl = new WorksLinksController();
+		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
-		$works_links = new WorksLinksController(array('request' => $this->request));
-		
-		$response = $works_links->add();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
-		$response = $works_links->delete();
-		$this->assertEqual($response->headers["Location"], "/login");
-	*/	
+		$this->assertTrue(!empty($rules));
+
+		$this->assertEqual(1, sizeof($rules['add']));
+		$this->assertEqual('allowEditorUser', $rules['add'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['delete']));
+		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
 }
 
