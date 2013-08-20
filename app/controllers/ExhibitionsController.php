@@ -22,21 +22,40 @@ use lithium\core\Libraries;
 
 class ExhibitionsController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'search' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'histories' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'venues' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'view' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Pages::home"),
+		),
+		'add' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'edit' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'attachments' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+		'history' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'delete' => array(
+			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
+		),
+	);
+
 	public function index() {
-    
-    	// Check authorization
-	    $check = (Auth::check('default')) ?: null;
-	
-		// If the user is not authorized, redirect to the login screen
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-        // Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -56,24 +75,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$pdf = "Exhibitions-" . date('Y-m-d') . ".pdf";
 		$content = compact('pdf');
 
-		return compact('exhibitions', 'total', 'page', 'limit', 'auth', 'pdf', 'li3_pdf', 'content');
+		return compact('exhibitions', 'total', 'page', 'limit', 'pdf', 'li3_pdf', 'content');
 	}
 
 	public function search() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$exhibitions = array();
 
@@ -142,21 +147,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		}
 
-		return compact('exhibitions', 'condition', 'type', 'query', 'total', 'page', 'limit', 'auth');
+		return compact('exhibitions', 'condition', 'type', 'query', 'total', 'page', 'limit');
 	}
 
 	public function histories() {
-
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$limit = 50;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -170,24 +164,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'page' => $page
 		));
 		
-		return compact('auth', 'archives_histories', 'total', 'page', 'limit', 'auth');
+		return compact('archives_histories', 'total', 'page', 'limit');
 	}
 
 	public function venues() {
-
-		// Check authorization
-		$check = (Auth::check('default')) ?: null;
-
-		// If the user is not authorized, redirect to the login screen
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-
-		// Look up the current user with his or her role
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 
 		$exhibitions_venues = Exhibitions::find('all', array(
 			'fields' => array('venue', 'count(venue) as exhibits'),
@@ -222,22 +202,11 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return array('name' => $ec->country, 'count' => $ec->countries);
 		}, array('collect' => false));
 
-		return compact('venues', 'cities', 'countries', 'auth');
+		return compact('venues', 'cities', 'countries');
 
 	}
 
 	public function view() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -317,7 +286,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'works', 'total', 'publications', 'archives_documents', 'exhibitions_links', 'auth');
+			return compact('exhibition', 'works', 'total', 'publications', 'archives_documents', 'exhibitions_links');
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -325,22 +294,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-        
-        // If the user is not an Admin or Editor, redirect to the index
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect('Exhibitions::index');
-        }
         
 		$exhibition = Exhibitions::create();
 
@@ -413,17 +366,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
@@ -504,22 +446,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 	public function attachments() {
 
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
-
-		// If the user is not an Admin or Editor, redirect to the index
-		if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-			return $this->redirect('Exhibitions::index');
-		}
-
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array(
@@ -545,22 +471,11 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'order' => array('slug' => 'ASC')
 		));
 
-		return compact('exhibition', 'exhibition_links', 'archives_documents', 'auth');
+		return compact('exhibition', 'exhibition_links', 'archives_documents');
 
 	}
 
 	public function history() {
-	
-		$check = (Auth::check('default')) ?: null;
-	
-		if (!$check) {
-			return $this->redirect('Sessions::add');
-		}
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 	
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
@@ -588,7 +503,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		
 		
 				//Send the retrieved data to the view
-				return compact('auth', 'exhibition', 'archives_histories', 'exhibitions_histories', 'auth');
+				return compact('exhibition', 'archives_histories', 'exhibitions_histories');
 			}
 		}
 		
@@ -597,30 +512,12 @@ class ExhibitionsController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-    
-	    $check = (Auth::check('default')) ?: null;
-	
-        if (!$check) {
-            return $this->redirect('Sessions::add');
-        }
-        
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
 		
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array(
 			'slug' => $this->request->params['slug'],
 		)));
-        
-        // If the user is not an Admin or Editor, redirect to the record view
-        if($auth->role->name != 'Admin' && $auth->role->name != 'Editor') {
-        	return $this->redirect(array(
-        		'Exhibitions::view', 'args' => array($this->request->params['slug']))
-        	);
-        }
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT

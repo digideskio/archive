@@ -2,6 +2,8 @@
 
 $this->title('Exhibitions');
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -33,7 +35,7 @@ $this->title('Exhibitions');
 
 	</ul>
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
 		
@@ -48,7 +50,7 @@ $this->title('Exhibitions');
 
 	<div class="alert alert-danger">There are no Exhibitions in the Archive.</div>
 
-	<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+	<?php if($authority_can_edit): ?>
 
 		<div class="alert alert-success">You can create the first Exhibition by clicking the <strong><?=$this->html->link('Add a Exhibition','/exhibitions/add/'); ?></strong> button.</div>
 

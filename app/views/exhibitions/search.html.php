@@ -13,6 +13,8 @@ $conditions_list = array(
 	'remarks' => 'Remarks',
 );
 
+$authority_can_edit = $this->authority->canEdit();
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -49,7 +51,7 @@ $conditions_list = array(
 
 	</ul>
 	<div class="btn-toolbar">
-		<?php if($auth->role->name == 'Admin' || $auth->role->name == 'Editor'): ?>
+		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
 		
