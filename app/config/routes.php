@@ -46,6 +46,9 @@ Router::connect('/logout', 'Sessions::delete');
 
 Router::connect('/register', 'Users::register');
 
+// Route for publicly accessible package downloads
+Router::connect('/files/package/{:file}', array('Files::package'));
+
 //Check if the user is logged in
 $check = Auth::check('default');
 
@@ -151,7 +154,6 @@ Router::connect('/files/small/{:file}', array('Files::small'));
 Router::connect('/files/thumb/{:file}', array('Files::thumb'));
 Router::connect('/files/download/{:file}', array('Files::download'));
 
-Router::connect('/files/package/{:file}', array('Files::package'));
 Router::connect('/files/secure/{:file}', array('Files::secure'));
 
 Router::connect('/packages/add', array('Packages::add'));

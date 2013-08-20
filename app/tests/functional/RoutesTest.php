@@ -45,6 +45,7 @@ class RoutesTest extends \lithium\test\Integration {
 			'/login' => array('controller' => 'Sessions', 'action' => 'add'),
 			'/logout' => array('controller' => 'Sessions', 'action' => 'delete'),
 			'/register' => array('controller' => 'Users', 'action' => 'register'),
+			'/files/package/{:file}' => array('controller' => 'Files', 'action' => 'package'),
 			'/{:args}' => array('action' => 'index')
 		);
 
