@@ -91,6 +91,15 @@ $authority_can_edit = $this->authority->canEdit();
 					<td><?=$publication->archive->classification ?></td>
 				</tr>
 				<?php endif; ?>
+				<?php
+					if($publication->archive->type):
+				?>
+				<tr>
+					<td><i class="icon-asterisk"></i></td>
+					<td class="meta">Type</td>
+					<td><?=$publication->archive->type ?></td>
+				</tr>
+				<?php endif; ?>
 				<tr>
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">Publication&nbsp;ID</td>
