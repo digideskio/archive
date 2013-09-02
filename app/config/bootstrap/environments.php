@@ -16,11 +16,11 @@
  * 'test' if we are running the /test page. Otherwise, it defaults to the 'production' environment.
  * We can change this behavior by passing a new anonymous function to Environment::is().
  * 
- * Here, we will determine the environment based an an Apache config variable. If the variable is
- * not set, we will default to the 'development' environment. You can change the environment in
+ * Instead, we will determine the environment based an an Apache config variable. If the variable
+ * is not set, we will default to the 'production' environment. You can change the environment in
  * your Apache config by adding the following line:
  * 
- * SetEnv LITHIUM_ENVIRONMENT "production"
+ * SetEnv LITHIUM_ENVIRONMENT "development"
  *
  * @see lithium\core\Environment
  */
@@ -28,7 +28,7 @@
 use lithium\core\Environment;
 
 Environment::is(function($request) {
-    return $request->env('lithium_environment') ?: 'development';
+    return $request->env('LITHIUM_ENVIRONMENT') ?: 'production';
 });
 
 ?>
