@@ -25,6 +25,7 @@ $this->form->config(
 ); 
 
 $pub_classes_list = array_combine($pub_classifications, $pub_classifications);
+$pub_types_list = array_combine($pub_types, $pub_types);
 
 $location_list = json_encode($locations);
 
@@ -142,13 +143,12 @@ foreach ($documents as $doc) {
 				</div>
 			</div>
 
+			<?php $pub_types_list = array_merge(array('' => 'Choose one...'), $pub_types_list); ?>
+
 			<div class="control-group">
+				<?=$this->form->label('type', 'Type', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<div class="interview">
-						<label class="checkbox">
-						<?=$this->form->checkbox('type', array('value' => 'Interview'));?> Publication is an Interview
-						</label>
-					</div>
+					<?=$this->form->select('type', $pub_types_list); ?>
 				</div>
 			</div>
 
@@ -183,7 +183,6 @@ $(document).ready(function() {
 	$('#PublicationsForm .web').closest('.control-group').hide();
 	$('#PublicationsForm .journal').closest('.control-group').hide();
 	$('#PublicationsForm .pages').closest('.control-group').hide();
-	$('#PublicationsForm .interview').closest('.control-group').hide();
 
 	$("#PublicationsForm label[for='PublicationsEarliestDate']").html('Date');
 	
@@ -237,12 +236,6 @@ $(document).ready(function() {
 		if (pub == 'Website') {
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Website Name');
 		} 
-
-		if (pub == 'Journal' || pub == 'Magazine' || pub == 'Website' || pub == 'Newspaper') {
-			$('#PublicationsForm .interview').closest('.control-group').fadeIn(); 
-		} else {
-			$('#PublicationsForm .interview').closest('.control-group').hide(); 
-		}
 
 		if (pub == '') {
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher');

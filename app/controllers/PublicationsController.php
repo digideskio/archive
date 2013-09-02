@@ -277,6 +277,7 @@ class PublicationsController extends \lithium\action\Controller {
 		}
 
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
 		$publications_locations = Publications::find('all', array(
 			'fields' => 'location',
@@ -311,7 +312,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 		}
 
-		return compact('publication', 'pub_classifications', 'locations', 'language_names', 'documents');
+		return compact('publication', 'pub_classifications', 'pub_types', 'locations', 'language_names', 'documents');
 	}
 
 	public function edit() {
@@ -322,6 +323,7 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
 		if (!$publication) {
 			return $this->redirect('Publications::index');
@@ -370,6 +372,7 @@ class PublicationsController extends \lithium\action\Controller {
 		return compact(
 			'publication',
 			'pub_classifications',
+			'pub_types',
 			'archives_documents',
 			'publication_links',
 			'locations',

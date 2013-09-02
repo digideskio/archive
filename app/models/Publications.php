@@ -60,6 +60,12 @@ class Publications extends \lithium\data\Model {
 		);
 	}
 
+	public static function types() {
+		return array(
+			"Interview",
+		);
+	}
+
 	public function byline($entity) {
 		
     	$author = $entity->author;
