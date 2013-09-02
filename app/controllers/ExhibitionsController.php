@@ -516,7 +516,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array(
-			'slug' => $this->request->params['slug'],
+			'Archives.slug' => $this->request->params['slug'],
 		)));
         
         // For the following to work, the delete form must have an explicit 'method' => 'post'
