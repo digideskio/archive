@@ -24,6 +24,8 @@ $this->form->config(
     )
 ); 
 
+$pub_classes_list = array_combine($pub_classifications, $pub_classifications);
+
 $location_list = json_encode($locations);
 
 $language_list = json_encode($language_names);
