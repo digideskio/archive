@@ -117,7 +117,7 @@ $language_list = json_encode($language_names);
 			<div class="control-group">
 				<?=$this->form->label('type', 'Type', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('types', $pub_types_list, array('value' => $publication->archive->type)); ?>
+					<?=$this->form->select('type', $pub_types_list, array('value' => $publication->archive->type)); ?>
 				</div>
 			</div>
 
