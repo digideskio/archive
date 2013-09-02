@@ -62,7 +62,7 @@ class Publications extends \lithium\data\Model {
 	}
 
 	public static function types() {
-		$types =  array(
+		$types = array(
 			"Interview",
 		);
 

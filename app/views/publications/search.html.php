@@ -47,6 +47,12 @@ $authority_can_edit = $this->authority->canEdit();
 				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
 			</li>
 		<?php endforeach; ?>
+			<li class="divider"></li>
+		<?php foreach($pub_types as $pt): ?>
+			<li>
+				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+			</li>
+		<?php endforeach; ?>
 			</ul>
 		</li>
 

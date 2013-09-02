@@ -69,7 +69,11 @@ class PublicationsController extends \lithium\action\Controller {
 		$options = $this->request->query;
 
 		if (isset($options['classification'])) {
-			$conditions = array('Archives.classification' => $options['classification']);
+			$conditions['Archives.classification'] = $options['classification'];
+		}
+		
+		if (isset($options['type'])) {
+			$conditions['Archives.type'] = $options['type'];
 		}
 
 		$total = Publications::count('all', array(
@@ -86,8 +90,9 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
-		return compact('publications', 'pub_classifications', 'total', 'page', 'limit', 'options');
+		return compact('publications', 'pub_classifications', 'pub_types', 'total', 'page', 'limit', 'options');
 	}
 	
 	public function histories() {
@@ -105,8 +110,9 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 		
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
-		return compact('archives_histories', 'total', 'page', 'limit', 'pub_classifications');
+		return compact('archives_histories', 'total', 'page', 'limit', 'pub_classifications', 'pub_types');
 	}
 
 	public function search() {
@@ -174,8 +180,9 @@ class PublicationsController extends \lithium\action\Controller {
 		}
 
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
-		return compact('publications', 'pub_classifications', 'condition', 'query', 'total', 'page', 'limit');
+		return compact('publications', 'pub_classifications', 'pub_types', 'condition', 'query', 'total', 'page', 'limit');
 	}
 
 	public function languages() {
@@ -192,8 +199,9 @@ class PublicationsController extends \lithium\action\Controller {
 		}, array('collect' => false));
 
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
-		return compact('pub_classifications', 'languages');
+		return compact('pub_classifications', 'pub_types', 'languages');
 
 	}
 
@@ -211,8 +219,9 @@ class PublicationsController extends \lithium\action\Controller {
 		}, array('collect' => false));
 
 		$pub_classifications = Publications::classifications();
+		$pub_types = Publications::types();
 
-		return compact('pub_classifications', 'subjects');
+		return compact('pub_classifications', 'pub_types', 'subjects');
 
 	}
 
@@ -297,8 +306,6 @@ class PublicationsController extends \lithium\action\Controller {
 		$language_names = $languages->map(function($lang) {
 			return $lang->name;
 		}, array('collect' => false));
-
-		$pub_classifications = Publications::classifications();
 
 		$documents = array();
 

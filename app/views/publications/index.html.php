@@ -1,6 +1,7 @@
 <?php 
 
 $classification = isset($options['classification']) ? $options['classification'] : NULL;
+$type = isset($options['type']) ? $options['type'] : NULL;
 
 $this->title('Publications');
 
@@ -35,6 +36,12 @@ $authority_can_edit = $this->authority->canEdit();
 				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
 			</li>
 		<?php endforeach; ?>
+			<li class="divider"></li>
+		<?php foreach($pub_types as $pt): ?>
+			<li <?php if ($pt == $type) { echo 'class="active"'; } ?>>
+				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+			</li>
+		<?php endforeach; ?>
 			</ul>
 		</li>
 
@@ -62,7 +69,7 @@ $authority_can_edit = $this->authority->canEdit();
 	</div>
 <div>
 
-<?php if($total == 0 && !$classification): ?>
+<?php if($total == 0 && !$classification && !$type): ?>
 
 	<div class="alert alert-danger">There are no Publications in the Archive.</div>
 
