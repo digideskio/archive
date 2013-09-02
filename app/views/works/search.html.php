@@ -14,14 +14,14 @@ $conditions_list = array(
 	'annotation' => 'Annotation',
 );
 
-if ($inventory) {
-	$conditions_list['location'] = 'Location';	
-}
-
 $authority_can_edit = $this->authority->canEdit();
 $authority_is_admin = $this->authority->isAdmin();
 
 $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+
+if ($inventory) {
+	$conditions_list['location'] = 'Location';	
+}
 
 ?>
 
