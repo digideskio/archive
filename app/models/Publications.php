@@ -4,6 +4,7 @@ namespace app\models;
 
 use lithium\util\Inflector;
 use lithium\util\Validator;
+use lithium\core\Environment;
 
 class Publications extends \lithium\data\Model {
 
@@ -61,9 +62,17 @@ class Publications extends \lithium\data\Model {
 	}
 
 	public static function types() {
-		return array(
+		$types =  array(
 			"Interview",
 		);
+
+		$publications = Environment::get('publications');
+
+		if ($publications) {
+			$types = isset($publications['types']) ? $publications['types'] : $types;
+		}
+
+		return $types;
 	}
 
 	public function byline($entity) {
