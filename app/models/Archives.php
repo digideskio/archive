@@ -82,7 +82,7 @@ class Archives extends \lithium\data\Model {
 			}
 		}
 
-		if( Validator::isValidDate($date) ) {
+		if (Validator::isDate($date, array('dmy', 'mdy', 'ymd', 'dMy', 'Mdy', 'My', 'my'))) {
 			$time = strtotime($date);
 			$date = date("Y-m-d", $time);
 		}
@@ -327,18 +327,4 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 	}
 
 	return $chain->next($self, $params, $chain);
-});
-
-
-Validator::add('validDate', function($value) {
-	
-	return (
-		Validator::isDate($value, 'dmy') ||
-		Validator::isDate($value, 'mdy') ||
-		Validator::isDate($value, 'ymd') ||
-		Validator::isDate($value, 'dMy') ||
-		Validator::isDate($value, 'Mdy') ||
-		Validator::isDate($value, 'My')  ||
-		Validator::isDate($value, 'my')
-	);
 });
