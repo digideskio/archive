@@ -64,20 +64,11 @@ class Archives extends \lithium\data\Model {
 			$format = 'M Y';
 		} else {
 
-			if (
-				Validator::isDate($date, 'dmy') ||
-				Validator::isDate($date, 'mdy') ||
-				Validator::isDate($date, 'ymd') ||
-				Validator::isDate($date, 'dMy') ||
-				Validator::isDate($date, 'Mdy')
-			) {
+			if (Validator::isDate($date, array('dmy', 'mdy', 'ymd', 'dMy', 'Mdy'))) {
 				$format = 'Y-m-d';
 			}
 
-			if (
-				Validator::isDate($date, 'My')  ||
-				Validator::isDate($date, 'my')
-			) {
+			if (Validator::isDate($date, array('My', 'my'))) {
 				$format = 'M Y'; // The format needs to be 'M Y' since 'Y-m' cannot be parsed as a valid date
 			}
 		}
