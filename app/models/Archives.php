@@ -37,17 +37,17 @@ class Archives extends \lithium\data\Model {
 			array('url', 'skipEmpty' => true, 'message' => 'The URL is not valid.'),
 		),
 		'latest_date' => array(
-			array('validDate',
+			array('date',
 				'skipEmpty' => true,
 				'message' => 'Please enter a valid date.',
-				'format' => 'any'
+				'format' => 'ymd'
 			)
 		),
 		'earliest_date' => array(
-			array('validDate',
+			array('date',
 				'skipEmpty' => true,
 				'message' => 'Please enter a valid date.',
-				'format' => 'any'
+				'format' => 'ymd'
 			)
 		)
     );
