@@ -6,6 +6,8 @@ use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\tests\mocks\data\MockArchives;
 
+use lithium\util\Validator;
+
 class ArchivesTest extends \lithium\test\Unit {
 
 	public function setUp() {}
@@ -227,6 +229,8 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 		$this->assertEqual($early_date_Ymd_expected, $archive->earliest_date);
 		$this->assertEqual($later_date_Ymd_expected, $archive->latest_date);
+		$this->assertEqual('Y-m-d', $archive->earliest_date_format);
+		$this->assertEqual('Y-m-d', $archive->latest_date_format);
 		
 		$archive->delete();
 		
@@ -243,6 +247,8 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 		$this->assertEqual($early_date_Y_expected, $archive->earliest_date, "If the user input the date $early_date_Y_input, it should be saved as $early_date_Y_expected, but it was saved as $archive->earliest_date");
 		$this->assertEqual($later_date_Y_expected, $archive->latest_date, "If the user input the date $later_date_Y_input, it should be saved as $later_date_Y_expected, but it was saved as $archive->latest_date");
+		$this->assertEqual('Y', $archive->earliest_date_format);
+		$this->assertEqual('Y', $archive->latest_date_format);
 		
 		$archive->delete();
 		
@@ -257,6 +263,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::first();
 		
 		$this->assertEqual($early_date_FY_expected, $archive->earliest_date, "If the user input the date $early_date_FY_input, it should be saved as $early_date_FY_expected, but it was saved as $archive->earliest_date");
+		$this->assertEqual('M Y', $archive->earliest_date_format);
 		
 		$archive->delete();
 		
@@ -271,6 +278,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::first();
 		
 		$this->assertEqual($early_date_MY_expected, $archive->earliest_date, "If the user input the date $early_date_MY_input, it should be saved as $early_date_MY_expected, but it was saved as $archive->earliest_date");
+		$this->assertEqual('M Y', $archive->earliest_date_format);
 		
 		$archive->delete();
 		
