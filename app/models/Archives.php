@@ -52,6 +52,15 @@ class Archives extends \lithium\data\Model {
 		)
     );
 
+	/**
+	 * This function takes a string and, if the string is a date, returns it in
+	 * the form 'Y-m-d', along with a representation of the original input's
+	 * format as either 'Y-m-d', 'M Y', or 'Y'
+	 *
+	 * In addition to the standard date validation formats, this function also
+	 * accepts dates in the form of 'Y' or 'Y-m', and fills in any missing
+	 * month or day as '01';
+	 */
 	public static function filterDate($date) {
 
 		$format = '';
