@@ -29,6 +29,7 @@ class Archives extends \lithium\data\Model {
 			'key' => 'id'
 		),
 	);
+
 	public $validates = array(
 		'title' => array(
 			array('notEmpty', 'message' => "You can't leave this blank."),
@@ -51,6 +52,54 @@ class Archives extends \lithium\data\Model {
 			)
 		)
     );
+
+	/**
+	 * Sample schema and query. For now we rely on the schema being lazy-loaded
+	 */
+	
+//	protected $_schema = array(
+//		'id'                   => array('type' => 'integer', 'null' => 'false'),
+//		'name'                 => array('type' => 'string', 'null' => false),
+//		'native_name'          => array('type' => 'string', 'null' => false),
+//		'language_code'        => array('type' => 'string', 'null' => false),
+//		'controller'           => array('type' => 'string', 'null' => false),
+//		'classification'       => array('type' => 'string', 'null' => false),
+//		'type'                 => array('type' => 'string', 'null' => false),
+//		'catalog_level'        => array('type' => 'string', 'null' => false),
+//		'description'          => array('type' => 'string', 'null' => false),
+//		'slug'                 => array('type' => 'string', 'null' => false),
+//		'earliest_date'        => array('type' => 'date', 'null' => false, 'default' => ''),
+//		'earliest_date_format' => array('type' => 'string', 'null' => false),
+//		'latest_date'          => array('type' => 'date', 'null' => false, 'default' => ''),
+//		'latest_date_format'   => array('type' => 'string', 'null' => false),
+//		'date_created'         => array('type' => 'date', 'null' => false),
+//		'date_modified'        => array('type' => 'date', 'null' => false),
+//		'user_id'              => array('type' => 'integer', 'null' => 'false'),
+//		'parent_id'            => array('type' => 'integer', 'null' => 'false'),
+//	);
+
+//	protected $_query = array(
+//		'fields' => array(
+//			'id',
+//			'name',
+//			'native_name',
+//			'language_code',
+//			'controller',
+//			'classification',
+//			'type',
+//			'catalog_level',
+//			'description',
+//			'slug',
+//			'earliest_date',
+//			'earliest_date_format',
+//			'latest_date',
+//			'latest_date_format',
+//			'date_created',
+//			'date_modified',
+//			'user_id',
+//			'parent_id',
+//		),
+//	);
 
 	/**
 	 * This function takes a string and, if the string is a date, returns it in
