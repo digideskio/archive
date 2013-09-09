@@ -41,6 +41,23 @@ class ArchivesTest extends \lithium\test\Unit {
 		$second_archive->delete();
 	}
 
+	public function testSlugsAfterSave() {
+		$archive = Archives::create();
+		$data = array (
+			"name" => "Archive Name",
+		);
+
+		$archive->save($data);
+
+		$slug = "Archive-Name";
+
+		$first = Archives::first();
+
+		$this->assertTrue(!empty($first->slug), 'The slug for the archive should be created and saved');
+		$this->assertEqual($slug, $first->slug);
+	}
+
+
 	public function testCreateWithNoTitle() {
 		$archive = Archives::create();
 		$data = array (
