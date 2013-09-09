@@ -297,6 +297,73 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 	}
 
+	public function testValidators() {
+
+		$archive = Archives::create();
+
+		$this->assertFalse(
+			$archive->validates(),
+			'The archive should not validate with a null title'
+		);
+
+		$errors = $archive->errors();
+
+		$this->assertTrue(
+			!empty($errors['title']),
+			'An archive with a null title should produce an error'
+		);
+
+		$this->assertTrue(
+			empty($errors['url']),
+			'An archive with a null URL should not produce an error'
+		);
+
+		$this->assertTrue(
+			empty($errors['earliest_date']),
+			'An archive with a null earliest date should not produce an error'
+		);
+
+		$this->assertTrue(
+			empty($errors['latest_date']),
+			'An archive with a null latest date should not produce an error'
+		);
+
+		$archive = Archives::create(array(
+			'title' => '',
+			'url' => '',
+			'earliest_date' => '',
+			'latest_date' => ''
+		));
+
+		$this->assertFalse(
+			$archive->validates(),
+			'The archive should not validate with a blank title'
+		);
+
+		$errors = $archive->errors();
+
+		$this->assertTrue(
+			!empty($errors['title']),
+			'An archive with a blank title should produce an error'
+		);
+
+		$this->assertTrue(
+			empty($errors['url']),
+			'An archive with a blank URL should not produce an error'
+		);
+
+		$this->assertTrue(
+			empty($errors['earliest_date']),
+			'An archive with a blank earliest date should not produce an error'
+		);
+
+		$this->assertTrue(
+			empty($errors['latest_date']),
+			'An archive with a blank latest date should not produce an error'
+		);
+
+	}
+
 }
 
 ?>
