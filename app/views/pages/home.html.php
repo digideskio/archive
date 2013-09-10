@@ -21,7 +21,11 @@ $this->title('Home');
 <?php if ($updates->count()): ?>
 
 	<div class="alert alert-info alert-block">
-		<table class="table">
+		<table class="table table-compact">
+		<thead>
+			<tr>
+				<td class="meta">Updates</td>
+			</tr>
 		<?php foreach ($updates as $update): ?>
 			<tr><td>
 				<strong><?=$update->subject ?></strong> &mdash; <?=$update->body ;?>
