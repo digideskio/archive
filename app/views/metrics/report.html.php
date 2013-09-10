@@ -2,6 +2,12 @@
 
 $this->title('Metrics');
 
+$auth = $this->authority->auth();
+
+if($auth->timezone_id) {
+	$tz = new DateTimeZone($auth->timezone_id);
+}
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -70,4 +76,52 @@ $this->title('Metrics');
 		</table>
 	</div>
 </div>
+<?php endif; ?>
+
+<?php if ($archives->count()): ?>
+<div class="row">
+	<div class="span10">
+		<table class="table">
+			<thead>
+				<tr>
+					<td class="meta">
+						<strong>Contributions</strong>
+					</td>
+				</tr>
+			</thead>
+			<tbody>
+				<?php foreach ($archives as $archive): ?>
+				<?php
+					$start_date_time = new DateTime($archive->date_modified);
+
+					if (isset($tz)) {
+						$start_date_time->setTimeZone($tz);
+					}
+					$start_date_display = $start_date_time->format("Y-m-d");
+				?>
+		<tr>
+			<td class="meta">
+				<?=$archive->controller ?>
+			</td>
+			<td>
+				<strong>
+				<?=$this->html->link($archive->name,"/$archive->controller/history/".$archive->slug); ?>
+				</strong>
+			</td>
+			<td><?=$start_date_display ?></td>
+			<td>
+				<?php if( $archive->user->id ): ?>
+				<span style="font-size: smaller;">
+					<?=$this->html->link($archive->user->name,'/users/view/'.$archive->user->username); ?>
+				</span>
+				<?php endif; ?>
+			</td>
+		</tr>
+				<?php endforeach; ?>
+			</tbody>
+
+		</table>
+	</div>
+</div>
+
 <?php endif; ?>

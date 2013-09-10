@@ -363,6 +363,12 @@ class MetricsController extends \lithium\action\Controller {
 			'conditions' => array('date_created' => array('>' => $dates['month']))
 		));
 
+		$archives = Archives::find('all', array(
+			'with' => array('Users'),
+			'conditions' => array('date_modified' => array('>' => $dates['month'])),
+			'order' => array('date_modified' => 'DESC')
+		));
+
 		$li3_pdf = Libraries::get("li3_pdf");
 		$pdf = 'Archive-Report-' . $dates['now'] . '.pdf';
 		$content = compact('pdf');
@@ -370,6 +376,7 @@ class MetricsController extends \lithium\action\Controller {
 		return compact(
 			'dates',
 			'updates',
+			'archives',
 			'li3_pdf',
 			'pdf',
 			'content'
