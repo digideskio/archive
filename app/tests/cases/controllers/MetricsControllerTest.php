@@ -43,6 +43,9 @@ class MetricsControllerTest extends \lithium\test\Unit {
 		$this->assertEqual(1, sizeof($rules['usage']));
 		$this->assertEqual('allowAnyUser', $rules['usage'][0]['rule']);
 
+		$this->assertEqual(1, sizeof($rules['report']));
+		$this->assertEqual('allowAnyUser', $rules['report'][0]['rule']);
+
 	}
 }
 

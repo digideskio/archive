@@ -173,6 +173,7 @@ Router::connect('/notices/edit/{:id}', array('Notices::edit'));
 Router::connect('/notices/delete/{:id}', array('Notices::delete'));
 
 Router::connect('/metrics/usage/{:file}.{:type}', array('Metrics::usage'));
+Router::connect('/metrics/report/{:file}.{:type}', array('Metrics::report'));
 
 //Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
 

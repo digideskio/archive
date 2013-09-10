@@ -31,6 +31,11 @@ $this->title('Metrics');
 	<li class="active">
 		<?=$this->html->link('Usage','/metrics/usage'); ?>
 	</li>
+
+	<li>
+		<?=$this->html->link('Report','/metrics/report'); ?>
+	</li>
+
 </ul>
 
 	<?php if($li3_pdf): ?>

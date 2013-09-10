@@ -13,6 +13,7 @@ use app\models\Components;
 use app\models\ArchivesHistories;
 use app\models\ArchivesDocuments;
 use app\models\Requests;
+use app\models\Notices;
 
 use app\models\Users;
 use app\models\Roles;
@@ -32,6 +33,9 @@ class MetricsController extends \lithium\action\Controller {
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'usage' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'report' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 	);
@@ -326,6 +330,51 @@ class MetricsController extends \lithium\action\Controller {
 			'content'
 		);
 		
+	}
+
+	public function report() {
+	    $check = (Auth::check('default')) ?: null;
+	
+        // Look up the current user with his or her role
+		$auth = Users::first(array(
+			'conditions' => array('username' => $check['username']),
+			'with' => array('Roles')
+		));
+
+		if($auth->timezone_id) {
+			$tz = new \DateTimeZone($auth->timezone_id);
+		}
+
+		$now_date = new \DateTime();
+		$month_date = $now_date->sub(new \DateInterval('P28D'));
+		$now_date = new \DateTime();
+
+		if (isset($tz)) {
+			$now_date->setTimeZone($tz);
+		};
+
+		$dates = array(
+			'now' => $now_date->format('Y-m-d'),
+			'month' => $month_date->format('Y-m-d'),
+		);
+
+		$updates = Notices::find('all', array(
+			'order' => array('date_created' => 'DESC'),
+			'conditions' => array('date_created' => array('>' => $dates['month']))
+		));
+
+		$li3_pdf = Libraries::get("li3_pdf");
+		$pdf = 'Archive-Report-' . $dates['now'] . '.pdf';
+		$content = compact('pdf');
+
+		return compact(
+			'dates',
+			'updates',
+			'li3_pdf',
+			'pdf',
+			'content'
+		);
+
 	}
 
 }

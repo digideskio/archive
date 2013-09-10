@@ -24,6 +24,10 @@ $this->title('Metrics');
 	<li>
 		<?=$this->html->link('Usage','/metrics/usage'); ?>
 	</li>
+
+	<li>
+		<?=$this->html->link('Report','/metrics/report'); ?>
+	</li>
 </ul>
 
 <div class="hero-unit">
