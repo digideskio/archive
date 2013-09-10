@@ -90,7 +90,10 @@ if($auth->timezone_id) {
 				</tr>
 			</thead>
 			<tbody>
-				<?php foreach ($archives as $archive): ?>
+
+			<?php $last_controller = ''; ?>
+
+			<?php foreach ($archives as $archive): ?>
 				<?php
 					$start_date_time = new DateTime($archive->date_modified);
 
@@ -100,12 +103,19 @@ if($auth->timezone_id) {
 					$start_date_display = $start_date_time->format("Y-m-d");
 				?>
 		<tr>
-			<td class="meta">
-				<?=$archive->controller ?>
-			</td>
+				<?php if ($archive->controller != $last_controller): ?> 
+				<td class="meta">
+					<?=$archive->controller ?>
+				</td>
+				<?php else: ?>
+					<td style="border-top: 1px solid #fff;">
+					</td>
+				<?php endif; ?>
+
+				<?php $last_controller = $archive->controller; ?>
 			<td>
 				<strong>
-				<?=$this->html->link($archive->name,"/$archive->controller/history/".$archive->slug); ?>
+				<?=$this->html->link($archive->name,"/$archive->controller/view/".$archive->slug); ?>
 				</strong>
 			</td>
 			<td><?=$start_date_display ?></td>
@@ -117,7 +127,7 @@ if($auth->timezone_id) {
 				<?php endif; ?>
 			</td>
 		</tr>
-				<?php endforeach; ?>
+			<?php endforeach; ?>
 			</tbody>
 
 		</table>

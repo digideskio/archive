@@ -366,7 +366,10 @@ class MetricsController extends \lithium\action\Controller {
 		$archives = Archives::find('all', array(
 			'with' => array('Users'),
 			'conditions' => array('date_modified' => array('>' => $dates['month'])),
-			'order' => array('date_modified' => 'DESC')
+			'order' => array(
+				'controller' => 'ASC',
+				'name' => 'ASC',
+			)
 		));
 
 		$li3_pdf = Libraries::get("li3_pdf");
