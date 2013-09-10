@@ -54,6 +54,7 @@ $this->title('Notices');
 			<div class="accordion-inner">
 
 				<p>
+					<span style="text-transform: uppercase; color:#D14;"><?=$notice->path ?></span>
 					<small style="font-size: smaller;"><?=$notice->date_modified ?></small>
 
 					<?php if($this->authority->isAdmin()): ?>

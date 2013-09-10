@@ -10,7 +10,12 @@ $this->form->config(
     )
 ); 
 
-$pages_list = array('' => 'Choose one...', 'home' => 'Home');
+$pages_list = array(
+	'' => 'Choose one...',
+	'alerts' => 'Alerts',
+	'home' => 'Home',
+	'updates' => 'Updates'
+);
 
 ?>
 

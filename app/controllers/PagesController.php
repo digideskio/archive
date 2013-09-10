@@ -56,10 +56,10 @@ class PagesController extends \lithium\action\Controller {
 
 	public function home() {
 
-		$path = 'home';
+		$path = 'alerts';
 
 		$conditions = compact('path');
-		$order = array('date_modified' => 'DESC');
+		$order = array('date_created' => 'DESC');
 
 		$notices = Notices::find('all', array(
 			'conditions' => $conditions,
