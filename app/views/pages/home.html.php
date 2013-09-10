@@ -5,8 +5,8 @@ $this->title('Home');
 ?>
 
 <div class="well" style="margin-bottom: 14px;">
-	<h1>Welcome to the Archive.</h1>
-	<p>All of our Artworks, Documents, and Exhibitions are collected here. Use the sidebar to navigate through the archive.</p>
+	<h1>Welcome.</h1>
+	<p>All of our Artworks, Documents, and Exhibitions are collected here. Use the sidebar to navigate through the site.</p>
 </div>
 
 <?php foreach ($alerts as $alert): ?>

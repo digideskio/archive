@@ -2,7 +2,8 @@
 <html>
 <head>
 	<?php echo $this->html->charset();?>
-	<title>Archive &gt; <?php echo $this->title(); ?></title>
+	<?php $host = $this->request()->env('HTTP_HOST'); ?>
+	<title><?php echo $host; ?> &gt; <?php echo $this->title(); ?></title>
 	<?php echo $this->html->style(array('bootstrap.min.css', 'bootstrap-responsive.min.css', 'app.css')); ?>
 	<?php echo $this->scripts(); ?>
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>

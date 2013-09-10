@@ -1,4 +1,5 @@
 <?php $check = lithium\security\Auth::check('default'); $username = $check['username']; ?>
+<?php $host = $this->request()->env('HTTP_HOST'); ?>
 
 <div class="navbar navbar-fixed-top navbar-inverse" >
 	<div class="navbar-inner">
@@ -8,7 +9,7 @@
 				<span class="icon-bar"></span>
 				<span class="icon-bar"></span>
 			</a>
-			<a class="brand" href="/home">ARCHIVE</a>
+			<a class="brand" href="/home"><?=$host ?></a>
 
 			<div class="nav-collapse">
 
