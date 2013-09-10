@@ -117,6 +117,9 @@ if($auth->timezone_id) {
 				<strong>
 				<?=$this->html->link($archive->name,"/$archive->controller/view/".$archive->slug); ?>
 				</strong>
+				<span class="muted" style="font-size: smaller;">
+					<?=$archive->classification ?>
+				</span>
 			</td>
 			<td><?=$start_date_display ?></td>
 			<td>
