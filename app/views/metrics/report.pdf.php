@@ -1,6 +1,6 @@
 <?php 
 
-$title = 'Archive Report ' . $dates['now'];
+$title = 'Archive Progress Report ' . $dates['month'] . ' :: ' . $dates['now'];
 
 $auth = $this->authority->auth();
 

@@ -345,8 +345,24 @@ class MetricsController extends \lithium\action\Controller {
 			$tz = new \DateTimeZone($auth->timezone_id);
 		}
 
-		$now_date = new \DateTime();
-		$month_date = $now_date->sub(new \DateInterval('P28D'));
+		$earliest_record = Archives::connection()->read(
+			"select date_modified from archives order by date_modified ASC limit 1"
+		);
+
+		$all_time_date = new \DateTime($earliest_record[0]['date_modified']);
+		$today = new \DateTime();
+		$interval = $today->diff($all_time_date);
+		$total_days = $interval->days;
+
+		$month_date = new \DateTime();
+		$today = new \DateTime();
+		$month_date = $today->sub(new \DateInterval('P30D'));
+		$today = new \DateTime();
+		$month_date_interval = $today->diff($month_date);
+		$month_days = $month_date_interval->days;
+
+		$month_date = $total_days > $month_days ? $month_date : $all_time_date;
+
 		$now_date = new \DateTime();
 
 		if (isset($tz)) {

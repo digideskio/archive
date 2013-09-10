@@ -52,9 +52,13 @@ if($auth->timezone_id) {
 
 </div>
 
-<h1>Monthly Report</h2>
+<h1>Progress Report</h2>
 
-<p class="lead"><?=$dates['now'] ?></p>
+<p class="lead">
+	<?=$dates['month'] ?>
+	::
+	<?=$dates['now'] ?>
+</p>
 
 <?php if ($updates->count()): ?>
 <div class="row">
