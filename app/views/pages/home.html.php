@@ -9,14 +9,31 @@ $this->title('Home');
 	<p>All of our Artworks, Documents, and Exhibitions are collected here. Use the sidebar to navigate through the archive.</p>
 </div>
 
-<?php foreach ($notices as $notice): ?>
+<?php foreach ($alerts as $alert): ?>
 	
 	<div class="alert alert-block">
-		<h4><?=$notice->subject ?> <small class="meta"><?=$notice->date_modified ?></small></h4>
-		<p><?=$notice->body ?></p>
+		<h4><?=$alert->subject ?> <small class="meta"><?=$alert->date_created ?></small></h4>
+		<p><?=$alert->body ?></p>
 	</div>
 
 <?php endforeach; ?>
+
+<?php if ($updates->count()): ?>
+
+	<div class="alert alert-info alert-block">
+		<table class="table">
+		<?php foreach ($updates as $update): ?>
+			<tr><td>
+				<strong><?=$update->subject ?></strong> &mdash; <?=$update->body ;?>
+				<small class="meta"><?=$update->date_created ?>
+			</td></tr>
+
+		<? endforeach; ?>
+		</table>
+
+	</div>
+
+<?php endif; ?>
 
 <div class="row">
 

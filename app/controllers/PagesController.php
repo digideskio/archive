@@ -61,10 +61,16 @@ class PagesController extends \lithium\action\Controller {
 		$conditions = compact('path');
 		$order = array('date_created' => 'DESC');
 
-		$notices = Notices::find('all', array(
+		$alerts = Notices::find('all', array(
 			'conditions' => $conditions,
 			'order' => $order,
 			'limit' => 1
+		));
+
+		$updates = Notices::find('all', array(
+			'conditions' => array('path' => 'updates'),
+			'order' => $order,
+			'limit' => 5
 		));
 
 		$works = Archives::find('all', array(
@@ -94,7 +100,7 @@ class PagesController extends \lithium\action\Controller {
 			'order' => $order,
 		));
 
-		return compact('notices', 'works', 'exhibitions', 'publications', 'documents');
+		return compact('alerts', 'updates', 'works', 'exhibitions', 'publications', 'documents');
 
 	}
 	
