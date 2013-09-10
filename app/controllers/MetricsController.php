@@ -156,7 +156,7 @@ class MetricsController extends \lithium\action\Controller {
 		$interval = $now_date->diff($all_time_date);
 		$total_days = $interval->days;
 
-		$month_date = $now_date->sub(new \DateInterval('P28D'));
+		$month_date = $now_date->sub(new \DateInterval('P30D'));
 		$now_date = new \DateTime();
 		$month_date_interval = $now_date->diff($month_date);
 		$month_days = $month_date_interval->days;
