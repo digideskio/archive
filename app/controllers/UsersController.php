@@ -35,7 +35,8 @@ class UsersController extends \lithium\action\Controller {
 	public function index() {
 
 		$users = Users::find('all', array(
-			'with' => array('Roles')
+			'with' => array('Roles'),
+			'order' => array('username' => 'ASC')
 		));
 		
 		return compact('users');
