@@ -9,8 +9,8 @@
 		<div class="row">
 			<div class="span2 offset2">
 				<div class="login-icon text-center">
-					<img src="img/Map@2x.png" alt="Welcome to the Archive" />
-					<h4>You have left <small>the Archive</small></h4>
+					<img src="img/Map@2x.png" alt="Goodbye" />
+					<h4 style="text-align: center;"><small>Goodbye</small></h4>
 				</div>
 			</div>
 
