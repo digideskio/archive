@@ -5,3 +5,8 @@ app/config/bootstrap/connections.php
 app/config/bootstrap/filesystems.php
 .*.sw[op]
 app/resources/archive/*
+
+# Migrations
+app/config/db/logs
+ruckus.php
+ruckusing.conf.php
