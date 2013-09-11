@@ -18,11 +18,9 @@ First, clone this repository into your public webroot:
 	git submodule init
 	git submodule update
 
-Clone these extra libraries if you want support for PDFs and database migrations:
+For PDF support, clone the following library:
 
 	cd app/libraries
-	git clone https://github.com/nashape/li3_ruckusing_migrations.git
-	git clone https://github.com/nashape/ruckusing-migrations.git
 	git clone git://github.com/masom/li3_pdf.git
 
 Finally, download [TCPDF](http://www.tcpdf.org) and extract it into app/libraries.
@@ -53,15 +51,15 @@ Create a new database user for the archive using MySQL shell:
 
 	CREATE USER 'USER'@'localhost' IDENTIFIED BY 'PASSWORD';
 
-You must create a minimum of two databases for 'development' and 'test' purposes. You can also add a 'production' database if you have the need. Create each database in MySQL shell as following:
+You must create at least one 'production' database for the site. You can also add 'development' and 'test' databases if you have the need. Create each database in MySQL shell as following:
 
-	CREATE DATABASE development DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+	CREATE DATABASE production DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
 
 Next, give your database user the necessary privileges:
 
 	GRANT ALL PRIVILEGES ON development.* TO 'USERNAME'@'localhost';
 
-Repeat the above MySQL commands for 'test' and 'production' databases.
+Repeat the above MySQL commands for 'test' and 'development' databases.
 
 Rename the connections-sample.php file to connections.php:
 
@@ -79,20 +77,30 @@ In the connections.php file you can also enable or disable the Architecture and 
 	Environment::set('development', array('architecture' => true));
 	Environment::set('test', array('architecture' => true));
 
-If you are setting up a production site, add this line to your Apache virtual host file:
+If you are setting up a development site, add this line to your Apache virtual host file:
 
-	SetEnv LITHIUM_ENVIRONMENT "production"
+	SetEnv LITHIUM_ENVIRONMENT "development"
 
 To set up your filesystem, it is enough to:
 
 	cp app/config/bootstrap/filesystems-sample.php app/config/bootstrap/filesystems.php
 
-To set up the database, I prefer to use the original ruckusing migrations instead of the Lithium console command. First edit app/libraries/ruckusing-migrations/config/database.inc.php and add the details for the databse you want to use. Then:
+### Migrations
 
-	cp app/config/db/migrate/* app/libraries/ruckusing_migrations/db/migrate
-	cd app/libraries/ruckusing_migrations
-	php main.php db:setup
-	php main.php db:migrate
+To set up the database, you need to run all migration files against it. Migrations scripts are stored in `app/config/db/migrate/`.
+
+First, make a copy of the included ruckusing-migrations database file:
+
+    cp app/config/db/database.inc.php ruckusing.conf.php
+
+Edit the file, and fill in your database credentials again, and save it. Next, make a copy of the main ruckusing-migrations script:
+
+	cp libraries/ruckusing-migrations/ruckus.php .
+
+Use the script to setup the database and run the migrations:
+
+	php ruckus.php db:setup ENV=production
+	php ruckus.php db:migrate ENV=production
 
 Finally, navigate to the /login page of your new site. You will be prompted to create a new admin account.
 
