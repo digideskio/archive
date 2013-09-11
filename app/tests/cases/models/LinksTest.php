@@ -3,8 +3,7 @@
 namespace app\tests\cases\models;
 
 use app\models\Links;
-use app\models\Works;
-use app\models\WorksLinks;
+use app\models\ArchivesLinks;
 
 class LinksTest extends \lithium\test\Unit {
 
@@ -13,8 +12,7 @@ class LinksTest extends \lithium\test\Unit {
 	public function tearDown() {
 	
 		Links::all()->delete();
-		Works::all()->delete();
-		WorksLinks::all()->delete();
+		ArchivesLinks::all()->delete();
 	}
 
 	public function testDuplicateLinks() {
@@ -88,12 +86,12 @@ class LinksTest extends \lithium\test\Unit {
 		$link_id = $link->id;
 		$work_id = '1';
 
-		$work_link = WorksLinks::create();
+		$work_link = ArchivesLinks::create();
 		$success = $work_link->save(compact($work_id, $link_id));
 
 		$this->assertTrue($success);
 
-		$work_link_count = WorksLinks::count();
+		$work_link_count = ArchivesLinks::count();
 
 		$this->assertEqual(1, $work_link_count);
 		

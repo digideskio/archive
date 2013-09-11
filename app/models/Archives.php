@@ -10,7 +10,7 @@ class Archives extends \lithium\data\Model {
 
 	public $belongsTo = array("Users");
 
-	public $hasMany = array("ArchivesDocuments");
+	public $hasMany = array("ArchivesDocuments", "ArchivesLinks");
 
 	public $hasOne = array(
 		'Works' => array (

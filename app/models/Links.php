@@ -7,7 +7,7 @@ use lithium\util\Validator;
 
 class Links extends \lithium\data\Model {
 
-	public $hasMany = array('WorksLinks', 'PublicationsLinks', 'ExhibitionsLinks');
+	public $hasMany = array('ArchivesLinks');
 
 	public $validates = array(
 		'url' => array(
@@ -16,30 +16,6 @@ class Links extends \lithium\data\Model {
 			array('urlUnique', 'message' => 'The URL is already in use.')
 		),
 	);
-
-	public function _init() {
-
-		parent::_init($options);
-
-		static::applyFilter('save', function($self, $params, $chain) {
-			// Custom pre-dispatch logic goes here
-			date_default_timezone_set('UTC');
-
-			// Check if this is a new record
-			if(!$params['entity']->exists()) {
-
-				// Set the date created
-				$params['data']['date_created'] = date("Y-m-d H:i:s");
-
-			}
-
-			// Set the date modified
-			$params['data']['date_modified'] = date("Y-m-d H:i:s");
-
-			return $chain->next($self, $params, $chain);
-
-		});
-	}
 
 	public function elision($entity) {
 
@@ -84,20 +60,31 @@ Validator::add('urlUnique', function($value, $rule, $options) {
 	return true;
 });
 
+Links::applyFilter('save', function($self, $params, $chain) {
+	// Custom pre-dispatch logic goes here
+	date_default_timezone_set('UTC');
+
+	// Check if this is a new record
+	if(!$params['entity']->exists()) {
+
+		// Set the date created
+		$params['data']['date_created'] = date("Y-m-d H:i:s");
+
+	}
+
+	// Set the date modified
+	$params['data']['date_modified'] = date("Y-m-d H:i:s");
+
+	return $chain->next($self, $params, $chain);
+
+});
+
 Links::applyFilter('delete', function($self, $params, $chain) {
 
 	$link_id = $params['entity']->id;
 
 	//Delete any relationships
-	WorksLinks::find('all', array(
-		'conditions' => array('link_id' => $link_id)
-	))->delete();
-
-	ExhibitionsLinks::find('all', array(
-		'conditions' => array('link_id' => $link_id)
-	))->delete();
-
-	PublicationsLinks::find('all', array(
+	ArchivesLinks::find('all', array(
 		'conditions' => array('link_id' => $link_id)
 	))->delete();
 

@@ -4,12 +4,11 @@ namespace app\controllers;
 
 use app\models\Links;
 
+use app\models\Archives;
+use app\models\ArchivesLinks;
 use app\models\Works;
-use app\models\WorksLinks;
 use app\models\Exhibitions;
-use app\models\ExhibitionsLinks;
 use app\models\Publications;
-use app\models\PublicationsLinks;
 
 use app\models\Users;
 use app\models\Roles;
@@ -48,7 +47,7 @@ class LinksController extends \lithium\action\Controller {
 		$total = Links::count();
 
 		$links = Links::all(array(
-			'with' => array('WorksLinks', 'PublicationsLinks', 'ExhibitionsLinks'),
+			'with' => array('ArchivesLinks'),
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
@@ -61,21 +60,21 @@ class LinksController extends \lithium\action\Controller {
 		$link = Links::first($this->request->id);
 
 		$works = Works::find('all', array(
-			'with' => array('WorksLinks', 'Archives'),
-			'conditions' => array('WorksLinks.link_id' => $link->id),
-			'order' => array('earliest_date' => 'DESC')
+			'with' => array('ArchivesLinks', 'Archives'),
+			'conditions' => array('ArchivesLinks.link_id' => $link->id),
+			'order' => array('Archives.earliest_date' => 'DESC')
 		));
 
 		$exhibitions = Exhibitions::find('all', array(
-			'with' => array('ExhibitionsLinks', 'Archives'),
-			'conditions' => array('ExhibitionsLinks.link_id' => $link->id),
-			'order' => array('earliest_date' => 'DESC')
+			'with' => array('ArchivesLinks', 'Archives'),
+			'conditions' => array('ArchivesLinks.link_id' => $link->id),
+			'order' => array('Archives.earliest_date' => 'DESC')
 		));
 
 		$publications = Publications::find('all', array(
-			'with' => array('PublicationsLinks', 'Archives'),
-			'conditions' => array('PublicationsLinks.link_id' => $link->id),
-			'order' => array('earliest_date' => 'DESC')
+			'with' => array('ArchivesLinks', 'Archives'),
+			'conditions' => array('ArchivesLinks.link_id' => $link->id),
+			'order' => array('Archives.earliest_date' => 'DESC')
 		));
 
 		return compact('link', 'works', 'exhibitions', 'publications');
@@ -86,7 +85,6 @@ class LinksController extends \lithium\action\Controller {
 		$link = Links::create();
 
 		if (($this->request->data) && $link->save($this->request->data)) {
-			//return $this->redirect(array('Links::view', 'args' => array($link->id)));
         	return $this->redirect("/links?saved=$link->id");
 		}
 		return compact('link');
@@ -95,14 +93,13 @@ class LinksController extends \lithium\action\Controller {
 	public function edit() {
 
 		$link = Links::find($this->request->id);
-		$redirect = isset($this->request->query['work']) ? '/works/edit/'.$this->request->query['work'] : '';
-		$redirect = isset($this->request->query['publication']) ? '/publications/edit/'.$this->request->query['publication'] : $redirect;
-		$redirect = isset($this->request->query['exhibition']) ? '/exhibitions/edit/'.$this->request->query['exhibition'] : $redirect;
+
+		$redirect = isset($this->request->query['redirect']) ? $this->request->env('HTTP_REFERER') : '';
+
 		if (!$link) {
 			return $this->redirect('Links::index');
 		}
 		if (($this->request->data) && $link->save($this->request->data)) {
-			//return $this->redirect(array('Links::view', 'args' => array($link->id)));
 
 			if ($this->request->data['redirect']) {
 				return $this->redirect($this->request->data['redirect']);

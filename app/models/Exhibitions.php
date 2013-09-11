@@ -20,6 +20,11 @@ class Exhibitions extends \lithium\data\Model {
 			'key' => array(
 				'id' => 'archive_id',
 		)),
+		'ArchivesLinks' => array(
+			'to' => 'app\models\ArchivesLinks',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
 
 	);
 
@@ -113,8 +118,8 @@ Exhibitions::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('archive_id' => $exhibition_id)
 	))->delete();
 
-	ExhibitionsLinks::find('all', array(
-		'conditions' => array('exhibition_id' => $exhibition_id)
+	ArchivesLinks::find('all', array(
+		'conditions' => array('archive_id' => $exhibition_id)
 	))->delete();
 
 	return $chain->next($self, $params, $chain);
@@ -128,19 +133,19 @@ Exhibitions::applyFilter('save', function($self, $params, $chain) {
 
 	if(!$params['entity']->exists()) {
 
-		$exhibition_id = $params['data']['id'];
+		$archive_id = $params['data']['id'];
 
 	} else {
-		$exhibition_id = $params['entity']->id;
+		$archive_id = $params['entity']->id;
 	}
 
 	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
 	$title = isset($params['data']['title']) ? $params['data']['title'] : null;
 
-	if ($exhibition_id && $url) {
-		$exhibitions_links = ExhibitionsLinks::create();
-		$data = compact('exhibition_id', 'url', 'title');
-		$exhibitions_links->save($data);
+	if ($archive_id && $url) {
+		$archives_link = ArchivesLinks::create();
+		$data = compact('archive_id', 'url', 'title');
+		$archives_link->save($data);
 	}
 
 	return $result;

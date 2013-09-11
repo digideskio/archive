@@ -2,14 +2,14 @@
 
 namespace app\models;
 
-class WorksLinks extends \lithium\data\Model {
+class ArchivesLinks extends \lithium\data\Model {
 
-	public $belongsTo = array('Works', 'Links');
+	public $belongsTo = array('Archives', 'Links');
 
 	public $validates = array();
 }
 
-WorksLinks::applyFilter('save', function($self, $params, $chain) {
+ArchivesLinks::applyFilter('save', function($self, $params, $chain) {
 
 	$success = false;
 

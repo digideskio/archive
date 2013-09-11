@@ -41,6 +41,21 @@ $authority_can_edit = $this->authority->canEdit();
 
 <?=$this->partial->exhibition(compact('exhibition')); ?>
 
+<?php if ($archives_links->count()): ?>
+
+	<div class="alert alert-info alert-block">
+	<?php foreach($archives_links as $al): ?>
+	<p>
+	<i class="icon-check"></i> 
+	<a href="<?=$al->link->url ?>">
+		<strong><?=$al->link->elision()?></strong>
+	</a>
+	</p>
+	<?php endforeach; ?>
+	</div>
+
+<?php endif; ?>
+
 <?php if(sizeof($archives_documents) > 0): ?>
 
 	<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents, 'showBar' => true)); ?>

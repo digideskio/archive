@@ -9,7 +9,7 @@ use app\models\ExhibitionsHistories;
 use app\models\Works;
 use app\models\Publications;
 use app\models\Components;
-use app\models\ExhibitionsLinks;
+use app\models\ArchivesLinks;
 use app\models\ArchivesDocuments;
 
 use app\models\Users;
@@ -270,10 +270,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 			}
 
-			$exhibitions_links = ExhibitionsLinks::find('all', array(
+			$archives_links = ArchivesLinks::find('all', array(
 				'with' => 'Links',
-				'conditions' => array('exhibition_id' => $exhibition->id),
-				'order' => array('date_modified' =>  'DESC')
+				'conditions' => array('ArchivesLinks.archive_id' => $exhibition->id),
+				'order' => array('Links.date_modified' =>  'DESC')
 			));
 
 			$archives_documents = ArchivesDocuments::find('all', array(
@@ -286,7 +286,14 @@ class ExhibitionsController extends \lithium\action\Controller {
 			));
 			
 			//Send the retrieved data to the view
-			return compact('exhibition', 'works', 'total', 'publications', 'archives_documents', 'exhibitions_links');
+			return compact(
+				'exhibition',
+				'works',
+				'total',
+				'publications',
+				'archives_documents',
+				'archives_links'
+			);
 		}
 		
 		//since no record was specified, redirect to the index page
@@ -377,12 +384,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $this->redirect('Exhibitions::index');
 		}
 
-		$exhibition_links = ExhibitionsLinks::find('all', array(
-			'with' => 'Links',
-			'conditions' => array('exhibition_id' => $exhibition->id),
-			'order' => array('date_modified' =>  'DESC')
-		));
-
 		$archives_documents = ArchivesDocuments::find('all', array(
 			'with' => array(
 				'Documents',
@@ -441,7 +442,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $con->country;
 		}, array('collect' => false));
 		
-		return compact('exhibition', 'archives_documents', 'exhibition_links', 'titles', 'venues', 'cities', 'countries');
+		return compact('exhibition', 'archives_documents', 'titles', 'venues', 'cities', 'countries');
 	}
 
 	public function attachments() {
@@ -456,10 +457,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $this->redirect('Exhibitions::index');
 		}
 
-		$exhibition_links = ExhibitionsLinks::find('all', array(
+		$archives_links = ArchivesLinks::find('all', array(
 			'with' => 'Links',
-			'conditions' => array('exhibition_id' => $exhibition->id),
-			'order' => array('date_modified' =>  'DESC')
+			'conditions' => array('ArchivesLinks.archive_id' => $exhibition->id),
+			'order' => array('Links.date_modified' =>  'DESC')
 		));
 
 		$archives_documents = ArchivesDocuments::find('all', array(
@@ -471,7 +472,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'order' => array('slug' => 'ASC')
 		));
 
-		return compact('exhibition', 'exhibition_links', 'archives_documents');
+		return compact('exhibition', 'archives_links', 'archives_documents');
 
 	}
 

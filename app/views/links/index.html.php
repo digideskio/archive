@@ -74,28 +74,9 @@ $(document).ready(function() {
 		<p>
 			<?=$this->html->link($title, $link->url); ?>
 
-				<?php 
-					$has_works = sizeof($link->works_links) ? true : false; 
-					$has_exhibitions = sizeof($link->exhibitions_links) ? true : false; 
-					$has_publications = sizeof($link->publications_links) ? true : false; 
-				?>
-				<?php if($has_works): ?>
-					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has artwork" class="model-tip">
-					<i class="icon-picture"></i>
-					</a>
-				<?php endif; ?>
-
-				<?php if($has_exhibitions): ?>
-					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has exhibitions" class="model-tip">
-					<i class="icon-eye-open"></i>
-					</a>
-				<?php endif; ?>
-
-				<?php if($has_publications): ?>
-					<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="This link has publications" class="model-tip">
-					<i class="icon-book"></i>
-					</a>
-				<?php endif; ?>
+				<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="View Link" class="model-tip">
+				<i class="icon-eye-open"></i>
+				</a>
 
 				<?php if($authority_can_edit): ?>
 

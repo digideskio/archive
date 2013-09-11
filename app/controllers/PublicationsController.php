@@ -4,10 +4,10 @@ namespace app\controllers;
 
 use app\models\Publications;
 use app\models\PublicationsHistories;
-use app\models\PublicationsLinks;
 
 use app\models\Archives;
 use app\models\ArchivesHistories;
+use app\models\ArchivesLinks;
 use app\models\ArchivesDocuments;
 use app\models\Documents;
 use app\models\Exhibitions;
@@ -247,12 +247,10 @@ class PublicationsController extends \lithium\action\Controller {
 					'order' => array('Documents.slug' => 'ASC')
 				));
 
-				$publication_links = PublicationsLinks::find('all', array(
-					'with' => array(
-						'Links'
-					),
-					'conditions' => array('publication_id' => $publication->id),
-					'order' => array('date_modified' =>  'DESC')
+				$archives_links = ArchivesLinks::find('all', array(
+					'with' => 'Links',
+					'conditions' => array('ArchivesLinks.archive_id' => $publication->id),
+					'order' => array('Links.date_modified' =>  'DESC')
 				));
 
 				$exhibitions = Exhibitions::find('all', array(
@@ -264,7 +262,7 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('publication', 'archives_documents', 'publication_links', 'exhibitions');
+				return compact('publication', 'archives_documents', 'archives_links', 'exhibitions');
 
 			}
 		}
@@ -340,23 +338,6 @@ class PublicationsController extends \lithium\action\Controller {
 			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
 		}
 
-		$archives_documents = ArchivesDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Documents.Formats'
-			),
-			'conditions' => array('archive_id' => $publication->id),
-			'order' => array('Documents.slug' => 'ASC')
-		));
-
-		$publication_links = PublicationsLinks::find('all', array(
-			'with' => array(
-				'Links'
-			),
-			'conditions' => array('publication_id' => $publication->id),
-			'order' => array('date_modified' =>  'DESC')
-		));
-
 		$publications_locations = Publications::find('all', array(
 			'fields' => 'location',
 			'group' => 'location',
@@ -381,7 +362,6 @@ class PublicationsController extends \lithium\action\Controller {
 			'pub_classifications',
 			'pub_types',
 			'archives_documents',
-			'publication_links',
 			'locations',
 			'language_names'
 		);
@@ -411,12 +391,10 @@ class PublicationsController extends \lithium\action\Controller {
 			'order' => array('Documents.slug' => 'ASC')
 		));
 
-		$publication_links = PublicationsLinks::find('all', array(
-			'with' => array(
-				'Links'
-			),
-			'conditions' => array('publication_id' => $publication->id),
-			'order' => array('date_modified' =>  'DESC')
+		$archives_links = ArchivesLinks::find('all', array(
+			'with' => 'Links',
+			'conditions' => array('ArchivesLinks.archive_id' => $publication->id),
+			'order' => array('Links.date_modified' =>  'DESC')
 		));
 
 		$order = array('title' => 'ASC');
@@ -447,7 +425,7 @@ class PublicationsController extends \lithium\action\Controller {
 		return compact(
 			'publication',
 			'archives_documents',
-			'publication_links',
+			'archives_links',
 			'exhibitions',
 			'other_exhibitions'
 		);

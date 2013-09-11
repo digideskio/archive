@@ -8,7 +8,7 @@ use app\models\PublicationsHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 
-use app\models\PublicationsLinks;
+use app\models\ArchivesLinks;
 use app\models\Links;
 
 class PublicationsTest extends \lithium\test\Unit {
@@ -22,6 +22,9 @@ class PublicationsTest extends \lithium\test\Unit {
 
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
+
+		Links::all()->delete();
+		ArchivesLinks::all()->delete();
 	
 	}
 
@@ -122,7 +125,7 @@ class PublicationsTest extends \lithium\test\Unit {
 
 		$this->assertEqual(0, $link_count);
 
-		$publication_link_count = PublicationsLinks::count();
+		$publication_link_count = ArchivesLinks::count();
 
 		$this->assertEqual(0, $publication_link_count);
 
@@ -153,6 +156,83 @@ class PublicationsTest extends \lithium\test\Unit {
 		$publication = Publications::create($data);
 
 		$this->assertEqual("Given Surname (ed.)", $publication->byline());
+
+	}
+
+	public function testLinks() {
+		
+		$data = array(
+			'title' => 'Publication Title',
+			'url' => 'http://example.com'
+		);
+
+		$pub = Publications::create();
+
+		$success = $pub->save($data);
+
+		$this->assertTrue($success);
+
+		$link = Links::first();
+		$link_count = Links::count();
+
+		$this->assertTrue(!empty($link));
+		$this->assertEqual(1, $link_count);
+
+		$this->assertEqual($pub->title, $link->title);
+
+		$pub_link = ArchivesLinks::first();
+		$pub_link_count = ArchivesLinks::count();
+
+		$this->assertTrue(!empty($pub_link));
+		$this->assertEqual(1, $pub_link_count);
+
+		$this->assertEqual($pub->id, $pub_link->archive_id);
+		$this->assertEqual($link->id, $pub_link->link_id);
+
+		$new_data = array(
+			'title' => 'Another Titlte',
+			'url' => 'http://example.com'
+		);
+
+		$new_pub = Publications::create();
+
+		$success = $new_pub->save($new_data);
+
+		$this->assertTrue($success);
+
+		$new_link_count = Links::count();
+
+		$this->assertEqual(1, $new_link_count);
+
+		$new_pubs_links_count = ArchivesLinks::count();
+
+		$this->assertEqual(2, $new_pubs_links_count);
+
+		$new_pub_link = ArchivesLinks::find('first', array(
+			'conditions' => array('archive_id' => $new_pub->id)
+		));
+
+		$this->assertEqual($new_pub_link->link_id, $link->id);
+
+		$new_pub->delete();
+	
+		$after_delete_links_count = Links::count();
+
+		$this->assertEqual(1, $after_delete_links_count);
+
+		$after_delete_pubs_links_count = ArchivesLinks::count();
+
+		$this->assertEqual(1, $after_delete_pubs_links_count);
+
+		$pub->delete();
+
+		$final_delete_links_count = Links::count();
+
+		$this->assertEqual(1, $final_delete_links_count);
+
+		$final_delete_pubs_links_count = ArchivesLinks::count();
+
+		$this->assertEqual(0, $final_delete_pubs_links_count);
 
 	}
 

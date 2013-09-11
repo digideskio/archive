@@ -1,47 +1,27 @@
 <?php
-
-	//Get 'Works' from 'app\models\Works', etc.
-	$model_name = basename(str_replace('\\', '/', $model->model()));
-	$model_name_sing = lithium\util\Inflector::singularize($model_name);
-
-	//Get 'WorksLinks' from 'app\models\WorksLinks', etc.
-	$junction_name = basename(str_replace('\\', '/', $junctions->model()));
-
-	//Get 'works_links/add', etc.
-	$add_junction_url = $this->url(array("$junction_name::add"));
-
-	//Get 'work_id', etc.
-	$model_id_name = lithium\util\Inflector::underscore("$model_name_sing id");
-	$model_id_value = $model->id;
-
-	//Get 'work_slug', etc.
-	$model_slug_name = lithium\util\Inflector::underscore("$model_name_sing slug");
-	$model_slug_value = $model->slug ?: $model->archive->slug;
-	
+	$add_link_url = $this->url(array("ArchivesLinks::add"));
 ?>
 
 	<div class="well">
 		<legend>Links</legend>
 		<table class="table">
-			<?php foreach ($junctions as $junction): ?>
+			<?php foreach ($archives_links as $al): ?>
 			
 <?php
 
-	$delete_junction_url = $this->url(array("$junction_name::delete", 'id'=> $junction->id));
-
-	//The query parameter ?model=slug is used as a callback. If we edit this record,
-	//we want to be able to return here after saving (see Links::edit)
-	$edit_link_url = $this->url(array('Links::edit', 'id' => $junction->link->id)) . 
-		"?" . strtolower($model_name_sing) . "=" . $model_slug_value; 
+	$delete_link_url = $this->url(array("ArchivesLinks::delete", 'id' => $al->id));
+	
+	//  When generating the edit link URL, indicate to LinksController to redirect back here
+	$edit_link_url = $this->url(array('Links::edit', 'id' => $al->link->id)) . '?redirect=1';
 
 ?>
 				<tr>
 					<td>
-						<?=$this->html->link($junction->link->elision(), $junction->link->url); ?>
+						<?=$this->html->link($al->link->elision(), $al->link->url); ?>
 					</td>
 					<td align="right" style="text-align:right">
-			<?=$this->form->create($junction, array('url' => $delete_junction_url, 'method' => 'post')); ?>
-			<input type="hidden" name="<?=$model_slug_name?>" value="<?=$model_slug_value ?>" />
+			<?=$this->form->create($al, array('url' => $delete_link_url, 'method' => 'post')); ?>
+			<input type="hidden" name="archive_id" value="<?=$archive->id ?>" />
 			<?=$this->html->link('Edit', $edit_link_url, array('class' => 'btn btn-mini')); ?>
 			<?=$this->form->submit('Remove', array('class' => 'btn btn-mini btn-danger')); ?>
 			<?=$this->form->end(); ?>
@@ -51,13 +31,12 @@
 			<?php endforeach; ?>
 		</table>
 
-		<?=$this->form->create(null, array('url' => $add_junction_url, 'method' => 'post')); ?>
+		<?=$this->form->create(null, array('url' => $add_link_url, 'method' => 'post')); ?>
 			<legend>Add a Link</legend>
 			<?=$this->form->field('url', array('label' => 'URL'));?>
 			
-			<input type="hidden" name="title" value="<?=$model->title ?>" />
-			<input type="hidden" name="<?=$model_slug_name ?>" value="<?=$model_slug_value ?>" />
-			<input type="hidden" name="<?=$model_id_name ?>" value="<?=$model_id_value ?>" />
+			<input type="hidden" name="title" value="<?=$archive->name ?>" />
+			<input type="hidden" name="archive_id" value="<?=$archive->id ?>" />
 		
 		<?=$this->form->submit('Add Link', array('class' => 'btn btn-inverse')); ?>
 		<?=$this->form->end(); ?>

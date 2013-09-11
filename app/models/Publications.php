@@ -16,6 +16,11 @@ class Publications extends \lithium\data\Model {
 			'key' => array(
 				'id' => 'archive_id',
 		)),
+		'ArchivesLinks' => array(
+			'to' => 'app\models\ArchivesLinks',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
 	);
 
 	public $belongsTo = array(
@@ -197,8 +202,8 @@ Publications::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('archive_id' => $publication_id)
 	))->delete();
 
-	PublicationsLinks::find('all', array(
-		'conditions' => array('publication_id' => $publication_id)
+	ArchivesLinks::find('all', array(
+		'conditions' => array('archive_id' => $publication_id)
 	))->delete();
 
 	return $chain->next($self, $params, $chain);
@@ -209,14 +214,14 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 
 	$result = $chain->next($self, $params, $chain);
 
-	$publication_id = $params['entity']->id;
+	$archive_id = $params['entity']->id;
 	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
 	$title = isset($params['data']['title']) ? $params['data']['title'] : null;
 
-	if ($publication_id && $url) {
-		$publications_links = PublicationsLinks::create();
-		$data = compact('publication_id', 'url', 'title');
-		$publications_links->save($data);
+	if ($archive_id && $url) {
+		$archives_link = ArchivesLinks::create();
+		$data = compact('archive_id', 'url', 'title');
+		$archives_link->save($data);
 	}
 
 	return $result;

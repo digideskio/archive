@@ -2,13 +2,13 @@
 
 namespace app\tests\cases\controllers;
 
-use app\controllers\ExhibitionsLinksController;
+use app\controllers\ArchivesLinksController;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
 
-class ExhibitionsLinksControllerTest extends \lithium\test\Unit {
+class ArchivesLinksControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
 	
@@ -19,12 +19,15 @@ class ExhibitionsLinksControllerTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
+	public function testIndex() {}
+	public function testView() {}
 	public function testAdd() {}
+	public function testEdit() {}
 	public function testDelete() {}
 
 	public function testRules() {
 	
-		$ctrl = new ExhibitionsLinksController();
+		$ctrl = new ArchivesLinksController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
 		$this->assertTrue(!empty($rules));

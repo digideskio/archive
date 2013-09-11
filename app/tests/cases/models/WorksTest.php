@@ -8,7 +8,7 @@ use app\models\WorksHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 
-use app\models\WorksLinks;
+use app\models\ArchivesLinks;
 use app\models\Links;
 
 class WorksTest extends \lithium\test\Unit {
@@ -24,7 +24,7 @@ class WorksTest extends \lithium\test\Unit {
 		ArchivesHistories::find("all")->delete();
 
 		Links::all()->delete();
-		WorksLinks::all()->delete();
+		ArchivesLinks::all()->delete();
 
 	}
 
@@ -186,7 +186,7 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertEqual(0, $link_count);
 
-		$work_link_count = WorksLinks::count();
+		$work_link_count = ArchivesLinks::count();
 
 		$this->assertEqual(0, $work_link_count);
 
@@ -216,13 +216,13 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertEqual($work->title, $link->title);
 
-		$work_link = WorksLinks::first();
-		$work_link_count = WorksLinks::count();
+		$work_link = ArchivesLinks::first();
+		$work_link_count = ArchivesLinks::count();
 
 		$this->assertTrue(!empty($work_link));
 		$this->assertEqual(1, $work_link_count);
 
-		$this->assertEqual($work->id, $work_link->work_id);
+		$this->assertEqual($work->id, $work_link->archive_id);
 		$this->assertEqual($link->id, $work_link->link_id);
 
 		$new_data = array(
@@ -240,12 +240,12 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertEqual(1, $new_link_count);
 
-		$new_works_links_count = WorksLinks::count();
+		$new_works_links_count = ArchivesLinks::count();
 
 		$this->assertEqual(2, $new_works_links_count);
 
-		$new_work_link = WorksLinks::find('first', array(
-			'conditions' => array('work_id' => $new_work->id)
+		$new_work_link = ArchivesLinks::find('first', array(
+			'conditions' => array('archive_id' => $new_work->id)
 		));
 
 		$this->assertEqual($new_work_link->link_id, $link->id);
@@ -256,7 +256,7 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertEqual(1, $after_delete_links_count);
 
-		$after_delete_works_links_count = WorksLinks::count();
+		$after_delete_works_links_count = ArchivesLinks::count();
 
 		$this->assertEqual(1, $after_delete_works_links_count);
 
@@ -266,7 +266,7 @@ class WorksTest extends \lithium\test\Unit {
 
 		$this->assertEqual(1, $final_delete_links_count);
 
-		$final_delete_works_links_count = WorksLinks::count();
+		$final_delete_works_links_count = ArchivesLinks::count();
 
 		$this->assertEqual(0, $final_delete_works_links_count);
 

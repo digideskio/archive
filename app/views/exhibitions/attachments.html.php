@@ -56,8 +56,8 @@ $this->title($exhibition->title);
 	<div class="span5">
 
 	<?=$this->partial->archives_links_edit(array(
-		'model' => $exhibition,
-		'junctions' => $exhibition_links,
+		'archive' => $exhibition->archive,
+		'archives_links' => $archives_links,
 	)); ?>		
 
 	</div>

@@ -47,8 +47,8 @@ $this->title($work->title);
 		)); ?>		
 
 		<?=$this->partial->archives_links_edit(array(
-			'model' => $work,
-			'junctions' => $work_links,
+			'archive' => $work->archive,
+			'archives_links' => $archives_links,
 		)); ?>		
 
 	</div>

@@ -2,14 +2,14 @@
 
 namespace app\controllers;
 
-use app\models\WorksLinks;
+use app\models\ArchivesLinks;
 use app\models\Users;
 use app\models\Roles;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 
-class WorksLinksController extends \lithium\action\Controller {
+class ArchivesLinksController extends \lithium\action\Controller {
 
 	public $rules = array(
 		'add' => array(
@@ -24,7 +24,7 @@ class WorksLinksController extends \lithium\action\Controller {
 	
 		if ($this->request->data) {
 	
-			$works_links = WorksLinks::create();
+			$works_links = ArchivesLinks::create();
 			$works_links->save($this->request->data);
 			
 			return $this->redirect($this->request->env('HTTP_REFERER'));
@@ -35,11 +35,11 @@ class WorksLinksController extends \lithium\action\Controller {
 	public function delete() {
         
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
-			$msg = "WorksLinks::delete can only be called with http:post or http:delete.";
+			$msg = "ArchivesLinks::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
 		
-		WorksLinks::find($this->request->id)->delete();
+		ArchivesLinks::find($this->request->id)->delete();
 		
 		return $this->redirect($this->request->env('HTTP_REFERER'));
 	}

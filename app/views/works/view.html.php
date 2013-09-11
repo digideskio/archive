@@ -166,7 +166,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 			$hasAlbums = sizeof($albums) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasDocuments = sizeof($archives_documents) > 0;
-			$hasLinks = sizeof($work_links) > 0;
+			$hasLinks = $archives_links->count();
 		?>
 
 		<?php if ($hasAlbums || $hasExhibitions || $hasDocuments || $hasLinks) : ?>
@@ -247,10 +247,10 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 							<ul class="unstyled" style="margin-bottom:0">
 						
 			
-						<?php foreach($work_links as $wl): ?>
+						<?php foreach($archives_links as $al): ?>
 				
-								<li><a href="/links/view/<?=$wl->link->id?>">
-									<strong><?=$wl->link->elision()?></strong>
+								<li><a href="/links/view/<?=$al->link->id?>">
+									<strong><?=$al->link->elision()?></strong>
 								</a></li>
 				
 						<?php endforeach; ?>

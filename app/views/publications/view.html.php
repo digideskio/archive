@@ -3,7 +3,7 @@
 $this->title($publication->title);
 
 $hasDocuments = sizeof($archives_documents) > 0;
-$hasLinks = sizeof($publication_links) > 0;
+$hasLinks = $archives_links->count();
 $hasExhibitions = sizeof($exhibitions) > 0;
 
 $authority_can_edit = $this->authority->canEdit();
@@ -61,10 +61,10 @@ $authority_can_edit = $this->authority->canEdit();
 		
 		<?php if ($hasLinks): ?>
 
-			<?php foreach ($publication_links as $pl): ?>
+			<?php foreach ($archives_links as $al): ?>
 
-				<p><a href="<?=$pl->link->url ?>" target="_blank">
-					<strong><?=$pl->link->elision()?></strong>
+				<p><a href="<?=$al->link->url ?>" target="_blank">
+					<strong><?=$al->link->elision()?></strong>
 				</a></p>
 
 			<? endforeach; ?>
@@ -206,7 +206,7 @@ $authority_can_edit = $this->authority->canEdit();
 							<ul class="unstyled" style="margin-bottom:0">
 						
 			
-						<?php foreach($publication_links as $pl): ?>
+						<?php foreach($archives_links as $pl): ?>
 				
 								<li><a href="/links/view/<?=$pl->link->id?>">
 									<strong><?=$pl->link->elision()?></strong>

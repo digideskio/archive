@@ -8,7 +8,7 @@ use app\models\ExhibitionsHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 
-use app\models\ExhibitionsLinks;
+use app\models\ArchivesLinks;
 use app\models\Links;
 
 class ExhibitionsTest extends \lithium\test\Unit {
@@ -22,6 +22,9 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
+
+		Links::all()->delete();
+		ArchivesLinks::all()->delete();
 	
 	}
 
@@ -95,13 +98,90 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 		$this->assertEqual(0, $link_count);
 
-		$exhibition_link_count = ExhibitionsLinks::count();
+		$exhibition_link_count = ArchivesLinks::count();
 
 		$this->assertEqual(0, $exhibition_link_count);
 
 		$errors = $exhibition->errors();
 
 		$this->assertEqual('The URL is not valid.', $errors['url'][0]);
+	}
+
+	public function testLinks() {
+		
+		$data = array(
+			'title' => 'Exhibition Title',
+			'url' => 'http://example.com'
+		);
+
+		$exhibit = Exhibitions::create();
+
+		$success = $exhibit->save($data);
+
+		$this->assertTrue($success);
+
+		$link = Links::first();
+		$link_count = Links::count();
+
+		$this->assertTrue(!empty($link));
+		$this->assertEqual(1, $link_count);
+
+		$this->assertEqual($exhibit->title, $link->title);
+
+		$exhibit_link = ArchivesLinks::first();
+		$exhibit_link_count = ArchivesLinks::count();
+
+		$this->assertTrue(!empty($exhibit_link));
+		$this->assertEqual(1, $exhibit_link_count);
+
+		$this->assertEqual($exhibit->id, $exhibit_link->archive_id);
+		$this->assertEqual($link->id, $exhibit_link->link_id);
+
+		$new_data = array(
+			'title' => 'Another Titlte',
+			'url' => 'http://example.com'
+		);
+
+		$new_exhibit = Exhibitions::create();
+
+		$success = $new_exhibit->save($new_data);
+
+		$this->assertTrue($success);
+
+		$new_link_count = Links::count();
+
+		$this->assertEqual(1, $new_link_count);
+
+		$new_exhibits_links_count = ArchivesLinks::count();
+
+		$this->assertEqual(2, $new_exhibits_links_count);
+
+		$new_exhibit_link = ArchivesLinks::find('first', array(
+			'conditions' => array('archive_id' => $new_exhibit->id)
+		));
+
+		$this->assertEqual($new_exhibit_link->link_id, $link->id);
+
+		$new_exhibit->delete();
+	
+		$after_delete_links_count = Links::count();
+
+		$this->assertEqual(1, $after_delete_links_count);
+
+		$after_delete_exhibits_links_count = ArchivesLinks::count();
+
+		$this->assertEqual(1, $after_delete_exhibits_links_count);
+
+		$exhibit->delete();
+
+		$final_delete_links_count = Links::count();
+
+		$this->assertEqual(1, $final_delete_links_count);
+
+		$final_delete_exhibits_links_count = ArchivesLinks::count();
+
+		$this->assertEqual(0, $final_delete_exhibits_links_count);
+
 	}
 
 

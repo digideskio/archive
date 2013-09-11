@@ -11,7 +11,6 @@ class Works extends \lithium\data\Model {
 
 	public $hasMany = array(
 		'WorksHistories',
-		'WorksLinks',
 		'Components' => array(
 			'to' => 'app\models\Components',
 			'key' => array(
@@ -19,6 +18,11 @@ class Works extends \lithium\data\Model {
 		)),
 		'ArchivesDocuments' => array(
 			'to' => 'app\models\ArchivesDocuments',
+			'key' => array(
+				'id' => 'archive_id',
+		)),
+		'ArchivesLinks' => array(
+			'to' => 'app\models\ArchivesLinks',
 			'key' => array(
 				'id' => 'archive_id',
 		)),
@@ -313,8 +317,8 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('archive_id' => $work_id)
 	))->delete();
 
-	WorksLinks::find('all', array(
-		'conditions' => array('work_id' => $work_id)
+	ArchivesLinks::find('all', array(
+		'conditions' => array('archive_id' => $work_id)
 	))->delete();
 
 	return $chain->next($self, $params, $chain);
@@ -329,19 +333,19 @@ Works::applyFilter('save', function($self, $params, $chain) {
 
 	if(!$params['entity']->exists()) {
 
-		$work_id = $params['data']['id'];
+		$archive_id = $params['data']['id'];
 
 	} else {
-		$work_id = $params['entity']->id;
+		$archive_id = $params['entity']->id;
 	}
 
 	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
 	$title = isset($params['data']['title']) ? $params['data']['title'] : null;
 
-	if ($work_id && $url) {
-		$works_links = WorksLinks::create();
-		$data = compact('work_id', 'url', 'title');
-		$works_links->save($data);
+	if ($archive_id && $url) {
+		$archives_link = ArchivesLinks::create();
+		$data = compact('archive_id', 'url', 'title');
+		$archives_link->save($data);
 	}
 
 	return $result;

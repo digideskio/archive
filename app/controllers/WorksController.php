@@ -15,7 +15,7 @@ use app\models\Albums;
 use app\models\Exhibitions;
 use app\models\Components;
 use app\models\Links;
-use app\models\WorksLinks;
+use app\models\ArchivesLinks;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -317,15 +317,15 @@ class WorksController extends \lithium\action\Controller {
 					'order' => $order
 				));
 
-				$work_links = WorksLinks::find('all', array(
+				$archives_links = ArchivesLinks::find('all', array(
 					'with' => array(
 						'Links'
 					),
-					'conditions' => array('work_id' => $work->id),
-					'order' => array('date_modified' =>  'DESC')
+					'conditions' => array('ArchivesLinks.archive_id' => $work->id),
+					'order' => array('Links.date_modified' =>  'DESC')
 				));
 
-				return compact('work', 'archives_documents', 'work_links', 'albums', 'exhibitions');
+				return compact('work', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
 			}
 		}
 		
@@ -512,14 +512,6 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('Documents.slug' => 'ASC')
 				));
 
-				$work_links = WorksLinks::find('all', array(
-					'with' => array(
-						'Links'
-					),
-					'conditions' => array('work_id' => $work->id),
-					'order' => array('date_modified' =>  'DESC')
-				));
-
 				if (($this->request->data) && $work->save($this->request->data)) {
 					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
 				}
@@ -531,7 +523,6 @@ class WorksController extends \lithium\action\Controller {
 					'other_albums', 
 					'exhibitions', 
 					'other_exhibitions',
-					'work_links',
 					'artists',
 					'classifications',
 					'materials',
@@ -613,12 +604,12 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('Documents.slug' => 'ASC')
 				));
 
-				$work_links = WorksLinks::find('all', array(
+				$archives_links = ArchivesLinks::find('all', array(
 					'with' => array(
 						'Links'
 					),
-					'conditions' => array('work_id' => $work->id),
-					'order' => array('date_modified' =>  'DESC')
+					'conditions' => array('ArchivesLinks.archive_id' => $work->id),
+					'order' => array('Links.date_modified' =>  'DESC')
 				));
 
 				if (($this->request->data) && $work->save($this->request->data)) {
@@ -632,7 +623,7 @@ class WorksController extends \lithium\action\Controller {
 					'other_albums', 
 					'exhibitions', 
 					'other_exhibitions',
-					'work_links'
+					'archives_links'
 				);
 			}	
 		}																																		
