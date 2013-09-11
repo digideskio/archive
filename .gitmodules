@@ -13,3 +13,6 @@
 [submodule "libraries/li3_partials"]
 	path = libraries/li3_partials
 	url = git://github.com/dmondark/li3_partials.git
+[submodule "libraries/ruckusing-migrations"]
+	path = libraries/ruckusing-migrations
+	url = https://github.com/ruckus/ruckusing-migrations.git
