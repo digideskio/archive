@@ -54,7 +54,7 @@ return array(
 
         'migrations_dir' => array('default' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'migrate'),
 
-        'db_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'migrate',
+        'db_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db',
 
         'log_dir' => RUCKUSING_WORKING_BASE . DIRECTORY_SEPARATOR . 'app' . DIRECTORY_SEPARATOR . 'config' . DIRECTORY_SEPARATOR . 'db' . DIRECTORY_SEPARATOR . 'logs',
 
