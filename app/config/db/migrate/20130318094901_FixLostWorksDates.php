@@ -1,6 +1,6 @@
 <?php
 
-class FixLostWorksDates extends Ruckusing_BaseMigration {
+class FixLostWorksDates extends Ruckusing_Migration_Base {
 
   public function up() {
 

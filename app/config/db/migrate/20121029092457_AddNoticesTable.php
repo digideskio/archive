@@ -1,6 +1,6 @@
 <?php
 
-class AddNoticesTable extends Ruckusing_BaseMigration {
+class AddNoticesTable extends Ruckusing_Migration_Base {
 
   public function up() {
 

@@ -1,6 +1,6 @@
 <?php
 
-class ImportFromWebdav extends Ruckusing_BaseMigration {
+class ImportFromWebdav extends Ruckusing_Migration_Base {
 
   public function up() {
   

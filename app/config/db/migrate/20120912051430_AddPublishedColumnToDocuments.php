@@ -1,6 +1,6 @@
 <?php
 
-class AddPublishedColumnToDocuments extends Ruckusing_BaseMigration {
+class AddPublishedColumnToDocuments extends Ruckusing_Migration_Base {
 
   public function up() {
 

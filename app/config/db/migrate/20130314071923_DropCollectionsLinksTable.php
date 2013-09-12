@@ -1,6 +1,6 @@
 <?php
 
-class DropCollectionsLinksTable extends Ruckusing_BaseMigration {
+class DropCollectionsLinksTable extends Ruckusing_Migration_Base {
 
   public function up() {
 

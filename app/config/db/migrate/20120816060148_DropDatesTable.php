@@ -1,6 +1,6 @@
 <?php
 
-class DropDatesTable extends Ruckusing_BaseMigration {
+class DropDatesTable extends Ruckusing_Migration_Base {
 
   public function up() {
 		$this->drop_table("dates");

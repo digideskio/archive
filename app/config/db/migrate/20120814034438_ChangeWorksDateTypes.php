@@ -1,6 +1,6 @@
 <?php
 
-class ChangeWorksDateTypes extends Ruckusing_BaseMigration {
+class ChangeWorksDateTypes extends Ruckusing_Migration_Base {
 
   public function up() {
 

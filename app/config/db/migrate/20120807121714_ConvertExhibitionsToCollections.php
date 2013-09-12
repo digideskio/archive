@@ -1,6 +1,6 @@
 <?php
 
-class ConvertExhibitionsToCollections extends Ruckusing_BaseMigration {
+class ConvertExhibitionsToCollections extends Ruckusing_Migration_Base {
 
   public function up() {
   

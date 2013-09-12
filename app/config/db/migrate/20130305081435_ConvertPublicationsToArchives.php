@@ -1,6 +1,6 @@
 <?php
 
-class ConvertPublicationsToArchives extends Ruckusing_BaseMigration {
+class ConvertPublicationsToArchives extends Ruckusing_Migration_Base {
 
   public function up() {
 

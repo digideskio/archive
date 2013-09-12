@@ -1,6 +1,6 @@
 <?php
 
-class CreateRolesTable extends Ruckusing_BaseMigration {
+class CreateRolesTable extends Ruckusing_Migration_Base {
 
   public function up() {
 		$t = $this->create_table("roles");

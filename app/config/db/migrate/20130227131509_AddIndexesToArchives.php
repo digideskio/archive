@@ -1,6 +1,6 @@
 <?php
 
-class AddIndexesToArchives extends Ruckusing_BaseMigration {
+class AddIndexesToArchives extends Ruckusing_Migration_Base {
 
   public function up() {
 

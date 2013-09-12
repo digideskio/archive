@@ -1,6 +1,6 @@
 <?php
 
-class CreateArchivesHistoriesTable extends Ruckusing_BaseMigration {
+class CreateArchivesHistoriesTable extends Ruckusing_Migration_Base {
 
   public function up() {
 

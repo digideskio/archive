@@ -1,6 +1,6 @@
 <?php
 
-class CreateComponentsTable extends Ruckusing_BaseMigration {
+class CreateComponentsTable extends Ruckusing_Migration_Base {
 
   public function up() {
 

@@ -1,6 +1,6 @@
 <?php
 
-class CreateWorksDocumentsTable extends Ruckusing_BaseMigration {
+class CreateWorksDocumentsTable extends Ruckusing_Migration_Base {
 
   public function up() {
 		$t = $this->create_table("works_documents");

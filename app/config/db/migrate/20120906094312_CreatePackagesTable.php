@@ -1,6 +1,6 @@
 <?php
 
-class CreatePackagesTable extends Ruckusing_BaseMigration {
+class CreatePackagesTable extends Ruckusing_Migration_Base {
 
 	public function up() {
 

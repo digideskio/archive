@@ -1,6 +1,6 @@
 <?php
 
-class AddLanguagesTable extends Ruckusing_BaseMigration {
+class AddLanguagesTable extends Ruckusing_Migration_Base {
 
   public function up() {
 

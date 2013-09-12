@@ -1,6 +1,6 @@
 <?php
 
-class AddDetailsToArchitectures extends Ruckusing_BaseMigration {
+class AddDetailsToArchitectures extends Ruckusing_Migration_Base {
 
   public function up() {
 

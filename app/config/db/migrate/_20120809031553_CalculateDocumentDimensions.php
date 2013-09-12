@@ -1,6 +1,6 @@
 <?php
 
-class CalculateDocumentDimensions extends Ruckusing_BaseMigration {
+class CalculateDocumentDimensions extends Ruckusing_Migration_Base {
 
   public function up() {
   

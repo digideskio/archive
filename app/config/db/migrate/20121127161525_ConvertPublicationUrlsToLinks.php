@@ -1,6 +1,6 @@
 <?php
 
-class ConvertPublicationUrlsToLinks extends Ruckusing_BaseMigration {
+class ConvertPublicationUrlsToLinks extends Ruckusing_Migration_Base {
 
   public function up() {
 

@@ -1,6 +1,6 @@
 <?php
 
-class AddEditorColumnToPublications extends Ruckusing_BaseMigration {
+class AddEditorColumnToPublications extends Ruckusing_Migration_Base {
 
   public function up() {
 

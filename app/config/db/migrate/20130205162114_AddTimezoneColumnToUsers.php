@@ -1,6 +1,6 @@
 <?php
 
-class AddTimezoneColumnToUsers extends Ruckusing_BaseMigration {
+class AddTimezoneColumnToUsers extends Ruckusing_Migration_Base {
 
   public function up() {
 

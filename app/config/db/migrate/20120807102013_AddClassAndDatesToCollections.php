@@ -1,6 +1,6 @@
 <?php
 
-class AddClassAndDatesToCollections extends Ruckusing_BaseMigration {
+class AddClassAndDatesToCollections extends Ruckusing_Migration_Base {
 
   public function up() {
   

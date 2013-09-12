@@ -1,6 +1,6 @@
 <?php
 
-class TrackUserWithWorks extends Ruckusing_BaseMigration {
+class TrackUserWithWorks extends Ruckusing_Migration_Base {
 
   public function up() {
 

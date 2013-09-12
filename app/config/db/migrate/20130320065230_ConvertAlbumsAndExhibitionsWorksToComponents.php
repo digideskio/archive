@@ -1,6 +1,6 @@
 <?php
 
-class ConvertAlbumsAndExhibitionsWorksToComponents extends Ruckusing_BaseMigration {
+class ConvertAlbumsAndExhibitionsWorksToComponents extends Ruckusing_Migration_Base {
 
   public function up() {
 

@@ -1,6 +1,6 @@
 <?php
 
-class CreateLinksRelationshipTables extends Ruckusing_BaseMigration {
+class CreateLinksRelationshipTables extends Ruckusing_Migration_Base {
 
   public function up() {
 

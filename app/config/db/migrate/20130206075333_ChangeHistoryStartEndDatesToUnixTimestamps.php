@@ -1,6 +1,6 @@
 <?php
 
-class ChangeHistoryStartEndDatesToUnixTimestamps extends Ruckusing_BaseMigration {
+class ChangeHistoryStartEndDatesToUnixTimestamps extends Ruckusing_Migration_Base {
 
   public function up() {
   	

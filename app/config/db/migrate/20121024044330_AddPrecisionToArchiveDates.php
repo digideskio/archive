@@ -1,6 +1,6 @@
 <?php
 
-class AddPrecisionToArchiveDates extends Ruckusing_BaseMigration {
+class AddPrecisionToArchiveDates extends Ruckusing_Migration_Base {
 
   public function up() {
 

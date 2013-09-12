@@ -1,6 +1,6 @@
 <?php
 
-class CreateArchivesDocuments extends Ruckusing_BaseMigration {
+class CreateArchivesDocuments extends Ruckusing_Migration_Base {
 
   public function up() {
 

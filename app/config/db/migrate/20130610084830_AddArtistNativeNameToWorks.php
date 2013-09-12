@@ -1,6 +1,6 @@
 <?php
 
-class AddArtistNativeNameToWorks extends Ruckusing_BaseMigration {
+class AddArtistNativeNameToWorks extends Ruckusing_Migration_Base {
 
   public function up() {
 

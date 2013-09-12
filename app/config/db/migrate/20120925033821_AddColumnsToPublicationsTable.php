@@ -1,6 +1,6 @@
 <?php
 
-class AddColumnsToPublicationsTable extends Ruckusing_BaseMigration {
+class AddColumnsToPublicationsTable extends Ruckusing_Migration_Base {
 
   public function up() {
 
