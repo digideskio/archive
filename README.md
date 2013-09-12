@@ -31,6 +31,8 @@ After you install ImageMagick for your platform, you also need the imagick exten
 	sudo pecl channel-update pecl.php.net
 	sudo pecl install Imagick
 
+(In newer version of Ubuntu, `libmagick9-dev` has been replaced by `graphicsmagick-libmagick-dev-compat`.)
+
 Edit `/etc/php5/apache2/conf.d/imagick.ini` and add the line: 
 
 	extension=imagick.so
