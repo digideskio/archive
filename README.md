@@ -33,6 +33,12 @@ After you install ImageMagick for your platform, you also need the imagick exten
 
 (In newer version of Ubuntu, `libmagick9-dev` has been replaced by `graphicsmagick-libmagick-dev-compat`.)
 
+An alternative way to get the correct dependencies:
+
+	sudo apt-get install php5-dev libmagickwand-dev
+	sudo pecl channel-update pecl.php.net
+	sudo pecl install imagick-beta
+
 Edit `/etc/php5/apache2/conf.d/imagick.ini` and add the line: 
 
 	extension=imagick.so
