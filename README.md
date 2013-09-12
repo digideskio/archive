@@ -14,7 +14,7 @@ The Archive tracks Artworks, Architectural Projects, Exhibitions, and Publicatio
 
 First, clone this repository into your public webroot:
 
-    git clone git@github.com:Fabricatorz/fakework.git .
+    git clone https://github.com/Fabricatorz/archive.git .
 	git submodule init
 	git submodule update
 
