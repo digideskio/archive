@@ -299,7 +299,7 @@ Handlebars.registerHelper('document_rows', function() {
 		var doc = docs[key];
 		out += 
 			"<tr><td width='30px'>" 
-			+ "<img src='/files/thumb/" 
+			+ "<img width='30px' src='/files/thumb/" 
 			+ doc['slug'] 
 			+ ".jpeg'/>" 
 			+ '</td><td>' 
