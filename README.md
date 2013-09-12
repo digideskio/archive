@@ -57,7 +57,7 @@ You must create at least one 'production' database for the site. You can also ad
 
 Next, give your database user the necessary privileges:
 
-	GRANT ALL PRIVILEGES ON development.* TO 'USERNAME'@'localhost';
+	GRANT ALL PRIVILEGES ON production.* TO 'USERNAME'@'localhost';
 
 Repeat the above MySQL commands for 'test' and 'development' databases.
 
