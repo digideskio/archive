@@ -362,7 +362,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 		}
 
-		return compact('exhibition', 'titles', 'venues', 'cities', 'countries');
+		return compact('exhibition', 'documents', 'titles', 'venues', 'cities', 'countries');
 	}
 
 	public function edit() {
