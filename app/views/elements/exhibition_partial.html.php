@@ -31,6 +31,8 @@
 				$work_count =  ($ec->type == 'exhibitions_works') ? $work_count + 1 : $work_count;
 				$pub_count =  ($ec->type == 'exhibitions_publications') ? $pub_count + 1 : $pub_count;
 			}
+
+			echo '<p>';
 			
 			if ($work_count) {
 				echo '<span class="label label-success">';
@@ -45,9 +47,27 @@
 				echo $pub_count == '1' ? ' Publication' : ' Publications';
 				echo '</span>';
 			}
+
+			echo '</p>';
 		}
-		
+
 	?>
+
+	<?php
+		$has_links = !empty($exhibition->archives_links) && $exhibition->archives_links->count() ? true : false;
+	?>
+
+		<?php if ($has_links): ?>
+
+			<?php foreach ($exhibition->archives_links as $al): ?>
+				<p>
+				<i class="icon-check"></i>
+				<a href="<?=$al->link->url ?>">
+					<strong><?=$al->link->elision()?></strong>
+				</a>
+				</p>
+			<?php endforeach; ?>
+		<?php endif; ?>
 	
 	</div>
 </article>

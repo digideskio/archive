@@ -65,7 +65,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$limit = ($limit == 'all') ? $total : $limit;
 		
 		$exhibitions = Exhibitions::find('all', array(
-			'with' => array('Archives', 'Components'),
+			'with' => array('Archives', 'Components', 'ArchivesLinks', 'ArchivesLinks.Links'),
 			'order' => $order,
 			'limit' => $limit,
 			'page' => $page,
