@@ -104,6 +104,9 @@ EOD;
 
 foreach ($documents as $doc) {
 
+		// If the Document belongs to an artwork, we assume that it is preferable
+		// to look up that artwork and derive a caption from it, instead of
+		// simply using the document's title.
 		$doc_work = \app\models\Works::first('all', array(
 			'with' => array('Archives', 'ArchivesDocuments'),
 			'conditions' => array('ArchivesDocuments.document_id' => $doc->id),
