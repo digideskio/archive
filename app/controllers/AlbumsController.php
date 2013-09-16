@@ -265,7 +265,19 @@ class AlbumsController extends \lithium\action\Controller {
 
 				$works = Works::find('all', array(
 					'with' => array('Archives', 'Components'),
-					'conditions' => array('Components.archive_id1' => $album->id),
+					'conditions' => array(
+						'Components.archive_id1' => $album->id,
+						'Components.type' => 'albums_works',
+					),
+					'order' => 'Archives.earliest_date DESC',
+				));
+
+				$publications = Publications::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'Components.archive_id1' => $album->id,
+						'Components.type' => 'albums_publications',
+					),
 					'order' => 'Archives.earliest_date DESC',
 				));
 
@@ -288,7 +300,14 @@ class AlbumsController extends \lithium\action\Controller {
 				));
 				echo $view->render(
 					'all',
-					array('content' => compact('pdf', 'album','works', 'documents', 'options')),
+					array('content' => compact(
+						'pdf',
+						'album',
+						'works',
+						'publications',
+						'documents',
+						'options'
+					)),
 					array(
 						'controller' => 'albums',
 						'template'=>'view',

@@ -10,6 +10,11 @@ class Publications extends \lithium\data\Model {
 
 	public $hasMany = array(
 		'PublicationsHistories',
+		'Components' => array(
+			'to' => 'app\models\Components',
+			'key' => array(
+				'id' => 'archive_id2',
+		)),
 		'ArchivesDocuments' => array(
 			'to' => 'app\models\ArchivesDocuments',
 			'key' => array(

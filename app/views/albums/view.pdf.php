@@ -6,6 +6,7 @@ $album = $content['album'];
 $title = $album->title;
 
 $works = $content['works'];
+$publications = $content['publications'];
 $documents = $content['documents'];
 
 $pdf =& $this->Pdf;
@@ -146,6 +147,48 @@ $html .= <<<EOD
 			$credit
 		</td>
 	</tr>
+EOD;
+
+}
+
+if (!empty($publications)) {
+
+$html .= <<<EOD
+	<tr style="page-break-inside: avoid;">
+		<td style="width:150px">
+		</td>
+		<td>
+			<p><strong>Related Publications:</strong></p>
+		</td>
+		<td style="width:380px; font-family:monospace; font-size:0.8em;">
+		</td>
+	</tr>
+
+EOD;
+
+}
+
+foreach ($publications as $pub) {
+
+	$pub_title = $pub->title;
+	$pub_byline = $pub->byline();
+	$pub_publisher = $pub->publisher;
+	$pub_dates = $pub->archive->dates();
+
+$html .= <<<EOD
+	<tr style="page-break-inside: avoid;">
+		<td style="width:150px">
+		</td>
+		<td>
+			<p style="color:#08C"><strong>$pub_title</strong></p>
+		</td>
+		<td style="width:380px; font-family:monospace; font-size:0.8em;">
+			<strong>$pub_publisher</strong><br/>
+			$pub_byline<br/>
+			$pub_dates
+		</td>
+	</tr>
+
 EOD;
 
 }
