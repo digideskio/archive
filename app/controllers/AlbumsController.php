@@ -6,6 +6,7 @@ use app\models\Archives;
 use app\models\Albums;
 use app\models\ArchivesHistories;
 use app\models\Works;
+use app\models\Publications;
 use app\models\Components;
 use app\models\Packages;
 use app\models\Documents;
@@ -83,7 +84,10 @@ class AlbumsController extends \lithium\action\Controller {
 			
 				$album_works = Components::find('all', array(
 					'fields' => 'archive_id2',
-					'conditions' => array('archive_id1' => $album->id),
+					'conditions' => array(
+						'archive_id1' => $album->id,
+						'type' => 'albums_works',
+					),
 				));
 
 				$works = array();
@@ -103,6 +107,31 @@ class AlbumsController extends \lithium\action\Controller {
 
 				}
 
+				$album_publications = Components::find('all', array(
+					'fields' => 'archive_id2',
+					'conditions' => array(
+						'archive_id1' => $album->id,
+						'type' => 'albums_publications',
+					),
+				));
+
+				$publications = array();
+
+				if ($album_publications->count()) {
+
+					//Get all the IDs in a plain array
+					$pub_ids = $album_publications->map(function($ap) {
+						return $ap->archive_id2;
+					}, array('collect' => false));
+
+					$publications = Publications::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Publications.id' => $pub_ids),
+						'order' => 'Archives.earliest_date DESC'
+					));
+
+				}
+
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
@@ -115,7 +144,7 @@ class AlbumsController extends \lithium\action\Controller {
 				$li3_pdf = Libraries::get("li3_pdf");
 
 				//Send the retrieved data to the view
-				return compact('album', 'works', 'archives_documents', 'li3_pdf');
+				return compact('album', 'works', 'publications', 'archives_documents', 'li3_pdf');
 				
 			}
 		}

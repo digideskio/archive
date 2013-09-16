@@ -66,6 +66,12 @@ $this->title($album->title);
 
 <?php endif; ?>
 
+<?php if(sizeof($publications) > 0): ?>
+
+	<?=$this->partial->publications(array('publications' => $publications, 'showBar' => true)); ?>
+
+<?php endif; ?>
+
 <table class="table table-bordered">
 
 <thead>
