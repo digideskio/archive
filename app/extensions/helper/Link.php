@@ -17,14 +17,13 @@ class Link extends \lithium\template\Helper {
 
 		if (!empty($link->url)) {
 			$url = $link->url;
-			$elision = $link->elision();
 
 			$icon = $this->isVideo($link) ? 'icon-film' : 'icon-bookmark';
 
 			$html  = "<p>";
 			$html .= "<i class='$icon'></i>&nbsp;";
 			$html .= "<a href='$url'>";
-			$html .= "<strong>$elision</strong>";
+			$html .= "<strong>$url</strong>";
 			$html .= "</a>";
 			$html .= "</p>";
 
@@ -34,15 +33,14 @@ class Link extends \lithium\template\Helper {
 	}
 
 	public function isVideo($link) {
-		$url = $link->url;
-		$video_hosts = self::$_video_hosts;
 
 		$isVideo = false;
 
-		if (!empty($url)) {
+		if (!empty($link->url)) {
+			$url = $link->url;
 			$host = parse_url($url, PHP_URL_HOST);
 			if ($host) {
-				$isVideo = in_array($host, $video_hosts);
+				$isVideo = in_array($host, self::$_video_hosts);
 			}
 		}
 
