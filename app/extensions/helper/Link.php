@@ -9,7 +9,8 @@ class Link extends \lithium\template\Helper {
 	private static $_video_hosts = array(
 		'www.youtube.com',
 		'youtube.com',
-		'youtu.be'
+		'youtu.be',
+		'vimeo.com',
 	);
 
 	public function caption($link, $options = array()) {

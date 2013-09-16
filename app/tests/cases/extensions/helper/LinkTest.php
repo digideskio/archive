@@ -12,10 +12,11 @@ class LinkTest extends \lithium\test\Unit {
 
 	public function tearDown() {}
 
-	public function testVideo() {
+	public function testIsVideo() {
 		$www_youtube_com = Links::create(array('url' => 'http://www.youtube.com/'));
 		$youtube_com = Links::create(array('url' => 'http://youtube.com/'));
 		$youtu_be = Links::create(array('url' => 'http://youtu.be/'));
+		$vimeo_com = Links::create(array('url' => 'http://vimeo.com/'));
 		$example_com = Links::create(array('url' => 'http://example.com/'));
 
 		$helper = new Link();
@@ -23,6 +24,7 @@ class LinkTest extends \lithium\test\Unit {
 		$this->assertTrue($helper->isVideo($www_youtube_com));
 		$this->assertTrue($helper->isVideo($youtube_com));
 		$this->assertTrue($helper->isVideo($youtu_be));
+		$this->assertTrue($helper->isVideo($vimeo_com));
 		$this->assertFalse($helper->isVideo($example_com));
 	}
 
