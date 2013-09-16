@@ -9,6 +9,7 @@ use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\ArchivesLinks;
 use app\models\ArchivesDocuments;
+use app\models\Albums;
 use app\models\Documents;
 use app\models\Exhibitions;
 
@@ -369,66 +370,95 @@ class PublicationsController extends \lithium\action\Controller {
 
 	public function attachments() {
 
+		if (($this->request->data) && $publication->save($this->request->data)) {
+			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
+		}
+
 		$publication = Publications::first(array(
 			'with' => 'Archives',
 			'conditions' => array('Archives.slug' => $this->request->params['slug'])
 		));
 
-		if (!$publication) {
+		if ($publication) {
+			
+			$order = array('title' => 'ASC');
+
+			$albums = Albums::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $publication->id,
+				),
+				'order' => $order
+			));
+
+			$album_ids = array();
+
+			foreach ($albums as $album) {
+				array_push($album_ids, $album->id);
+			}
+
+			//Find the albums the work is NOT in
+			$other_album_conditions = ($album_ids) ? array('Albums.id' => array('!=' => $album_ids)) : '';
+
+			$other_albums = Albums::find('all', array(
+				'with' => 'Archives',
+				'order' => $order,
+				'conditions' => $other_album_conditions
+			));
+
+			$archives_documents = ArchivesDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Documents.Formats'
+				),
+				'conditions' => array('archive_id' => $publication->id),
+				'order' => array('Documents.slug' => 'ASC')
+			));
+
+			$archives_links = ArchivesLinks::find('all', array(
+				'with' => 'Links',
+				'conditions' => array('ArchivesLinks.archive_id' => $publication->id),
+				'order' => array('Links.date_modified' =>  'DESC')
+			));
+
+			$order = array('title' => 'ASC');
+
+			$exhibitions = Exhibitions::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $publication->id,
+				),
+				'order' => $order
+			));
+
+			$exhibition_ids = array();
+
+			foreach ($exhibitions as $exhibition) {
+				array_push($exhibition_ids, $exhibition->id);
+			}
+
+			//Find the exhibitions the work is NOT in
+			$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
+
+			$other_exhibitions = Exhibitions::find('all', array(
+				'with' => 'Archives',
+				'order' => $order,
+				'conditions' => $other_exhibition_conditions
+			));
+			
+			return compact(
+				'publication',
+				'archives_documents',
+				'albums',
+				'other_albums',
+				'archives_links',
+				'exhibitions',
+				'other_exhibitions'
+			);
+
+		} else {
 			return $this->redirect('Publications::index');
 		}
-
-		if (($this->request->data) && $publication->save($this->request->data)) {
-			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
-		}
-
-		$archives_documents = ArchivesDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Documents.Formats'
-			),
-			'conditions' => array('archive_id' => $publication->id),
-			'order' => array('Documents.slug' => 'ASC')
-		));
-
-		$archives_links = ArchivesLinks::find('all', array(
-			'with' => 'Links',
-			'conditions' => array('ArchivesLinks.archive_id' => $publication->id),
-			'order' => array('Links.date_modified' =>  'DESC')
-		));
-
-		$order = array('title' => 'ASC');
-
-		$exhibitions = Exhibitions::find('all', array(
-			'with' => array('Archives', 'Components'),
-			'conditions' => array(
-				'Components.archive_id2' => $publication->id,
-			),
-			'order' => $order
-		));
-
-		$exhibition_ids = array();
-
-		foreach ($exhibitions as $exhibition) {
-			array_push($exhibition_ids, $exhibition->id);
-		}
-
-		//Find the exhibitions the work is NOT in
-		$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
-
-		$other_exhibitions = Exhibitions::find('all', array(
-			'with' => 'Archives',
-			'order' => $order,
-			'conditions' => $other_exhibition_conditions
-		));
-		
-		return compact(
-			'publication',
-			'archives_documents',
-			'archives_links',
-			'exhibitions',
-			'other_exhibitions'
-		);
 
 	}
 
