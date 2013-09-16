@@ -9,7 +9,6 @@ use lithium\core\Environment;
 class Publications extends \lithium\data\Model {
 
 	public $hasMany = array(
-		'PublicationsLinks', 
 		'PublicationsHistories',
 		'ArchivesDocuments' => array(
 			'to' => 'app\models\ArchivesDocuments',

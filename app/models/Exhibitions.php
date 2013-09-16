@@ -8,7 +8,6 @@ use lithium\util\Validator;
 class Exhibitions extends \lithium\data\Model {
 
 	public $hasMany = array(
-		'ExhibitionsLinks',
 		'ExhibitionsHistories',
 		'Components' => array(
 			'to' => 'app\models\Components',
