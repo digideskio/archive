@@ -3,6 +3,7 @@
 namespace app\extensions\helper;
 
 use	\lithium\template\Helper;
+use \lithium\template\Helper\Html;
 
 class Link extends \lithium\template\Helper {
 
@@ -20,11 +21,13 @@ class Link extends \lithium\template\Helper {
 
 			$icon = $this->isVideo($link) ? 'icon-film' : 'icon-bookmark';
 
+			$html_helper = new Html();
+
 			$html  = "<p>";
 			$html .= "<i class='$icon'></i>&nbsp;";
-			$html .= "<a href='$url'>";
-			$html .= "<strong>$url</strong>";
-			$html .= "</a>";
+			$html .= "<strong>";
+			$html .= $html_helper->link($url, $url);
+			$html .= "</strong>";
 			$html .= "</p>";
 
 			return $html;
