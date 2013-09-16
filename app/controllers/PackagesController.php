@@ -36,26 +36,37 @@ class PackagesController extends \lithium\action\Controller {
 		$package = Packages::create();
 
 		if (($this->request->data) && $package->save($this->request->data)) {
-			$album_id = $package->album_id;
-			$filesystem = $package->filesystem;
 
-			$album = Albums::find('first', array(
-				'with' => 'Archives',
-				'conditions' => array('Albums.id' => $package->album_id)
-			));
-
+			// Ask the package where to write it to, and create the directory
 			$packages_path = $package->directory();
-			$package_path = $package->path();
 
 			if (!file_exists($packages_path)){
 				@mkdir($packages_path, 0775, true);
 			}
 
-			$documents_config = FileSystem::config('documents');
-			$documents_path = $documents_config['path'];
-
+			// Ask the package what path it will be stored at, and create a ZIP file
+			$package_path = $package->path();
 			$zip = new \ZipArchive();
 			$success = $zip->open($package_path, \ZIPARCHIVE::CREATE);
+
+			// Look up the album, and its documents, works, publications, etc.
+			$album_id = $package->album_id;
+
+			$album = Albums::find('first', array(
+				'with' => 'Archives',
+				'conditions' => array('Albums.id' => $album_id)
+			));
+
+			$documents = Documents::find('all', array(
+				'with' => array(
+					'ArchivesDocuments',
+					'Formats'
+				),
+				'conditions' => array(
+					'ArchivesDocuments.archive_id' => $album_id,
+					'published' => '1',
+				),
+			));
 
 			$works = Works::find('all', array(
 				'with' => array('Archives', 'Components'),
@@ -66,6 +77,14 @@ class PackagesController extends \lithium\action\Controller {
 				'order' => 'Archives.earliest_date DESC',
 			));
 
+			$work_ids = array();
+
+			if ($works->count()) {
+				$work_ids = $works->map(function($w) {
+					return $w->id;
+				}, array('collect' => false));
+			}
+
 			$publications = Publications::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'conditions' => array(
@@ -75,36 +94,35 @@ class PackagesController extends \lithium\action\Controller {
 				'order' => 'Archives.earliest_date DESC',
 			));
 
-			foreach ($works as $work) {
-				$documents = $work->documents('all', array('published' => 1));
+			$pub_ids = array();
 
-				foreach ($documents as $document) {
-					if ($document->published) {
-						$slug = $document->slug;
-						$extension = $document->format->extension;
-						$document_file = $document->file();
-
-						if (FileSystem::exists('documents', $document_file)) {
-							$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
-							$document_localname = $work->archive->years() . '-' . $work->archive->slug . '-' . $slug . '.' . $extension;
-							$zip->addFile($document_path, $document_localname);
-						}
-					}
-				}
+			if ($publications->count()) {
+				$pub_ids = $publications->map(function($p) {
+					return $p->id;
+				}, array('collect' => false));
 			}
 
-			$documents = Documents::find('all', array(
+			// Collect the IDs for the album, and its components which might have documents
+			$archive_ids = array_merge(array($album_id), $work_ids, $pub_ids);
+
+			//Look up the documents for all of these archives which are PUBLISHED
+			$all_documents = Documents::find('all', array(
 				'with' => array(
 					'ArchivesDocuments',
 					'Formats'
 				),
 				'conditions' => array(
-					'ArchivesDocuments.archive_id' => $album->id,
+					'ArchivesDocuments.archive_id' => $archive_ids,
 					'published' => '1',
 				),
 			));
 
-			foreach ($documents as $document) {
+			// Check where in the filesystem the documents are located
+			$documents_config = FileSystem::config('documents');
+			$documents_path = $documents_config['path'];
+
+			// Add each document to the ZIP file
+			foreach ($all_documents as $document) {
 				if ($document->published) {
 					$slug = $document->slug;
 					$extension = $document->format->extension;
@@ -118,6 +136,7 @@ class PackagesController extends \lithium\action\Controller {
 				}
 			}
 
+			// Lay out the PDF file using the Album PDF view
 			$layout = 'file';
 			$options['path'] = $documents_path;
 			$options['view'] = 'artwork';
@@ -147,12 +166,15 @@ class PackagesController extends \lithium\action\Controller {
 				)
 			);
 
+			// Add the PDF to the ZIP file
 			$zip->addFile($pdf, $album->archive->slug . '.pdf');
 
 			$zip->close();
 
+			// Remove the temporary PDF file
 			unlink($pdf);
 
+			// Redirect to the package, which will in effect download it
 			return $this->redirect(array('Albums::package', 'slug' => $album->archive->slug));
 		}
 
