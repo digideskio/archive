@@ -45,12 +45,7 @@ $authority_can_edit = $this->authority->canEdit();
 
 	<div class="alert alert-info alert-block">
 	<?php foreach($archives_links as $al): ?>
-	<p>
-	<i class="icon-check"></i> 
-	<a href="<?=$al->link->url ?>">
-		<strong><?=$al->link->elision()?></strong>
-	</a>
-	</p>
+		<?=$this->link->caption($al->link); ?>
 	<?php endforeach; ?>
 	</div>
 

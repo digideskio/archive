@@ -60,12 +60,7 @@
 		<?php if ($has_links): ?>
 
 			<?php foreach ($exhibition->archives_links as $al): ?>
-				<p>
-				<i class="icon-check"></i>
-				<a href="<?=$al->link->url ?>">
-					<strong><?=$al->link->elision()?></strong>
-				</a>
-				</p>
+				<?=$this->link->caption($al->link); ?>
 			<?php endforeach; ?>
 		<?php endif; ?>
 	
