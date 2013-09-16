@@ -239,6 +239,8 @@ class PublicationsController extends \lithium\action\Controller {
 
 			if($publication) {
 		
+				$order = array('title' => 'ASC');
+
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
@@ -246,6 +248,14 @@ class PublicationsController extends \lithium\action\Controller {
 					),
 					'conditions' => array('archive_id' => $publication->id),
 					'order' => array('Documents.slug' => 'ASC')
+				));
+
+				$albums = Albums::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'Components.archive_id2' => $publication->id,
+					),
+					'order' => $order
 				));
 
 				$archives_links = ArchivesLinks::find('all', array(
@@ -263,7 +273,7 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 			
 				//Send the retrieved data to the view
-				return compact('publication', 'archives_documents', 'archives_links', 'exhibitions');
+				return compact('publication', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
 
 			}
 		}

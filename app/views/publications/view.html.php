@@ -4,6 +4,7 @@ $this->title($publication->title);
 
 $hasDocuments = sizeof($archives_documents) > 0;
 $hasLinks = $archives_links->count();
+$hasAlbums = $albums->count();
 $hasExhibitions = sizeof($exhibitions) > 0;
 
 $authority_can_edit = $this->authority->canEdit();
@@ -148,7 +149,7 @@ $authority_can_edit = $this->authority->canEdit();
 		
 		</table>
 	
-		<?php if ($hasDocuments || $hasLinks || $hasExhibitions): ?>
+		<?php if ($hasAlbums || $hasDocuments || $hasLinks || $hasExhibitions): ?>
 
 			<table class="table">
 				<thead>
@@ -159,6 +160,26 @@ $authority_can_edit = $this->authority->canEdit();
 					</tr>
 				</thead>
 				<tbody>
+
+					<?php if ($hasAlbums) : ?>
+					<tr>
+						<td><i class="icon-briefcase"></i></td>
+						<td class="meta">Albums</td>
+						<td>
+							<ul class="unstyled" style="margin-bottom:0">
+
+								<?php foreach($albums as $album): ?>
+								<li><strong><?=$this->html->link(
+									$album->title,
+									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
+								);?></strong></li>
+								<?php endforeach; ?>
+
+							</ul>
+						</td>
+					</tr>
+					<?php endif; ?>
+
 					<?php if ($hasExhibitions) : ?>
 					<tr>
 						<td><i class="icon-eye-open"></i></td>
