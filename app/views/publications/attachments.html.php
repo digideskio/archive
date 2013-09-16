@@ -54,6 +54,11 @@ $this->title($publication->title);
 		'archives_documents' => $archives_documents,
 	)); ?>		
 
+	<?=$this->partial->archives_links_edit(array(
+		'archive' => $publication->archive,
+		'archives_links' => $archives_links,
+	)); ?>
+
 	</div>
 	
 	<div class="span5">
@@ -71,11 +76,6 @@ $this->title($publication->title);
 		'exhibitions' => $exhibitions,
 		'other_exhibitions' => $other_exhibitions,
 	)); ?>
-
-	<?=$this->partial->archives_links_edit(array(
-		'archive' => $publication->archive,
-		'archives_links' => $archives_links,
-	)); ?>		
 
 	</div>
 </div>
