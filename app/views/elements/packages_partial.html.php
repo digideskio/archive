@@ -1,4 +1,4 @@
-<table class="table table-striped table-bordered">
+<table class="table table-bordered">
 <thead>
 	<tr>
 		<th style="width:14px"><i class="icon-eye-close"></i></th>
@@ -39,7 +39,14 @@
 
 		?>
 	</td>
-	<td><?=$this->html->link($package->name, $package->url()); ?></td>
+	<td>
+	<?=$this->html->link(
+		$this->url($package->url(), array('absolute' => 'true')),
+		$this->url($package->url(), array('absolute' => 'true')),
+		array('id' => "package-$package->id"));
+	?>
+	<?=$this->clippy->clip("package-$package->id"); ?>
+	</td>
 	<td><?=$this->html->link('Download', $package->url(), array('class' => 'btn btn-mini btn-success')); ?></td>
 	<td><?=$package_date_display ?></td>
 	<?php if($this->authority->canEdit()): ?>
