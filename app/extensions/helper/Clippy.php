@@ -3,12 +3,12 @@
 namespace app\extensions\helper;
 
 /**
- * Requires https://github.com/kneath/clippy to be installed at app/webroot/flash/clippy.swf
+ * Requires https://github.com/mojombo/clippy to be installed at app/webroot/flash/clippy.swf
  */
 
 class Clippy extends \lithium\template\Helper {
 
-	public function clip($htmlElementId, array $options = array()) {
+	public function clip($text, array $options = array()) {
 		$defaults = array('bgcolor' => '#FFFFFF');
 		list($scope, $options) = $this->_options($defaults, $options);
 
@@ -23,7 +23,7 @@ $html = <<<EOD
     <param name="allowScriptAccess" value="always" />
     <param name="quality" value="high" />
     <param name="scale" value="noscale" />
-    <param NAME="FlashVars" value="id=$htmlElementId">
+    <param NAME="FlashVars" value="text=$text">
     <param name="bgcolor" value="$bgcolor">
     <embed src="/flash/clippy.swf"
            width="110"
@@ -33,7 +33,7 @@ $html = <<<EOD
            allowScriptAccess="always"
            type="application/x-shockwave-flash"
            pluginspage="http://www.macromedia.com/go/getflashplayer"
-           FlashVars="id=$htmlElementId"
+           FlashVars="text=$text"
            bgcolor="$bgcolor"
     />
     </object>

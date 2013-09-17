@@ -41,15 +41,17 @@
 		?>
 	</td>
 	<td>
+		<strong>
 		<?=$this->html->link($package->album->archive->name, $this->url(array('Albums::view', 'slug' => $package->album->archive->slug))); ?>
+		</strong>
 	</td>
 	<td>
 	<?=$this->html->link(
-		$this->url($package->url(), array('absolute' => 'true')),
+		$package->name,
 		$this->url($package->url(), array('absolute' => 'true')),
 		array('id' => "package-$package->id"));
 	?>
-	<?=$this->clippy->clip("package-$package->id"); ?>
+	<?=$this->clippy->clip($this->url($package->url(), array('absolute' => 'true'))); ?>
 	</td>
 	<td><?=$this->html->link('Download', $package->url(), array('class' => 'btn btn-mini btn-success')); ?></td>
 	<td><?=$package_date_display ?></td>
