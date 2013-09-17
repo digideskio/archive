@@ -3,6 +3,7 @@
 	<tr>
 		<th style="width:14px"><i class="icon-eye-close"></i></th>
 		<th>Package</th>
+		<th>Download</th>
 		<th>Date</th>
 		<?php if($this->authority->canEdit()): ?>
 		<th>Delete</th>
@@ -39,6 +40,7 @@
 		?>
 	</td>
 	<td><?=$this->html->link($package->name, $package->url()); ?></td>
+	<td><?=$this->html->link('Download', $package->url(), array('class' => 'btn btn-mini btn-success')); ?></td>
 	<td><?=$package_date_display ?></td>
 	<?php if($this->authority->canEdit()): ?>
 	<td>
