@@ -2,6 +2,7 @@
 <thead>
 	<tr>
 		<th style="width:14px"><i class="icon-eye-close"></i></th>
+		<th>Album</th>
 		<th>Package</th>
 		<th>Download</th>
 		<th>Date</th>
@@ -38,6 +39,9 @@
 			}
 
 		?>
+	</td>
+	<td>
+		<?=$this->html->link($package->album->archive->name, $this->url(array('Albums::view', 'slug' => $package->album->archive->slug))); ?>
 	</td>
 	<td>
 	<?=$this->html->link(

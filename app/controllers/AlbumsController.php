@@ -339,7 +339,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 		// Find whatever packages are left
 		$packages = Packages::find('all', array(
-			'with' => 'Albums',
+			'with' => array('Albums', 'Albums.Archives'),
 			'order' => array('date_created' => 'DESC')
 		));
 
@@ -384,6 +384,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 				// Find whatever packages are left
 				$packages = Packages::find('all', array(
+					'with' => array('Albums', 'Albums.Archives'),
 					'order' => array('date_created' => 'DESC'),
 					'conditions' => array(
 					'album_id' => $album->id
