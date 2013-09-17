@@ -57,6 +57,10 @@ class ArtworkTest extends \lithium\test\Unit {
 
 		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004–2005, 40 × 50 cm.', $caption);
 
+		$caption = $helper->caption($archive, $work, array('link' => true));
+
+		$this->assertEqual('Artist Name, <em><a href="/works/view/">Artwork Title</a></em>, 2004–2005, 40 × 50 cm.', $caption);
+
 	}
 
 }

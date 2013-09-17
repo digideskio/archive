@@ -13,15 +13,18 @@ class Artwork extends \lithium\template\Helper {
 		$title = $work->title;
 
 		if (isset($options['link']) && $options['link']) {
-			$title = Html::link($work->title, '/works/view/'.$archive->slug);	
+			$html = new Html();
+			$title = $html->link($work->title, '/works/view/'.$archive->slug);	
+		} else {
+			$title = $this->escape($title);
 		}
     
     	$caption = array_filter(array(
-    		$work->artist,
-    		'<em>'.$title.'</em>',
-    		$years,
-    		$work->dimensions(), 
-			$work->measurement_remarks
+    		$this->escape($work->artist),
+    		'<em>' . $title .'</em>',
+    		$this->escape($years),
+    		$this->escape($work->dimensions()), 
+			$this->escape($work->measurement_remarks)
     	));
     	
     	return implode(', ', $caption) . '.';

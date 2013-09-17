@@ -10,13 +10,13 @@ class Architecture extends \lithium\template\Helper {
     	$status = $architecture->status ? '(' . $architecture->status . ')' : '';
     
     	$caption = array_filter(array(
-			$architecture->architect,
-    		'<em>'.$architecture->title.'</em>',
-    		$years,
-    		$architecture->location,
-    		$architecture->city,
-    		$architecture->country,
-    		$status
+			$this->escape($architecture->architect),
+    		'<em>' . $this->escape($architecture->title) . '</em>',
+    		$this->escape($years),
+    		$this->escape($architecture->location),
+    		$this->escape($architecture->city),
+    		$this->escape($architecture->country),
+    		$this->escape($status)
     	));
     	
     	return implode(', ', $caption) . '.';
