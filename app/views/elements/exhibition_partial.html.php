@@ -39,6 +39,7 @@
 				echo $work_count;
 				echo $work_count == '1' ? ' Artwork' : ' Artworks';
 				echo '</span>';
+				echo ' ';
 			}
 			
 			if ($pub_count) {
