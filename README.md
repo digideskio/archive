@@ -90,9 +90,17 @@ If you are setting up a development site, add this line to your Apache virtual h
 
 	SetEnv LITHIUM_ENVIRONMENT "development"
 
-To set up your filesystem, it is enough to:
+To set up your filesystem, first make a copy of the sample file, which in normal set-ups will not have to be edited:
 
 	cp app/config/bootstrap/filesystems-sample.php app/config/bootstrap/filesystems.php
+
+You must install mod_xsendfile and then enable it in your Apache host file:
+
+	XSendFile On
+
+In addition, you must also tell XSendFile what directory it is allowed to send files from. The default location in `filesystems.php` is the `app/resources/archive` directory. Add a line to your Apache host file specifying the path, similar to this:
+
+	XSendFilePath /srv/www/example.com/public/app/resources/archive
 
 ### Migrations
 
