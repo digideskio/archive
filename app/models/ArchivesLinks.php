@@ -14,19 +14,20 @@ ArchivesLinks::applyFilter('save', function($self, $params, $chain) {
 	$success = false;
 
 	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
+	$title = isset($params['data']['title']) ? $params['data']['title'] : '';
 
 	if ($url) {
 		$link = Links::first(array(
 			'conditions' => array('url' => $url)
 		));
 
-		if ($link) {
+		if (!empty($link)) {
 			$success = true;
 		}
 
-		if (!$link) {
+		if (empty($link)) {
 			$link = Links::create();
-			$success = $link->save($params['data']);
+			$success = $link->save(compact('url', 'title'));
 		}
 
 		if ($success) {

@@ -36,26 +36,43 @@ class Links extends \lithium\data\Model {
 
 Validator::add('urlUnique', function($value, $rule, $options) {
 
-	// Get the submitted values
-	$id = isset($options["values"]["id"]) ? $options["values"]["id"] : NULL;
-	
 	// Check event, set during the call to Model::save()
 	$event = $options["events"];  // 'update' OR 'create'
-	
-	// If the id is set, look up what it belongs to
-	if($id) {
-		$links = Links::first($id);
+
+	// By default, check the URL for uniqueness
+	$checkforConflicts = true;
+
+	if ($event == 'create') {
+		// Always check a URL for uniqueness on a new record
+		$checkForConflicts = true;
 	}
-	
-	// Check for conflicts if the record is new, or if the stored value is
-	// different from the submitted one
-	if
-	(
-		($event == 'create') ||
-		($event == 'update' && $id && $links->url != $value)
-	) {
-		$conflicts = Links::count(array('url' => $value));
-		if($conflicts) return false;
+
+	if ($event == 'update') {
+		// If the record is being updated, get its ID
+		$id = isset($options["values"]["id"]) ? $options["values"]["id"] : NULL;
+
+		// If the id is set, look up what it belongs to
+		if(!empty($id)) {
+			$link = Links::first($id);
+
+			// If the submitted URL for this record hasn't changed, then we shouldn't
+			// re-validate its uniqueness
+			if ($link->url == $value) {
+				$checkForConflicts = false;
+			}
+		}
+	}
+
+	if ($checkForConflicts) {
+		$links = Links::find('all', array(
+			'conditions' => array('url' => $value)
+		));
+
+		$conflicts = $links->count();
+
+		if($conflicts) {
+			return false;
+		}
 	}
 	return true;
 });

@@ -54,6 +54,7 @@ class ModelsLinksTest extends \lithium\test\Integration {
 
 		$link_count = Links::count();
 		$this->assertEqual(1, $link_count);
+		
 	}
 }
 
