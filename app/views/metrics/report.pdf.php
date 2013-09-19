@@ -31,7 +31,7 @@ $this->Pdf->SetAutoPageBreak(true);
 
 $this->Pdf->AddPage('P', 'A4');
 $this->Pdf->SetTextColor(0, 0, 0);
-$this->Pdf->SetFont('cid0cs');
+$this->Pdf->SetFont('kozminproregular');
 
 $html = <<<EOD
 	<style>
