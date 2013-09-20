@@ -55,9 +55,20 @@ if($auth->timezone_id) {
 <h1>Progress Report</h2>
 
 <p class="lead">
-	<?=$dates['month'] ?>
-	::
-	<?=$dates['now'] ?>
+	<?php
+		$month_time = new DateTime($dates['month']);
+		$now_time = new DateTime($dates['now']);
+
+		if (isset($tz)) {
+			$month_time->setTimeZone($tz);
+			$now_time->setTimeZone($tz);
+		}
+		$month_display = $month_time->format("d M Y");
+		$now_display = $now_time->format("d M Y");
+	?>
+	<?=$month_display ?>
+	&ndash;
+	<?=$now_display ?>
 </p>
 
 <?php if ($updates->count()): ?>
@@ -73,10 +84,18 @@ if($auth->timezone_id) {
 			</thead>
 			<tbody>
 				<?php foreach ($updates as $update): ?>
+				<?php
+					$update_time = new DateTime($update->date_created);
+
+					if (isset($tz)) {
+						$update_time->setTimeZone($tz);
+					}
+					$update_display = $update_time->format("d M Y");
+				?>
 					<tr>
 						<td>
-				<strong><?=$update->subject ?></strong> &mdash; <?=$update->body ;?>
-				<small class="meta"><?=$update->date_created ?>
+				<strong><?=$update->subject ?></strong> &mdash; <?=$update->body ?>
+				<small class="meta"><?=$update_display ?>
 						</td>
 					</tr>
 
@@ -110,7 +129,7 @@ if($auth->timezone_id) {
 					if (isset($tz)) {
 						$start_date_time->setTimeZone($tz);
 					}
-					$start_date_display = $start_date_time->format("Y-m-d");
+					$start_date_display = $start_date_time->format("d M Y");
 				?>
 		<tr>
 				<?php if ($archive->controller != $last_controller): ?> 
@@ -131,11 +150,16 @@ if($auth->timezone_id) {
 					<?=$archive->classification ?>
 				</span>
 			</td>
-			<td><?=$start_date_display ?></td>
+			<td>
+				<span style="font-size: smaller;">
+				<?php echo str_replace(' ', '&nbsp;', $start_date_display); ?>
+				</span>
+			</td>
 			<td>
 				<?php if( $archive->user->id ): ?>
 				<span style="font-size: smaller;">
-					<?=$this->html->link($archive->user->name,'/users/view/'.$archive->user->username); ?>
+					<?php $user_name = str_replace(' ', '&nbsp;', $this->escape($archive->user->name)); ?>
+					<?=$this->html->link($user_name,'/users/view/'.$archive->user->username, array('escape' => false)); ?>
 				</span>
 				<?php endif; ?>
 			</td>
