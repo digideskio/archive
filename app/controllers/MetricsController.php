@@ -184,10 +184,10 @@ class MetricsController extends \lithium\action\Controller {
 		};
 
 		$dates = array(
-			'now' => $now_date->format('Y-m-d'),
-			'all_time' => $all_time_date->format('Y-m-d'),
-			'month' => $month_date->format('Y-m-d'),
-			'week' => $week_date->format('Y-m-d')
+			'now' => $now_date->format('d M Y'),
+			'all_time' => $all_time_date->format('d M Y'),
+			'month' => $month_date->format('d M Y'),
+			'week' => $week_date->format('d M Y')
 		);
 
 		$intervals = array(
@@ -370,8 +370,8 @@ class MetricsController extends \lithium\action\Controller {
 		};
 
 		$dates = array(
-			'now' => $now_date->format('Y-m-d'),
-			'month' => $month_date->format('Y-m-d'),
+			'now' => $now_date->format('d M Y'),
+			'month' => $month_date->format('d M Y'),
 		);
 
 		$updates = Notices::find('all', array(

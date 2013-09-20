@@ -55,20 +55,9 @@ if($auth->timezone_id) {
 <h1>Progress Report</h2>
 
 <p class="lead">
-	<?php
-		$month_time = new DateTime($dates['month']);
-		$now_time = new DateTime($dates['now']);
-
-		if (isset($tz)) {
-			$month_time->setTimeZone($tz);
-			$now_time->setTimeZone($tz);
-		}
-		$month_display = $month_time->format("d M Y");
-		$now_display = $now_time->format("d M Y");
-	?>
-	<?=$month_display ?>
+	<?=$dates['month'] ?>
 	&ndash;
-	<?=$now_display ?>
+	<?=$dates['now'] ?>
 </p>
 
 <?php if ($updates->count()): ?>

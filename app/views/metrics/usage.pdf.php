@@ -1,6 +1,6 @@
 <?php
 
-$title = 'Archive Metrics ' . $dates['now'];
+$title = 'Archive Metrics - ' . $dates['now'];
 
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
@@ -84,9 +84,9 @@ $html = <<<EOD
 	<thead>
 		<tr>
 			<td class="head"><strong>Metrics</strong></td>
-			<td class="head"><strong>All Time</strong><br/><small>$dates_all_time :: $dates_now</small></td>
-			<td class="head"><strong>Last Month</strong><br/><small>$dates_month :: $dates_now</small></td>
-			<td class="head"><strong>Last Week</strong> <br/><small>$dates_week :: $dates_now</small></td>
+			<td class="head"><strong>All Time</strong><br/><small>$dates_all_time &ndash; $dates_now</small></td>
+			<td class="head"><strong>Last Month</strong><br/><small>$dates_month &ndash; $dates_now</small></td>
+			<td class="head"><strong>Last Week</strong> <br/><small>$dates_week &ndash; $dates_now</small></td>
 		</tr>
 	</thead>
 	<tbody>

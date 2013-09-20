@@ -1,6 +1,6 @@
 <?php 
 
-$title = 'Archive Progress Report ' . $dates['month'] . ' :: ' . $dates['now'];
+$title = 'Archive Progress Report: ' . $dates['month'] . ' - ' . $dates['now'];
 
 $auth = $this->authority->auth();
 
@@ -74,14 +74,19 @@ if ($updates->count()):
 	foreach ($updates as $update):
 		$subject = $update->subject;
 		$body = $update->body;
-		$date = $update->date_created;
+		$update_time = new DateTime($update->date_created);
+
+		if (isset($tz)) {
+			$update_time->setTimeZone($tz);
+		}
+		$update_display = $update_time->format("d M Y");
 
 $html .= <<<EOD
 
 	<tr>
 		<td>
 				<strong>$subject</strong> &mdash; $body
-				<small class="meta">$date</small>
+				<small class="meta">$update_display</small>
 		</td>
 	</tr>
 	
@@ -111,7 +116,7 @@ if ($archives->count()):
 			$start_date_time->setTimeZone($tz);
 		}
 
-		$start_date_display = $start_date_time->format("Y-m-d");
+		$start_date_display = $start_date_time->format("d M Y");
 
 		$name = $archive->name;
 		$classification = $archive->classification;

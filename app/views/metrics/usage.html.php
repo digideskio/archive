@@ -2,27 +2,6 @@
 
 $this->title('Metrics');
 
-$auth = $this->authority->auth();
-
-if($auth->timezone_id) {
-	$tz = new DateTimeZone($auth->timezone_id);
-}
-
-$all_time = new DateTime($dates['all_time']);
-$month_time = new DateTime($dates['month']);
-$week_time = new DateTime($dates['week']);
-$now_time = new DateTime($dates['now']);
-
-if (isset($tz)) {
-	$all_time->setTimeZone($tz);
-	$month_time->setTimeZone($tz);
-	$week_time->setTimeZone($tz);
-	$now_time->setTimeZone($tz);
-}
-$all_time_display = $all_time->format("d M Y");
-$month_display = $month_time->format("d M Y");
-$week_display = $week_time->format("d M Y");
-$now_display = $now_time->format("d M Y");
 ?>
 
 <div id="location" class="row-fluid">
@@ -76,14 +55,14 @@ $now_display = $now_time->format("d M Y");
 
 <h1>Stats</h1>
 
-<p class="lead"><?=$now_display ?></p>
+<p class="lead"><?=$dates['now'] ?></p>
 
 <div class="row">
 
 	<div class="span3">
 		<table class="table table-bordered">
 			<caption><strong>All Time</strong></caption>
-			<caption class="meta"><?=$all_time_display ?> &ndash; <?=$now_display ?></caption>
+			<caption class="meta"><?=$dates['all_time'] ?> &ndash; <?=$dates['now'] ?></caption>
 			<tbody>
 				<tr>
 					<td class="meta">
@@ -160,7 +139,7 @@ $now_display = $now_time->format("d M Y");
 	<div class="span3">
 		<table class="table table-bordered">
 			<caption><strong>This Month</strong></caption>
-			<caption class="meta"><?=$month_display ?> &ndash; <?=$now_display ?></caption>
+			<caption class="meta"><?=$dates['month'] ?> &ndash; <?=$dates['now'] ?></caption>
 			<tbody>
 				<tr>
 					<td class="meta">
@@ -233,7 +212,7 @@ $now_display = $now_time->format("d M Y");
 	<div class="span3">
 		<table class="table table-bordered">
 			<caption><strong>This Week</strong></caption>
-			<caption class="meta"><?=$week_display ?> &ndash; <?=$now_display ?></caption>
+			<caption class="meta"><?=$dates['week'] ?> &ndash; <?=$dates['now'] ?></caption>
 			<tbody>
 				<tr>
 					<td class="meta">
