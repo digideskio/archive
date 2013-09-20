@@ -154,7 +154,7 @@ EOD;
 
 }
 
-if (!empty($publications)) {
+if (sizeof($publications) > 0) {
 
 $html .= <<<EOD
 	<tr style="page-break-inside: avoid;">
