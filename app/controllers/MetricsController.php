@@ -152,29 +152,32 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		$all_time_date = new \DateTime($earliest_record[0]['date_modified']);
-		$now_date = new \DateTime();
-		$interval = $now_date->diff($all_time_date);
+		$today = new \DateTime();
+		$interval = $today->diff($all_time_date);
 		$total_days = $interval->days;
 
-		$month_date = $now_date->sub(new \DateInterval('P30D'));
-		$now_date = new \DateTime();
-		$month_date_interval = $now_date->diff($month_date);
+		$today = new \DateTime();
+		$month_date = $today->sub(new \DateInterval('P30D'));
+		$today = new \DateTime();
+		$month_date_interval = $today->diff($month_date);
 		$month_days = $month_date_interval->days;
 
 		$month_date = $total_days > $month_days ? $month_date : $all_time_date;
 
-		$month_date_interval = $now_date->diff($month_date);
+		$month_date_interval = $today->diff($month_date);
 		$month_days = $month_date_interval->days;
 
-		$week_date = $now_date->sub(new \DateInterval('P7D'));
-		$now_date = new \DateTime();
-		$week_date_interval = $now_date->diff($week_date);
+		$week_date = $today->sub(new \DateInterval('P7D'));
+		$today = new \DateTime();
+		$week_date_interval = $today->diff($week_date);
 		$week_days = $week_date_interval->days;
 
 		$week_date = $total_days > $week_days ? $week_date : $all_time_date;
 
-		$week_date_interval = $now_date->diff($week_date);
+		$week_date_interval = $today->diff($week_date);
 		$week_days = $week_date_interval->days;
+
+		$now_date = new \DateTime();
 
 		if (isset($tz)) {
 			$now_date->setTimeZone($tz);
@@ -305,7 +308,7 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		$li3_pdf = Libraries::get("li3_pdf");
-		$pdf = 'Archive-Metrics-' . $dates['now'] . '.pdf';
+		$pdf = 'Archive-Metrics-' . $now_date->format('Y-m-d') . '.pdf';
 		$content = compact('pdf');
 
 		return compact(
@@ -394,7 +397,7 @@ class MetricsController extends \lithium\action\Controller {
 		));
 
 		$li3_pdf = Libraries::get("li3_pdf");
-		$pdf = 'Archive-Report-' . $dates['end'] . '.pdf';
+		$pdf = 'Archive-Report-' . $end_date->format('Y-m-d') . '.pdf';
 		$content = compact('pdf');
 
 		return compact(
