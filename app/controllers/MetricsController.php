@@ -333,6 +333,13 @@ class MetricsController extends \lithium\action\Controller {
 	}
 
 	public function report() {
+		define("DEFAULT_REPORTING_PERIOD", 30); // 30 days
+		$period = DEFAULT_REPORTING_PERIOD;
+
+		if(isset($this->request->query['period'])) {
+			$period = (int) $this->request->query['period'];
+		}
+
 	    $check = (Auth::check('default')) ?: null;
 	
         // Look up the current user with his or her role
@@ -342,8 +349,7 @@ class MetricsController extends \lithium\action\Controller {
 		));
 
 		if($auth->timezone_id) {
-			$tz = new \DateTimeZone($auth->timezone_id);
-			date_default_timezone_set($tz);
+			date_default_timezone_set($auth->timezone_id);
 		}
 
 		$earliest_record = Archives::connection()->read(
@@ -355,9 +361,11 @@ class MetricsController extends \lithium\action\Controller {
 		$interval = $today->diff($all_time_date);
 		$total_days = $interval->days;
 
+		$interval_spec = 'P' . $period . 'D';
+
 		$start_date = new \DateTime();
 		$today = new \DateTime();
-		$start_date = $today->sub(new \DateInterval('P30D'));
+		$start_date = $today->sub(new \DateInterval($interval_spec));
 		$today = new \DateTime();
 		$start_date_interval = $today->diff($start_date);
 		$start_days = $start_date_interval->days;
