@@ -55,9 +55,9 @@ if($auth->timezone_id) {
 <h1>Progress Report</h2>
 
 <p class="lead">
-	<?=$dates['month'] ?>
+	<?=$dates['start'] ?>
 	&ndash;
-	<?=$dates['now'] ?>
+	<?=$dates['end'] ?>
 </p>
 
 <?php if ($updates->count()): ?>
@@ -113,12 +113,12 @@ if($auth->timezone_id) {
 
 			<?php foreach ($archives as $archive): ?>
 				<?php
-					$start_date_time = new DateTime($archive->date_modified);
+					$archive_date_time = new DateTime($archive->date_modified);
 
 					if (isset($tz)) {
-						$start_date_time->setTimeZone($tz);
+						$archive_date_time->setTimeZone($tz);
 					}
-					$start_date_display = $start_date_time->format("d M Y");
+					$archive_date_display = $archive_date_time->format("d M Y");
 				?>
 		<tr>
 				<?php if ($archive->controller != $last_controller): ?> 
@@ -141,7 +141,7 @@ if($auth->timezone_id) {
 			</td>
 			<td>
 				<span style="font-size: smaller;">
-				<?php echo str_replace(' ', '&nbsp;', $start_date_display); ?>
+				<?php echo str_replace(' ', '&nbsp;', $archive_date_display); ?>
 				</span>
 			</td>
 			<td>

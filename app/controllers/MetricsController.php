@@ -343,6 +343,7 @@ class MetricsController extends \lithium\action\Controller {
 
 		if($auth->timezone_id) {
 			$tz = new \DateTimeZone($auth->timezone_id);
+			date_default_timezone_set($tz);
 		}
 
 		$earliest_record = Archives::connection()->read(
@@ -354,34 +355,30 @@ class MetricsController extends \lithium\action\Controller {
 		$interval = $today->diff($all_time_date);
 		$total_days = $interval->days;
 
-		$month_date = new \DateTime();
+		$start_date = new \DateTime();
 		$today = new \DateTime();
-		$month_date = $today->sub(new \DateInterval('P30D'));
+		$start_date = $today->sub(new \DateInterval('P30D'));
 		$today = new \DateTime();
-		$month_date_interval = $today->diff($month_date);
-		$month_days = $month_date_interval->days;
+		$start_date_interval = $today->diff($start_date);
+		$start_days = $start_date_interval->days;
 
-		$month_date = $total_days > $month_days ? $month_date : $all_time_date;
+		$start_date = $total_days > $start_days ? $start_date : $all_time_date;
 
-		$now_date = new \DateTime();
-
-		if (isset($tz)) {
-			$now_date->setTimeZone($tz);
-		};
+		$end_date = new \DateTime();
 
 		$dates = array(
-			'now' => $now_date->format('d M Y'),
-			'month' => $month_date->format('d M Y'),
+			'start' => $start_date->format('d M Y'),
+			'end' => $end_date->format('d M Y'),
 		);
 
 		$updates = Notices::find('all', array(
 			'order' => array('date_created' => 'DESC'),
-			'conditions' => array('date_created' => array('>' => $dates['month']))
+			'conditions' => array('date_created' => array('>' => $dates['start']))
 		));
 
 		$archives = Archives::find('all', array(
 			'with' => array('Users'),
-			'conditions' => array('date_modified' => array('>' => $dates['month'])),
+			'conditions' => array('date_modified' => array('>' => $dates['start'])),
 			'order' => array(
 				'controller' => 'ASC',
 				'name' => 'ASC',
@@ -389,7 +386,7 @@ class MetricsController extends \lithium\action\Controller {
 		));
 
 		$li3_pdf = Libraries::get("li3_pdf");
-		$pdf = 'Archive-Report-' . $dates['now'] . '.pdf';
+		$pdf = 'Archive-Report-' . $dates['end'] . '.pdf';
 		$content = compact('pdf');
 
 		return compact(
