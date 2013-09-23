@@ -10,23 +10,57 @@ use app\models\Works;
 use app\models\WorksHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
+use app\models\Links;
+use app\models\ArchivesLinks;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
 
-class WorksControllerTest extends \lithium\test\Unit {
+class WorksControllerTest extends \li3_unit\test\ControllerUnit {
+
+	public $controller = 'app\\controllers\WorksController';
 
 	public function setUp() {
 	
-		Session::config(array(
-			'default' => array('adapter' => 'Php', 'session.name' => 'app')
-		));
+		$work = Works::create();
+		$data = array(
+			'title' => 'Artwork Title',
+		);
+
+		$work->save($data);
+
 	}
 
-	public function tearDown() {}
+	public function tearDown() {
+	
+		Works::all()->delete();
+		WorksHistories::all()->delete();
 
-	public function testIndex() {}
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
+
+		Links::all()->delete();
+		ArchivesLinks::all()->delete();
+	
+	}
+
+	public function testIndex() {
+		$data = $this->call('index');
+
+		$works = $data['works'];
+		$total = $data['total'];
+
+		$work = $works->first();
+
+		$this->assertEqual('Artwork Title', $work->title);
+		$this->assertEqual(1, $total);
+
+		$this->assertTrue(isset($data['page']));
+		$this->assertTrue(isset($data['limit']));
+	
+	}
+
 	public function testView() {}
 	public function testAdd() {}
 	public function testEdit() {}
