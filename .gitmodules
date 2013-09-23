@@ -16,3 +16,6 @@
 [submodule "libraries/ruckusing-migrations"]
 	path = libraries/ruckusing-migrations
 	url = https://github.com/ruckus/ruckusing-migrations.git
+[submodule "libraries/li3_unit"]
+	path = libraries/li3_unit
+	url = https://github.com/BlaineSch/li3_unit.git
