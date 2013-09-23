@@ -61,9 +61,36 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 	
 	}
 
-	public function testView() {}
+	public function testView() {
+
+		$data = $this->call('view', array(
+			'params' => array(
+				'slug' => 'Artwork-Title'
+			)
+		));
+
+		$work = $data['work'];
+
+		$this->assertEqual('Artwork Title', $work->title);
+
+	}
+
 	public function testAdd() {}
-	public function testEdit() {}
+
+	public function testEdit() {
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => 'Artwork-Title'
+			)
+		));
+
+		$work = $data['work'];
+
+		$this->assertEqual('Artwork Title', $work->title);
+
+	}
+
 	public function testDelete() {}
 	
 	public function testRules() {
