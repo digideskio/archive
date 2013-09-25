@@ -47,7 +47,7 @@ class LinksController extends \lithium\action\Controller {
 		$total = Links::count();
 
 		$links = Links::all(array(
-			'with' => array('ArchivesLinks'),
+			'with' => array('ArchivesLinks', 'ArchivesLinks.Archives'),
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
