@@ -53,30 +53,19 @@ $(document).ready(function() {
 });
 </script>
 
-<style>
-
-	.edit-link {
-		color:#D14;
-	}
-
-	.view-link {
-		color: gray;
-	}
-
-</style>
-
 <?php foreach ($links as $link): ?>
 
 <tr <?php if ($link->id == $saved) { echo 'class="success"'; } ?>>
 	<td>
 		<?php $title = $link->title ?: $link->url; ?>
 
-		<p>
-			<?=$this->html->link($title, $link->url); ?>
+		<p class="lead" style="margin-bottom: 0">
+			<?=$this->html->link($title, $this->url(array('Links::view', 'id' => $link->id))); ?>
 
-				<a href="/links/view/<?=$link->id ?>" rel="tooltip" title="View Link" class="model-tip">
-				<i class="icon-eye-open"></i>
-				</a>
+			<small style="font-size: smaller;">
+				<?php $date = date('Y-m-d', strtotime($link->date_created)); ?>
+					<?=$date ?>
+			</small>
 
 				<?php if($authority_can_edit): ?>
 
@@ -89,18 +78,14 @@ $(document).ready(function() {
 		</p>
 
 		<p>
-			<?=$link->url ?>
+			<strong>
+				<?=$this->html->link($link->url) ?>
+			</strong>
 		</p>
-
+	
+		<?php if (!empty($link->description)): ?>
 		<blockquote><?=$link->description ?></blockquote>
-
-		<p>
-			<small style="font-size: smaller;">
-				<?php $date = date('Y-m-d', strtotime($link->date_created)); ?>
-				<a class="view-link" href="/links/view/<?=$link->id ?>">Added <?=$date ?></a>
-			<!--	<a class="edit-link" href="/links/edit/<?=$link->id ?>">Edit</a> -->
-			</small>
-		</p>
+		<?php endif; ?>
 
 	</td>
 </tr>
