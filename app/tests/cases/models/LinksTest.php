@@ -84,10 +84,10 @@ class LinksTest extends \lithium\test\Unit {
 		$this->assertEqual(1, $link_count);
 
 		$link_id = $link->id;
-		$work_id = '1';
+		$archive_id = '1';
 
 		$work_link = ArchivesLinks::create();
-		$success = $work_link->save(compact($work_id, $link_id));
+		$success = $work_link->save(compact($archive_id, $link_id));
 
 		$this->assertTrue($success);
 
