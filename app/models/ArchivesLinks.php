@@ -2,6 +2,8 @@
 
 namespace app\models;
 
+use lithium\util\Validator;
+
 class ArchivesLinks extends \lithium\data\Model {
 
 	public $belongsTo = array('Archives', 'Links');
@@ -9,6 +11,7 @@ class ArchivesLinks extends \lithium\data\Model {
 	public $validates = array(
 		'archive_id' => array(
 			array('notEmpty', 'message' => "You can't leave this blank."),
+			array('archiveLinkUnique', 'message' => 'The Archive Link already exists')
 		),
 	);
 }
@@ -45,6 +48,11 @@ ArchivesLinks::applyFilter('save', function($self, $params, $chain) {
 		return false;
 	}
 
+});
+
+// TODO Don't save combinations of archive_id and link_id that already exist in the database
+Validator::add('archiveLinkUnique', function($value, $rule, $options) {
+	return true;
 });
 
 ?>
