@@ -22,6 +22,9 @@ class LinksController extends \lithium\action\Controller {
 		'index' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
+		'search' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
 		'view' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
@@ -40,19 +43,76 @@ class LinksController extends \lithium\action\Controller {
 
 		$saved = isset($this->request->query['saved']) ? $this->request->query['saved'] : '';
 
-		$limit = 50;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('date_modified' => 'DESC');
 
 		$total = Links::count();
 
-		$links = Links::all(array(
+		$links = Links::find('all', array(
 			'with' => array('ArchivesLinks', 'ArchivesLinks.Archives'),
 			'limit' => $limit,
 			'order' => $order,
 			'page' => $page
 		));
 		return compact('links', 'total', 'page', 'limit', 'saved');
+	}
+
+	public function search() {
+
+		$links = array();
+
+		$query = '';
+		$condition = '';
+
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = array('date_modified' => 'DESC');
+		$total = 0;
+
+		$data = $this->request->data ?: $this->request->query;
+
+		$conditions = array('title' => $query);
+
+		if (isset($data['query']) && $data['query']) {
+
+			$query = trim($data['query']);
+
+			$link_ids = array();
+
+			$fields = array('title', 'url', 'description');
+
+			foreach ($fields as $field) {
+				$matching_links = Links::find('all', array(
+					'fields' => 'Links.id',
+					'conditions' => array("$field" => array('LIKE' => "%$query%")),
+				));
+
+				if ($matching_links) {
+					$matching_ids = $matching_links->map(function($match) {
+						return $match->id;
+					}, array('collect' => false));
+
+					$link_ids = array_unique(array_merge($link_ids, $matching_ids));
+				}
+			}
+
+			$conditions = $link_ids ? array('Links.id' => $link_ids) : array('title' => $query);
+		}
+
+		$links = Links::find('all', array(
+			'with' => array('ArchivesLinks', 'ArchivesLinks.Archives'),
+			'conditions' => $conditions,
+			'order' => $order,
+			'limit' => $limit,
+			'page' => $page
+		));
+
+		$total = Links::count(array(
+			'conditions' => $conditions,
+		));
+
+		return compact('links', 'condition', 'query', 'total', 'page', 'limit');
 	}
 
 	public function view() {

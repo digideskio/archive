@@ -39,6 +39,9 @@ class LinksControllerTest extends \lithium\test\Unit {
 		$this->assertEqual(1, sizeof($rules['index']));
 		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
 
+		$this->assertEqual(1, sizeof($rules['search']));
+		$this->assertEqual('allowAnyUser', $rules['search'][0]['rule']);
+
 		$this->assertEqual(1, sizeof($rules['view']));
 		$this->assertEqual('allowAnyUser', $rules['view'][0]['rule']);
 

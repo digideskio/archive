@@ -160,6 +160,7 @@ Router::connect('/packages/add', array('Packages::add'));
 Router::connect('/packages/delete/{:id}', array('Packages::delete'));
 
 Router::connect('/links/pages/{:page:[0-9]+}', array('Links::index'));
+Router::connect('/links/search/{:page:[0-9]+}', array('Links::search'));
 Router::connect('/links/view/{:id}', array('Links::view'));
 Router::connect('/links/edit/{:id}', array('Links::edit'));
 Router::connect('/links/delete/{:id}', array('Links::delete'));

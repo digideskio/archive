@@ -36,6 +36,10 @@ $this->form->config(
 			<?=$this->html->link('Index','/links'); ?>
 		</li>
 
+		<li>
+			<?=$this->html->link('Search','/links/search'); ?>
+		</li>
+
 	</ul>
 
 	<div class="btn-toolbar">
