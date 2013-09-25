@@ -6,7 +6,11 @@ class ArchivesLinks extends \lithium\data\Model {
 
 	public $belongsTo = array('Archives', 'Links');
 
-	public $validates = array();
+	public $validates = array(
+		'archive_id' => array(
+			array('notEmpty', 'message' => "You can't leave this blank."),
+		),
+	);
 }
 
 ArchivesLinks::applyFilter('save', function($self, $params, $chain) {

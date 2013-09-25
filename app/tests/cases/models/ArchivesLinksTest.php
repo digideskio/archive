@@ -71,6 +71,16 @@ class ArchivesLinksTest extends \lithium\test\Unit {
 		$this->assertEqual(0, $archives_links_count);
 	}
 
+	public function testValidators() {
+		$data = array(
+			'archive_id' => '',
+			'link_id' => '1'
+		);
+		$archive_link = ArchivesLinks::create($data);
+
+		$this->assertFalse($archive_link->validates());
+	}
+
 	public function testCreateLinkOnSave() {
 		$archive_link_data = array(
 			'archive_id' => '1',
