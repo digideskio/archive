@@ -24,8 +24,8 @@ class ArchivesLinksController extends \lithium\action\Controller {
 	
 		if ($this->request->data) {
 	
-			$works_links = ArchivesLinks::create();
-			$works_links->save($this->request->data);
+			$archives_links = ArchivesLinks::create();
+			$archives_links->save($this->request->data);
 			
 			return $this->redirect($this->request->env('HTTP_REFERER'));
 		}
