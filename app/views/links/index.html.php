@@ -25,10 +25,9 @@ $authority_can_edit = $this->authority->canEdit();
 			<?=$this->html->link('Index','/links'); ?>
 		</li>
 
-<!--		<li>
+		<li>
 			<?=$this->html->link('Search','/links/search'); ?>
 		</li>
-	-->
 
 	</ul>
 	<div class="btn-toolbar">
@@ -43,58 +42,7 @@ $authority_can_edit = $this->authority->canEdit();
 
 <?php if($total > 0): ?>
 
-<table class="table table-striped table-bordered">
-
-<tbody>
-
-<script>
-$(document).ready(function() {
-	$('.model-tip').tooltip();
-});
-</script>
-
-<?php foreach ($links as $link): ?>
-
-<tr <?php if ($link->id == $saved) { echo 'class="success"'; } ?>>
-	<td>
-		<?php $title = $link->title ?: $link->url; ?>
-
-		<p class="lead" style="margin-bottom: 0">
-			<?=$this->html->link($title, $this->url(array('Links::view', 'id' => $link->id))); ?>
-
-			<small style="font-size: smaller;">
-				<?php $date = date('Y-m-d', strtotime($link->date_created)); ?>
-					<?=$date ?>
-			</small>
-
-				<?php if($authority_can_edit): ?>
-
-				<?php if ($link->id == $saved): ?>
-					<span class="label">Saved</span>
-				<?php endif; ?>
-
-				<?php endif; ?>
-
-		</p>
-
-		<p>
-			<strong>
-				<?=$this->html->link($link->url) ?>
-			</strong>
-		</p>
-	
-		<?php if (!empty($link->description)): ?>
-		<blockquote><?=$link->description ?></blockquote>
-		<?php endif; ?>
-
-	</td>
-</tr>
-
-<?php endforeach; ?>
-
-</tbody>
-
-</table>
+<?=$this->partial->links(compact('links', 'saved')); ?>
 
 <?=$this->pagination->pager('links', 'pages', $page, $total, $limit); ?>
 
