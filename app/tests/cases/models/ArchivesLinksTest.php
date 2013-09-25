@@ -111,6 +111,26 @@ class ArchivesLinksTest extends \lithium\test\Unit {
 
 	}
 
+	public function testAvoidDuplicateArchivesLinks() {
+		$archive_link_data = array(
+			'archive_id' => '1',
+			'url' => 'http://example.com/fjekod',
+			'title' => 'Example Link'
+		);
+
+		$archive_link = ArchivesLinks::create();
+		$archive_link->save($archive_link_data);
+
+		$archives_links_count = ArchivesLinks::count();
+		$this->assertEqual(1, $archives_links_count);
+
+		$archive_link_2 = ArchivesLinks::create();
+		$archive_link_2->save($archive_link_data);
+
+		$archives_links_count = ArchivesLinks::count();
+		$this->assertEqual(1, $archives_links_count);
+	}
+
 }
 
 ?>
