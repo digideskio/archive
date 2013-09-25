@@ -132,7 +132,15 @@ $language_list = json_encode($language_names);
 			<?=$this->form->field('translator', array('autocomplete' => 'off', 'class' => 'book'));?>
 			<?=$this->form->field('pages', array('autocomplete' => 'off', 'class' => 'pages'));?>
 			<?=$this->form->field('edition', array('autocomplete' => 'off', 'class' => 'book'));?>
-			<?=$this->form->field('url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web'));?>
+			<!-- <?=$this->form->field('disabled_url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web', 'disabled' => 'disabled', 'value' => $publication->url));?> -->
+			<div class="control-group">
+			<label class="control-label">URL</label>
+			<div class="controls">
+			<span class="help-block" style="margin-top: 0; padding:5px 6px;">
+				See the <?=$this->html->link('attachments', $this->url(array('Publications::attachments', 'slug' => $publication->archive->slug)) . '#links-editor'); ?> page.
+			</span>
+			</div>
+			</div>
 			<?=$this->form->field('access_date', array('autocomplete' => 'off', 'value' => $publication->access_date, 'class' => 'web'));?>
 			<?=$this->form->field('subject', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('language', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>

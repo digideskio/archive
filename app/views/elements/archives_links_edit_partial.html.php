@@ -2,7 +2,7 @@
 	$add_link_url = $this->url(array("ArchivesLinks::add"));
 ?>
 
-	<div class="well">
+	<div id="links-editor" class="well">
 		<legend>Links</legend>
 		<table class="table">
 			<?php foreach ($archives_links as $al): ?>
