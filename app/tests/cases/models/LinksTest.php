@@ -86,14 +86,21 @@ class LinksTest extends \lithium\test\Unit {
 		$link_id = $link->id;
 		$archive_id = '1';
 
-		$work_link = ArchivesLinks::create();
-		$success = $work_link->save(compact($archive_id, $link_id));
+		$archive_link = ArchivesLinks::create();
+		$success = $archive_link->save(compact('archive_id', 'link_id'));
 
 		$this->assertTrue($success);
 
-		$work_link_count = ArchivesLinks::count();
+		$archive_link_count = ArchivesLinks::count();
 
-		$this->assertEqual(1, $work_link_count);
+		$this->assertEqual(1, $archive_link_count);
+
+		$link->delete();
+
+		$archive_link_count = ArchivesLinks::count();
+
+		$this->assertEqual(0, $archive_link_count);
+
 		
 	}
 
