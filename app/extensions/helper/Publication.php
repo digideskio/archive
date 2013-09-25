@@ -2,8 +2,6 @@
 
 namespace app\extensions\helper;
 
-use \lithium\template\helper\Html;
-
 class Publication extends \lithium\template\Helper {
 
 	public function citation($archive, $publication) {
@@ -12,8 +10,7 @@ class Publication extends \lithium\template\Helper {
 		$byline = $this->escape($publication->byline());
     	$author_years = $years ? $byline . ' (' . $years . ')' : $byline;
 
-		$html = new Html();
-		$title = $publication->url ? $html->link($publication->title, $publication->url) : $publication->title;
+		$title = $publication->title;
 
 		$publisher = $this->escape($publication->publisher);
 		$pages = $this->escape($publication->pages);

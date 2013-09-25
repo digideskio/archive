@@ -132,7 +132,6 @@ $language_list = json_encode($language_names);
 			<?=$this->form->field('translator', array('autocomplete' => 'off', 'class' => 'book'));?>
 			<?=$this->form->field('pages', array('autocomplete' => 'off', 'class' => 'pages'));?>
 			<?=$this->form->field('edition', array('autocomplete' => 'off', 'class' => 'book'));?>
-			<!-- <?=$this->form->field('disabled_url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web', 'disabled' => 'disabled', 'value' => $publication->url));?> -->
 			<div class="control-group">
 			<label class="control-label">URL</label>
 			<div class="controls">
