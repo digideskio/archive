@@ -12,6 +12,7 @@ use app\models\WorksDocuments;
 use app\models\Albums;
 use app\models\Exhibitions;
 use app\models\Publications;
+use app\models\Links;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -36,6 +37,7 @@ class SearchController extends \lithium\action\Controller {
 		$exhibitions = array();
 		$publications = array();
 		$documents = array();
+		$links = array();
 
 		$query = '';
 
@@ -238,6 +240,40 @@ class SearchController extends \lithium\action\Controller {
 				'limit' => $document_limit,
 			));
 
+			$link_ids = array();
+
+			$link_fields = array('title', 'url', 'description');
+
+			foreach ($link_fields as $field) {
+				$matching_links = Links::find('all', array(
+					'fields' => 'Links.id',
+					'conditions' => array("$field" => array('LIKE' => "%$query%")),
+				));
+
+				if ($matching_links) {
+					$matching_ids = $matching_links->map(function($match) {
+						return $match->id;
+					}, array('collect' => false));
+
+					$link_ids = array_unique(array_merge($link_ids, $matching_ids));
+				}
+			}
+
+			$link_conditions = $link_ids ? array('Links.id' => $link_ids) : array('title' => $query);
+
+			$links_total = Links::count(array(
+				'conditions' => $link_conditions,
+			));
+
+			$link_limit = !(intval($limit)) ? $links_total : $limit;
+
+			$links = Links::find('all', array(
+				'with' => array('ArchivesLinks', 'ArchivesLinks.Archives'),
+				'conditions' => $link_conditions,
+				'order' => array('date_modified' => 'DESC'),
+				'limit' => $limit,
+			));
+
 			$limit = !(intval($limit)) ? max(array($works_total, $architectures_total, $exhibitions_total, $publications_total, $documents_total)) : $limit;
 		}
 
@@ -254,6 +290,8 @@ class SearchController extends \lithium\action\Controller {
 			'publications_total',
 			'documents',
 			'documents_total',
+			'links',
+			'links_total',
 			'query',
 			'limit',
 			'architecture',

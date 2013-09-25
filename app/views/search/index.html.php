@@ -17,7 +17,7 @@ $this->title('Search');
 </div>
 
 <div class="alert alert-info">
-	<span class="meta">Search for:</span> <?=$this->html->link('Artworks',"/works/search?query=$query"); ?> / <?php if ($architecture): ?> <?=$this->html->link('Architecture',"/architectures/search?query=$query"); ?> / <?php endif; ?> <?=$this->html->link('Exhibitions', "/exhibitions/search?query=$query"); ?> / <?=$this->html->link('Publications', "/publications/search?query=$query"); ?> / <?=$this->html->link('Documents', "/documents/search?query=$query"); ?>
+	<span class="meta">Search for:</span> <?=$this->html->link('Artworks',"/works/search?query=$query"); ?> / <?php if ($architecture): ?> <?=$this->html->link('Architecture',"/architectures/search?query=$query"); ?> / <?php endif; ?> <?=$this->html->link('Exhibitions', "/exhibitions/search?query=$query"); ?> / <?=$this->html->link('Publications', "/publications/search?query=$query"); ?> / <?=$this->html->link('Documents', "/documents/search?query=$query"); ?> / <?=$this->html->link('Links', $this->url(array("Links::search")) . "?query=$query"); ?>
 </div>
 
 <div class="actions">
@@ -50,9 +50,10 @@ $this->title('Search');
 		$has_exhibitions = $exhibitions && sizeof($exhibitions) > 0 ? true : false; 
 		$has_publications = $publications && sizeof($publications) > 0 ? true : false; 
 		$has_documents = $documents && sizeof($documents) > 0 ? true : false; 
+		$has_links = $links && sizeof($links) > 0 ? true : false; 
 	?>
 
-	<?php if ($query && !$has_works && !$has_architectures && !$has_exhibitions && !$has_publications && !$has_documents): ?>
+	<?php if ($query && !$has_works && !$has_architectures && !$has_exhibitions && !$has_publications && !$has_documents && !$has_links): ?>
 
 		<div class="alert alert-error">
 			<p>No results found.</p>
@@ -114,6 +115,18 @@ $this->title('Search');
 
 		<?php if ($documents_total > $limit): ?>
 			<p><a class="btn btn-large btn-block btn-inverse" href="/documents/search?query=<?=$query?>">More Documents &raquo;</a></p>
+		<?php endif; ?>
+
+		<hr/>
+
+	<?php endif; ?>
+
+	<?php if ($has_links): ?>
+
+		<?=$this->partial->links(array('links' => $links, 'showBar' => true)); ?>
+
+		<?php if ($links_total > $limit): ?>
+			<p><a class="btn btn-large btn-block btn-inverse" href="/links/search?query=<?=$query?>">More Links &raquo;</a></p>
 		<?php endif; ?>
 
 		<hr/>

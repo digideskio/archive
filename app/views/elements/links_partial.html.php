@@ -1,3 +1,15 @@
+<?php if (isset($showBar) && $showBar): ?>
+
+<div class="navbar">
+	<div class="navbar-inner">
+	<ul class="nav">
+		<li class="meta"><a href="#">Links</a></li>
+	</ul>
+	</div>
+</div>
+
+<?php endif; ?>
+
 <table class="table table-striped table-bordered">
 
 <tbody>
