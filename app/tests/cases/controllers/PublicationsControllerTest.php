@@ -73,7 +73,13 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 	}
 
-	public function testAdd() {}
+	public function testAdd() {
+		$data = $this->call('add', array(
+			'params' => array()
+		));
+
+		$this->assertTrue(isset($data['publication']));
+	}
 
 	public function testEdit() {
 
