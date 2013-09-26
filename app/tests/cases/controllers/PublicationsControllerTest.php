@@ -4,27 +4,91 @@ namespace app\tests\cases\controllers;
 
 use app\controllers\PublicationsController;
 
-use app\models\Users;
+use app\models\Publications;
+use app\models\PublicationsHistories;
+use app\models\Archives;
+use app\models\ArchivesHistories;
+use app\models\Links;
+use app\models\ArchivesLinks;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
 
-class PublicationsControllerTest extends \lithium\test\Unit {
+class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
+
+	public $controller = 'app\\controllers\PublicationsController';
 
 	public function setUp() {
 	
-		Session::config(array(
-			'default' => array('adapter' => 'Php', 'session.name' => 'app')
-		));
+		$pub = Publications::create();
+		$data = array(
+			'title' => 'Publication Title',
+		);
+
+		$pub->save($data);
+
 	}
 
-	public function tearDown() {}
+	public function tearDown() {
 
-	public function testIndex() {}
-	public function testView() {}
+		Publications::all()->delete();
+		PublicationsHistories::all()->delete();
+
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
+
+		Links::all()->delete();
+		ArchivesLinks::all()->delete();
+	
+	}
+
+	public function testIndex() {
+		$data = $this->call('index');
+
+		$pubs = $data['publications'];
+		$total = $data['total'];
+
+		$pub = $pubs->first();
+
+		$this->assertEqual('Publication Title', $pub->title);
+		$this->assertEqual(1, $total);
+
+		$this->assertTrue(isset($data['page']));
+		$this->assertTrue(isset($data['limit']));
+	
+	}
+
+	public function testView() {
+
+		$data = $this->call('view', array(
+			'params' => array(
+				'slug' => 'Publication-Title'
+			)
+		));
+
+		$pub = $data['publication'];
+
+		$this->assertEqual('Publication Title', $pub->title);
+
+	}
+
 	public function testAdd() {}
-	public function testEdit() {}
+
+	public function testEdit() {
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => 'Publication-Title'
+			)
+		));
+
+		$pub = $data['publication'];
+
+		$this->assertEqual('Publication Title', $pub->title);
+
+	}
+
 	public function testDelete() {}
 	
 	public function testRules() {
