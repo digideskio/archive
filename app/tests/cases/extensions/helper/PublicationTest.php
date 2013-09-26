@@ -57,13 +57,6 @@ class PublicationTest extends \lithium\test\Unit {
 
 		$this->assertEqual('Author Name (2010). <em>Book Title</em>. The Publisher, 21-98.', $citation);
 
-		$data['url'] = "http://example.com/pub";
-
-		$publication = Publications::create($data);
-		$citation = $helper->citation($archive, $publication);
-
-		$this->assertEqual('Author Name (2010). <em><a href="http://example.com/pub">Book Title</a></em>. The Publisher, 21-98.', $citation);
-
 	}
 
 }
