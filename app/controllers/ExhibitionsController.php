@@ -310,7 +310,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'conditions' => array('id' => $exhibition->id)
 			));
 		
-			return $this->redirect(array('Exhibitions::view', 'args' => array($archive->slug)));
+			return $this->redirect(array('Exhibitions::view', 'slug' => $archive->slug));
 		}
 
 		$exhibition_titles = Exhibitions::find('all', array(
@@ -509,7 +509,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 		}
 		
 		//since no record was specified, redirect to the index page
-		$this->redirect(array('Works::index'));
+		$this->redirect(array('Exhibitions::index'));
 	}
 
 	public function delete() {
