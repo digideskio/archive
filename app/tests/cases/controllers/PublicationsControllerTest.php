@@ -14,6 +14,7 @@ use app\models\ArchivesLinks;
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
+use lithium\net\http\Router;
 
 class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
@@ -74,11 +75,48 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function testAdd() {
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/publications/view/{:slug}', array('Publications::view'));
+
+		// Test that a publication model is created and passed to the view
 		$data = $this->call('add', array(
 			'params' => array()
 		));
 
 		$this->assertTrue(isset($data['publication']));
+
+		// Test that this action processes and saves the correct data, namely
+		// a publication, archive, and link model
+		$title = 'Publication New Title';
+		$slug = 'Publication-New-Title';
+		$url = 'http://example.com/publication-new-title';
+
+		$data = $this->call('add', array(
+			'data' => compact('title', 'url')
+		));
+
+		$pub = Publications::find('first', array(
+			'conditions' => compact('title')
+		));
+
+		$this->assertTrue(!empty($pub));
+
+		$archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$this->assertTrue(!empty($archive));
+
+		$link = Links::find('first', array(
+			'conditions' => compact('url')
+		));
+
+		$this->assertTrue(!empty($link));
+
+		$this->assertEqual($title, $link->title);
+
 	}
 
 	public function testEdit() {
