@@ -126,12 +126,13 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 			$identifier = !empty($keys) ? array_shift($keys) : '';
 
 			$referer = $request->referer();
+			$query_string = $request->env('QUERY_STRING');
 			$user_agent = $request->env('HTTP_USER_AGENT');
 			$request_method = $request->env('REQUEST_METHOD');
 			$remote_addr = $request->env('REMOTE_ADDR'); // FIXME The IP address always appears to be localhost
 			$request_time = $request->env('REQUEST_TIME');
 
-			$data = compact('url', 'controller', 'action', 'identifier', 'referer', 'user_agent', 'request_method', 'remote_addr', 'request_time', 'user_id');
+			$data = compact('url', 'controller', 'action', 'identifier', 'referer', 'query_string', 'user_agent', 'request_method', 'remote_addr', 'request_time', 'user_id');
 
 			$req = Requests::create();
 			$req->save($data);
