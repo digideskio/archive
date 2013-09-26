@@ -26,6 +26,6 @@ Progress Report: <?=$dates['start'] ?> - <?=$dates['end'] ?>
 
 <?php endif; ?>
 <?php $last_controller = $archive->controller; ?>
-* <?php echo $archive->name; ?> <?php if ($archive->classification): ?><?=$archive->classification ?><?php endif; ?> (<?=$archive->user->name; ?>)
+* <?php echo $archive->name; ?> <?php if ($archive->classification): ?>- <?=$archive->classification ?><?php endif; ?> (<?=$archive->user->name; ?>)
 <?php endforeach; ?>
 <?php endif; ?>
