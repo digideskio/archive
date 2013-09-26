@@ -82,7 +82,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		// otherwise we get an error that there is no match for this route.
 		Router::connect('/works/view/{:slug}', array('Works::view'));
 
-		// Test that a publication model is created and passed to the view
+		// Test that a work model is created and passed to the view
 		$data = $this->call('add', array(
 			'params' => array()
 		));
