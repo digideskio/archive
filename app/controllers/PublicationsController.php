@@ -291,7 +291,7 @@ class PublicationsController extends \lithium\action\Controller {
 			$archive = Archives::find('first', array(
 				'conditions' => array('id' => $publication->id)
 			));
-			return $this->redirect(array('Publications::view', 'args' => array($archive->slug)));
+			return $this->redirect(array('Publications::view', 'slug' => $archive->slug));
 		}
 
 		$pub_classifications = Publications::classifications();
