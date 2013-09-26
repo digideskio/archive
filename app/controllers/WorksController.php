@@ -342,7 +342,7 @@ class WorksController extends \lithium\action\Controller {
 			$archive = Archives::find('first', array(
 				'conditions' => array('id' => $work->id)
 			));
-			return $this->redirect(array('Works::view', 'args' => array($archive->slug)));
+			return $this->redirect(array('Works::view', 'slug' => $archive->slug));
 		}
 
 		$works_artists = Works::find('all', array(
