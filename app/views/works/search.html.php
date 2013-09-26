@@ -85,7 +85,7 @@ if ($inventory) {
 
 <div class="well">
 
-	<?=$this->form->create(null, array('class' => 'form-inline', 'action' => 'search')); ?>
+	<?=$this->form->create(null, array('class' => 'form-inline', 'action' => 'search', 'method' => 'get')); ?>
 		<legend>Search Artwork</legend>
 
 		<input type="text" name="query" value="<?=$query?>" placeholder="Search…" autocomplete="off">

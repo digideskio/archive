@@ -31,7 +31,7 @@ $this->title('Search');
 
 <div class="well">
 
-	<?=$this->form->create(null, array('class' => 'form-inline')); ?>
+	<?=$this->form->create(null, array('class' => 'form-inline', 'method' => 'get')); ?>
 		<legend>Search the Whole Archive</legend>
 
 		<?=$this->form->field('query', array('value' => $query, 'autocomplete' => 'off', 'placeholder' => 'Search…', 'template' => '{:input}')); ?>
