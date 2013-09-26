@@ -1,5 +1,9 @@
 <?php $check = lithium\security\Auth::check('default'); $username = $check['username']; ?>
 <?php $host = $this->request()->env('HTTP_HOST'); ?>
+<?php 
+	$request_query = $this->request()->query;
+	$query = isset($request_query['query']) ? $request_query['query'] : '';
+?>
 
 <div class="navbar navbar-fixed-top navbar-inverse" >
 	<div class="navbar-inner">
@@ -23,7 +27,7 @@
 				</ul>
 
 				<form class="navbar-search pull-right form-search" action="/search" method="get">
-					<input type="text" class="search-query span3" placeholder="Search" name="query" autocomplete="off">
+					<input type="text" class="search-query span3" placeholder="Search" value="<?=$query ?>" name="query" autocomplete="off">
 				</form>
 			</div>
 		</div>
