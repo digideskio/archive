@@ -59,5 +59,6 @@ Collection::formats('lithium\net\http\Media');
 use lithium\net\http\Media;
 
 Media::type('pdf', 'application/pdf', array());
+Media::type('txt', 'text/plain', array());
 
 ?>
