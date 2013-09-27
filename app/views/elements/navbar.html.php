@@ -2,7 +2,15 @@
 <?php $host = $this->request()->env('HTTP_HOST'); ?>
 <?php 
 	$request_query = $this->request()->query;
-	$query = isset($request_query['query']) ? $request_query['query'] : '';
+	$search_term = null;
+	
+	// Check the request, and then the custom storage, for a query search term.
+	// This allows the contents of the search input to persist across page views.
+	if(isset($request_query['query'])) {
+		$search_term = $request_query['query'];
+	} else {
+		$search_term = lithium\storage\Session::read('query', array('name' => 'custom'));
+	}
 ?>
 
 <div class="navbar navbar-fixed-top navbar-inverse" >
@@ -27,7 +35,7 @@
 				</ul>
 
 				<form class="navbar-search pull-right form-search" action="/search" method="get">
-					<input type="text" class="search-query span3" placeholder="Search" value="<?=$query ?>" name="query" autocomplete="off">
+					<input type="text" class="search-query span3" placeholder="Search" value="<?=$search_term ?>" name="query" autocomplete="off">
 				</form>
 			</div>
 		</div>

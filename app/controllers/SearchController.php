@@ -17,6 +17,7 @@ use app\models\Links;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\core\Environment;
+use lithium\storage\Session;
 
 class SearchController extends \lithium\action\Controller {
 
@@ -52,6 +53,9 @@ class SearchController extends \lithium\action\Controller {
 
 		if (isset($data['query']) && $data['query']) {
 			$query = trim($data['query']);
+
+			// Save the query term as a session variable in the custom storage
+			Session::write('query', $query, array('name' => 'custom'));
         
 			$order = array('Archives.earliest_date' => 'DESC');
 
