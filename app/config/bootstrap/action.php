@@ -49,6 +49,9 @@ use lithium\security\Auth;
  *		Environment::set('production', compact('session'));
  * }}}
  *
+ * In addition, the filter sets a `custom` session config using the Php adapter, which is
+ * used to store temporary user options.
+ *
  * The filter then checks authentication. If an Exception is thrown (by Hmac) then it will 
  * clear the session (the cookie) and log the user out.
  *
@@ -61,7 +64,11 @@ Dispatcher::applyFilter('run', function($self, $params, $chain) {
 
 	$session = Environment::get('session');
 
+	// Session config for saving temporary per-session user options
+	$custom = array('adapter' => 'Php', 'name' => 'Custom');
+
 	if ($session) {
+		$session['custom'] = $custom;
 		Session::config($session);
 	}
 	
