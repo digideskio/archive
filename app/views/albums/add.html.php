@@ -43,12 +43,31 @@ $this->form->config(
 	</div>
 </div>
 
+<?=$this->form->create(compact('album', 'archives')); ?>
 <div class="well">
-<?=$this->form->create($album); ?>
 	<legend>Album Info</legend>
-    <?=$this->form->field('title', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('remarks', array('label' => 'Description', 'type' => 'textarea'));?>
-    <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel',$this->url('Albums::index'), array('class' => 'btn')); ?>
-<?=$this->form->end(); ?>
+    <?=$this->form->field('album.title', array('autocomplete' => 'off'));?>
+    <?=$this->form->field('album.remarks', array('label' => 'Description', 'type' => 'textarea'));?>
 </div>
+
+<?php if (!empty($archives)): ?>
+<div class="well">
+	<legend>Album Components</legend>
+	<?php foreach ($archives as $archive): ?>
+		<label class="checkbox">	
+		<?=$this->form->checkbox('archives[]', array('id' => "Archive-$archive->id", 'value' => $archive->id, 'hidden' => false, 'checked' => 'checked'));?>
+		<?=$archive->name ?>
+		<?php if ($archive->years()): ?>
+			(<?=$archive->years(); ?>)
+		<?php endif; ?>
+		</label>
+	
+	<?php endforeach; ?>
+
+</div>
+<?php endif; ?>
+
+<div class="well">
+	<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
+</div>
+<?=$this->form->end(); ?>

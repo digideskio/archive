@@ -20,7 +20,7 @@
 	<table class="table table-bordered">
 	<tbody>
 	<tr><td>
-	<div class="btn-toolbar">
+	<div id="docs-toolbar" class="btn-toolbar">
 		<div id="select-docs" class="btn-group">
 		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
 			<i class="icon-ok"></i> 
@@ -32,10 +32,10 @@
 		  </ul>
 		</div>
 		<div class="btn-group">
-		<?=$this->form->submit('Create Artwork', array('onclick' => "this.form.action='works/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		<?=$this->form->submit('Create Artwork', array('onclick' => "this.form.action='/works/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
 		<div class="btn-group">
-		<?=$this->form->submit('Create Publication', array('onclick' => "this.form.action='publications/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		<?=$this->form->submit('Create Publication', array('onclick' => "this.form.action='/publications/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
 	</div>
 	</td></tr>
@@ -57,7 +57,7 @@
 				<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
 			</a>
 	<?php if($authority_can_edit): ?>
-			<label class="batch-checkbox" for="Document-<?=$document->id?>">
+			<label class="batch-checkbox doc-checkbox" for="Document-<?=$document->id?>">
 			<?=$this->form->checkbox('documents[]', array('id' => "Document-$document->id", 'value' => $document->id, 'hidden' => false, 'class' => 'checkdocs'));?>
 			</label>
 	<?php endif; ?>
@@ -79,23 +79,23 @@ $(document).ready(function() {
 		event.preventDefault();
 		$('.checkdocs').attr('checked', true);
 		$('.batch-checkbox').addClass('checked');
-		handleButtons();
+		handleDocsButtons();
 	});
 
 	$('#select-docs #select-no-docs').click(function() {
 		event.preventDefault();
 		$('.checkdocs').attr('checked', false);
 		$('.batch-checkbox').removeClass('checked');
-		handleButtons();
+		handleDocsButtons();
 	});
 
-	function handleButtons() {
+	function handleDocsButtons() {
 		if ($('.checkdocs:checked').length) {
-			$('.batch-edit-btn').removeAttr('disabled');
-			$('.batch-edit-btn').addClass('btn-success');
+			$('#docs-toolbar .batch-edit-btn').removeAttr('disabled');
+			$('#docs-toolbar .batch-edit-btn').addClass('btn-success');
 		} else {
-			$('.batch-edit-btn').attr('disabled', 'disabled');
-			$('.batch-edit-btn').removeClass('btn-success');
+			$('#docs-toolbar .batch-edit-btn').attr('disabled', 'disabled');
+			$('#docs-toolbar .batch-edit-btn').removeClass('btn-success');
 		}
 	}
 
@@ -106,11 +106,11 @@ $(document).ready(function() {
 			$(this).closest('.batch-checkbox').removeClass('checked');
 		}
 
-		handleButtons();
+		handleDocsButtons();
 
 	});
 
-	handleButtons();
+	handleDocsButtons();
 
 });
 

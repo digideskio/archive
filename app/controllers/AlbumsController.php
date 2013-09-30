@@ -156,15 +156,55 @@ class AlbumsController extends \lithium\action\Controller {
 	public function add() {
 
 		$album = Albums::create();
+		$archives = array();
 
-		if (($this->request->data) && $album->save($this->request->data)) {
-			//The slug has been saved with the Archive object, so let's look it up
-			$archive = Archives::find('first', array(
-				'conditions' => array('id' => $album->id)
-			));
-			return $this->redirect(array('Albums::view', 'slug' => $archive->slug));
+		if ($this->request->data) {
+
+			if (isset($this->request->data['archives'])) {
+				$archive_ids = $this->request->data['archives'];
+
+				$archives = Archives::find('all', array(
+					'conditions' => array('Archives.id' => $archive_ids),
+					'order' => array('earliest_date' => 'DESC')
+				));
+			}
+
+			if (isset($this->request->data['album'])) {
+				if ($album->save($this->request->data['album'])) {
+
+					// If any archive ids were submitted, save them as Album components
+					foreach ($archives as $a) {
+						$archive_id1 = $album->id;
+						$archive_id2 = $a->id;
+
+						$type = '';
+
+						switch ($a->controller) {
+							case 'works':
+								$type = 'albums_works';
+								break;
+							case 'publications':
+								$type = 'albums_publications';
+								break;
+						}
+
+						$component = Components::create();
+						$component->save(compact('archive_id1', 'archive_id2', 'type'));
+					}
+
+					//The slug has been saved with the Archive object, so let's look it up
+					$album_archive = Archives::find('first', array(
+						'conditions' => array('id' => $album->id)
+					));
+
+					return $this->redirect(array('Albums::view', 'slug' => $album_archive->slug));
+				}
+
+			}
+
 		}
-		return compact('album');
+
+		return compact('album', 'archives');
 	}
 
 	public function edit() {

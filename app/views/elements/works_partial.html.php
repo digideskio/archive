@@ -1,3 +1,7 @@
+<?php
+	$authority_can_edit = $this->authority->canEdit();
+?>
+
 <?php if (isset($showBar) && $showBar): ?>
 
 	<div class="navbar">
@@ -8,6 +12,32 @@
 		</div>
 	</div>
 
+<?php endif; ?>
+
+<?php if($authority_can_edit): ?>
+<form method="post">
+	
+	<table class="table table-bordered">
+	<tbody>
+	<tr><td>
+	<div id="works-toolbar" class="btn-toolbar">
+		<div id="select-works" class="btn-group">
+		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
+			<i class="icon-ok"></i> 
+			<span class="caret"></span>
+		  </a>
+		  <ul class="dropdown-menu">
+			<li id="select-all-archives"><a href="#"><i class="icon-ok"></i> Select All</a></li>
+			<li id="select-no-archives"><a href="#"><i class="icon-remove"></i> Select None</a></li>
+		  </ul>
+		</div>
+		<div class="btn-group">
+		<?=$this->form->submit('Create Album', array('onclick' => "this.form.action='/albums/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		</div>
+	</div>
+	</td></tr>
+	</tbody>
+	</table>
 <?php endif; ?>
 
 <?php
@@ -34,20 +64,23 @@
 				<?php $document = $work->documents('first'); ?>
 				<ul class="thumbnails">
 				
+					<li class="span2">
+					<div style="position:relative;">
 					<?php if($document && $document->id): ?>
-						<li class="span2">
-							<a href="/works/view/<?=$work->archive->slug ?>" class="thumbnail">
-							<img style="max-height:120px;" src="/files/<?=$document->view(array('action' => 'small')); ?>" />
-							</a>
-						</li>
+						<a href="/works/view/<?=$work->archive->slug ?>" class="thumbnail">
+						<img style="max-height:120px;" src="/files/<?=$document->view(array('action' => 'small')); ?>" />
+						</a>
 					<?php else: ?>
-						<li class="span2">
-							<div class="thumbnail">
-								<span class="label">No Preview</span>
-							</div>
-						</li>
+						<div class="thumbnail">
+							<span class="label">No Preview</span>
 					<?php endif; ?>
-
+						<?php if($authority_can_edit): ?>
+							<label class="batch-checkbox archives-label works-label" for="Archive-<?=$work->id?>">
+							<?=$this->form->checkbox('archives[]', array('id' => "Archive-$work->id", 'value' => $work->id, 'hidden' => false, 'class' => 'archives-checkbox works-checkbox'));?>
+								</label>
+						<?php endif; ?>
+						</div>
+						</li>
 				</ul>
 		</div>
 
@@ -120,6 +153,11 @@
 
 <thead>
 	<tr>
+<?php if($authority_can_edit): ?>
+		<th style="text-align: center;">
+			<i class="icon-ok"></i>
+		</th>
+<?php endif; ?>
 		<th>ID</th>
 		<th>Image</th>
 		<th>Info</th>
@@ -135,6 +173,14 @@
 <?php foreach($works as $work): ?>
 
 <tr>
+<?php if($authority_can_edit): ?>
+	<td>
+		<label class="batch-checkbox archives-label works-label" for="Archive-<?=$work->id?>">
+			<?=$this->form->checkbox('archives[]', array('id' => "Archive-$work->id", 'value' => $work->id, 'hidden' => false, 'class' => 'archives-checkbox works-checkbox'));?>
+		</label>
+	
+	</td>
+<?php endif; ?>
 	<td class="info-creation_number"><?=$work->creation_number?></td>
 	
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
@@ -157,4 +203,53 @@
 </tbody>
 </table>
 
+<?php endif; ?>
+
+<?php if($authority_can_edit): ?>
+<?=$this->form->end(); ?>
+
+<script>
+
+$(document).ready(function() {
+
+	$('#select-works #select-all-archives').click(function() {
+		event.preventDefault();
+		$('.works-checkbox').attr('checked', true);
+		$('.works-label').addClass('checked');
+		handleWorksButtons();
+	});
+
+	$('#select-works #select-no-archives').click(function() {
+		event.preventDefault();
+		$('.works-checkbox').attr('checked', false);
+		$('.work-label').removeClass('checked');
+		handleWorksButtons();
+	});
+
+	function handleWorksButtons() {
+		if ($('.works-checkbox:checked').length) {
+			$('#works-toolbar .batch-edit-btn').removeAttr('disabled');
+			$('#works-toolbar .batch-edit-btn').addClass('btn-success');
+		} else {
+			$('#works-toolbar .batch-edit-btn').attr('disabled', 'disabled');
+			$('#works-toolbar .batch-edit-btn').removeClass('btn-success');
+		}
+	}
+
+	$('.works-checkbox').change(function() {
+		if ($(this).attr('checked')) {
+			$(this).closest('.works-label').addClass('checked');
+		} else {
+			$(this).closest('.works-label').removeClass('checked');
+		}
+
+		handleWorksButtons();
+
+	});
+
+	handleWorksButtons();
+
+});
+
+</script>
 <?php endif; ?>
