@@ -55,30 +55,21 @@ foreach( $works as $work) {
 
 $caption = $this->artwork->caption($work->archive, $work); 
 
-	$work_documents = $work->documents('all', array('published' => 1));
+	$work_documents = $work->documents('all');
 
 	foreach ($work_documents as $doc) {
 
-		if ($doc->published) {
+		$thumbnail = $doc->file(array('size' => 'thumb'));
 
-			$thumbnail = $doc->file(array('size' => 'thumb'));
+		$img_path = $options['path'] . '/' . $thumbnail;
+		$thumb_img = '<img width="100" src="'.$img_path.'" />';
 
-			$img_path = $options['path'] . '/' . $thumbnail;
-			$thumb_img = '<img width="100" src="'.$img_path.'" />';
+		$resolution = $doc->resolution();
+		$size = $doc->size();
 
-			$resolution = $doc->resolution();
-			$size = $doc->size();
+		$credit = "Photo &copy; " . $doc->year() . " " .  $doc->credit;
 
-			$credit = "Photo &copy; " . $doc->year() . " " .  $doc->credit;
-
-			$remarks = $doc->remarks;
-
-		} else {
-			$thumb_img = "Private Image";
-			$resolution = "";
-			$size = "";
-			$remarks = "";
-		}
+		$remarks = $doc->remarks;
 
 $html .= <<<EOD
 

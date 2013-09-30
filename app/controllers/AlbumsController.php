@@ -287,8 +287,7 @@ class AlbumsController extends \lithium\action\Controller {
 						'Formats'
 					),
 					'conditions' => array(
-						'ArchivesDocuments.archive_id' => $album->id,
-						'published' => '1',
+						'ArchivesDocuments.archive_id' => $album->id
 					),
 				));
 

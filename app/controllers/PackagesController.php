@@ -63,8 +63,7 @@ class PackagesController extends \lithium\action\Controller {
 					'Formats'
 				),
 				'conditions' => array(
-					'ArchivesDocuments.archive_id' => $album_id,
-					'published' => '1',
+					'ArchivesDocuments.archive_id' => $album_id
 				),
 			));
 
@@ -105,15 +104,14 @@ class PackagesController extends \lithium\action\Controller {
 			// Collect the IDs for the album, and its components which might have documents
 			$archive_ids = array_merge(array($album_id), $work_ids, $pub_ids);
 
-			//Look up the documents for all of these archives which are PUBLISHED
+			//Look up the documents for all of these archives
 			$all_documents = Documents::find('all', array(
 				'with' => array(
 					'ArchivesDocuments',
 					'Formats'
 				),
 				'conditions' => array(
-					'ArchivesDocuments.archive_id' => $archive_ids,
-					'published' => '1',
+					'ArchivesDocuments.archive_id' => $archive_ids
 				),
 			));
 
@@ -123,16 +121,14 @@ class PackagesController extends \lithium\action\Controller {
 
 			// Add each document to the ZIP file
 			foreach ($all_documents as $document) {
-				if ($document->published) {
-					$slug = $document->slug;
-					$extension = $document->format->extension;
-					$document_file = $document->file();
+				$slug = $document->slug;
+				$extension = $document->format->extension;
+				$document_file = $document->file();
 
-					if (FileSystem::exists('documents', $document_file)) {
-						$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
-						$document_localname = $slug . '.' . $extension;
-						$zip->addFile($document_path, $document_localname);
-					}
+				if (FileSystem::exists('documents', $document_file)) {
+					$document_path = $documents_path . DIRECTORY_SEPARATOR . $document_file;
+					$document_localname = $slug . '.' . $extension;
+					$zip->addFile($document_path, $document_localname);
 				}
 			}
 
