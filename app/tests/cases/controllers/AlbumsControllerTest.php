@@ -4,31 +4,116 @@ namespace app\tests\cases\controllers;
 
 use app\controllers\AlbumsController;
 
-use app\model\Albums;
-use lithium\storage\Session;
-use app\models\Users;
+use app\models\Albums;
+use app\models\Archives;
+use app\models\ArchivesHistories;
+use app\models\Works;
+use app\models\WorksHistories;
 
-use lithium\security\Auth;
-use lithium\action\Request;
+use lithium\net\http\Router;
 
-class AlbumsControllerTest extends \lithium\test\Unit {
+class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
+
+	public $controller = 'app\controllers\AlbumsController';
 
 	public function setUp() {
-	
-		Session::config(array(
-			'default' => array('adapter' => 'Php', 'session.name' => 'app')
-		));
-	
-		Auth::clear('default');
+		$album = Albums::create();
+		$data = array(
+			'title' => 'First Album Title',
+			'remarks' => 'First Album Description'
+		);
+
+		$album->save($data);
 	
 	}
 
-	public function tearDown() {}
+	public function tearDown() {
+		Albums::all()->delete();
+	
+		Works::all()->delete();
+		WorksHistories::all()->delete();
 
-	public function testIndex() {}
-	public function testView() {}
-	public function testAdd() {}
-	public function testEdit() {}
+		Archives::find("all")->delete();
+		ArchivesHistories::find("all")->delete();
+
+	}
+
+	public function testIndex() {
+		$data = $this->call('index');
+
+		$albums = $data['albums'];
+
+		$album = $albums->first();
+
+		$this->assertEqual('First Album Title', $album->title);
+	
+	}
+
+	public function testView() {
+
+		$data = $this->call('view', array(
+			'params' => array(
+				'slug' => 'First-Album-Title'
+			)
+		));
+
+		$album = $data['album'];
+
+		$this->assertEqual('First Album Title', $album->title);
+		$this->assertEqual('First Album Description', $album->remarks);
+	
+	}
+
+	public function testAdd() {
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/albums/view/{:slug}', array('Albums::view'));
+
+		// Test that an album model is created and passed to the view
+		$data = $this->call('add', array(
+			'params' => array()
+		));
+
+		$this->assertTrue(isset($data['album']));
+
+		// Test that this action processes and saves the correct data, namely
+		// an album and archive
+		$title = 'Album New Title';
+		$slug = 'Album-New-Title';
+
+		$data = $this->call('add', array(
+			'data' => array('album' => compact('title'))
+		));
+
+		$album = Albums::find('first', array(
+			'conditions' => compact('title')
+		));
+
+		$this->assertTrue(!empty($album));
+
+		$archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$this->assertTrue(!empty($archive));
+
+	}
+
+	public function testEdit() {
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => 'First-Album-Title'
+			)
+		));
+
+		$album = $data['album'];
+
+		$this->assertEqual('First Album Title', $album->title);
+	
+	}
+
 	public function testDelete() {}
 	
 	public function testRules() {
