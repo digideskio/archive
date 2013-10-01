@@ -308,8 +308,6 @@ class MetricsController extends \lithium\action\Controller {
 			'week' => $documents_week[0]['records']
 		);
 
-		$li3_pdf = Libraries::get("li3_pdf");
-
 		$host = Inflector::humanize($this->request->env('HTTP_HOST'));
 		$title = "$host Metrics: " . $dates['now'];
 		$filename = Inflector::slug($host) . '-Metrics-' . $now_date->format('Y-m-d') . '.pdf';
@@ -331,7 +329,6 @@ class MetricsController extends \lithium\action\Controller {
 			'documents',
 			'contributors',
 			'contributions',
-			'li3_pdf',
 			'filename',
 			'title'
 		);
@@ -399,8 +396,6 @@ class MetricsController extends \lithium\action\Controller {
 			)
 		));
 
-		$li3_pdf = Libraries::get("li3_pdf");
-
 		$host = Inflector::humanize($this->request->env('HTTP_HOST'));
 		$title = "$host Progress Report: " . $dates['start'] . ' - ' . $dates['end'];
 		$filename = Inflector::slug($host) . '-Updates-' . $end_date->format('Y-m-d') . '.pdf';
@@ -409,7 +404,6 @@ class MetricsController extends \lithium\action\Controller {
 			'dates',
 			'updates',
 			'archives',
-			'li3_pdf',
 			'filename',
 			'title'
 		);

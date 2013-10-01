@@ -40,8 +40,6 @@ $this->title($album->title);
 
 	</ul>
 
-	<?php if($li3_pdf): ?>
-
 	<div class="btn-toolbar">
 		<div class="btn-group">
 			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret"</span></button>
@@ -51,7 +49,7 @@ $this->title($album->title);
 			</ul>
 		</div>
 	</div>
-	<?php endif; ?>
+
 </div>
 
 <?php if($album->remarks): ?>

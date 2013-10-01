@@ -70,12 +70,11 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'limit' => $limit,
 			'page' => $page,
 		));
-		
-		$li3_pdf = Libraries::get("li3_pdf");
+
 		$pdf = "Exhibitions-" . date('Y-m-d') . ".pdf";
 		$content = compact('pdf');
 
-		return compact('exhibitions', 'total', 'page', 'limit', 'pdf', 'li3_pdf', 'content');
+		return compact('exhibitions', 'total', 'page', 'limit', 'pdf', 'content');
 	}
 
 	public function search() {

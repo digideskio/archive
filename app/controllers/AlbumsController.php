@@ -141,10 +141,8 @@ class AlbumsController extends \lithium\action\Controller {
 					'order' => array('Documents.slug' => 'ASC')
 				));
 
-				$li3_pdf = Libraries::get("li3_pdf");
-
 				//Send the retrieved data to the view
-				return compact('album', 'works', 'publications', 'archives_documents', 'li3_pdf');
+				return compact('album', 'works', 'publications', 'archives_documents');
 				
 			}
 		}
