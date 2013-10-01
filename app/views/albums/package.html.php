@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($album->title);
+$this->title($album->archive->name);
 
 if($this->authority->timezone()) {
 	$tz = new DateTimeZone($this->authority->timezone());
@@ -18,7 +18,7 @@ if($this->authority->timezone()) {
 	</li>
 
 	<li>
-		<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
+		<?=$this->html->link($album->archive->name, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 		<span class="divider">/</span>
 	</li>
 	

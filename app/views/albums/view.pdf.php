@@ -3,7 +3,7 @@
 $options = $content['options'];
 
 $album = $content['album'];
-$title = $album->title;
+$title = $album->archive->name;
 
 $works = $content['works'];
 $publications = $content['publications'];

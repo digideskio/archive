@@ -57,7 +57,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public function index() {
     
-		$order = array('title' => 'ASC'); 
+		$order = array('Archives.name' => 'ASC');
 		
 		$albums = Albums::find('all', array(
 			'with' => 'Archives',

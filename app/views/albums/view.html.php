@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($album->title);
+$this->title($album->archive->name);
 
 ?>
 
@@ -14,7 +14,7 @@ $this->title($album->title);
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
+	<?=$this->html->link($album->archive->name, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 	</li>
 
 	</ul>
