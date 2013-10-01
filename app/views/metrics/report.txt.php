@@ -1,5 +1,7 @@
-Progress Report: <?=$dates['start'] ?> - <?=$dates['end'] ?> 
+<?=$this->url('Pages::home', array('absolute' => true)); ?>
 
+
+Progress Report: <?=$dates['start'] ?> - <?=$dates['end'] ?>
 
 <?php if ($updates->count()): ?>
 # Updates

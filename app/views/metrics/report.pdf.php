@@ -1,7 +1,5 @@
 <?php 
 
-$title = 'Archive Progress Report: ' . $dates['start'] . ' - ' . $dates['end'];
-
 $auth = $this->authority->auth();
 
 if($auth->timezone_id) {

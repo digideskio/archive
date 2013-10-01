@@ -46,7 +46,7 @@ if($auth->timezone_id) {
 
 	<?php if($li3_pdf): ?>
 	<div class="btn-toolbar">
-		<a class="btn btn-inverse" href="<?=$this->url(array('Metrics::report')); ?>/<?=$pdf ?>"><i class="icon-print icon-white"></i> Print</a>
+		<a class="btn btn-inverse" href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>"><i class="icon-print icon-white"></i> Print</a>
 	</div>
 	<?php endif; ?>
 

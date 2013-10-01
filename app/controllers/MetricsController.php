@@ -25,6 +25,7 @@ use lithium\action\DispatchException;
 use lithium\core\Environment;
 
 use lithium\core\Libraries;
+use lithium\util\Inflector;
 
 class MetricsController extends \lithium\action\Controller {
 
@@ -308,8 +309,10 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		$li3_pdf = Libraries::get("li3_pdf");
-		$pdf = 'Archive-Metrics-' . $now_date->format('Y-m-d') . '.pdf';
-		$content = compact('pdf');
+
+		$host = Inflector::humanize($this->request->env('HTTP_HOST'));
+		$title = "$host Metrics: " . $dates['now'];
+		$filename = Inflector::slug($host) . '-Metrics-' . $now_date->format('Y-m-d') . '.pdf';
 
 		return compact(
 			'dates',
@@ -329,8 +332,8 @@ class MetricsController extends \lithium\action\Controller {
 			'contributors',
 			'contributions',
 			'li3_pdf',
-			'pdf',
-			'content'
+			'filename',
+			'title'
 		);
 		
 	}
@@ -397,16 +400,18 @@ class MetricsController extends \lithium\action\Controller {
 		));
 
 		$li3_pdf = Libraries::get("li3_pdf");
-		$pdf = 'Archive-Report-' . $end_date->format('Y-m-d') . '.pdf';
-		$content = compact('pdf');
+
+		$host = Inflector::humanize($this->request->env('HTTP_HOST'));
+		$title = "$host Progress Report: " . $dates['start'] . ' - ' . $dates['end'];
+		$filename = Inflector::slug($host) . '-Updates-' . $end_date->format('Y-m-d') . '.pdf';
 
 		return compact(
 			'dates',
 			'updates',
 			'archives',
 			'li3_pdf',
-			'pdf',
-			'content'
+			'filename',
+			'title'
 		);
 
 	}

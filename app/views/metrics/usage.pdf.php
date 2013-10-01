@@ -1,7 +1,5 @@
 <?php
 
-$title = 'Archive Metrics - ' . $dates['now'];
-
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $title){

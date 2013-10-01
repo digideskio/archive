@@ -40,7 +40,7 @@ $this->title('Metrics');
 
 	<?php if($li3_pdf): ?>
 	<div class="btn-toolbar">
-		<a class="btn btn-inverse" href="<?=$this->url(array('Metrics::usage')); ?>/<?=$pdf ?>"><i class="icon-print icon-white"></i> Print</a>
+		<a class="btn btn-inverse" href="<?=$this->url(array('Metrics::usage')); ?>/<?=$filename ?>"><i class="icon-print icon-white"></i> Print</a>
 	</div>
 	<?php endif; ?>
 </div>
