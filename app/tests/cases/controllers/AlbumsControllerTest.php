@@ -9,6 +9,7 @@ use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\Works;
 use app\models\WorksHistories;
+use app\models\Components;
 
 use lithium\net\http\Router;
 
@@ -35,6 +36,8 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
+
+		Components::all()->delete();
 
 	}
 
@@ -98,6 +101,61 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($archive));
 
+	}
+
+	public function testAddWithArchives() {
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/albums/view/{:slug}', array('Albums::view'));
+		
+		// Create a new archive (it could represent an artwork, publication, or something
+		// else) which we will use to seed the new album
+		$work = Works::create();
+
+		$work_data = array(
+			'title' => 'Artwork Title'
+		);
+
+		$work->save($work_data);
+
+		// Test that the archive is loaded and passed to the view
+		$data = $this->call('add', array(
+			'data' => array('archives' => array($work->id))
+		));
+
+		$this->assertTrue(isset($data['archives']));
+
+		// Check that the archive loaded matches the id we passed in
+		$archives = $data['archives'];
+		$found_work_archive = $archives->first();
+
+		$this->assertEqual($work->id, $found_work_archive->id);
+
+		// Test that this action processes and saves the correct data, including
+		// a new component representing the artwork we passed in
+		$title = 'Album New Title';
+		$slug = 'Album-New-Title';
+
+		$data = $this->call('add', array(
+			'data' => array(
+				'album' => compact('title'),
+				'archives' => array($work->id)
+			)
+		));
+
+		$album_archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$component = Components::find('first', array(
+			'conditions' => array(
+				'archive_id1' => $album_archive->id,
+				'archive_id2' => $work->id
+			)
+		));
+
+		$this->assertTrue(!empty($component));
 	}
 
 	public function testEdit() {
