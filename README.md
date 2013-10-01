@@ -19,13 +19,6 @@ First, clone this repository into your public webroot:
 	git submodule init
 	git submodule update
 
-For PDF support, clone the following library:
-
-	cd app/libraries
-	git clone git://github.com/masom/li3_pdf.git
-
-Finally, download [TCPDF](http://www.tcpdf.org) and extract it into app/libraries.
-
 After you install ImageMagick for your platform, you also need the imagick extension.
 
 	sudo apt-get install php5-dev libmagick9-dev
