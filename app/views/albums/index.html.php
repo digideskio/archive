@@ -102,4 +102,6 @@ if ($auth->timezone_id) {
 </tbody>
 </table>
 
+<?=$this->pagination->pager('albums', 'pages', $page, $total, $limit, array('limit' => $limit)); ?>
+
 <?php endif; ?>

@@ -90,6 +90,7 @@ Router::connect('/users/edit/{:username}', array('Users::edit'));
 Router::connect('/users/delete/{:username}', array('Users::delete'));
 
 Router::connect('/albums', array('Albums::index'));
+Router::connect('/albums/pages/{:page:[0-9]+}', array('Albums::index'));
 Router::connect('/albums/add', array('Albums::add'));
 Router::connect('/albums/view/{:slug}', array('Albums::view'));
 Router::connect('/albums/edit/{:slug}', array('Albums::edit'));
