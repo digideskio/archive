@@ -58,18 +58,19 @@ $this->title($album->archive->name);
 	</div>
 <?php endif; ?>
 
-<?php if(sizeof($archives_documents) > 0): ?>
+<?php if ($archives_documents->count() > 0): ?>
 
 	<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents, 'showBar' => false)); ?>
 
 <?php endif; ?>
 
-<?php if(sizeof($publications) > 0): ?>
+<?php if($publications->count() > 0): ?>
 
 	<?=$this->partial->publications(array('publications' => $publications, 'showBar' => true)); ?>
 
 <?php endif; ?>
 
+<?php if ($works->count() > 0): ?>
 <table class="table table-bordered">
 
 <thead>
@@ -113,3 +114,5 @@ $this->title($album->archive->name);
 <?php endforeach; ?>
 
 </tbody>
+
+<?php endif; ?>
