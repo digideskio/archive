@@ -82,7 +82,7 @@ if($auth->timezone_id) {
 					<tr>
 						<td>
 				<strong><?=$update->subject ?></strong> &mdash; <?=$update->body ?>
-				<small class="meta"><?=$update_display ?>
+				<small class="meta"><?=$update_display ?></small>
 						</td>
 					</tr>
 
