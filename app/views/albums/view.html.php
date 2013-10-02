@@ -52,15 +52,15 @@ $this->title($album->archive->name);
 
 </div>
 
-<?php if($album->remarks): ?>
+<?php if ($album->remarks): ?>
 	<div class="alert alert-info">
 	<p><?=$album->remarks ?></p>
 	</div>
 <?php endif; ?>
 
-<?php if ($archives_documents->count() > 0): ?>
+<?php if ($works->count() > 0): ?>
 
-	<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents, 'showBar' => false)); ?>
+	<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
 
 <?php endif; ?>
 
@@ -70,8 +70,8 @@ $this->title($album->archive->name);
 
 <?php endif; ?>
 
-<?php if ($works->count() > 0): ?>
+<?php if ($archives_documents->count() > 0): ?>
 
-	<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
+	<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents, 'showBar' => true)); ?>
 
 <?php endif; ?>
