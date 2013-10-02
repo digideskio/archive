@@ -124,27 +124,6 @@ class WorksTest extends \lithium\test\Unit {
 
 	}
 
-	public function testArtists() {
-
-		$data = array(
-			'artist' => 'The Artist'
-		);
-
-		$work = Works::create($data);
-
-		$this->assertEqual($data['artist'], $work->artists());
-
-		$data = array(
-			'artist' => 'The Artist',
-			'artist_native_name' => '艺术家'
-		);
-
-		$work = Works::create($data);
-
-		$this->assertEqual("{$data['artist']} ({$data['artist_native_name']})", $work->artists());
-
-	}
-
 	public function testAttributes() {
 
 		$work = Works::create();

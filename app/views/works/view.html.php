@@ -85,7 +85,9 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 				<tr>
 					<td><i class="icon-font"></i></td>
 					<td class="meta">Artist</td>
-					<td class="info-title" colspan="3"><?=$work->artists(); ?></td>
+					<td class="info-title" colspan="3">
+						<?=$this->artwork->artists($work->archive, $work); ?>
+					</td>
 				</tr>
 				<tr>
 					<td><i class="icon-text-height"></i></td>

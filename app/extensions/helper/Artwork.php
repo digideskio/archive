@@ -31,6 +31,20 @@ class Artwork extends \lithium\template\Helper {
 
 	}
 
+	public function artists($archive, $work, $options = array()) {
+
+		$artist = $work->artist;
+		$artist_native_name = $work->artist_native_name ? "($work->artist_native_name)" : '';
+
+		$artists = array_filter(array(
+			$artist,
+			$artist_native_name
+		));
+
+		return implode(' ', $artists);
+
+	}
+
 }
 
 ?>

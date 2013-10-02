@@ -89,7 +89,11 @@
 			<table class="table table-condensed table-compact">
 				<tr>
 					<td class="meta">Artist</td>
-					<td class="info-artist" colspan="3"><strong><?=$work->artists(); ?></strong></td>
+					<td class="info-artist" colspan="3">
+						<strong>
+							<?=$this->artwork->artists($work->archive, $work); ?>
+						</strong>
+					</td>
 				</tr>
 				<tr>
 					<td class="meta">Title</td>
