@@ -2,6 +2,12 @@
 
 $this->title('Albums');
 
+$auth = $this->authority->auth();
+
+if ($auth->timezone_id) {
+	$tz = new DateTimeZone($auth->timezone_id);
+}
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -35,7 +41,7 @@ $this->title('Albums');
 	</div>
 </div>
 
-<?php if(sizeof($albums) == 0): ?>
+<?php if ($albums->count() == 0): ?>
 
 	<div class="alert alert-danger">There are no Albums in the Archive.</div>
 
@@ -47,11 +53,53 @@ $this->title('Albums');
 
 <?php endif; ?>
 
+<?php if ($albums->count() > 0): ?>
+
+<table class="table">
+<thead>
+	<th>Title</th>
+	<th>Date</th>
+	<th>User</th>
+</thead>
+<tbody>
+
 <?php foreach($albums as $album): ?>
-<article>
-	<div class="alert">
-    <h1><?=$this->html->link($album->archive->name,$this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?></h1>
-    <p><?=$album->remarks ?></p>
-    </div>
-</article>
+<?php
+	$archive = $album->archive;
+
+	$update_time = new DateTime($archive->date_created);
+
+	if (isset($tz)) {
+		$update_time->setTimeZone($tz);
+	}
+
+	$update_date = $update_time->format("d M Y");
+?>
+<tr>
+	<td>
+		<strong>
+    	<?=$this->html->link($archive->name, $this->url(array('Albums::view', 'slug' => $archive->slug))); ?>
+		</strong>
+		<?php if ($album->remarks != ''): ?>
+			&ndash; <em><?=$album->remarks ?></em>
+		<?php endif; ?>
+	</td>
+	<td>
+		<small>
+			<?=$update_date ?>
+		</small>
+	</td>
+	<td>
+		<?php if (!empty($archive->user->id)): ?>
+		<small>
+			<?php $user_name = str_replace(' ', '&nbsp;', $this->escape($archive->user->name)); ?>
+			<?=$this->html->link($user_name,'/users/view/'.$archive->user->username, array('escape' => false)); ?>
+		</small>
+		<?php endif; ?>
+	</td>
+</tr>
 <?php endforeach; ?>
+</tbody>
+</table>
+
+<?php endif; ?>

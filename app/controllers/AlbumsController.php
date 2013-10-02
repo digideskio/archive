@@ -61,7 +61,7 @@ class AlbumsController extends \lithium\action\Controller {
 		$order = array('Archives.name' => 'ASC');
 		
 		$albums = Albums::find('all', array(
-			'with' => 'Archives',
+			'with' => array('Archives', 'Archives.Users'),
 			'order' => $order
 		));
 		return compact('albums');
