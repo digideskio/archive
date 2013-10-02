@@ -72,6 +72,6 @@ $this->title($album->archive->name);
 
 <?php if ($works->count() > 0): ?>
 
-	<?=$this->partial->albums_works(compact('works')); ?>
+	<?=$this->partial->works(array('works' => $works, 'showBar' => true)); ?>
 
 <?php endif; ?>
