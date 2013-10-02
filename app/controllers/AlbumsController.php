@@ -20,6 +20,7 @@ use li3_filesystem\extensions\storage\FileSystem;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\template\View;
+use lithium\data\collection\RecordSet;
 
 use lithium\core\Libraries;
 
@@ -78,7 +79,7 @@ class AlbumsController extends \lithium\action\Controller {
 				'Archives.slug' => $this->request->params['slug'],
 			)));
 			
-			if($album) {
+			if($album->exists()) {
 
 				$work_ids = array();	
 			
@@ -90,7 +91,7 @@ class AlbumsController extends \lithium\action\Controller {
 					),
 				));
 
-				$works = array();
+				$works = new RecordSet();
 
 				if ($album_works->count()) {
 
@@ -115,7 +116,7 @@ class AlbumsController extends \lithium\action\Controller {
 					),
 				));
 
-				$publications = array();
+				$publications = new RecordSet();
 
 				if ($album_publications->count()) {
 
