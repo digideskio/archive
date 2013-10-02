@@ -7,6 +7,8 @@ use app\extensions\helper\Artwork;
 use app\models\Works;
 use app\models\Archives;
 
+use \lithium\template\helper\Html;
+
 class ArtworkTest extends \lithium\test\Unit {
 
 	public function setUp() {}
@@ -66,6 +68,7 @@ class ArtworkTest extends \lithium\test\Unit {
 	public function testArtists() {
 
 		$helper = new Artwork();
+		$html = new Html();
 
 		$data = array(
 			'artist' => 'The Artist'
@@ -76,6 +79,10 @@ class ArtworkTest extends \lithium\test\Unit {
 		$artists = $helper->artists($work->archive, $work);
 
 		$this->assertEqual($data['artist'], $artists);
+
+		$artists = $helper->artists($work->archive, $work, array('link' => true));
+
+		$this->assertTrue(strpos($artists, 'href') != false);
 
 		$data = array(
 			'artist' => 'The Artist',
