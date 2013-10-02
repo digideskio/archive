@@ -57,8 +57,28 @@ if ($auth->timezone_id) {
 
 <table class="table">
 <thead>
-	<th>Title</th>
-	<th>Date</th>
+	<th>
+		Title
+		<?=$this->html->link(
+			'&uarr;&darr;',
+			$this->url(array("Albums::index")) . '?order=title',
+			array(
+				'escape' => false,
+				'title' => 'Order by Title'
+			)
+		); ?>
+	</th>
+	<th>
+		Date
+		<?=$this->html->link(
+			'&uarr;&darr;',
+			$this->url(array("Albums::index")) . '?order=date',
+			array(
+				'escape' => false,
+				'title' => 'Order by Date'
+			)
+		); ?>
+	</th>
 	<th>User</th>
 </thead>
 <tbody>
