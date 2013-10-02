@@ -60,17 +60,24 @@ class AlbumsController extends \lithium\action\Controller {
 
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$order = isset($this->request->query['order']) ? $this->request->query['order'] : '';
+
+		if ($order == 'date') {
+			$order = 'Archives.date_created';
+			$direction = 'DESC';
+		} else {
+			$order = 'Archives.name';
+			$direction = 'ASC';
+		}
 
 		$total = Albums::count();
 
 		//Interpret any non-integer limit to mean 'All' results
 		$limit = !(intval($limit)) ? $total : $limit;
-    
-		$order = array('Archives.name' => 'ASC');
 		
 		$albums = Albums::find('all', array(
 			'with' => array('Archives', 'Archives.Users'),
-			'order' => $order
+			'order' => array($order => $direction)
 		));
 
 		return compact('albums', 'total', 'page', 'limit');
