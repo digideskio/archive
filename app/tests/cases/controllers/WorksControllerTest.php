@@ -101,7 +101,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$url = 'http://example.com/artwork-new-title';
 
 		$data = $this->call('add', array(
-			'data' => compact('title', 'url')
+			'data' => array('work' => compact('title', 'url'))
 		));
 
 		$work = Works::find('first', array(
@@ -149,7 +149,9 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		// a new ArchivesDocument to connect the work and the document
 		$data = $this->call('add', array(
 			'data' => array(
-				'title' => 'Artwork With Doc Title',
+				'work' => array(
+					'title' => 'Artwork With Doc Title',
+				),
 				'documents' => array($document->id)
 			)
 		));

@@ -20,6 +20,7 @@ use app\models\ArchivesLinks;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\core\Environment;
+use lithium\data\collection\RecordSet;
 
 use li3_access\security\Access;
 
@@ -336,13 +337,38 @@ class WorksController extends \lithium\action\Controller {
 	public function add() {
 		
 		$work = Works::create();
+		$documents = array();
 
-		if (($this->request->data) && $work->save($this->request->data)) {
-			//The slug has been saved with the Archive object, so let's look it up
-			$archive = Archives::find('first', array(
-				'conditions' => array('id' => $work->id)
-			));
-			return $this->redirect(array('Works::view', 'slug' => $archive->slug));
+		if ($this->request->data) {
+
+			if (isset($this->request->data['documents'])) {
+				$document_ids = $this->request->data['documents'];
+
+				$documents = Documents::find('all', array(
+					'with' => 'Formats',
+					'conditions' => array('Documents.id' => $document_ids),
+				));
+			}
+
+			if (isset($this->request->data['work'])) {
+				if ($work->save($this->request->data['work'])) {
+
+					// The slug has been saved with the Archive object, so let's look it up
+					$archive = Archives::find('first', array(
+						'conditions' => array('id' => $work->id)
+					));
+
+					// If any documents were submitted, save them as ArchivesDocuments
+					$archive_id = $archive->id;
+					foreach ($documents as $doc) {
+						$document_id = $doc->id;
+						$ad = ArchivesDocuments::create();
+						$ad->save(compact('archive_id', 'document_id'));
+					}
+
+					return $this->redirect(array('Works::view', 'slug' => $archive->slug));
+				}
+			}
 		}
 
 		$works_artists = Works::find('all', array(
@@ -386,18 +412,6 @@ class WorksController extends \lithium\action\Controller {
 		));
 
 		$classifications = Works::classifications();
-
-		$documents = array();
-
-		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
-			$document_ids = $this->request->data['documents'];
-
-			$documents = Documents::find('all', array(
-				'with' => 'Formats',
-				'conditions' => array('Documents.id' => $document_ids),
-			));
-
-		}
 
 		return compact('work', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
 	}
