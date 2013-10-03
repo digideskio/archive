@@ -183,7 +183,7 @@ $.plot($("#publicationsYears"), [
 
 <hr/>
 
-<p>The archive includes publications in <strong><?php echo sizeof($publications_languages); ?></strong> languages.</p> 
+<p>The archive includes publications in <strong><?php echo sizeof($publications_languages); ?></strong> <?php echo sizeof($publications_languages) == 1 ? 'language' : 'languages'; ?>.</p> 
 
 <div id="publicationsLanguages" style="width:500px;height:300px"></div>
 
