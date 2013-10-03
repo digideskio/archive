@@ -90,9 +90,7 @@
 				<tr>
 					<td class="meta">Artist</td>
 					<td class="info-artist" colspan="3">
-						<strong>
-							<?=$this->artwork->artists($work->archive, $work, array('link' => true)); ?>
-						</strong>
+						<?=$this->artwork->artists($work->archive, $work, array('link' => true)); ?>
 					</td>
 				</tr>
 				<tr>
