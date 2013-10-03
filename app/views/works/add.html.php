@@ -157,22 +157,22 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 <div class="row">
 
-<?=$this->form->create($work, array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('work'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 		<div class="well">
 			<legend>Artwork Info</legend>
 
-			<?=$this->form->field('work.artist', array('value' => $artist, 'autocomplete' => 'off'));?>
+			<?=$this->form->field('work.artist', array('label' => 'Artist', 'value' => $artist, 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.artist_native_name', array('value' => $artist_native_name, 'label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
 
-			<?=$this->form->field('work.title', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('work.title', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off'));?>
-			<?=$this->form->field('work.earliest_date', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('work.latest_date', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('work.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('work.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
 
-			<?=$this->form->field('work.remarks', array('type' => 'textarea'));?>
+			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
 			<?=$this->form->field('work.url', array('label' => 'URL', 'autocomplete' => 'off'));?>
 
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
@@ -212,9 +212,9 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			</div>
 		</div>
 
-		<?=$this->form->field('work.materials', array('type' => 'textarea'));?>
-		<?=$this->form->field('work.edition', array('autocomplete' => 'off'));?>
-		<?=$this->form->field('work.quantity', array('autocomplete' => 'off'));?>
+		<?=$this->form->field('work.materials', array('label' => 'Materials', 'type' => 'textarea'));?>
+		<?=$this->form->field('work.edition', array('label' => 'Edition', 'autocomplete' => 'off'));?>
+		<?=$this->form->field('work.quantity', array('label' => 'Quantity', 'autocomplete' => 'off'));?>
 
 		<?=$this->form->field('work.height', array(
 			'label' => "Height (cm)",
@@ -236,8 +236,8 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			'class' => 'dim three-d',
 			'autocomplete' => 'off'
 		));?>
-		<?=$this->form->field('work.running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
-		<?=$this->form->field('work.measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
+		<?=$this->form->field('work.running_time', array('label'=> 'Running Time', 'autocomplete' => 'off', 'class' => 'dim four-d'));?>
+		<?=$this->form->field('work.measurement_remarks', array('label' => 'Measurement Remarks', 'type' => 'textarea', 'class' => 'dim remarks'));?>
 
 		<div class="certification control-group" style="margin-bottom: 0">
 			<label class="control-label">Additional Notes</label>
@@ -251,7 +251,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 		<div class="signed control-group" style="margin-bottom: 0;">
 			<div class="controls">
 				<label class="checkbox">
-					<?=$this->form->checkbox('work[signed]', array('class' => 'two-d'));?> Artwork is Signed
+					<?=$this->form->checkbox('work.signed', array('class' => 'two-d'));?> Artwork is Signed
 				</label>
 			</div>
 		</div>
