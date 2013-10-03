@@ -12,6 +12,8 @@ use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\Links;
 use app\models\ArchivesLinks;
+use app\models\Documents;
+use app\models\ArchivesDocuments;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
@@ -43,6 +45,9 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		Links::all()->delete();
 		ArchivesLinks::all()->delete();
+
+		Documents::all()->delete();
+		ArchivesDocuments::all()->delete();
 	
 	}
 
@@ -118,6 +123,45 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(!empty($link));
 
 		$this->assertEqual($title, $link->title);
+
+	}
+
+	public function testAddWithDocuments() {
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/works/view/{:slug}', array('Works::view'));
+
+		// Create a new document record which will be used to seed the new work
+		Documents::connection()->create("INSERT INTO documents (title, slug, format_id) VALUES ('Document Title', 'Document-Title', '783')");
+
+		// Look up the document to access the id
+		$document = Documents::find('first', array(
+			'with' => 'Formats'
+		));
+
+		// For sanity, test that the insert worked, and that no ArchivesDocuments exist yet
+		$this->assertEqual('Document Title', $document->title);
+		$this->assertEqual(1, Documents::count());
+		$this->assertEqual(0, ArchivesDocuments::count());
+
+		// Test that the action processes and saves the correct data, including
+		// a new ArchivesDocument to connect the work and the document
+		$data = $this->call('add', array(
+			'data' => array(
+				'title' => 'Artwork With Doc Title',
+				'documents' => array($document->id)
+			)
+		));
+
+		$work = Works::find('first', array(
+			'conditions' => array('title' => 'Artwork With Doc Title')
+		));
+
+		$archives_document = ArchivesDocuments::first();
+
+		$this->assertEqual($work->id, $archives_document->archive_id);
+		$this->assertEqual($document->id, $archives_document->document_id);
 
 	}
 
