@@ -285,13 +285,38 @@ class PublicationsController extends \lithium\action\Controller {
 	public function add() {
 
 		$publication = Publications::create();
+		$documents = array();
 
-		if (($this->request->data) && $publication->save($this->request->data)) {
-			//The slug has been saved with the Archive object, so let's look it up
-			$archive = Archives::find('first', array(
-				'conditions' => array('id' => $publication->id)
-			));
-			return $this->redirect(array('Publications::view', 'slug' => $archive->slug));
+		if ($this->request->data) {
+
+			if (isset($this->request->data['documents'])) {
+				$document_ids = $this->request->data['documents'];
+
+				$documents = Documents::find('all', array(
+					'with' => 'Formats',
+					'conditions' => array('Documents.id' => $document_ids),
+				));
+			}
+
+			if (isset($this->request->data['publication'])) {
+				if ($publication->save($this->request->data['publication'])) {
+
+					// The slug has been saved with the Archive object, so let's look it up
+					$archive = Archives::find('first', array(
+						'conditions' => array('id' => $publication->id)
+					));
+
+					// If any documents were submitted, save them as ArchivesDocuments
+					$archive_id = $archive->id;
+					foreach ($documents as $doc) {
+						$document_id = $doc->id;
+						$ad = ArchivesDocuments::create();
+						$ad->save(compact('archive_id', 'document_id'));
+					}
+
+					return $this->redirect(array('Publications::view', 'slug' => $archive->slug));
+				}
+			}
 		}
 
 		$pub_classifications = Publications::classifications();
@@ -315,18 +340,6 @@ class PublicationsController extends \lithium\action\Controller {
 		$language_names = $languages->map(function($lang) {
 			return $lang->name;
 		}, array('collect' => false));
-
-		$documents = array();
-
-		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
-			$document_ids = $this->request->data['documents'];
-
-			$documents = Documents::find('all', array(
-				'with' => 'Formats',
-				'conditions' => array('Documents.id' => $document_ids),
-			));
-
-		}
 
 		return compact('publication', 'pub_classifications', 'pub_types', 'locations', 'language_names', 'documents');
 	}

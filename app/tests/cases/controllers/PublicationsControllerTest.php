@@ -99,7 +99,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		$url = 'http://example.com/publication-new-title';
 
 		$data = $this->call('add', array(
-			'data' => compact('title', 'url')
+			'data' => array('publication' => compact('title', 'url'))
 		));
 
 		$pub = Publications::find('first', array(
@@ -147,7 +147,9 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		// a new ArchivesDocument to connect the publication and the document
 		$data = $this->call('add', array(
 			'data' => array(
-				'title' => 'Publication With Doc Title',
+				'publication' => array(
+					'title' => 'Publication With Doc Title',
+				),
 				'documents' => array($document->id)
 			)
 		));

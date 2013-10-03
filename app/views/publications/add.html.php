@@ -33,12 +33,6 @@ $language_list = json_encode($language_names);
 
 $access_date = $publication->access_date ?: date('Y-m-d');
 
-$documents_list = array();
-
-foreach ($documents as $doc) {
-	$documents_list["$doc->id"] = $doc->title;
-}
-
 ?>
 
 <div id="location" class="row-fluid">
@@ -104,23 +98,28 @@ foreach ($documents as $doc) {
 </div>
 
 <div class="row">
-<?=$this->form->create($publication, array('id' => 'PublicationsForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('publication'), array('id' => 'PublicationsForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 		<div class="well">
 			<legend>Publication Info</legend>
 			
-			<?=$this->form->field('author', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('title', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('remarks', array('autocomplete' => 'off', 'type' => 'textarea'));?>
-			<?=$this->form->field('storage_location', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('storage_number', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('publication_number', array('autocomplete' => 'off', 'label' => 'Publication ID'));?>
+			<?=$this->form->field('publication.author', array('label' => 'Author', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.title', array('label' => 'Title', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.remarks', array('label' => 'Remarks', 'autocomplete' => 'off', 'type' => 'textarea'));?>
+			<?=$this->form->field('publication.storage_location', array('label' => 'Storage Location', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.storage_number', array('label' => 'Storage Number', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.publication_number', array('Publication Number', 'autocomplete' => 'off', 'label' => 'Publication ID'));?>
 
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('documents', $documents_list, array('id' => 'ArchivesDocuments', 'multiple' => true)); ?>
+					<select name="documents[]" id="ArchivesDocuments" multiple="multiple" style="max-width:100%">
+					<?php foreach ($documents as $doc): ?>
+						<option value="<?=$doc->id ?>" selected="selected"><?=$doc->title ?></option>
+					<?php endforeach; ?>
+					</select>
+
 				</div>
 			</div>
 
@@ -143,36 +142,36 @@ foreach ($documents as $doc) {
 			<?php $pub_classes_list = array_merge(array('' => 'Choose one...'), $pub_classes_list); ?>
 
 			<div class="control-group">
-				<?=$this->form->label('classification', 'Category', array('class' => 'control-label')); ?>
+				<?=$this->form->label('publication.classification', 'Category', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('classification', $pub_classes_list); ?>
+					<?=$this->form->select('publication.classification', $pub_classes_list, array('id' => 'PublicationsClassification')); ?>
 				</div>
 			</div>
 
 			<?php $pub_types_list = array_merge(array('' => 'Choose one...'), $pub_types_list); ?>
 
 			<div class="control-group">
-				<?=$this->form->label('type', 'Type', array('class' => 'control-label')); ?>
+				<?=$this->form->label('publication.type', 'Type', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('type', $pub_types_list); ?>
+					<?=$this->form->select('publication.type', $pub_types_list); ?>
 				</div>
 			</div>
 
-			<?=$this->form->field('book_title', array('autocomplete' => 'off', 'placeholder' => 'Book the essay is in....', 'class' => 'essay'));?>
-			<?=$this->form->field('publisher', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('location', array('autocomplete' => 'off', 'label' => 'Publisher Location', 'placeholder' => 'City, Country', 'class' => 'book', 'data-provide' => 'typeahead', 'data-source' => $location_list));?>
-			<?=$this->form->field('earliest_date', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'class' => 'journal'));?>
-			<?=$this->form->field('number', array('autocomplete' => 'off', 'class' => 'journal', 'placeholder' => 'Issue number'));?>
-			<?=$this->form->field('volume', array('autocomplete' => 'off', 'placeholder' => 'e.g., Spring 2008', 'class' => 'journal'));?>
-			<?=$this->form->field('editor', array('autocomplete' => 'off', 'class' => 'book'));?>
-			<?=$this->form->field('translator', array('autocomplete' => 'off', 'class' => 'book'));?>
-			<?=$this->form->field('pages', array('autocomplete' => 'off', 'class' => 'pages'));?>
-			<?=$this->form->field('edition', array('autocomplete' => 'off', 'class' => 'book'));?>
-			<?=$this->form->field('url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web'));?>
-			<?=$this->form->field('access_date', array('autocomplete' => 'off', 'value' => $access_date, 'class' => 'web'));?>
-			<?=$this->form->field('subject', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('language', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
+			<?=$this->form->field('publication.book_title', array('label' => 'Book Title', 'autocomplete' => 'off', 'placeholder' => 'Book the essay is in....', 'class' => 'essay'));?>
+			<?=$this->form->field('publication.publisher', array('label' => 'Publisher', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.location', array('autocomplete' => 'off', 'label' => 'Publisher Location', 'placeholder' => 'City, Country', 'class' => 'book', 'data-provide' => 'typeahead', 'data-source' => $location_list));?>
+			<?=$this->form->field('publication.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off', 'class' => 'journal'));?>
+			<?=$this->form->field('publication.number', array('label' => 'Number', 'autocomplete' => 'off', 'class' => 'journal', 'placeholder' => 'Issue number'));?>
+			<?=$this->form->field('publication.volume', array('label' => 'Volume', 'autocomplete' => 'off', 'placeholder' => 'e.g., Spring 2008', 'class' => 'journal'));?>
+			<?=$this->form->field('publication.editor', array('label' => 'Editor', 'autocomplete' => 'off', 'class' => 'book'));?>
+			<?=$this->form->field('publication.translator', array('label' => 'Translator', 'autocomplete' => 'off', 'class' => 'book'));?>
+			<?=$this->form->field('publication.pages', array('label' => 'Pages', 'autocomplete' => 'off', 'class' => 'pages'));?>
+			<?=$this->form->field('publication.edition', array('label' => 'Edition', 'autocomplete' => 'off', 'class' => 'book'));?>
+			<?=$this->form->field('publication.url', array('autocomplete' => 'off', 'label' => 'URL', 'placeholder' => 'http://...', 'class' => 'web'));?>
+			<?=$this->form->field('publication.access_date', array('label' => 'Access Date', 'autocomplete' => 'off', 'value' => $access_date, 'class' => 'web'));?>
+			<?=$this->form->field('publication.subject', array('label' => 'Subject', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('publication.language', array('label' => 'Langauge', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
 			
 		</div>
 	</div>

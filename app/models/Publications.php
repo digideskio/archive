@@ -157,25 +157,6 @@ Publications::applyFilter('save', function($self, $params, $chain) {
 
 		$params['data']['id'] = $archive->id;
 
-		if (isset($params['data']['documents']) && $params['data']['documents']) {
-			$document_ids = $params['data']['documents'];
-
-			$documents = Documents::find('all', array(
-				'fields' => array('id'),
-				'conditions' => array('Documents.id' => $document_ids),
-			));
-
-			$archive_id = $archive->id;
-
-			foreach ($documents as $doc) {
-				$document_id = $doc->id;
-				$doc_data = compact('archive_id', 'document_id');
-				$ad = ArchivesDocuments::create();
-				$ad->save($doc_data);
-			}
-
-		}
-
 	} else {
 		$archive = Archives::find('first', array(
 			'conditions' => array('id' => $params['entity']->id)
