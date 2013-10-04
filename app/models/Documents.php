@@ -140,7 +140,8 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 	if(!$params['entity']->exists()) {
 	
 		// Set the date created
-		$params['data']['date_created'] = date("Y-m-d H:i:s");
+		$date_created = date("Y-m-d H:i:s");
+		$params['data']['date_created'] = $date_created;
 
 		// Save the user_id of the uploader
 		$user_id = 0;
@@ -246,7 +247,7 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			
 			$format_id = $format->id;
 					
-			$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height', 'user_id');
+			$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height', 'date_created', 'user_id');
 
 			//Give the file a unique filename based on its md5sum
 			$hash_name = $hash . '.' . $format->extension;
