@@ -12,6 +12,7 @@
 		$search_term = lithium\storage\Session::read('query', array('name' => 'custom'));
 	}
 ?>
+<?php $architecture = \lithium\core\Environment::get('architecture'); ?>
 
 <div class="navbar navbar-fixed-top navbar-inverse" >
 	<div class="navbar-inner">
@@ -24,6 +25,38 @@
 			<a class="brand" href="/home"><?=$host ?></a>
 
 			<div class="nav-collapse">
+
+				<ul class="nav">
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+							Create
+							<b class="caret"></b>
+						</a>
+						<ul class="dropdown-menu">
+							<li>
+								<?=$this->html->link("Artwork", $this->url(array('Works::add'))); ?>
+							</li>
+							<?php if ($architecture): ?>
+							<li>
+								<?=$this->html->link("Architecture", $this->url(array('Architectures::add'))); ?>
+							</li>
+							<?php endif;?>
+							<li>
+								<?=$this->html->link("Exhibition", $this->url(array('Exhibitions::add'))); ?>
+							</li>
+							<li>
+								<?=$this->html->link("Publication", $this->url(array('Publications::add'))); ?>
+							</li>
+							<li class="divider"></li>
+							<li>
+								<?=$this->html->link("Album", $this->url(array('Albums::add'))); ?>
+							</li>
+							<li>
+								<?=$this->html->link("Document", $this->url(array('Documents::add'))); ?>
+							</li>
+						</ul>
+					</li>
+				</ul>
 
 				<ul class="nav pull-right">
 					<li>
