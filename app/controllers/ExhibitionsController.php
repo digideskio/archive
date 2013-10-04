@@ -11,6 +11,7 @@ use app\models\Publications;
 use app\models\Components;
 use app\models\ArchivesLinks;
 use app\models\ArchivesDocuments;
+use app\models\Documents;
 
 use app\models\Users;
 use app\models\Roles;
@@ -302,14 +303,38 @@ class ExhibitionsController extends \lithium\action\Controller {
 	public function add() {
         
 		$exhibition = Exhibitions::create();
+		$documents = array();
 
-		if (($this->request->data) && $exhibition->save($this->request->data)) {
-			//The slug has been saved with the Archive object, so let's look it up
-			$archive = Archives::find('first', array(
-				'conditions' => array('id' => $exhibition->id)
-			));
-		
-			return $this->redirect(array('Exhibitions::view', 'slug' => $archive->slug));
+		if ($this->request->data) {
+
+			if (isset($this->request->data['documents'])) {
+				$document_ids = $this->request->data['documents'];
+
+				$documents = Documents::find('all', array(
+					'with' => 'Formats',
+					'conditions' => array('Documents.id' => $document_ids),
+				));
+			}
+
+			if (isset($this->request->data['exhibition'])) {
+				if ($exhibition->save($this->request->data['exhibition'])) {
+
+					// The slug has been saved with the Archive object, so let's look it up
+					$archive = Archives::find('first', array(
+						'conditions' => array('id' => $exhibition->id)
+					));
+
+					// If any documents were submitted, save them as ArchivesDocuments
+					$archive_id = $archive->id;
+					foreach ($documents as $doc) {
+						$document_id = $doc->id;
+						$ad = ArchivesDocuments::create();
+						$ad->save(compact('archive_id', 'document_id'));
+					}
+
+					return $this->redirect(array('Exhibitions::view', 'slug' => $archive->slug));
+				}
+			}
 		}
 
 		$exhibition_titles = Exhibitions::find('all', array(
@@ -355,18 +380,6 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$countries = $exhibition_countries->map(function($con) {
 			return $con->country;
 		}, array('collect' => false));
-
-		$documents = array();
-
-		if (isset($this->request->data['documents']) && $this->request->data['documents']) {
-			$document_ids = $this->request->data['documents'];
-
-			$documents = Documents::find('all', array(
-				'with' => 'Formats',
-				'conditions' => array('Documents.id' => $document_ids),
-			));
-
-		}
 
 		return compact('exhibition', 'documents', 'titles', 'venues', 'cities', 'countries');
 	}

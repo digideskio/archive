@@ -34,12 +34,6 @@ $country_data = json_encode($countries);
 
 $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
-$documents_list = array();
-
-foreach ($documents as $doc) {
-	$documents_list["$doc->id"] = $doc->title;
-}
-
 ?>
 
 <div id="location" class="row-fluid">
@@ -82,33 +76,38 @@ foreach ($documents as $doc) {
 
 <div class="row">
 
-<?=$this->form->create($exhibition, array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('exhibition'), array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 
 		<div class="well">
 		<?=$this->form->create($exhibition); ?>
 			<legend>Exhibition Info</legend>
-			<?=$this->form->field('title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data));?>
-			<?=$this->form->field('curator', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data));?>
-			<?=$this->form->field('city', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data));?>
-			<?=$this->form->field('country', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $country_data));?>
-			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'label' => 'Opening Date'));?>
-			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'label' => 'Closing Date'));?>
+			<?=$this->form->field('exhibition.title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data, 'label' => 'Title'));?>
+			<?=$this->form->field('exhibition.curator', array('autocomplete' => 'off', 'label' => 'Curator'));?>
+			<?=$this->form->field('exhibition.venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data, 'label' => 'Venue'));?>
+			<?=$this->form->field('exhibition.city', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data, 'label' => 'City'));?>
+			<?=$this->form->field('exhibition.country', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $country_data, 'label' => 'Country'));?>
+			<?=$this->form->field('exhibition.earliest_date', array('autocomplete' => 'off', 'label' => 'Opening Date'));?>
+			<?=$this->form->field('exhibition.latest_date', array('autocomplete' => 'off', 'label' => 'Closing Date'));?>
 			<div class="control-group">
 				<?=$this->form->label('type', 'Show Type', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('type', $show_types_list); ?>
+					<?=$this->form->select('exhibition.type', $show_types_list); ?>
 				</div>
 			</div>
-			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-			<?=$this->form->field('url', array('autocomplete' => 'off', 'label' => 'URL'));?>
+			<?=$this->form->field('exhibition.remarks', array('type' => 'textarea', 'label' => 'Remarks'));?>
+			<?=$this->form->field('exhibition.url', array('autocomplete' => 'off', 'label' => 'URL'));?>
 
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('documents', $documents_list, array('id' => 'ArchivesDocuments', 'multiple' => true)); ?>
+					<select name="documents[]" id="ArchivesDocuments" multiple="multiple" style="max-width:100%">
+					<?php foreach ($documents as $doc): ?>
+						<option value="<?=$doc->id ?>" selected="selected"><?=$doc->title ?></option>
+					<?php endforeach; ?>
+					</select>
+
 				</div>
 			</div>
 		</div>
