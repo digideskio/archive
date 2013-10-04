@@ -30,10 +30,12 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 	public function testSave() {
 	
-		$exhibition = Exhibitions::create();
 		$data = array(
 			'title' => 'Exhibition Title',
 		);
+		$exhibition = Exhibitions::create($data);
+
+		$this->assertTrue($exhibition->validates());
 
 		$success = $exhibition->save($data);
 
@@ -42,6 +44,9 @@ class ExhibitionsTest extends \lithium\test\Unit {
 		$data = array(
 			'earliest_date' => '2010',
 		);
+		$exhibition = Exhibitions::create($data);
+
+		$this->assertTrue($exhibition->validates());
 
 		$success = $exhibition->save($data);
 
@@ -50,11 +55,13 @@ class ExhibitionsTest extends \lithium\test\Unit {
 	}
 
 	public function testCreateWithNoTitle() {
-		$exhibition = Exhibitions::create();
 		$data = array (
 			"title" => "",
 			"curator" => "Exhibition Curator"
 		);
+		$exhibition = Exhibitions::create($data);
+
+		$this->assertFalse($exhibition->validates());
 		
 		$this->assertFalse($exhibition->save($data), "The exhibition was able to be saved without a title.");
 
@@ -66,12 +73,14 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 	public function testInvalidDates() {
 
-		$exhibition = Exhibitions::create();
 		$data = array (
 			"title" => "Exhibition Title",
 			"earliest_date" => 'X',
 			"latest_date" => 'Y'
 		);
+		$exhibition = Exhibitions::create($data);
+
+		$this->assertFalse($exhibition->validates());
 		
 		$this->assertFalse($exhibition->save($data), "The exhibition was able to be saved with an invalid date.");
 
@@ -87,8 +96,9 @@ class ExhibitionsTest extends \lithium\test\Unit {
 			'title' => 'Bad Exhibition',
 			'url' => 'http:// bad url'
 		);
+		$exhibition = Exhibitions::create($data);
 
-		$exhibition = Exhibitions::create();
+		$this->assertFalse($exhibition->validates());
 
 		$success = $exhibition->save($data);
 
@@ -113,8 +123,9 @@ class ExhibitionsTest extends \lithium\test\Unit {
 			'title' => 'Exhibition Title',
 			'url' => 'http://example.com'
 		);
+		$exhibit = Exhibitions::create($data);
 
-		$exhibit = Exhibitions::create();
+		$this->assertTrue($exhibit->validates());
 
 		$success = $exhibit->save($data);
 
@@ -141,8 +152,9 @@ class ExhibitionsTest extends \lithium\test\Unit {
 			'title' => 'Another Titlte',
 			'url' => 'http://example.com'
 		);
+		$new_exhibit = Exhibitions::create($new_data);
 
-		$new_exhibit = Exhibitions::create();
+		$this->assertTrue($new_exhibit->validates());
 
 		$success = $new_exhibit->save($new_data);
 

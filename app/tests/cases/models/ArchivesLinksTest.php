@@ -14,14 +14,17 @@ class ArchivesLinksTest extends \lithium\test\Unit {
 		Links::all()->delete();
 	}
 
-	public function testCreateArchiveLinks() {
+	public function testCreateArchivesLinks() {
 
 		$link_data = array(
 			'title' => 'Link Title',
 			'url' => 'http://example.org'
 		);
 
-		$link = Links::create();
+		$link = Links::create($link_data);
+
+		$this->assertTrue($link->validates());
+
 		$success = $link->save($link_data);
 
 		$this->assertTrue($success);
@@ -32,8 +35,10 @@ class ArchivesLinksTest extends \lithium\test\Unit {
 			'archive_id' => '1',
 			'link_id' => $link_id
 		);
+		$archive_link = ArchivesLinks::create($link_data);
 
-		$archive_link = ArchivesLinks::create();
+		$this->assertTrue($archive_link->validates());
+
 		$success = $archive_link->save($data);
 
 		$this->assertTrue($success, "The archive link could not be saved");
@@ -48,8 +53,10 @@ class ArchivesLinksTest extends \lithium\test\Unit {
 			'archive_id' => '1',
 			'url' => 'http://example.com'
 		);
+		$archive_link = ArchivesLinks::create($data);
 
-		$archive_link = ArchivesLinks::create();
+		$this->assertTrue($archive_link->validates());
+
 		$success = $archive_link->save($data);
 
 		$this->assertTrue($success, "The archive link could not be saved");

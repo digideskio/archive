@@ -18,6 +18,18 @@ class ArchivesTest extends \lithium\test\Unit {
 		ArchivesHistories::all()->delete();
 
 	}
+
+	public function testSave() {
+
+		$data = array (
+			"name" => "Archive Title",
+		);
+		$archive = Archives::create($data);
+
+		$this->assertTrue($archive->validates());
+
+		$this->assertTrue($archive->save($data));
+	}
 	
 	public function testSlugs() {
 		$archive = Archives::create();
@@ -59,11 +71,13 @@ class ArchivesTest extends \lithium\test\Unit {
 
 
 	public function testCreateWithNoTitle() {
-		$archive = Archives::create();
 		$data = array (
 			"name" => "",
 			"classification" => "Artwork"
 		);
+		$archive = Archives::create($data);
+
+		$this->assertFalse($archive->validates());
 		
 		$this->assertFalse($archive->save($data));
 	}
@@ -233,12 +247,14 @@ class ArchivesTest extends \lithium\test\Unit {
 		$early_date_MY_input = 'Feb 2001';
 		$early_date_MY_expected = '2001-02-01';
 	
-		$archive = Archives::create();
 		$data = array (
 			"title" => "Artwork Title",
 			"earliest_date" => $early_date_Ymd_input,
 			"latest_date" => $later_date_Ymd_input
 		);
+		$archive = Archives::create($data);
+
+		$this->assertTrue($archive->validates());
 		
 		$archive->save($data);
 		
@@ -251,12 +267,14 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 		$archive->delete();
 		
-		$archive = Archives::create();
 		$data = array (
 			"title" => "Artwork Title",
 			"earliest_date" => $early_date_Y_input,
 			"latest_date" => $later_date_Y_input
 		);
+		$archive = Archives::create($data);
+
+		$this->assertTrue($archive->validates());
 		
 		$archive->save($data);
 		
@@ -269,11 +287,13 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 		$archive->delete();
 		
-		$archive = Archives::create();
 		$data = array (
 			"title" => "Artwork Title",
 			"earliest_date" => $early_date_FY_input,
 		);
+		$archive = Archives::create($data);
+
+		$this->assertTrue($archive->validates());
 		
 		$archive->save($data);
 		
@@ -284,11 +304,13 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 		$archive->delete();
 		
-		$archive = Archives::create();
 		$data = array (
 			"title" => "Artwork Title",
 			"earliest_date" => $early_date_MY_input,
 		);
+		$archive = Archives::create($data);
+
+		$this->assertTrue($archive->validates());
 		
 		$archive->save($data);
 		
@@ -303,12 +325,14 @@ class ArchivesTest extends \lithium\test\Unit {
 	
 	public function testInvalidDates() {
 		
-		$archive = Archives::create();
 		$data = array (
 			"title" => "Artwork Title",
 			"earliest_date" => 'X',
 			"latest_date" => 'Y'
 		);
+		$archive = Archives::create($data);
+
+		$this->assertFalse($archive->validates());
 		
 		$this->assertFalse($archive->save($data), "The archive was able to be saved with an invalid date.");
 		

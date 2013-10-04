@@ -30,10 +30,12 @@ class PublicationsTest extends \lithium\test\Unit {
 
 	public function testSave() {
 	
-		$publication = Publications::create();
 		$data = array(
 			'title' => 'Book Title',
 		);
+		$publication = Publications::create($data);
+
+		$this->assertTrue($publication->validates());
 
 		$success = $publication->save($data);
 
@@ -42,6 +44,9 @@ class PublicationsTest extends \lithium\test\Unit {
 		$data = array(
 			'earliest_date' => '2010',
 		);
+		$publication = Publications::create($data);
+
+		$this->assertTrue($publication->validates());
 
 		$success = $publication->save($data);
 
@@ -57,7 +62,7 @@ class PublicationsTest extends \lithium\test\Unit {
 			'language' => 'French',
 		);
 
-		$success = $publication->save($data);
+		$publication->save($data);
 
 		$publication = Publications::find('first', array(
 			'with' => 'Archives'
@@ -77,11 +82,13 @@ class PublicationsTest extends \lithium\test\Unit {
 	}
 
 	public function testCreateWithNoTitle() {
-		$publication = Publications::create();
 		$data = array (
 			"title" => "",
 			"author" => "Book Author"
 		);
+		$publication = Publications::create($data);
+
+		$this->assertFalse($publication->validates());
 		
 		$this->assertFalse($publication->save($data), "The publication was able to be saved without a title.");
 
@@ -93,12 +100,14 @@ class PublicationsTest extends \lithium\test\Unit {
 
 	public function testInvalidDates() {
 
-		$publication = Publications::create();
 		$data = array (
 			"title" => "Book Title",
 			"earliest_date" => 'X',
 			"latest_date" => 'Y'
 		);
+		$publication = Publications::create($data);
+
+		$this->assertFalse($publication->validates());
 		
 		$this->assertFalse($publication->save($data), "The publication was able to be saved with an invalid date.");
 
@@ -114,8 +123,9 @@ class PublicationsTest extends \lithium\test\Unit {
 			'title' => 'Bad Book',
 			'url' => 'http:// bad url'
 		);
+		$publication = Publications::create($data);
 
-		$publication = Publications::create();
+		$this->assertFalse($publication->validates());
 
 		$success = $publication->save($data);
 
@@ -165,8 +175,9 @@ class PublicationsTest extends \lithium\test\Unit {
 			'title' => 'Publication Title',
 			'url' => 'http://example.com'
 		);
+		$pub = Publications::create($data);
 
-		$pub = Publications::create();
+		$this->assertTrue($pub->validates());
 
 		$success = $pub->save($data);
 

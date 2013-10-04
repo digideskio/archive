@@ -20,7 +20,9 @@ class PackagesTest extends \lithium\test\Unit {
 			'slug' => 'slug'
 		);
 
-		$package = Packages::create();
+		$package = Packages::create($data);
+
+		$this->assertFalse($package->validates());
 
 		$this->assertFalse($package->save($data));
 
@@ -30,6 +32,10 @@ class PackagesTest extends \lithium\test\Unit {
 			'slug' => 'slug'
 		);
 
+		$package = Packages::create($data);
+
+		$this->assertFalse($package->validates());
+
 		$this->assertFalse($package->save($data));
 		
 		$data = array(
@@ -37,6 +43,10 @@ class PackagesTest extends \lithium\test\Unit {
 			'filesystem' => 'secure',
 			'slug' => ''
 		);
+
+		$package = Packages::create($data);
+
+		$this->assertFalse($package->validates());
 
 		$this->assertFalse($package->save($data));
 		

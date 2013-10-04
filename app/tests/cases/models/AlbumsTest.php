@@ -23,11 +23,13 @@ class AlbumsTest extends \lithium\test\Unit {
 	}
 
 	public function testCreateWithNoTitle() {
-		$album = Albums::create();
 		$data = array (
 			"title" => "",
 			"remarks" => "This is the description."
 		);
+		$album = Albums::create($data);
+
+		$this->assertFalse($album->validates());
 		
 		$this->assertFalse($album->save($data), "The album was able to be saved without a title.");
 

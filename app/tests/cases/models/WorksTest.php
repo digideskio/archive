@@ -28,12 +28,15 @@ class WorksTest extends \lithium\test\Unit {
 
 	}
 
-	public function testSave() {
+	public function testValidateAndSave() {
 	
-		$work = Works::create();
 		$data = array(
 			'title' => 'Artwork Title',
 		);
+
+		$work = Works::create($data);
+
+		$this->assertTrue($work->validates());
 
 		$success = $work->save($data);
 
@@ -43,6 +46,10 @@ class WorksTest extends \lithium\test\Unit {
 			'earliest_date' => '2010',
 		);
 
+		$work = Works::create($data);
+
+		$this->assertTrue($work->validates());
+
 		$success = $work->save($data);
 
 		$this->assertTrue($success);
@@ -51,12 +58,15 @@ class WorksTest extends \lithium\test\Unit {
 
 	
 	public function testCreateWithNoTitle() {
-		$work = Works::create();
 		$data = array (
 			"title" => "",
 			"artist" => "Artwork Artist"
 		);
+
+		$work = Works::create($data);
 		
+		$this->assertFalse($work->validates());
+
 		$this->assertFalse($work->save($data), "The artwork was able to be saved without a title.");
 
 		$errors = $work->errors();

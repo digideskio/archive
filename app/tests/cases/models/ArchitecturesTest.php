@@ -23,10 +23,12 @@ class ArchitecturesTest extends \lithium\test\Unit {
 
 	public function testSave() {
 	
-		$architecture = Architectures::create();
 		$data = array(
 			'title' => 'Building Name',
 		);
+		$architecture = Architectures::create($data);
+
+		$this->assertTrue($architecture->validates());
 
 		$success = $architecture->save($data);
 
@@ -35,6 +37,9 @@ class ArchitecturesTest extends \lithium\test\Unit {
 		$data = array(
 			'earliest_date' => '2010',
 		);
+		$architecture = Architectures::create($data);
+
+		$this->assertTrue($architecture->validates());
 
 		$success = $architecture->save($data);
 
@@ -43,11 +48,13 @@ class ArchitecturesTest extends \lithium\test\Unit {
 	}
 
 	public function testCreateWithNoTitle() {
-		$architecture = Architectures::create();
 		$data = array (
 			"title" => "",
 			"architect" => "The Architect"
 		);
+		$architecture = Architectures::create($data);
+
+		$this->assertFalse($architecture->validates());
 		
 		$this->assertFalse($architecture->save($data), "The architecture was able to be saved without a title.");
 
@@ -59,12 +66,14 @@ class ArchitecturesTest extends \lithium\test\Unit {
 
 	public function testInvalidDates() {
 
-		$architecture = Architectures::create();
 		$data = array (
 			"title" => "Book Title",
 			"earliest_date" => 'X',
 			"latest_date" => 'Y'
 		);
+		$architecture = Architectures::create($data);
+
+		$this->assertFalse($architecture->validates());
 		
 		$this->assertFalse($architecture->save($data), "The architecture was able to be saved with an invalid date.");
 
