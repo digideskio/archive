@@ -5,11 +5,74 @@ namespace app\tests\cases\models;
 use app\models\Documents;
 use app\tests\mocks\data\MockDocuments;
 
+use lithium\core\Libraries;
+
 class DocumentsTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
-	public function tearDown() {}
+	public function tearDown() {
+		Documents::all()->delete();
+	}
+
+	public function testCreate() {
+		// Get the path to a sample image
+		$file_name = 'Sample-Image.jpg';
+		$width = '540';
+		$height = '696';
+		$test_path = Libraries::get(true, 'path') . '/tests/resources/' . $file_name;
+
+		$tmp_documents = Libraries::get(true, 'resources') . '/tmp/documents/';
+
+		if (!file_exists($tmp_documents)) {
+			@mkdir($tmp_documents, 0777, true);
+		}
+
+		$file_path = $tmp_documents . $file_name;
+
+		// Copy the image into the resources directory
+		copy($test_path, $file_path);
+
+		$doc = Documents::create();
+		$doc->save(compact('file_name', 'file_path'));
+
+		$this->assertEqual('Sample-Image', $doc->title);
+		$this->assertEqual('Sample-Image', $doc->slug);
+		$this->assertEqual($height, $doc->height);
+		$this->assertEqual($width, $doc->width);
+
+		// Look up the document with the format
+		$document = Documents::find('first', array(
+			'with' => 'Formats',
+			'conditions' => array('slug' => $doc->slug)
+		));
+
+		$this->assertEqual('jpeg', $document->format->extension);
+		$this->assertNotEqual('0000-00-00 00:00:00', $document->date_created, 'The document date created is not set');
+		$this->assertNotEqual('0000-00-00 00:00:00', $document->date_modified, 'The document date modified is not set');
+
+		// Given a file path, findDocumentIdByFile() should be able to match a physical file
+		// on disk with its record in the database. This means our original test file should
+		// match the record that was created for this document.
+		$compare_doc_id = Documents::findDocumentIdByFile($test_path);
+		$this->assertEqual($compare_doc_id, $document->id);
+
+		$file = $document->file();
+		$small = $document->file(array('size' => 'small'));
+		$thumb = $document->file(array('size' => 'thumb'));
+
+		$this->assertTrue(file_exists($tmp_documents . $file));
+		$this->assertTrue(file_exists($tmp_documents . $small));
+		$this->assertTrue(file_exists($tmp_documents . $thumb));
+
+		unlink($tmp_documents . $file);
+		unlink($tmp_documents . $small);
+		unlink($tmp_documents . $thumb);
+
+		rmdir($tmp_documents . 'small');
+		rmdir($tmp_documents . 'thumb');
+		rmdir($tmp_documents);
+	}
 
 	public function testResolution() {
 		$data = array(
