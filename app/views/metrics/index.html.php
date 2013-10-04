@@ -57,7 +57,7 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The archive contains artwork made over a <strong><?php echo sizeof($works_years); ?></strong> year period.</p>
+<p>The archive contains artwork made over a <strong><?=$work_total_years ?></strong> year period.</p>
 
 <div id="worksYears" style="width:100%;height:300px"></div>
 
@@ -91,7 +91,7 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The archive contains architecture designed or built over a <strong><?php echo sizeof($architectures_years); ?></strong> year period.</p>
+<p>The archive contains architecture designed or built over a <strong><?=$architecture_total_years ?></strong> year period.</p>
 
 <div id="architecturesYears" style="width:100%;height:300px"></div>
 
@@ -125,7 +125,7 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The archive contains exhibitions held over a <strong><?php echo sizeof($exhibitions_years); ?></strong> year period.</p>
+<p>The archive contains exhibitions held over a <strong><?=$exhibition_total_years ?></strong> year period.</p>
 
 <div id="exhibitionsYears" style="width:100%;height:300px"></div>
 
@@ -159,7 +159,7 @@ $this->title('Metrics');
 
 <hr/>
 
-<p>The archive contains books and articles published over a <strong><?php echo sizeof($publications_years); ?></strong> year period.</p>
+<p>The archive contains books and articles published over a <strong><?=$publication_total_years ?></strong> year period.</p>
 
 <div id="publicationsYears" style="width:100%;height:300px"></div>
 

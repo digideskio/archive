@@ -70,12 +70,20 @@ class MetricsController extends \lithium\action\Controller {
 		$no_date = array('earliest_date' => '0000-00-00');
 
 		$works_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'works' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$work_year_range = Archives::connection()->read("SELECT MAX(YEAR(earliest_date)) - MIN(YEAR(earliest_date)) as years FROM archives WHERE controller = 'works' AND YEAR(earliest_date) != 0");
+		$work_total_years = $work_year_range[0]['years'];
 
 		$architectures_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'architectures' and  YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$architecture_year_range = Archives::connection()->read("SELECT MAX(YEAR(earliest_date)) - MIN(YEAR(earliest_date)) as years FROM archives WHERE controller = 'architectures' AND YEAR(earliest_date) != 0");
+		$architecture_total_years = $architecture_year_range[0]['years'];
 
 		$exhibitions_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'exhibitions' AND YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$exhibition_year_range = Archives::connection()->read("SELECT MAX(YEAR(earliest_date)) - MIN(YEAR(earliest_date)) as years FROM archives WHERE controller = 'exhibitions' AND YEAR(earliest_date) != 0");
+		$exhibition_total_years = $exhibition_year_range[0]['years'];
 
 		$publications_years = Archives::connection()->read("SELECT count(*) as records, YEAR(earliest_date) AS year FROM archives WHERE controller = 'publications' and YEAR(earliest_date) != '0' GROUP BY year ORDER BY year ASC");
+		$publication_year_range = Archives::connection()->read("SELECT MAX(YEAR(earliest_date)) - MIN(YEAR(earliest_date)) as years FROM archives WHERE controller = 'publications' AND YEAR(earliest_date) != 0");
+		$publication_total_years = $publication_year_range[0]['years'];
 
 		$publications_languages = Archives::connection()->read(
 			"select count(*) as records, languages.name as language from archives left join languages on archives.language_code = languages.code where controller = 'publications' and language_code != ''  group by languages.name order by records DESC"
@@ -97,12 +105,16 @@ class MetricsController extends \lithium\action\Controller {
 			'publications_documents',
 
 			'works_years',
-			'works_no_year',
+			'work_total_years',
 
 			'architectures_years',
+			'architecture_total_years',
+
 			'exhibitions_years',
+			'exhibition_total_years',
 
 			'publications_years',
+			'publication_total_years',
 			'publications_languages',
 
 			'architecture'
