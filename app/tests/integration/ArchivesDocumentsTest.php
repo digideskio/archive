@@ -142,12 +142,20 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document = Documents::first();
 
-		$album = Albums::create();
-		$al_data = array(
-			'title' => 'The Title',
+		//Create an archive and album pair for testing purposes
+		$archive_data = array(
+			'title' => 'Album Title',
+			'controller' => 'albums'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$album->save($al_data);
+		$album = Albums::create(array(
+			'id' => $archive->id,
+			'remarks' => 'Album Description'
+		));
+
+		$album->save();
 
 		$archive_document = ArchivesDocuments::create();
 		$ad_data = array(

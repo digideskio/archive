@@ -43,10 +43,10 @@ $this->form->config(
 	</div>
 </div>
 
-<?=$this->form->create(compact('album', 'archives')); ?>
+<?=$this->form->create(compact('archive', 'album', 'archives')); ?>
 <div class="well">
 	<legend>Album Info</legend>
-    <?=$this->form->field('album.title', array('autocomplete' => 'off'));?>
+    <?=$this->form->field('archive.title', array('autocomplete' => 'off'));?>
     <?=$this->form->field('album.remarks', array('label' => 'Description', 'type' => 'textarea'));?>
 </div>
 

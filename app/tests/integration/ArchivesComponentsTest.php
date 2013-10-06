@@ -79,13 +79,20 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function testAlbumsComponents() {
 
-		$album = Albums::create();
-		$album_data = array(
+		//Create an archive and album pair for testing purposes
+		$archive_data = array(
 			'title' => 'Album Title',
-			'description' => 'some words',
+			'controller' => 'albums'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$album->save($album_data);
+		$album = Albums::create(array(
+			'id' => $archive->id,
+			'remarks' => 'Album Description'
+		));
+
+		$album->save();
 
 		$work = Works::first();
 

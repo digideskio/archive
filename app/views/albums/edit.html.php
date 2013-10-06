@@ -51,13 +51,17 @@ $this->form->config(
 <div class="span5">
 
 <div class="well">
-<?=$this->form->create($album); ?>
+<?=$this->form->create(compact('archive', 'album')); ?>
 	<legend>Album Info</legend>
-    <?=$this->form->field('title',array('autocomplete' => 'off')); ?>
-    <?=$this->form->field('remarks',array(
+    <?=$this->form->field('archive.title',array(
+		'label' => 'Title',
+		'autocomplete' => 'off',
+		'value' => $archive->name
+	)); ?>
+    <?=$this->form->field('album.remarks',array(
 		'label' => 'Description',
     	'type'=>'textarea',
-    	'value'=>$album->remarks
+    	'value' => $album->remarks
     )); ?>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel', $this->url(array('Albums::view', 'slug' => $album->archive->slug)), array('class' => 'btn')); ?>

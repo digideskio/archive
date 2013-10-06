@@ -170,6 +170,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 	public function add() {
 
+		$archive = Archives::create();
 		$album = Albums::create();
 		$archives = array();
 
@@ -184,12 +185,21 @@ class AlbumsController extends \lithium\action\Controller {
 				));
 			}
 
-			if (isset($this->request->data['album'])) {
-				if ($album->save($this->request->data['album'])) {
+			if (isset($this->request->data['archive'])) {
+				$archive_data = $this->request->data['archive'];
+				$archive_data['controller'] = 'albums';
+				if ($archive->save($archive_data)) {
+
+					// Save an album along with this archive
+					$album_data = isset($this->request->data['album']) ? $this->request->data['album'] : array();
+					$album_data['id'] = $archive->id;
+
+					$album = Albums::create();
+					$album->save($album_data);
 
 					// If any archive ids were submitted, save them as Album components
 					foreach ($archives as $a) {
-						$archive_id1 = $album->id;
+						$archive_id1 = $archive->id;
 						$archive_id2 = $a->id;
 
 						$type = '';
@@ -207,46 +217,64 @@ class AlbumsController extends \lithium\action\Controller {
 						$component->save(compact('archive_id1', 'archive_id2', 'type'));
 					}
 
-					//The slug has been saved with the Archive object, so let's look it up
-					$album_archive = Archives::find('first', array(
-						'conditions' => array('id' => $album->id)
-					));
-
-					return $this->redirect(array('Albums::view', 'slug' => $album_archive->slug));
+					return $this->redirect(array('Albums::view', 'slug' => $archive->slug));
 				}
 
 			}
 
 		}
 
-		return compact('album', 'archives');
+		return compact('archive', 'album', 'archives');
 	}
 
 	public function edit() {
 
-		$album = Albums::first(array(
-			'with' => 'Archives',
-			'conditions' => array(
-			'Archives.slug' => $this->request->params['slug'],
-		)));
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
 
-		if (!$album) {
-			return $this->redirect('Albums::index');
+			$album = Albums::first(array(
+				'with' => 'Archives',
+				'conditions' => array(
+					'Archives.slug' => $this->request->params['slug'],
+				)
+			));
+
+			if (!$album) {
+				return $this->redirect('Albums::index');
+			}
+
+			$archive = $album->archive;
+
+			if ($this->request->data) {
+
+				if (isset($this->request->data['archive'])) {
+
+					$archive_data = $this->request->data['archive'];
+
+					if ($archive->save($archive_data)) {
+
+						$album_data = isset($this->request->data['album']) ? $this->request->data['album'] : array();
+						$album->save($album_data);
+
+						return $this->redirect(array('Albums::view', 'slug' => $album->archive->slug));
+					}
+				}
+			}
+
+			$archives_documents = ArchivesDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Documents.Formats'
+				),
+				'conditions' => array('archive_id' => $album->id),
+				'order' => array('Documents.slug' => 'ASC')
+			));
+
+			return compact('archive', 'album', 'archives_documents');
 		}
-		if (($this->request->data) && $album->save($this->request->data)) {
-			return $this->redirect(array('Albums::view', 'slug' => $album->archive->slug));
-		}
 
-		$archives_documents = ArchivesDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Documents.Formats'
-			),
-			'conditions' => array('archive_id' => $album->id),
-			'order' => array('Documents.slug' => 'ASC')
-		));
-
-		return compact('album', 'archives_documents');
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Albums::index'));
 	}
 
 	public function history() {
@@ -258,8 +286,9 @@ class AlbumsController extends \lithium\action\Controller {
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
-				'Archives.slug' => $this->request->params['slug'],
-			)));
+					'Archives.slug' => $this->request->params['slug'],
+				)
+			));
 			
 			if($album) {
 

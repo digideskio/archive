@@ -28,35 +28,11 @@ class Albums extends \lithium\data\Model {
 	);
 
 	public $validates = array(
-		'title' => array(
-			array('notEmpty', 'message' => 'Please enter a title.')
+		'id' => array(
+			array('notEmpty', 'message' => 'This field may not be empty.')
 		),
 	);		
 }
-
-Albums::applyFilter('save', function($self, $params, $chain) {
-
-	if(!$params['entity']->exists()) {
-
-		$params['data']['controller'] = 'albums';
-
-		$archive = Archives::create();
-		$success = $archive->save($params['data']);
-
-		$params['data']['id'] = $archive->id;
-
-	} else {
-		$archive = Archives::find('first', array(
-			'conditions' => array('id' => $params['entity']->id)
-		));
-
-		$success = $archive->save($params['data']);
-	}
-
-	return $chain->next($self, $params, $chain);
-	
-});
-
 
 Albums::applyFilter('delete', function($self, $params, $chain) {
 
