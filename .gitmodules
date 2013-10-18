@@ -1,18 +1,18 @@
 [submodule "libraries/lithium"]
 	path = libraries/lithium
-	url = git://github.com/UnionOfRAD/lithium.git
+	url = https://github.com/UnionOfRAD/lithium.git
 [submodule "libraries/_source/Imagine"]
 	path = libraries/_source/Imagine
-	url = git://github.com/avalanche123/Imagine.git
+	url = https://github.com/avalanche123/Imagine.git
 [submodule "libraries/li3_access"]
 	path = libraries/li3_access
 	url = https://github.com/tmaiaroto/li3_access.git
 [submodule "libraries/li3_filesystem"]
 	path = libraries/li3_filesystem
-	url = git://github.com/hans-d/li3_filesystem.git
+	url = https://github.com/hans-d/li3_filesystem.git
 [submodule "libraries/li3_partials"]
 	path = libraries/li3_partials
-	url = git://github.com/dmondark/li3_partials.git
+	url = https://github.com/dmondark/li3_partials.git
 [submodule "libraries/ruckusing-migrations"]
 	path = libraries/ruckusing-migrations
 	url = https://github.com/ruckus/ruckusing-migrations.git
