@@ -18,7 +18,7 @@
 	url = https://github.com/ruckus/ruckusing-migrations.git
 [submodule "libraries/li3_unit"]
 	path = libraries/li3_unit
-	url = https://github.com/BlaineSch/li3_unit.git
+	url = https://github.com/blainesch/li3_unit.git
 [submodule "libraries/tcpdf"]
 	path = libraries/tcpdf
 	url = https://github.com/tcpdf-clone/tcpdf.git
