@@ -9,6 +9,7 @@ The Archive tracks Artworks, Architectural Projects, Exhibitions, and Publicatio
 * MySQL
 * ImageMagick
 * imagick and mod_xsendfile
+* Ghostscript
 * exiftool
 
 ### Installation
