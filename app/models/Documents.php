@@ -259,7 +259,13 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			//create a preview for pdf
 			if ($format->extension == 'pdf') {
 				$image_path = $target_dir . DIRECTORY_SEPARATOR . $hash . '.jpeg';
-				exec("/usr/bin/convert ".$final_path."[0] $image_path", $preview_info);
+
+				$im = new \Imagick();
+				$im->readimage($final_path . '[0]'); 
+				$im->setImageFormat('jpeg');    
+				$im->writeImage($image_path); 
+				$im->clear(); 
+				$im->destroy();
 			}
 			
 			//Make paths for the image previews
