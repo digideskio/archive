@@ -291,6 +291,11 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			} catch (Imagine\Exception\Exception $e) {
 				error_log($e);
 			}
+
+			// Remove the preview for pdf
+			if ($format->extension == 'pdf') {
+				unlink($image_path);
+			}
 			
 		}
 	}
