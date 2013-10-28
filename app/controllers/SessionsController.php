@@ -27,7 +27,6 @@ class SessionsController extends \lithium\action\Controller {
         	}
         }
 
-		Session::clear(array('default'));
         Auth::clear('default');
         
         return $this->render(array('data' => compact('message', 'path'), 'layout' => 'flat'));
@@ -36,7 +35,6 @@ class SessionsController extends \lithium\action\Controller {
     /* ... */
 
     public function delete() {
-		Session::clear(array('default'));
         Auth::clear('default');
 		return $this->render(array('layout' => 'flat'));
     }

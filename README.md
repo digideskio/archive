@@ -8,7 +8,7 @@ The Archive tracks Artworks, Architectural Projects, Exhibitions, and Publicatio
 * PHP 5.3+
 * MySQL
 * ImageMagick
-* imagick and mod_xsendfile
+* imagick and mod\_xsendfile
 * Ghostscript
 * exiftool
 
@@ -88,7 +88,7 @@ To set up your filesystem, first make a copy of the sample file, which in normal
 
 	cp app/config/bootstrap/filesystems-sample.php app/config/bootstrap/filesystems.php
 
-You must install mod_xsendfile and then enable it in your Apache host file:
+You must install mod\_xsendfile and then enable it in your Apache host file:
 
 	XSendFile On
 
@@ -119,17 +119,15 @@ Happy Archiving!
 
 ### Customizations
 
-There are some customization options that are set via environment variables.
+There are some customization options that can be set in `app/config/bootstrap/connections.php`.
 
-The most important and recommened customization is to add the Hmac strategy to the cookie adapter. Edit the `app/config/bootstrap/connections.php` file with the following:
+The most important customization is to include a "secret" which is used to sign browser cookies for the application:
 
-	$session = array('default' => array(
-		'adapter' => 'Cookie',
-		'strategies' => array('Hmac' => array('secret' => 'YOUR_SECRET')),
-		'name' => 'Archive',
-	));
+	define('LITHIUM_APP_SECRET', 'YOUR_SECRET');
 
-	Environment::set('production', compact('session'));
+Other customizations are set via Environment variables, and can therefore be tuned for your development and production environments. For example, to enable the inventory feature in your production environment:
+
+	Environment::set('production', array('inventory' => true));
 
 Other session variables are:
 

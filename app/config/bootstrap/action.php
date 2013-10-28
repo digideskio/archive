@@ -36,22 +36,6 @@ use lithium\security\Auth;
  * If `Dispatcher::run()` is called multiple times in the course of a single request, change the
  * `include`s to `include_once`.
  *
- * This filter re-configures your session storage if it detects a 'session' Enviroment variable.
- * For example, you can use a Cookie adapter with the Hmac strategy by adding the following 
- * code in your connections.php file:
- * 
- * {{{use lithium\core\Environment;
- * 		$session = array('default' => array(
- *			'adapter' => 'Cookie',
- * 			'strategies' => array('Hmac' => array('secret' => 'YOUR_SECRET')),
- *			'name' => 'YOUR_APP',
- * 		));
- *		Environment::set('production', compact('session'));
- * }}}
- *
- * In addition, the filter sets a `custom` session config using the Php adapter, which is
- * used to store temporary user options.
- *
  * The filter then checks authentication. If an Exception is thrown (by Hmac) then it will 
  * clear the session (the cookie) and log the user out.
  *
@@ -62,20 +46,9 @@ use lithium\security\Auth;
 Dispatcher::applyFilter('run', function($self, $params, $chain) {
 	Environment::set($params['request']);
 
-	$session = Environment::get('session');
-
-	// Session config for saving temporary per-session user options
-	$custom = array('adapter' => 'Php', 'name' => 'Custom');
-
-	if ($session) {
-		$session['custom'] = $custom;
-		Session::config($session);
-	}
-	
 	try {
 		Auth::check('default');
 	} catch (RuntimeException $e) {
-		Session::clear(array('default'));
 		Auth::clear('default');
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')

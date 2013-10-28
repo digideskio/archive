@@ -13,11 +13,21 @@
  * special characters you might want to use Inflector::slug() or set this manually.
  */
 use lithium\storage\Session;
+use lithium\core\Environment;
 
 $name = basename(LITHIUM_APP_PATH);
+$secret = defined('LITHIUM_APP_SECRET') ? LITHIUM_APP_SECRET : 'SECRET';
+
 Session::config(array(
-// 'cookie' => array('adapter' => 'Cookie', 'name' => $name),
-	'default' => array('adapter' => 'Php', 'session.name' => $name)
+	'default' => array(
+		'adapter' => 'Cookie',
+		'strategies' => array('Hmac' => array('secret' => $secret)),
+		'name' => 'Archive'
+	),
+	'custom' => array(
+		'adapter' => 'Php',
+		'name' => 'Custom'
+	)
 ));
 
 /**

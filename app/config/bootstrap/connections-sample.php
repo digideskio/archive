@@ -100,4 +100,6 @@ Connections::add('default', array(
 	)
 ));
 
+define('LITHIUM_APP_SECRET', 'YOUR_SECRET');
+
 ?>
