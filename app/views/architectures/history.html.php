@@ -1,6 +1,6 @@
 <?php
 
-$this->title($architecture->title);
+$this->title($architecture->archive->name);
 
 $auth = $this->authority->auth();
 
@@ -23,7 +23,7 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<li>
-	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?>
+	<?=$this->html->link($architecture->archive->name,'/architectures/view/'.$architecture->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -88,10 +88,10 @@ $authority_can_edit = $this->authority->canEdit();
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $rh->title ): ?>
+				<?php if( $ah->name ): ?>
 					<tr>
 					<td class="meta">Title</td>
-					<td><?=$rh->title ?></td>
+					<td><?=$ah->name ?></td>
 					</tr>
 				<?php endif; ?>
 

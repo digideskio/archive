@@ -270,7 +270,7 @@ $this->title($document->title);
 							
 								<?php foreach($architectures as $architecture): ?>
 								<li><strong><?=$this->html->link(
-									$architecture->title,
+									$architecture->archive->name,
 									'/architectures/view/'.$architecture->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>

@@ -106,7 +106,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$architecture_ids = array();
 
-			$fields = array('title', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
+			$fields = array('Archives.name', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
 
 			foreach ($fields as $field) {
 				$matching_works = Architectures::find('all', array(

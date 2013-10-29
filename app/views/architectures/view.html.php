@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($architecture->title);
+$this->title($architecture->archive->name);
 
 $authority_can_edit = $this->authority->canEdit();
 
@@ -16,7 +16,7 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?>
+	<?=$this->html->link($architecture->archive->name,'/architectures/view/'.$architecture->archive->slug); ?>
 	</li>
 
 	</ul>
@@ -54,7 +54,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<div class="popover" style="display:block; position: static; margin-bottom:18px; width:100%">
 		<div class="popover-inner">
 			<div class="popover-title">
-			<strong><?=$architecture->title ?></strong>
+			<strong><?=$architecture->archive->name ?></strong>
 			</div>
 			<div class="popover-content">
 			<p><?=$architecture->annotation ?></p>

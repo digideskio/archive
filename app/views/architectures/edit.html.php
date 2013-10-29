@@ -1,6 +1,6 @@
 <?php
 
-$this->title($architecture->title);
+$this->title($architecture->archive->name);
 
 $this->form->config(
     array( 
@@ -23,7 +23,7 @@ $this->form->config(
 	</li>
 
 	<li>
-	<?=$this->html->link($architecture->title,'/architectures/view/'.$architecture->archive->slug); ?>
+	<?=$this->html->link($architecture->archive->name,'/architectures/view/'.$architecture->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -52,34 +52,34 @@ $this->form->config(
 
 	<div class="span5">
 		<div class="well">
-		<?=$this->form->create($architecture); ?>
-    		<?=$this->form->field('architect', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('title', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('client', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('project_lead', array('autocomplete' => 'off'));?>
-    		<?=$this->form->field('consultants', array('autocomplete' => 'off'));?>
-    		<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-			<?=$this->form->field('area', array(
+		<?=$this->form->create(compact('archive', 'architecture')); ?>
+			<?=$this->form->field('architecture.architect', array('autocomplete' => 'off', 'label' => 'Architect'));?>
+			<?=$this->form->field('archive.title', array('autocomplete' => 'off', 'label' => 'Title', 'value' => $archive->name));?>
+			<?=$this->form->field('architecture.client', array('autocomplete' => 'off', 'label' => 'Client'));?>
+			<?=$this->form->field('architecture.project_lead', array('autocomplete' => 'off', 'label' => 'Project Lead'));?>
+			<?=$this->form->field('architecture.consultants', array('autocomplete' => 'off', 'label' => 'Consultants'));?>
+			<?=$this->form->field('architecture.remarks', array('type' => 'textarea', 'label' => 'Remarks'));?>
+			<?=$this->form->field('architecture.area', array(
 				'autocomplete' => 'off',
 				'label' => "Area (square meters)"
 			));?>
-    		<?=$this->form->field('materials', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('earliest_date', array(
+			<?=$this->form->field('architecture.materials', array('autocomplete' => 'off', 'label' => 'Materials'));?>
+			<?=$this->form->field('archive.earliest_date', array(
 				'autocomplete' => 'off',
 				'label' => 'Design Date',
-				'value' => $architecture->archive->start_date_formatted()
+				'value' => $archive->start_date_formatted()
 			));?>
-			<?=$this->form->field('latest_date', array(
+			<?=$this->form->field('archive.latest_date', array(
 				'autocomplete' => 'off',
 				'label' => 'Completion Date',
-				'value' => $architecture->archive->end_date_formatted()
+				'value' => $archive->end_date_formatted()
 			));?>
-			<?=$this->form->field('status', array('autocomplete' => 'off', 'label' => 'Project Status'));?>
-			<?=$this->form->field('location', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('city', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('country', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('architecture.status', array('autocomplete' => 'off', 'label' => 'Project Status'));?>
+			<?=$this->form->field('architecture.location', array('autocomplete' => 'off', 'label' => 'Location'));?>
+			<?=$this->form->field('architecture.city', array('autocomplete' => 'off', 'label' => 'City'));?>
+			<?=$this->form->field('architecture.country', array('autocomplete' => 'off', 'label' => 'Country'));?>
+			<?=$this->form->field('architecture.annotation', array('type' => 'textarea', 'label' => 'Annotation'));?>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->archive->slug, array('class' => 'btn')); ?>
 		<?=$this->form->end(); ?>
 		</div>
 		
@@ -96,29 +96,6 @@ $this->form->config(
 	</div>
 	
 	<div class="span5">
-
-	<div class="well">
-		<legend>Annotation</legend>
-		<?=$this->form->create($architecture); ?>
-			<?=$this->form->field('annotation', array(
-				'type' => 'textarea', 
-				'rows' => '10', 
-				'style' => 'width:90%;',
-				'label' => ''
-			));?>
-		
-			<?=$this->form->hidden('title'); ?>
-		
-			<?php //FIXME set the dates in the annotation form; if they have no value, they will be set back to empty in the Archives class ?>
-			<?=$this->form->hidden('earliest_date', array('value' => $architecture->archive->start_date_formatted())); ?>
-			<?=$this->form->hidden('latest_date', array('value' => $architecture->archive->end_date_formatted())); ?>
-
-			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-			<?=$this->html->link('Cancel','/architectures/view/'.$architecture->archive->slug, array('class' => 'btn')); ?>
-		<?=$this->form->end(); ?>
-		
-	</div>
-
 	
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $architecture,
@@ -133,7 +110,7 @@ $this->form->config(
 			<h3>Delete Project</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$architecture->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$architecture->archive->name; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Project from the listings. Are you sure you want to continue?</p>
 			</div>
