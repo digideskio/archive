@@ -5,6 +5,7 @@ namespace app\tests\cases\controllers;
 use app\controllers\AlbumsController;
 
 use app\models\Albums;
+use app\models\AlbumsHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\Works;
@@ -37,6 +38,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 	public function tearDown() {
 		Albums::all()->delete();
+		AlbumsHistories::all()->delete();
 	
 		Works::all()->delete();
 		WorksHistories::all()->delete();
