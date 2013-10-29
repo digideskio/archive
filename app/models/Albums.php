@@ -2,8 +2,6 @@
 
 namespace app\models;
 
-use app\models\Dates;
-
 use lithium\util\Inflector;
 
 class Albums extends \lithium\data\Model {
