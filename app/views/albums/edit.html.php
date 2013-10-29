@@ -1,6 +1,6 @@
 <?php
 
-$this->title($album->title);
+$this->title($album->archive->name);
 
 $this->form->config(
     array( 
