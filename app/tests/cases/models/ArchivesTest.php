@@ -338,6 +338,27 @@ class ArchivesTest extends \lithium\test\Unit {
 		
 	}
 
+	public function testFilters() {
+		// Filters should still behave as expected, even if we only provide data to the create
+		// method.
+		$data = array(
+			"title" => "Test Title",
+			"earliest_date" => "December 2011",
+			"latest_date" => "January 2012",
+		);
+
+		$archive = Archives::create($data);
+
+		$archive->save();
+
+		$this->assertEqual($data['title'], $archive->name, "The Archive save filter is making the title blank if data is only supplied to the create() method.");
+		$this->assertEqual('2011-12-01', $archive->earliest_date, "The Archive save filter is making the earliest date blank if data is only supplied to the create() method.");
+		$this->assertEqual('M Y', $archive->earliest_date_format);
+		$this->assertEqual('2012-01-01', $archive->latest_date, "The Archive save filter is making the latest date blank if data is only supplied to the create() method.");
+		$this->assertEqual('M Y', $archive->latest_date_format);
+
+	}
+
 	public function testValidators() {
 
 		$archive = Archives::create();
