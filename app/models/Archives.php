@@ -252,6 +252,10 @@ class Archives extends \lithium\data\Model {
 	
 }
 
+/**
+ * Date Modified Filter
+ */
+
 Archives::applyFilter('save', function($self, $params, $chain) {
 	// Custom pre-dispatch logic goes here
 	date_default_timezone_set('UTC');
@@ -266,6 +270,54 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 	// Set the date modified
 	$params['data']['date_modified'] = date("Y-m-d H:i:s");
+
+	return $chain->next($self, $params, $chain);
+
+});
+
+/**
+ * Date Filters
+ * 
+ * Significant dates may be input as a year, as a month and year, or as a valid
+ * day, month, and year. Either date may also be left blank. The filter runs
+ * a similar procedure for data supplied to the create and save methods. For
+ * the create method, do not parse the date if a date format is already
+ * specified, since the data is being supplied as-is (this scenario only arises
+ * in the testing suite). If a date is not set, it must in the final instance be
+ * set to a blank string, otherwise the validation will not pass (the skipEmpty
+ * directive does not mean "skip NULL", unfortunately).
+ */
+
+Archives::applyFilter('create', function($self, $params, $chain) {
+
+	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
+
+		// If a date format has not been specified, attempt to parse the date
+		if (!isset($params['data']['earliest_date_format'])) {
+			$earliest_date = $params['data']['earliest_date'];
+			$earliest_date_filtered = Archives::filterDate($earliest_date);
+			$params['data']['earliest_date'] = $earliest_date_filtered['date'];
+			$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
+		}
+	} else {
+		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
+		//So let's make sure the value is at least empty if it is not set
+		//This has only been necessary since the extra date format code was added
+		$params['data']['earliest_date'] = '';
+	}
+
+	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
+
+		// If a date format has not been specified, attempt to parse the date
+		if (!isset($params['data']['latest_date_format'])) {
+			$latest_date = $params['data']['latest_date'];
+			$latest_date_filtered = Archives::filterDate($latest_date);
+			$params['data']['latest_date'] = $latest_date_filtered['date'];
+			$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
+		}
+	} else {
+		$params['data']['latest_date'] = '';
+	}
 
 	return $chain->next($self, $params, $chain);
 
@@ -298,8 +350,21 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 });
 
+/**
+ * URL Filter
+ */
+
 //Some models allow a URL to be saved during an add, which creates a Link object and/or a link relation
 //In order for the validation to work properly in the Archives model, the URL cannot be unset
+Archives::applyFilter('create', function($self, $params, $chain) {
+
+	if (!isset($params['data']['url'])) {
+		$params['data']['url'] = '';
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
 Archives::applyFilter('save', function($self, $params, $chain) {
 
 	if (!isset($params['data']['url'])) {
@@ -313,6 +378,19 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 //TODO	The generic Archive will use name instead of title. However, a lot of models which extend Archives
 //		rely on title to validate and for tests. When those models are migrated, we can remove the following filter
 
+/**
+ * Name/Title Fix Filter
+ */
+
+Archives::applyFilter('create', function($self, $params, $chain) {
+	if(isset($params['data']['name'])) {
+		$params['data']['title'] = $params['data']['name'];
+	} else {
+		$params['data']['name'] = isset($params['data']['title']) ? $params['data']['title'] : '';
+	}
+	return $chain->next($self, $params, $chain);
+});
+
 Archives::applyFilter('save', function($self, $params, $chain) {
 	if(isset($params['data']['name'])) {
 		$params['data']['title'] = $params['data']['name'];
@@ -321,6 +399,10 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 	}
 	return $chain->next($self, $params, $chain);
 });
+
+/**
+ * Slug Filter
+ */
 
 Archives::applyFilter('save', function($self, $params, $chain) {
 
@@ -358,6 +440,12 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 	return $chain->next($self, $params, $chain);
 
 });
+
+/**
+ * User Filter
+ *
+ * Save the identity of the user who is creating or updating this record.
+ */
 
 Archives::applyFilter('save', function($self, $params, $chain) {
 
