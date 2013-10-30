@@ -194,7 +194,7 @@ class ArchivesTest extends \lithium\test\Unit {
 			"earliest_date" => "2010-01-01",
 			"earliest_date_format" => "Y",
 			"latest_date" => "2012-01-01",
-			"earliest_date_format" => "Y",
+			"latest_date_format" => "Y",
 		);
 
 		$archive = Archives::create($data);
