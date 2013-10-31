@@ -88,9 +88,18 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document= Documents::first();
 
-		$work = Works::create();
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'title' => 'Artwork Title',
+			'controller' => 'works'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
+		$work = Architectures::create();
 		$work_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id,
+			'architect' => 'The Architect',
 		);
 
 		$work->save($work_data);
@@ -115,10 +124,10 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document = Documents::first();
 
-		// Create an archive and album pair for testing purposes
+		// Create an archive and architecture pair for testing purposes
 		$archive_data = array(
 			'title' => 'Architecture Title',
-			'controller' => 'albums'
+			'controller' => 'architectures'
 		);
 		$archive = Archives::create();
 		$archive->save($archive_data);

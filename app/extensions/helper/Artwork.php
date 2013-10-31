@@ -10,11 +10,11 @@ class Artwork extends \lithium\template\Helper {
 
     	$years = $archive->years();
 
-		$title = $work->title;
+		$title = $archive->name;
 
 		if (isset($options['link']) && $options['link']) {
 			$html = new Html();
-			$title = $html->link($work->title, '/works/view/'.$archive->slug);	
+			$title = $html->link($archive->name, '/works/view/'.$archive->slug);	
 		} else {
 			$title = $this->escape($title);
 		}

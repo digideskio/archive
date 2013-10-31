@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($work->title);
+$this->title($work->archive->name);
 
 $authority_can_edit = $this->authority->canEdit();
 $authority_is_admin = $this->authority->isAdmin();
@@ -19,7 +19,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 	</li>
 
 	<li class="active">
-		<?=$work->title ?>
+		<?=$work->archive->name ?>
 	</li>
 
 	</ul>
@@ -57,7 +57,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 		<div class="popover" style="display:block; position: static; margin-bottom:18px; width:100%">
 		<div class="popover-inner">
 			<div class="popover-title">
-			<strong><?=$work->title ?></strong>
+			<strong><?=$work->archive->name ?></strong>
 			</div>
 			<div class="popover-content">
 			<p><?=$work->annotation ?></p>
@@ -192,7 +192,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 							
 								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
-									$album->title,
+									$album->archive->name,
 									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
@@ -211,7 +211,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 							
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
-									$exhibition->title,
+									$exhibition->archive->name,
 									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>

@@ -163,14 +163,21 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		
 		// Create a new archive (it could represent an artwork, publication, or something
 		// else) which we will use to seed the new album
-		$work = Works::create();
 
-		// XXX Create this work with an archive object
-		$work_data = array(
-			'title' => 'Artwork Title'
+		//Create an archive and work pair for testing purposes
+		$archive_data = array(
+			'title' => 'First Artwork Title',
+			'controller' => 'works'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$work->save($work_data);
+		$work = Works::create(array(
+			'id' => $archive->id,
+			'materials' => 'The Materials'
+		));
+
+		$work->save();
 
 		// Test that the archive is loaded and passed to the view
 		$data = $this->call('add', array(

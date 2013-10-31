@@ -250,7 +250,7 @@ $this->title($document->title);
 							
 								<?php foreach($works as $work): ?>
 								<li><strong><?=$this->html->link(
-									$work->title,
+									$work->archive->name,
 									'/works/view/'.$work->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>

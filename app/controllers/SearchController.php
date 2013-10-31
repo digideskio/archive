@@ -61,7 +61,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$artwork_ids = array();
 
-			$fields = array('title', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+			$fields = array('Archives.name', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
 
 			foreach ($fields as $field) {
 				$matching_works = Works::find('artworks', array(

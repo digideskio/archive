@@ -20,7 +20,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 
 		$work = Works::create();
 		$data = array (
-			'title' => 'Artwork Title',
+			'id' => '1',
 			'artist' => 'The Artist',
 			'artist_native' => '艺术家',
 			'creation_number' => 'ARTWORK001',
@@ -69,7 +69,6 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 
 		$work_history = WorksHistories::first();
 
-		$this->assertEqual($work->title, $work_history->title);
 		$this->assertEqual($work->artist, $work_history->artist);
 		$this->assertEqual($work->artist_native, $work_history->artist_native);
 		$this->assertEqual($work->creation_number, $work_history->creation_number);
@@ -110,7 +109,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 	
 		$work = Works::first();
 		$data = array(
-			'title' => 'New Title'
+			'materials' => 'New Materials'
 		);
 
 		$work->save($data); 
@@ -125,7 +124,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 			)
 		));
 
-		$this->assertEqual($work->title, $work_history->title);
+		$this->assertEqual($work->materials, $work_history->materials);
 
 	}
 
