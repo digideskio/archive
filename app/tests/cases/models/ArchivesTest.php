@@ -426,6 +426,23 @@ class ArchivesTest extends \lithium\test\Unit {
 
 	}
 
+	public function testLanguageFilter() {
+
+		$archive = Archives::create();
+		$archive->save(array(
+			'title' => 'Book Title',
+			'language' => 'French'
+		));
+
+		$this->assertEqual('fr', $archive->language_code);
+
+		$data['language'] = 'Korean 朝鲜语';
+
+		$archive->save($data);
+
+		$this->assertEqual('ko', $archive->language_code);
+	}
+
 }
 
 ?>

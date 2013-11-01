@@ -441,6 +441,34 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 });
 
+
+/**
+ * Language Filter
+ *
+ * Transform a langauge string to a language code.
+ */
+
+Archives::applyFilter('save', function($self, $params, $chain) {
+
+	if (isset($params['data']['language'])) {
+
+		$lang = $params['data']['language'];
+
+		$language = Languages::find('first', array(
+			'conditions' => "'$lang' LIKE CONCAT('%', name, '%')"
+		));
+
+		if($language) {
+
+			$params['data']['language_code'] = $language->code;
+
+		}
+	}
+
+	return $chain->next($self, $params, $chain);
+
+});
+
 /**
  * User Filter
  *
