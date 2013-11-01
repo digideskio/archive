@@ -21,13 +21,20 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function setup() {
 
-		$work = Works::create();
-		$data = array(
-			'title' => 'The Title',
-			'artist' => 'The Artist',
+		//Create an archive and work pair for testing purposes
+		$archive_data = array(
+			'title' => 'The Artwork Title',
+			'controller' => 'works'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$work->save($data);
+		$work = Works::create(array(
+			'id' => $archive->id,
+			'materials' => 'The Materials'
+		));
+
+		$success = $work->save();
 
 	}
 
