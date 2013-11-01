@@ -13,8 +13,6 @@ use app\models\ArchivesLinks;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
 
-use lithium\security\Auth;
-use lithium\storage\Session;
 use lithium\action\Request;
 use lithium\net\http\Router;
 
@@ -23,10 +21,18 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 	public $controller = 'app\\controllers\ExhibitionsController';
 
 	public function setUp() {
+		// Create an archive and exhibition pair for testing purposes
+		$archive_data = array(
+			'title' => 'First Exhibition Title',
+			'controller' => 'exhibitions'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 	
 		$exhibit = Exhibitions::create();
 		$data = array(
-			'title' => 'Exhibition Title',
+			'id' => $archive->id,
+			'venue' => 'Exhibition Venue',
 		);
 
 		$exhibit->save($data);
@@ -57,7 +63,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$exhibition = $exhibitions->first();
 
-		$this->assertEqual('Exhibition Title', $exhibition->title);
+		$this->assertEqual('First Exhibition Title', $exhibition->archive->name);
 		$this->assertEqual(1, $total);
 
 		$this->assertTrue(isset($data['page']));
@@ -69,13 +75,13 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$data = $this->call('view', array(
 			'params' => array(
-				'slug' => 'Exhibition-Title'
+				'slug' => 'First-Exhibition-Title'
 			)
 		));
 
 		$exhibition = $data['exhibition'];
 
-		$this->assertEqual('Exhibition Title', $exhibition->title);
+		$this->assertEqual('First Exhibition Title', $exhibition->archive->name);
 
 	}
 
@@ -90,29 +96,80 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 			'params' => array()
 		));
 
+		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['exhibition']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		// Test that the action does not save if data is posted but not the
+		// required objects
+		$data = $this->call('add', array(
+			'data' => array('fake' => 'fake')
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['exhibition']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		// Check that no new records were created
+		$this->assertEqual(1, Exhibitions::count());
+		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(0, Links::count());
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'data' => array('archive' => array('title' => ''))
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['exhibition']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
+		$this->assertTrue(!empty($errors));
+
+		// Check that no new records were created
+		$this->assertEqual(1, Exhibitions::count());
+		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(0, Links::count());
 
 		// Test that this action processes and saves the correct data, namely
 		// an exhibition, archive, and link model
 		$title = 'Exhibition New Title';
-		$slug = 'Exhibition-New-Title';
+		$slug = 'Exhibition-New-Title-New-Venue';
+		$venue = 'New Venue';
 		$url = 'http://example.com/exhibit-new-title';
 
 		$data = $this->call('add', array(
-			'data' => array('exhibition' => compact('title', 'url'))
+			'data' => array(
+				'archive' => compact('title'),
+				'exhibition' => compact('venue'),
+				'link' => compact('url')
+			)
 		));
 
-		$exhibit = Exhibitions::find('first', array(
-			'conditions' => compact('title')
-		));
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual("/exhibitions/view/$slug", $data->headers["Location"]);
 
-		$this->assertTrue(!empty($exhibit));
-
+		// Look up the objects that were saved
 		$archive = Archives::find('first', array(
 			'conditions' => compact('slug')
 		));
 
 		$this->assertTrue(!empty($archive));
+		$this->assertEqual($title, $archive->name);
+		$this->assertEqual('exhibitions', $archive->controller);
+
+		$exhibit = Exhibitions::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($exhibit));
+		$this->assertEqual($venue, $exhibit->venue);
 
 		$link = Links::find('first', array(
 			'conditions' => compact('url')
@@ -147,35 +204,98 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		// a new ArchivesDocument to connect the exhibition and the document
 		$data = $this->call('add', array(
 			'data' => array(
-				'exhibition' => array(
+				'archive' => array(
 					'title' => 'Exhibition With Doc Title',
 				),
+				'exhibition' => array(),
+				'link' => array(),
 				'documents' => array($document->id)
 			)
 		));
 
-		$exhibit = Exhibitions::find('first', array(
-			'conditions' => array('title' => 'Exhibition With Doc Title')
+		$archive = Archives::find('first', array(
+			'conditions' => array('name' => 'Exhibition With Doc Title')
 		));
 
 		$archives_document = ArchivesDocuments::first();
 
-		$this->assertEqual($exhibit->id, $archives_document->archive_id);
+		$this->assertEqual($archive->id, $archives_document->archive_id);
 		$this->assertEqual($document->id, $archives_document->document_id);
 
 	}
 	
 	public function testEdit() {
 
+		$slug = 'First-Exhibition-Title';
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/works/view/{:slug}', array('Works::view'));
+
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'Exhibition-Title'
+				'slug' => $slug
 			)
 		));
 
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['exhibition']));
+
+		$archive = $data['archive'];
 		$exhibition = $data['exhibition'];
 
-		$this->assertEqual('Exhibition Title', $exhibition->title);
+		$this->assertEqual('First Exhibition Title', $archive->name);
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'params' => array(
+				'slug' => 'First-Exhibition-Title'
+			),
+			'data' => array(
+				'archive' => array('title' => '')
+			)
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['exhibition']));
+
+		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
+		$this->assertTrue(!empty($errors));
+
+		// Test that the records can be saved with new data
+		$title = 'Exhibition Update Title';
+		$venue = 'Exhibition Update Venue';
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => $slug
+			),
+			'data' => array(
+				'archive' => compact('title'),
+				'exhibition' => compact('venue')
+			)
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual("/exhibitions/view/$slug", $data->headers["Location"]);
+
+		// Look up the objects that were saved
+		$archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$this->assertTrue(!empty($archive));
+		$this->assertEqual($title, $archive->name);
+		$this->assertEqual('exhibitions', $archive->controller);
+
+		$exhibit = Exhibitions::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($exhibit));
+		$this->assertEqual($venue, $exhibit->venue);
 
 	}
 

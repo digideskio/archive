@@ -289,7 +289,7 @@ $this->title($document->title);
 							
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
-									$exhibition->title,
+									$exhibition->archive->name,
 									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>

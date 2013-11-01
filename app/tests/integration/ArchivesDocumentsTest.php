@@ -195,9 +195,17 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document = Documents::first();
 
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'title' => 'Exhibition Title',
+			'controller' => 'exhibitions'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$exhibit = Exhibitions::create();
 		$ex_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id
 		);
 
 		$exhibit->save($ex_data);

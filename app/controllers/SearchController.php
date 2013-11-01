@@ -142,7 +142,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$exhibition_ids = array();
 
-			$fields = array('title', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
+			$fields = array('Archives.name', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
 
 			foreach ($fields as $field) {
 				$matching_exhibits = Exhibitions::find('all', array(

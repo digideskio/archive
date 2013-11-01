@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($exhibition->title);
+$this->title($exhibition->archive->name);
 
 $authority_can_edit = $this->authority->canEdit();
 
@@ -16,7 +16,7 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->archive->slug); ?>
+	<?=$this->html->link($exhibition->archive->name,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 	</li>
 
 	</ul>

@@ -130,9 +130,17 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function testExhibitionsComponents() {
 
+		//Create an archive and exhibition pair for testing purposes
+		$archive_data = array(
+			'title' => 'Exhibition Title',
+			'controller' => 'exhibitions'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$exhibition = Exhibitions::create();
 		$ex_data = array(
-			'title' => 'Exhibition Title',
+			'id' => $archive->id,
 			'remarks' => 'some words',
 		);
 

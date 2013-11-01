@@ -3,7 +3,7 @@
 <article>
 	<div class="<?=$display_class?>">
 	<h3>
-		<?=$this->html->link($exhibition->title,'/exhibitions/view/'.$exhibition->archive->slug); ?>
+		<?=$this->html->link($exhibition->archive->name,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 		<?=$exhibition->venue?>&nbsp;<small class="meta"><?=$exhibition->archive->type?>&nbsp;Show</small>
 	</h3>
 	

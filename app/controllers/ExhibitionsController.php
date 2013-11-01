@@ -9,6 +9,7 @@ use app\models\ExhibitionsHistories;
 use app\models\Works;
 use app\models\Publications;
 use app\models\Components;
+use app\models\Links;
 use app\models\ArchivesLinks;
 use app\models\ArchivesDocuments;
 use app\models\Documents;
@@ -106,7 +107,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 				$exhibition_ids = array();
 
-				$fields = array('title', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
+				$fields = array('Archives.name', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
 
 				foreach ($fields as $field) {
 					$matching_exhibits = Exhibitions::find('all', array(
@@ -302,7 +303,9 @@ class ExhibitionsController extends \lithium\action\Controller {
 
 	public function add() {
         
+		$archive = Archives::create();
 		$exhibition = Exhibitions::create();
+		$link = Links::create();
 		$documents = array();
 
 		if ($this->request->data) {
@@ -316,13 +319,56 @@ class ExhibitionsController extends \lithium\action\Controller {
 				));
 			}
 
-			if (isset($this->request->data['exhibition'])) {
-				if ($exhibition->save($this->request->data['exhibition'])) {
+			if (isset($this->request->data['archive'])) {
+				$archive_data = $this->request->data['archive'];
+				$archive_data['controller'] = 'exhibitions';
 
-					// The slug has been saved with the Archive object, so let's look it up
-					$archive = Archives::find('first', array(
-						'conditions' => array('id' => $exhibition->id)
-					));
+				// Pass in any venue, to be used for the slug
+				if (isset($this->request->data['exhibition'])) {
+					$exhibit_data = $this->request->data['exhibition'];
+					if (isset($exhibit_data['venue'])) {
+						$archive_data['venue'] = $exhibit_data['venue'];
+					}
+				}
+
+				$archive = Archives::create($archive_data);
+
+				// Check if a URL for a Link was submitted. The link "validates" if the URL is
+				// valid, or blank
+				$link_data = array();
+				$link_validates = true;
+				if (isset($this->request->data['link'])) {
+					$link_data = $this->request->data['link'];
+					if (!empty($link_data['url'])) {
+						$link = Links::create($link_data);
+						$link_validates = $link->validates();
+					}
+				}
+
+				if ($archive->validates() && $link_validates) {
+
+					$archive = Archives::create();
+					$archive->save($archive_data);
+
+					// Save a exhibition along with this archive
+					$exhibit_data = isset($this->request->data['exhibition']) ? $this->request->data['exhibition'] : array();
+					$exhibit_data['id'] = $archive->id;
+
+					$exhibition = Exhibitions::create();
+					$exhibition->save($exhibit_data);
+
+					// If Link data was supplied, save Link and ArchivesLinks objects
+					if (!empty($link_data) && !empty($link_data['url'])) {
+						$link_data['title'] = $archive->name;
+						$link = Links::create();
+						$link->save($link_data);
+
+						$archives_link = ArchivesLinks::create();
+						$archives_link->save(array(
+							'archive_id' => $archive->id,
+							'link_id' => $link->id
+						));
+					}
 
 					// If any documents were submitted, save them as ArchivesDocuments
 					$archive_id = $archive->id;
@@ -381,80 +427,116 @@ class ExhibitionsController extends \lithium\action\Controller {
 			return $con->country;
 		}, array('collect' => false));
 
-		return compact('exhibition', 'documents', 'titles', 'venues', 'cities', 'countries');
+		return compact(
+			'archive',
+			'exhibition',
+			'link',
+			'documents',
+			'titles',
+			'venues',
+			'cities',
+			'countries'
+		);
 	}
 
 	public function edit() {
 		
-		$exhibition = Exhibitions::find('first', array(
-			'with' => 'Archives',
-			'conditions' => array(
-				'Archives.slug' => $this->request->params['slug'],
-		)));
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
 
-		if (!$exhibition) {
-			return $this->redirect('Exhibitions::index');
+			$exhibition = Exhibitions::first(array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
+			));
+
+			if (empty($exhibition)) {
+				return $this->redirect('Exhibitions::index');
+			}
+
+			$archive = $exhibition->archive;
+
+			if ($this->request->data) {
+
+				if (isset($this->request->data['archive'])) {
+
+					$archive_data = $this->request->data['archive'];
+
+					if ($archive->save($archive_data)) {
+
+						$exhibit_data = isset($this->request->data['exhibition']) ? $this->request->data['exhibition'] : array();
+						$exhibition->save($exhibit_data);
+
+						return $this->redirect(array('Exhibitions::view', 'slug' => $archive->slug));
+					}
+				}
+			}
+
+			$archives_documents = ArchivesDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Documents.Formats'
+				),
+				'conditions' => array('ArchivesDocuments.archive_id' => $exhibition->id),
+				'order' => array('Documents.slug' => 'ASC')
+			));
+
+			$exhibition_titles = Exhibitions::find('all', array(
+				'fields' => 'title',
+				'group' => 'title',
+				'conditions' => array('title' => array('!=' => '')),
+				'order' => array('title' => 'ASC'),
+			));
+
+			$titles = $exhibition_titles->map(function($tit) {
+				return $tit->title;
+			}, array('collect' => false));
+
+			$exhibition_venues = Exhibitions::find('all', array(
+				'fields' => 'venue',
+				'group' => 'venue',
+				'conditions' => array('venue' => array('!=' => '')),
+				'order' => array('venue' => 'ASC'),
+			));
+
+			$venues = $exhibition_venues->map(function($ven) {
+				return $ven->venue;
+			}, array('collect' => false));
+
+			$exhibition_cities = Exhibitions::find('all', array(
+				'fields' => 'city',
+				'group' => 'city',
+				'conditions' => array('city' => array('!=' => '')),
+				'order' => array('city' => 'ASC'),
+			));
+
+			$cities = $exhibition_cities->map(function($cit) {
+				return $cit->city;
+			}, array('collect' => false));
+
+			$exhibition_countries = Exhibitions::find('all', array(
+				'fields' => 'country',
+				'group' => 'country',
+				'conditions' => array('country' => array('!=' => '')),
+				'order' => array('country' => 'ASC'),
+			));
+
+			$countries = $exhibition_countries->map(function($con) {
+				return $con->country;
+			}, array('collect' => false));
+
+			return compact(
+				'archive',
+				'exhibition',
+				'archives_documents',
+				'titles',
+				'venues',
+				'cities',
+				'countries'
+			);
 		}
 
-		$archives_documents = ArchivesDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Documents.Formats'
-			),
-			'conditions' => array('ArchivesDocuments.archive_id' => $exhibition->id),
-			'order' => array('Documents.slug' => 'ASC')
-		));
-
-		if (($this->request->data) && $exhibition->save($this->request->data)) {
-		
-			return $this->redirect(array('Exhibitions::view', 'args' => array($exhibition->archive->slug)));
-		}
-
-		$exhibition_titles = Exhibitions::find('all', array(
-			'fields' => 'title',
-			'group' => 'title',
-			'conditions' => array('title' => array('!=' => '')),
-			'order' => array('title' => 'ASC'),
-		));
-
-		$titles = $exhibition_titles->map(function($tit) {
-			return $tit->title;
-		}, array('collect' => false));
-
-		$exhibition_venues = Exhibitions::find('all', array(
-			'fields' => 'venue',
-			'group' => 'venue',
-			'conditions' => array('venue' => array('!=' => '')),
-			'order' => array('venue' => 'ASC'),
-		));
-
-		$venues = $exhibition_venues->map(function($ven) {
-			return $ven->venue;
-		}, array('collect' => false));
-
-		$exhibition_cities = Exhibitions::find('all', array(
-			'fields' => 'city',
-			'group' => 'city',
-			'conditions' => array('city' => array('!=' => '')),
-			'order' => array('city' => 'ASC'),
-		));
-
-		$cities = $exhibition_cities->map(function($cit) {
-			return $cit->city;
-		}, array('collect' => false));
-
-		$exhibition_countries = Exhibitions::find('all', array(
-			'fields' => 'country',
-			'group' => 'country',
-			'conditions' => array('country' => array('!=' => '')),
-			'order' => array('country' => 'ASC'),
-		));
-
-		$countries = $exhibition_countries->map(function($con) {
-			return $con->country;
-		}, array('collect' => false));
-		
-		return compact('exhibition', 'archives_documents', 'titles', 'venues', 'cities', 'countries');
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Exhibitions::index'));
 	}
 
 	public function attachments() {

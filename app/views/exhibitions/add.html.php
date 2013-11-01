@@ -76,28 +76,27 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
 <div class="row">
 
-<?=$this->form->create(compact('exhibition'), array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('archive', 'exhibition', 'link'), array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 
 		<div class="well">
-		<?=$this->form->create($exhibition); ?>
 			<legend>Exhibition Info</legend>
-			<?=$this->form->field('exhibition.title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data, 'label' => 'Title'));?>
+			<?=$this->form->field('archive.title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data, 'label' => 'Title'));?>
 			<?=$this->form->field('exhibition.curator', array('autocomplete' => 'off', 'label' => 'Curator'));?>
 			<?=$this->form->field('exhibition.venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data, 'label' => 'Venue'));?>
 			<?=$this->form->field('exhibition.city', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data, 'label' => 'City'));?>
 			<?=$this->form->field('exhibition.country', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $country_data, 'label' => 'Country'));?>
-			<?=$this->form->field('exhibition.earliest_date', array('autocomplete' => 'off', 'label' => 'Opening Date'));?>
-			<?=$this->form->field('exhibition.latest_date', array('autocomplete' => 'off', 'label' => 'Closing Date'));?>
+			<?=$this->form->field('archive.earliest_date', array('autocomplete' => 'off', 'label' => 'Opening Date'));?>
+			<?=$this->form->field('archive.latest_date', array('autocomplete' => 'off', 'label' => 'Closing Date'));?>
 			<div class="control-group">
-				<?=$this->form->label('type', 'Show Type', array('class' => 'control-label')); ?>
+				<?=$this->form->label('archive.type', 'Show Type', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('exhibition.type', $show_types_list); ?>
+					<?=$this->form->select('archive.type', $show_types_list); ?>
 				</div>
 			</div>
 			<?=$this->form->field('exhibition.remarks', array('type' => 'textarea', 'label' => 'Remarks'));?>
-			<?=$this->form->field('exhibition.url', array('autocomplete' => 'off', 'label' => 'URL'));?>
+			<?=$this->form->field('link.url', array('autocomplete' => 'off', 'label' => 'URL'));?>
 
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>

@@ -20,7 +20,7 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 
 		$exhibition = Exhibitions::create();
 		$data = array(
-			'title' => 'Book Title',
+			'id' => '1',
 			'remarks' => 'Some Remarks',
 			'annotation' => 'AnAnnotation',
 			'attributes'=> '{"x":5,"y":6}',
@@ -56,7 +56,6 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 
 		$exhibition_history = ExhibitionsHistories::first();
 
-		$this->assertEqual($exhibition->title, $exhibition_history->title);
 		$this->assertEqual($exhibition->remarks, $exhibition_history->remarks);
 		$this->assertEqual($exhibition->annotation, $exhibition_history->annotation);
 		$this->assertEqual($exhibition->attributes, $exhibition_history->attributes);
@@ -81,7 +80,7 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 	
 		$exhibition = Exhibitions::first();
 		$data = array(
-			'title' => 'New Title'
+			'venue' => 'New Venue'
 		);
 
 		$exhibition->save($data); 
@@ -96,7 +95,7 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 			)
 		));
 
-		$this->assertEqual($exhibition->title, $exhibition_history->title);
+		$this->assertEqual($exhibition->venue, $exhibition_history->venue);
 
 	}
 
