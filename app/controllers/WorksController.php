@@ -382,7 +382,7 @@ class WorksController extends \lithium\action\Controller {
 					$work->save($work_data);
 
 					// If Link data was supplied, save Link and ArchivesLinks objects
-					if (!empty($link_data)) {
+					if (!empty($link_data) && !empty($link_data['url'])) {
 						$link_data['title'] = $archive->name;
 						$link = Links::create();
 						$link->save($link_data);
