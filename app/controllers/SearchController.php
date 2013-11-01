@@ -178,7 +178,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$publication_ids = array();
 
-			$fields = array('title', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
+			$fields = array('Archives.name', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
 
 			foreach ($fields as $field) {
 				$matching_pubs = Publications::find('all', array(

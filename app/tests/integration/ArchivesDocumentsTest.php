@@ -96,7 +96,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$archive = Archives::create();
 		$archive->save($archive_data);
 
-		$work = Architectures::create();
+		$work = Works::create();
 		$work_data = array(
 			'id' => $archive->id,
 			'architect' => 'The Architect',
@@ -217,14 +217,22 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
-	
+
 	public function testPublicationsDocuments() {
 
 		$document = Documents::first();
 
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'title' => 'Publication Title',
+			'controller' => 'publications'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$pub = Publications::create();
 		$pub_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id,
 		);
 
 		$pub->save($pub_data);

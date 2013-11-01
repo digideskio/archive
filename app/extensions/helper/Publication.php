@@ -10,7 +10,7 @@ class Publication extends \lithium\template\Helper {
 		$byline = $this->escape($publication->byline());
     	$author_years = $years ? $byline . ' (' . $years . ')' : $byline;
 
-		$title = $publication->title;
+		$title = $archive->name;
 
 		$publisher = $this->escape($publication->publisher);
 		$pages = $this->escape($publication->pages);

@@ -34,26 +34,9 @@ class Publications extends \lithium\data\Model {
 	));
 
 	public $validates = array(
-		'title' => array(
-			array('notEmpty', 'message' => 'Please enter a title.')
+		'id' => array(
+			array('notEmpty', 'message' => 'This field may not be empty.')
 		),
-		'url' => array(
-			array('url', 'skipEmpty' => true, 'message' => 'The URL is not valid.'),
-		),
-		'latest_date' => array(
-			array('validDate',
-				'skipEmpty' => true,
-				'message' => 'Please enter a valid date.',
-				'format' => 'any'
-			)
-		),
-		'earliest_date' => array(
-			array('validDate',
-				'skipEmpty' => true,
-				'message' => 'Please enter a valid date.',
-				'format' => 'any'
-			)
-		)
 	);
 
 	public static function classifications() {
@@ -129,46 +112,6 @@ class Publications extends \lithium\data\Model {
     
 }
 
-
-
-Publications::applyFilter('save', function($self, $params, $chain) {
-
-	if (isset($params['data']['language'])) {
-	
-		$lang = $params['data']['language'];
-
-		$language = Languages::find('first', array(
-			'conditions' => "'$lang' LIKE CONCAT('%', name, '%')" 
-		));
-
-		if($language) {
-
-			$params['data']['language_code'] = $language->code;
-
-		}
-	}
-
-	if(!$params['entity']->exists()) {
-
-		$params['data']['controller'] = 'publications';
-
-		$archive = Archives::create();
-		$success = $archive->save($params['data']);
-
-		$params['data']['id'] = $archive->id;
-
-	} else {
-		$archive = Archives::find('first', array(
-			'conditions' => array('id' => $params['entity']->id)
-		));
-
-		$success = $archive->save($params['data']);
-	}
-
-	return $chain->next($self, $params, $chain);
-	
-});
-
 Publications::applyFilter('delete', function($self, $params, $chain) {
 
 	$publication_id = $params['entity']->id;
@@ -193,93 +136,6 @@ Publications::applyFilter('delete', function($self, $params, $chain) {
 
 	return $chain->next($self, $params, $chain);
 
-});
-
-Publications::applyFilter('save', function($self, $params, $chain) {
-
-	$result = $chain->next($self, $params, $chain);
-
-	$archive_id = $params['entity']->id;
-	$url = isset($params['data']['url']) ? $params['data']['url'] : null;
-	$title = isset($params['data']['title']) ? $params['data']['title'] : null;
-
-	if ($archive_id && $url) {
-		$archives_link = ArchivesLinks::create();
-		$data = compact('archive_id', 'url', 'title');
-		$archives_link->save($data);
-	}
-
-	return $result;
-});
-
-//TODO We don't really want this code in Publications
-//Some models allow a URL to be saved during an add, which creates a Link object and/or a link relation
-//In order for the validation to work properly in the Archives model, the URL cannot be unset
-Publications::applyFilter('save', function($self, $params, $chain) {
-
-	if (!isset($params['data']['url'])) {
-		$params['data']['url'] = $params['entity']->url ?: '';
-	}
-
-	return $chain->next($self, $params, $chain);
-
-});
-
-//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
-//So let's make sure the value is at least empty if it is not set
-Publications::applyFilter('save', function($self, $params, $chain) {
-
-	if(!isset($params['data']['earliest_date'])) {
-		$params['data']['earliest_date'] = '';
-	}
-
-	if(!isset($params['data']['latest_date'])) {
-		$params['data']['latest_date'] = '';
-	}
-
-	return $chain->next($self, $params, $chain);
-
-});
-
-//TODO we don't want this code directly in Publications
-Publications::applyFilter('save', function($self, $params, $chain) {
-
-	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
-		$earliest_date = $params['data']['earliest_date'];
-		$earliest_date_filtered = Archives::filterDate($earliest_date);
-		$params['data']['earliest_date'] = $earliest_date_filtered['date'];
-		$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
-	} else {
-		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
-		//So let's make sure the value is at least empty if it is not set
-		//This has only been necessary since the extra date format code was added
-		$params['data']['earliest_date'] = '';
-	}
-
-	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
-		$latest_date = $params['data']['latest_date'];
-		$latest_date_filtered = Archives::filterDate($latest_date);
-		$params['data']['latest_date'] = $latest_date_filtered['date'];
-		$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
-	} else {
-		$params['data']['latest_date'] = '';
-	}
-
-	return $chain->next($self, $params, $chain);
-
-});
-
-Validator::add('validDate', function($value) {
-	
-	return (
-		Validator::isDate($value, 'dmy') ||
-		Validator::isDate($value, 'mdy') ||
-		Validator::isDate($value, 'ymd') ||
-		Validator::isDate($value, 'dMy') ||
-		Validator::isDate($value, 'Mdy') ||
-		Validator::isDate($value, 'My')  ||
-		Validator::isDate($value, 'my')
-	);
 });
 
 ?>

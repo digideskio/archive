@@ -1,6 +1,6 @@
 <?php
 
-$this->title($publication->title);
+$this->title($publication->archive->name);
 
 $auth = $this->authority->auth();
 
@@ -22,7 +22,7 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<li>
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?>
+	<?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 
@@ -90,10 +90,10 @@ $authority_can_edit = $this->authority->canEdit();
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $ph->title ): ?>
+				<?php if( $ah->name ): ?>
 					<tr>
 					<td class="meta">Title</td>
-					<td><?=$ph->title ?></td>
+					<td><?=$ah->name ?></td>
 					</tr>
 				<?php endif; ?>
 

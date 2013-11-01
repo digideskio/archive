@@ -308,7 +308,7 @@ $this->title($document->title);
 							
 								<?php foreach($publications as $publication): ?>
 								<li><strong><?=$this->html->link(
-									$publication->title,
+									$publication->archive->name,
 									'/publications/view/'.$publication->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>

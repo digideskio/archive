@@ -4,7 +4,7 @@ $this->title('Publications');
 
 $conditions_list = array(
 	'' => 'Search by...',
-	'title' => 'Title',
+	'Archives.name' => 'Title',
 	'author' => 'Author',
 	'publisher' => 'Publisher',
 	'editor' => 'Editor',
@@ -106,6 +106,12 @@ $authority_can_edit = $this->authority->canEdit();
 <?=$this->pagination->pager('publications', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'limit' => $limit)); ?>
 
 	<?php $condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column ?>
+
+	<?php
+		if ($condition == 'Archives.name') {
+			$condition_class = '.info-title';
+		}
+	?>
 
 	<script>
 

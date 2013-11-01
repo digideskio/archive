@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($publication->title);
+$this->title($publication->archive->name);
 
 $hasDocuments = sizeof($archives_documents) > 0;
 $hasLinks = $archives_links->count();
@@ -21,7 +21,7 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<li class="active">
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?>
+	<?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?>
 	</li>
 
 	</ul>
@@ -170,7 +170,7 @@ $authority_can_edit = $this->authority->canEdit();
 
 								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
-									$album->title,
+									$album->archive->name,
 									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
@@ -189,7 +189,7 @@ $authority_can_edit = $this->authority->canEdit();
 							
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
-									$exhibition->title,
+									$exhibition->archive->name,
 									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
