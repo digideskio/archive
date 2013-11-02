@@ -130,7 +130,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('title' => $query);
+				$conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('Archives.name' => $query);
 
 			}
 

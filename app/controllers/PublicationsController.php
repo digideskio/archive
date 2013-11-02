@@ -163,7 +163,7 @@ class PublicationsController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('title' => $query);
+				$conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('Archives.name' => $query);
 			}
 
 			$publications = Publications::find('all', array(
@@ -239,8 +239,6 @@ class PublicationsController extends \lithium\action\Controller {
 			));
 
 			if($publication) {
-		
-				$order = array('title' => 'ASC');
 
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
@@ -256,7 +254,7 @@ class PublicationsController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $publication->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$archives_links = ArchivesLinks::find('all', array(
@@ -270,7 +268,7 @@ class PublicationsController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $publication->id,
 					),
-					'order' => array('title' =>  'ASC')
+					'order' => array('Archives.name' =>  'ASC')
 				));
 			
 				//Send the retrieved data to the view
@@ -493,15 +491,13 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 
 		if ($publication) {
-			
-			$order = array('title' => 'ASC');
 
 			$albums = Albums::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'conditions' => array(
 					'Components.archive_id2' => $publication->id,
 				),
-				'order' => $order
+				'order' => array('Archives.name' =>  'ASC')
 			));
 
 			$album_ids = array();
@@ -515,7 +511,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 			$other_albums = Albums::find('all', array(
 				'with' => 'Archives',
-				'order' => $order,
+				'order' => array('Archives.name' =>  'ASC'),
 				'conditions' => $other_album_conditions
 			));
 
@@ -534,14 +530,12 @@ class PublicationsController extends \lithium\action\Controller {
 				'order' => array('Links.date_modified' =>  'DESC')
 			));
 
-			$order = array('title' => 'ASC');
-
 			$exhibitions = Exhibitions::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'conditions' => array(
 					'Components.archive_id2' => $publication->id,
 				),
-				'order' => $order
+				'order' => array('Archives.name' =>  'ASC')
 			));
 
 			$exhibition_ids = array();
@@ -555,7 +549,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 			$other_exhibitions = Exhibitions::find('all', array(
 				'with' => 'Archives',
-				'order' => $order,
+				'order' => array('Archives.name' =>  'ASC'),
 				'conditions' => $other_exhibition_conditions
 			));
 			

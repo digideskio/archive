@@ -106,7 +106,7 @@ $this->title($document->title);
 	
 			<div class="alert alert-block alert-info">
 			<p>
-				<?php echo $exhibition->title . ', '; ?>
+				<?php echo $exhibition->archive->name . ', '; ?>
 					
 					<?php if($exhibition->venue) { echo $exhibition->venue; } ?>
 
@@ -231,7 +231,7 @@ $this->title($document->title);
 							
 								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
-									$album->title,
+									$album->archive->name,
 									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
 								);?></strong></li>
 								<?php endforeach; ?>

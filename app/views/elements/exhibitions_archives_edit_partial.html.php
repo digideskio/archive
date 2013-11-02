@@ -6,7 +6,7 @@
 		<?php $component = $exhibition->components->first(); ?>
 			<tr>
 				<td>
-					<strong><?=$this->html->link($exhibition->title, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?></strong>
+					<strong><?=$this->html->link($exhibition->archive->name, $this->url(array('Exhibitions::view', 'slug' => $exhibition->archive->slug))); ?></strong>
 					<?php if ($exhibition->archive->years()): ?>
 						<small><?=$exhibition->archive->dates(); ?></small>
 					<?php endif; ?>
@@ -46,7 +46,7 @@
 				<tr>
 					<td>
 						<a href="/exhibitions/view/<?=$oe->archive->slug ?>">
-							<strong><?=$oe->title ?></a></strong><br/>
+							<strong><?=$oe->archive->name ?></a></strong><br/>
 							<?=$oe->venue ?><br/>
 							<?=$oe->archive->dates() ?>
 					</td>

@@ -90,7 +90,7 @@ $this->form->config(
 				<?php $archive_doc = $album->archives_documents->first(); ?> 
 					<tr>
 						<td>
-							<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
+							<?=$this->html->link($album->archive->name, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 						</td>
 						<td align="right" style="text-align:right">
 				<?=$this->form->create($archive_doc, array('url' => $this->url(array('ArchivesDocuments::delete', 'id' => $archive_doc->id)), 'method' => 'post')); ?>
@@ -131,7 +131,7 @@ $this->form->config(
 				<tr>
 					<td>
 						<strong>
-							<?=$this->html->link($oc->title, $this->url(array('Albums::view', 'slug' => $oc->archive->slug))); ?>
+							<?=$this->html->link($oc->archive->name, $this->url(array('Albums::view', 'slug' => $oc->archive->slug))); ?>
 						</strong><br/>
 					</td>
 					<td align="right" style="text-align:right">

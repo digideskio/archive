@@ -126,7 +126,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 			<h3>Delete Exhibition</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$exhibition->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$exhibition->archive->name; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Exhibition from the listings. Are you sure you want to continue?</p>
 			</div>

@@ -125,7 +125,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('title' => $query);
+				$conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('Archives.name' => $query);
 			}
 
 			if ($type != 'All') {
@@ -383,15 +383,18 @@ class ExhibitionsController extends \lithium\action\Controller {
 			}
 		}
 
-		$exhibition_titles = Exhibitions::find('all', array(
-			'fields' => 'title',
-			'group' => 'title',
-			'conditions' => array('title' => array('!=' => '')),
-			'order' => array('title' => 'ASC'),
+		$exhibition_titles = Archives::find('all', array(
+			'fields' => 'name',
+			'group' => 'name',
+			'conditions' => array(
+				'name' => array('!=' => ''),
+				'controller' => 'exhibitions',
+			),
+			'order' => array('name' => 'ASC'),
 		));
 
 		$titles = $exhibition_titles->map(function($tit) {
-			return $tit->title;
+			return $tit->name;
 		}, array('collect' => false));
 
 		$exhibition_venues = Exhibitions::find('all', array(
@@ -480,15 +483,18 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'order' => array('Documents.slug' => 'ASC')
 			));
 
-			$exhibition_titles = Exhibitions::find('all', array(
-				'fields' => 'title',
-				'group' => 'title',
-				'conditions' => array('title' => array('!=' => '')),
-				'order' => array('title' => 'ASC'),
+			$exhibition_titles = Archives::find('all', array(
+				'fields' => 'name',
+				'group' => 'name',
+				'conditions' => array(
+					'name' => array('!=' => ''),
+					'controller' => 'exhibitions',
+				),
+				'order' => array('name' => 'ASC'),
 			));
 
 			$titles = $exhibition_titles->map(function($tit) {
-				return $tit->title;
+				return $tit->name;
 			}, array('collect' => false));
 
 			$exhibition_venues = Exhibitions::find('all', array(

@@ -290,8 +290,6 @@ class WorksController extends \lithium\action\Controller {
 			));
 
 			if($work) {
-	
-				$order = array('title' => 'ASC');
 
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
@@ -307,7 +305,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
@@ -315,7 +313,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$archives_links = ArchivesLinks::find('all', array(
@@ -526,14 +524,12 @@ class WorksController extends \lithium\action\Controller {
 				'order' => array('name' => 'ASC'),
 			));
 
-			$order = array('title' => 'ASC');
-
 			$albums = Albums::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'conditions' => array(
 					'Components.archive_id2' => $work->id,
 				),
-				'order' => $order
+				'order' => array('Archives.name' =>  'ASC')
 			));
 
 			$album_ids = array();
@@ -547,7 +543,7 @@ class WorksController extends \lithium\action\Controller {
 
 			$other_albums = Albums::find('all', array(
 				'with' => 'Archives',
-				'order' => $order,
+				'order' => array('Archives.name' =>  'ASC'),
 				'conditions' => $other_album_conditions
 			));
 
@@ -556,7 +552,7 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => array(
 					'Components.archive_id2' => $work->id,
 				),
-				'order' => $order
+				'order' => array('Archives.name' =>  'ASC')
 			));
 
 			$exhibition_ids = array();
@@ -614,14 +610,12 @@ class WorksController extends \lithium\action\Controller {
 		
 			if($work) {
 
-				$order = array('title' => 'ASC');
-
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$album_ids = array();
@@ -635,7 +629,7 @@ class WorksController extends \lithium\action\Controller {
 
 				$other_albums = Albums::find('all', array(
 					'with' => 'Archives',
-					'order' => $order,
+					'order' => array('Archives.name' =>  'ASC'),
 					'conditions' => $other_album_conditions
 				));
 	
@@ -644,7 +638,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$exhibition_ids = array();
@@ -658,7 +652,7 @@ class WorksController extends \lithium\action\Controller {
 
 				$other_exhibitions = Exhibitions::find('all', array(
 					'with' => 'Archives',
-					'order' => $order,
+					'order' => array('Archives.name' =>  'ASC'),
 					'conditions' => $other_exhibition_conditions
 				));
 		
