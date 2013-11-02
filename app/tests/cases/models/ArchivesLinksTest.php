@@ -35,7 +35,7 @@ class ArchivesLinksTest extends \lithium\test\Unit {
 			'archive_id' => '1',
 			'link_id' => $link_id
 		);
-		$archive_link = ArchivesLinks::create($link_data);
+		$archive_link = ArchivesLinks::create($data);
 
 		$this->assertTrue($archive_link->validates());
 
