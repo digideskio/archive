@@ -85,7 +85,6 @@ class WorksController extends \lithium\action\Controller {
 		$limit = !(intval($limit)) ? $total : $limit;
 
 		$works = Works::find('artworks', array(
-			'with' => 'Archives',
 			'limit' => $limit,
 			'conditions' => $filter,
 			'page' => $page
