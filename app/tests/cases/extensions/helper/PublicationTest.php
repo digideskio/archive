@@ -16,7 +16,7 @@ class PublicationTest extends \lithium\test\Unit {
 	public function testCitations() {
 
 		$data = array(
-			'title' => 'Book Title',
+			'name' => 'Book Title',
 		);
 
 		$publication = Publications::create($data);

@@ -53,10 +53,9 @@ $this->form->config(
 <div class="well">
 <?=$this->form->create(compact('archive', 'album')); ?>
 	<legend>Album Info</legend>
-    <?=$this->form->field('archive.title',array(
+    <?=$this->form->field('archive.name',array(
 		'label' => 'Title',
 		'autocomplete' => 'off',
-		'value' => $archive->name
 	)); ?>
     <?=$this->form->field('album.remarks',array(
 		'label' => 'Description',

@@ -23,7 +23,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 	public function setUp() {
 		// Create an archive and publications pair for testing purposes
 		$archive_data = array(
-			'title' => 'First Publication Title',
+			'name' => 'First Publication Title',
 			'controller' => 'publications'
 		);
 		$archive = Archives::create();
@@ -120,7 +120,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		// Test that the action does not save and reports errors if we do not
 		// post the required data
 		$data = $this->call('add', array(
-			'data' => array('archive' => array('title' => ''))
+			'data' => array('archive' => array('name' => ''))
 		));
 
 		$this->assertTrue(isset($data['archive']));
@@ -138,7 +138,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Test that this action processes and saves the correct data, namely
 		// a publication, archive, and link model
-		$title = 'Publication New Title';
+		$name = 'Publication New Title';
 		$slug = 'Publication-New-Title';
 		$publisher = 'New Publisher';
 		$language = 'French';
@@ -146,7 +146,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$data = $this->call('add', array(
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'publication' => compact('publisher', 'language'),
 				'link' => compact('url')
 			)
@@ -162,7 +162,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(!empty($archive));
-		$this->assertEqual($title, $archive->name);
+		$this->assertEqual($name, $archive->name);
 		$this->assertEqual('publications', $archive->controller);
 		$this->assertEqual('fr', $archive->language_code);
 
@@ -179,7 +179,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($link));
 
-		$this->assertEqual($title, $link->title);
+		$this->assertEqual($name, $link->title);
 
 	}
 
@@ -207,7 +207,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		$data = $this->call('add', array(
 			'data' => array(
 				'archive' => array(
-					'title' => 'Publication With Doc Title',
+					'name' => 'Publication With Doc Title',
 				),
 				'publication' => array(),
 				'link' => array(),
@@ -255,7 +255,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => 'First-Publication-Title'
 			),
 			'data' => array(
-				'archive' => array('title' => '')
+				'archive' => array('name' => '')
 			)
 		));
 
@@ -266,7 +266,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(!empty($errors));
 
 		// Test that the records can be saved with new data
-		$title = 'Publication Update Title';
+		$name = 'Publication Update Title';
 		$publisher = 'Publication Update Publisher';
 		$language = 'Korean';
 
@@ -275,7 +275,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => $slug
 			),
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'publication' => compact('publisher', 'language')
 			)
 		));
@@ -290,7 +290,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(!empty($archive));
-		$this->assertEqual($title, $archive->name);
+		$this->assertEqual($name, $archive->name);
 		$this->assertEqual('publications', $archive->controller);
 		$this->assertEqual('ko', $archive->language_code);
 

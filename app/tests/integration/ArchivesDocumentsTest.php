@@ -90,7 +90,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		// Create an archive and architecture pair for testing purposes
 		$archive_data = array(
-			'title' => 'Artwork Title',
+			'name' => 'Artwork Title',
 			'controller' => 'works'
 		);
 		$archive = Archives::create();
@@ -126,7 +126,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		// Create an archive and architecture pair for testing purposes
 		$archive_data = array(
-			'title' => 'Architecture Title',
+			'name' => 'Architecture Title',
 			'controller' => 'architectures'
 		);
 		$archive = Archives::create();
@@ -162,7 +162,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		//Create an archive and album pair for testing purposes
 		$archive_data = array(
-			'title' => 'Album Title',
+			'name' => 'Album Title',
 			'controller' => 'albums'
 		);
 		$archive = Archives::create();
@@ -197,7 +197,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		// Create an archive and architecture pair for testing purposes
 		$archive_data = array(
-			'title' => 'Exhibition Title',
+			'name' => 'Exhibition Title',
 			'controller' => 'exhibitions'
 		);
 		$archive = Archives::create();
@@ -232,7 +232,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		// Create an archive and architecture pair for testing purposes
 		$archive_data = array(
-			'title' => 'Publication Title',
+			'name' => 'Publication Title',
 			'controller' => 'publications'
 		);
 		$archive = Archives::create();

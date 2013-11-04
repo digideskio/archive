@@ -105,7 +105,7 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 			<legend>Publication Info</legend>
 			
 			<?=$this->form->field('publication.author', array('label' => 'Author', 'autocomplete' => 'off'));?>
-			<?=$this->form->field('archive.title', array('label' => 'Title', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.remarks', array('label' => 'Remarks', 'autocomplete' => 'off', 'type' => 'textarea'));?>
 			<?=$this->form->field('publication.storage_location', array('label' => 'Storage Location', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.storage_number', array('label' => 'Storage Number', 'autocomplete' => 'off'));?>

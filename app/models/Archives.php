@@ -31,7 +31,7 @@ class Archives extends \lithium\data\Model {
 	);
 
 	public $validates = array(
-		'title' => array(
+		'name' => array(
 			array('notEmpty', 'message' => "You can't leave this blank."),
 		),
 		'url' => array(
@@ -375,38 +375,13 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 });
 
-//TODO	The generic Archive will use name instead of title. However, a lot of models which extend Archives
-//		rely on title to validate and for tests. When those models are migrated, we can remove the following filter
-
-/**
- * Name/Title Fix Filter
- */
-
-Archives::applyFilter('create', function($self, $params, $chain) {
-	if(isset($params['data']['name'])) {
-		$params['data']['title'] = $params['data']['name'];
-	} else {
-		$params['data']['name'] = isset($params['data']['title']) ? $params['data']['title'] : '';
-	}
-	return $chain->next($self, $params, $chain);
-});
-
-Archives::applyFilter('save', function($self, $params, $chain) {
-	if(isset($params['data']['name'])) {
-		$params['data']['title'] = $params['data']['name'];
-	} else {
-		$params['data']['name'] = isset($params['data']['title']) ? $params['data']['title'] : '';
-	}
-	return $chain->next($self, $params, $chain);
-});
-
 /**
  * Slug Filter
  */
 
 Archives::applyFilter('save', function($self, $params, $chain) {
 
-	if(!$params['entity']->exists()) { 
+	if(!$params['entity']->exists() && isset($params['data']['name'])) { 
 
 		$name = $params['data']['name'];
 

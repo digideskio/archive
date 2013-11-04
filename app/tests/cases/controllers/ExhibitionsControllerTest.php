@@ -23,7 +23,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 	public function setUp() {
 		// Create an archive and exhibition pair for testing purposes
 		$archive_data = array(
-			'title' => 'First Exhibition Title',
+			'name' => 'First Exhibition Title',
 			'controller' => 'exhibitions'
 		);
 		$archive = Archives::create();
@@ -120,7 +120,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		// Test that the action does not save and reports errors if we do not
 		// post the required data
 		$data = $this->call('add', array(
-			'data' => array('archive' => array('title' => ''))
+			'data' => array('archive' => array('name' => ''))
 		));
 
 		$this->assertTrue(isset($data['archive']));
@@ -138,14 +138,14 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Test that this action processes and saves the correct data, namely
 		// an exhibition, archive, and link model
-		$title = 'Exhibition New Title';
+		$name = 'Exhibition New Title';
 		$slug = 'Exhibition-New-Title-New-Venue';
 		$venue = 'New Venue';
 		$url = 'http://example.com/exhibit-new-title';
 
 		$data = $this->call('add', array(
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'exhibition' => compact('venue'),
 				'link' => compact('url')
 			)
@@ -161,7 +161,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(!empty($archive));
-		$this->assertEqual($title, $archive->name);
+		$this->assertEqual($name, $archive->name);
 		$this->assertEqual('exhibitions', $archive->controller);
 
 		$exhibit = Exhibitions::find('first', array(
@@ -177,7 +177,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($link));
 
-		$this->assertEqual($title, $link->title);
+		$this->assertEqual($name, $link->title);
 
 	}
 
@@ -205,7 +205,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$data = $this->call('add', array(
 			'data' => array(
 				'archive' => array(
-					'title' => 'Exhibition With Doc Title',
+					'name' => 'Exhibition With Doc Title',
 				),
 				'exhibition' => array(),
 				'link' => array(),
@@ -253,7 +253,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => 'First-Exhibition-Title'
 			),
 			'data' => array(
-				'archive' => array('title' => '')
+				'archive' => array('name' => '')
 			)
 		));
 
@@ -264,7 +264,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(!empty($errors));
 
 		// Test that the records can be saved with new data
-		$title = 'Exhibition Update Title';
+		$name = 'Exhibition Update Title';
 		$venue = 'Exhibition Update Venue';
 
 		$data = $this->call('edit', array(
@@ -272,7 +272,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => $slug
 			),
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'exhibition' => compact('venue')
 			)
 		));
@@ -287,7 +287,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(!empty($archive));
-		$this->assertEqual($title, $archive->name);
+		$this->assertEqual($name, $archive->name);
 		$this->assertEqual('exhibitions', $archive->controller);
 
 		$exhibit = Exhibitions::find('first', array(

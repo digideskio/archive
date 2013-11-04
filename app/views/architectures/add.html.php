@@ -47,7 +47,7 @@ $this->form->config(
 <div class="well">
 	<legend>Project Info</legend>
     <?=$this->form->field('architecture.architect', array('autocomplete' => 'off', 'label' => 'Architect'));?>
-    <?=$this->form->field('archive.title', array('autocomplete' => 'off', 'label' => 'Title'));?>
+    <?=$this->form->field('archive.name', array('autocomplete' => 'off', 'label' => 'Title'));?>
     <?=$this->form->field('architecture.client', array('autocomplete' => 'off', 'label' => 'Client'));?>
     <?=$this->form->field('architecture.project_lead', array('autocomplete' => 'off', 'label' => 'Project Lead'));?>
     <?=$this->form->field('architecture.consultants', array('autocomplete' => 'off', 'label' => 'Consultants'));?>

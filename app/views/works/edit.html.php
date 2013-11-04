@@ -133,7 +133,7 @@ foreach ($users as $user) {
 
     		<?=$this->form->field('work.artist', array('label' => 'Artist', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names_data));?>
 			<?=$this->form->field('work.artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_native_names_data));?>
-    		<?=$this->form->field('archive.title', array('label' => 'Title', 'autocomplete' => 'off', 'value' => $archive->name));?>
+    		<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
 			<?=$this->form->field('archive.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
 			<?=$this->form->field('archive.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>

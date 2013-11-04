@@ -13,7 +13,7 @@ class PackagesTest extends \lithium\test\Unit {
 	public function setUp() {
 		//Create an archive and album pair for testing purposes
 		$archive_data = array(
-			'title' => 'Album Title',
+			'name' => 'Album Title',
 			'controller' => 'albums'
 		);
 		$archive = Archives::create();

@@ -18,7 +18,7 @@ class ArtworkTest extends \lithium\test\Unit {
 	public function testCaptions() {
 
 		$data = array(
-			'title' => 'Artwork Title'
+			'name' => 'Artwork Title'
 		);
 
 		$work = Works::create($data);

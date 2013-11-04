@@ -166,7 +166,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			<?=$this->form->field('work.artist', array('label' => 'Artist', 'value' => $artist, 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.artist_native_name', array('value' => $artist_native_name, 'label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
 
-			<?=$this->form->field('archive.title', array('label' => 'Title', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off'));?>

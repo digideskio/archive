@@ -248,7 +248,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$early_date_MY_expected = '2001-02-01';
 	
 		$data = array (
-			"title" => "Artwork Title",
+			"name" => "Artwork Title",
 			"earliest_date" => $early_date_Ymd_input,
 			"latest_date" => $later_date_Ymd_input
 		);
@@ -268,7 +268,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive->delete();
 		
 		$data = array (
-			"title" => "Artwork Title",
+			"name" => "Artwork Title",
 			"earliest_date" => $early_date_Y_input,
 			"latest_date" => $later_date_Y_input
 		);
@@ -288,7 +288,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive->delete();
 		
 		$data = array (
-			"title" => "Artwork Title",
+			"name" => "Artwork Title",
 			"earliest_date" => $early_date_FY_input,
 		);
 		$archive = Archives::create($data);
@@ -305,7 +305,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive->delete();
 		
 		$data = array (
-			"title" => "Artwork Title",
+			"name" => "Artwork Title",
 			"earliest_date" => $early_date_MY_input,
 		);
 		$archive = Archives::create($data);
@@ -326,7 +326,7 @@ class ArchivesTest extends \lithium\test\Unit {
 	public function testInvalidDates() {
 		
 		$data = array (
-			"title" => "Artwork Title",
+			"name" => "Artwork Title",
 			"earliest_date" => 'X',
 			"latest_date" => 'Y'
 		);
@@ -342,7 +342,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		// Filters should still behave as expected, even if we only provide data to the create
 		// method.
 		$data = array(
-			"title" => "Test Title",
+			"name" => "Test Title",
 			"earliest_date" => "December 2011",
 			"latest_date" => "January 2012",
 		);
@@ -351,7 +351,7 @@ class ArchivesTest extends \lithium\test\Unit {
 
 		$archive->save();
 
-		$this->assertEqual($data['title'], $archive->name, "The Archive save filter is making the title blank if data is only supplied to the create() method.");
+		$this->assertEqual($data['name'], $archive->name, "The Archive save filter is making the name blank if data is only supplied to the create() method.");
 		$this->assertEqual('2011-12-01', $archive->earliest_date, "The Archive save filter is making the earliest date blank if data is only supplied to the create() method.");
 		$this->assertEqual('M Y', $archive->earliest_date_format);
 		$this->assertEqual('2012-01-01', $archive->latest_date, "The Archive save filter is making the latest date blank if data is only supplied to the create() method.");
@@ -365,14 +365,14 @@ class ArchivesTest extends \lithium\test\Unit {
 
 		$this->assertFalse(
 			$archive->validates(),
-			'The archive should not validate with a null title'
+			'The archive should not validate with a null name'
 		);
 
 		$errors = $archive->errors();
 
 		$this->assertTrue(
-			!empty($errors['title']),
-			'An archive with a null title should produce an error'
+			!empty($errors['name']),
+			'An archive with a null name should produce an error'
 		);
 
 		$this->assertTrue(
@@ -391,7 +391,7 @@ class ArchivesTest extends \lithium\test\Unit {
 		);
 
 		$archive = Archives::create(array(
-			'title' => '',
+			'name' => '',
 			'url' => '',
 			'earliest_date' => '',
 			'latest_date' => ''
@@ -399,14 +399,14 @@ class ArchivesTest extends \lithium\test\Unit {
 
 		$this->assertFalse(
 			$archive->validates(),
-			'The archive should not validate with a blank title'
+			'The archive should not validate with a blank name'
 		);
 
 		$errors = $archive->errors();
 
 		$this->assertTrue(
-			!empty($errors['title']),
-			'An archive with a blank title should produce an error'
+			!empty($errors['name']),
+			'An archive with a blank name should produce an error'
 		);
 
 		$this->assertTrue(
@@ -430,7 +430,7 @@ class ArchivesTest extends \lithium\test\Unit {
 
 		$archive = Archives::create();
 		$archive->save(array(
-			'title' => 'Book Title',
+			'name' => 'Book Title',
 			'language' => 'French'
 		));
 

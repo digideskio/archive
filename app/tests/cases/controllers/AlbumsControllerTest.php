@@ -21,7 +21,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 	public function setUp() {
 		//Create an archive and album pair for testing purposes
 		$archive_data = array(
-			'title' => 'First Album Title',
+			'name' => 'First Album Title',
 			'controller' => 'albums'
 		);
 		$archive = Archives::create();
@@ -109,7 +109,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		// Test that the action does not save and reports errors if we do not
 		// post the required data
 		$data = $this->call('add', array(
-			'data' => array('archive' => array('title' => ''))
+			'data' => array('archive' => array('name' => ''))
 		));
 
 		$this->assertTrue(isset($data['archive']));
@@ -125,13 +125,13 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Test that this action processes and saves the correct data, namely
 		// an album and archive
-		$title = 'Album New Title';
+		$name = 'Album New Title';
 		$slug = 'Album-New-Title';
 		$remarks = "Album New Description";
 
 		$data = $this->call('add', array(
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'album' => compact('remarks')
 			)
 		));
@@ -166,7 +166,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		//Create an archive and work pair for testing purposes
 		$archive_data = array(
-			'title' => 'First Artwork Title',
+			'name' => 'First Artwork Title',
 			'controller' => 'works'
 		);
 		$archive = Archives::create();
@@ -194,12 +194,12 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Test that this action processes and saves the correct data, including
 		// a new component representing the artwork we passed in
-		$title = 'Album New Title';
+		$name = 'Album New Title';
 		$slug = 'Album-New-Title';
 
 		$data = $this->call('add', array(
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'album' => array(),
 				'archives' => array($work->id)
 			)
@@ -247,7 +247,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => 'First-Album-Title'
 			),
 			'data' => array(
-				'archive' => array('title' => '')
+				'archive' => array('name' => '')
 			)
 		));
 
@@ -258,7 +258,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(!empty($errors));
 
 		// Test that the album and archive can be saved with new data
-		$title = 'Album Update Title';
+		$name = 'Album Update Title';
 		$remarks = "Album Update Description";
 
 		$data = $this->call('edit', array(
@@ -266,7 +266,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => 'First-Album-Title'
 			),
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'album' => compact('remarks')
 			)
 		));

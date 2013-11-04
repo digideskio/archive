@@ -23,7 +23,7 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 		//Create an archive and work pair for testing purposes
 		$archive_data = array(
-			'title' => 'The Artwork Title',
+			'name' => 'The Artwork Title',
 			'controller' => 'works'
 		);
 		$archive = Archives::create();
@@ -88,7 +88,7 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 		//Create an archive and album pair for testing purposes
 		$archive_data = array(
-			'title' => 'Album Title',
+			'name' => 'Album Title',
 			'controller' => 'albums'
 		);
 		$archive = Archives::create();
@@ -132,7 +132,7 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 		//Create an archive and exhibition pair for testing purposes
 		$archive_data = array(
-			'title' => 'Exhibition Title',
+			'name' => 'Exhibition Title',
 			'controller' => 'exhibitions'
 		);
 		$archive = Archives::create();

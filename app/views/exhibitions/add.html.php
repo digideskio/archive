@@ -82,7 +82,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
 		<div class="well">
 			<legend>Exhibition Info</legend>
-			<?=$this->form->field('archive.title', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data, 'label' => 'Title'));?>
+			<?=$this->form->field('archive.name', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data, 'label' => 'Title'));?>
 			<?=$this->form->field('exhibition.curator', array('autocomplete' => 'off', 'label' => 'Curator'));?>
 			<?=$this->form->field('exhibition.venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data, 'label' => 'Venue'));?>
 			<?=$this->form->field('exhibition.city', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data, 'label' => 'City'));?>

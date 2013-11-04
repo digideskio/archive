@@ -19,7 +19,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 	public function setUp() {
 		//Create an archive and architecture pair for testing purposes
 		$archive_data = array(
-			'title' => 'First Architecture Title',
+			'name' => 'First Architecture Title',
 			'controller' => 'architectures'
 		);
 		$archive = Archives::create();
@@ -100,7 +100,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 		// Test that the action does not save and reports errors if we do not
 		// post the required data
 		$data = $this->call('add', array(
-			'data' => array('archive' => array('title' => ''))
+			'data' => array('archive' => array('name' => ''))
 		));
 
 		$this->assertTrue(isset($data['archive']));
@@ -115,13 +115,13 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Test that this action processes and saves the correct data, namely
 		// an architecture and archive
-		$title = 'Architecture New Title';
+		$name = 'Architecture New Title';
 		$slug = 'Architecture-New-Title';
 		$architect = "That Architect";
 
 		$data = $this->call('add', array(
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'architecture' => compact('architect')
 			)
 		));
@@ -176,7 +176,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => $slug
 			),
 			'data' => array(
-				'archive' => array('title' => '')
+				'archive' => array('name' => '')
 			)
 		));
 
@@ -187,7 +187,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(!empty($errors));
 
 		// Test that the architecture and archive can be saved with new data
-		$title = 'Architecture Update Title';
+		$name = 'Architecture Update Title';
 		$architect = "The Updated Architect";
 
 		$data = $this->call('edit', array(
@@ -195,7 +195,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 				'slug' => $slug
 			),
 			'data' => array(
-				'archive' => compact('title'),
+				'archive' => compact('name'),
 				'architecture' => compact('architect')
 			)
 		));
@@ -211,7 +211,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($archive));
 		$this->assertEqual('architectures', $archive->controller);
-		$this->assertEqual($title, $archive->name);
+		$this->assertEqual($name, $archive->name);
 
 		$architecture = Architectures::find('first', array(
 			'conditions' => array('id' => $archive->id)
