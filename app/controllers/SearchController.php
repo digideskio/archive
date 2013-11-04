@@ -21,6 +21,12 @@ use lithium\storage\Session;
 
 class SearchController extends \lithium\action\Controller {
 
+	public $rules = array(
+		'index' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+	);
+
 	public function index() {
     
     	// Check authorization
@@ -61,7 +67,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$artwork_ids = array();
 
-			$fields = array('title', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+			$fields = array('Archives.name', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
 
 			foreach ($fields as $field) {
 				$matching_works = Works::find('artworks', array(
@@ -79,7 +85,7 @@ class SearchController extends \lithium\action\Controller {
 				}
 			}
 
-			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('title' => $query);
+			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('Archives.name' => $query);
 
 			$filter = '';
 
@@ -106,7 +112,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$architecture_ids = array();
 
-			$fields = array('title', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
+			$fields = array('Archives.name', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
 
 			foreach ($fields as $field) {
 				$matching_works = Architectures::find('all', array(
@@ -124,7 +130,7 @@ class SearchController extends \lithium\action\Controller {
 				}
 			}
 
-			$architecture_conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('title' => $query);
+			$architecture_conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('Archives.name' => $query);
 
 			$architectures_total = Architectures::count('all', array(
 				'with' => 'Archives',
@@ -142,7 +148,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$exhibition_ids = array();
 
-			$fields = array('title', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
+			$fields = array('Archives.name', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
 
 			foreach ($fields as $field) {
 				$matching_exhibits = Exhibitions::find('all', array(
@@ -160,7 +166,7 @@ class SearchController extends \lithium\action\Controller {
 				}
 			}
 
-			$exhibition_conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('title' => $query);
+			$exhibition_conditions = $exhibition_ids ? array('Exhibitions.id' => $exhibition_ids) : array('Archives.name' => $query);
 
 			$exhibitions_total = Exhibitions::count('all', array(
 				'with' => array('Archives', 'Components'),
@@ -178,7 +184,7 @@ class SearchController extends \lithium\action\Controller {
 
 			$publication_ids = array();
 
-			$fields = array('title', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
+			$fields = array('Archives.name', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
 
 			foreach ($fields as $field) {
 				$matching_pubs = Publications::find('all', array(
@@ -196,7 +202,7 @@ class SearchController extends \lithium\action\Controller {
 				}
 			}
 
-			$publication_conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('title' => $query);
+			$publication_conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('Archives.name' => $query);
 
 			$publications_total = Publications::count('all', array(
 				'with' => 'Archives',
