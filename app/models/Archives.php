@@ -34,9 +34,6 @@ class Archives extends \lithium\data\Model {
 		'name' => array(
 			array('notEmpty', 'message' => "You can't leave this blank."),
 		),
-		'url' => array(
-			array('url', 'skipEmpty' => true, 'message' => 'The URL is not valid.'),
-		),
 		'latest_date' => array(
 			array('date',
 				'skipEmpty' => true,
@@ -344,31 +341,6 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
 	} else {
 		$params['data']['latest_date'] = '';
-	}
-
-	return $chain->next($self, $params, $chain);
-
-});
-
-/**
- * URL Filter
- */
-
-//Some models allow a URL to be saved during an add, which creates a Link object and/or a link relation
-//In order for the validation to work properly in the Archives model, the URL cannot be unset
-Archives::applyFilter('create', function($self, $params, $chain) {
-
-	if (!isset($params['data']['url'])) {
-		$params['data']['url'] = '';
-	}
-
-	return $chain->next($self, $params, $chain);
-
-});
-Archives::applyFilter('save', function($self, $params, $chain) {
-
-	if (!isset($params['data']['url'])) {
-		$params['data']['url'] = '';
 	}
 
 	return $chain->next($self, $params, $chain);
