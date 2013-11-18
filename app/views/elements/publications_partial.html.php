@@ -55,7 +55,7 @@
 	</td>-->
 	<td class="info-author info-editor"><?=$publication->byline(); ?></td>
 	
-    <td class="info-title"><?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?></td>
+    <td class="info-title"><?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?></td>
     <td class="info-earliest_date"><?=$publication->archive->dates(); ?></td>
     <td class="info-publisher"><?=$publication->publisher ?></td>
 </tr>

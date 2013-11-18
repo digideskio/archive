@@ -1,6 +1,6 @@
 <?php
 
-$this->title($work->title);
+$this->title($work->archive->name);
 
 $authority_is_admin = $this->authority->isAdmin();
 
@@ -92,7 +92,7 @@ foreach ($users as $user) {
 	</li>
 
 	<li>
-	<?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?>
+	<?=$this->html->link($work->archive->name,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -125,21 +125,21 @@ foreach ($users as $user) {
 
 <div class="row">
 
-<?=$this->form->create($work, array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('archive', 'work'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 		<div class="well">
 			<legend>Artwork Info</legend>
 
-    		<?=$this->form->field('artist', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names_data));?>
-			<?=$this->form->field('artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_native_names_data));?>
-    		<?=$this->form->field('title', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
-			<?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
-			<?=$this->form->field('latest_date', array('autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
-			<?=$this->form->field('creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
+    		<?=$this->form->field('work.artist', array('label' => 'Artist', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names_data));?>
+			<?=$this->form->field('work.artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_native_names_data));?>
+    		<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
+			<?=$this->form->field('archive.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
+			<?=$this->form->field('archive.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
+			<?=$this->form->field('work.creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
 
-			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
+			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
 		</div>
 
 		<div class="well">
@@ -152,7 +152,8 @@ foreach ($users as $user) {
 
 		<div class="well">
 			<legend>Details</legend>
-				<?=$this->form->field('annotation', array(
+				<?=$this->form->field('work.annotation', array(
+					'label' => 'Annotation',
 					'type' => 'textarea', 
 					'rows' => '5', 
 					'style' => 'width:90%;',
@@ -161,63 +162,63 @@ foreach ($users as $user) {
 			<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
 
 			<div class="control-group">
-				<?=$this->form->label('classification', 'Classification', array('class' => 'control-label')); ?>
+				<?=$this->form->label('archive.classification', 'Classification', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('classification', $work_classes_list, array('value' => $work->archive->classification)); ?>
+					<?=$this->form->select('archive.classification', $work_classes_list, array('value' => $work->archive->classification)); ?>
 				</div>
 			</div>
 
-			<?=$this->form->field('materials', array('type' => 'textarea'));?>
-			<?=$this->form->field('edition', array('autocomplete' => 'off', 'value' => $work->attribute('edition')));?>
-			<?=$this->form->field('quantity', array('autocomplete' => 'off'));?>
+			<?=$this->form->field('work.materials', array('label' => 'Materials', 'type' => 'textarea'));?>
+			<?=$this->form->field('work.edition', array('label' => 'Edition', 'autocomplete' => 'off', 'value' => $work->attribute('edition')));?>
+			<?=$this->form->field('work.quantity', array('label' => 'Quantity', 'autocomplete' => 'off'));?>
 
-			<?=$this->form->field('height', array(
+			<?=$this->form->field('work.height', array(
 				'label' => "Height (cm)",
 				'class' => 'dim two-d',
 				'autocomplete' => 'off',
 				'value' => $work->height ?: ''
 			));?>
-			<?=$this->form->field('width', array(
+			<?=$this->form->field('work.width', array(
 				'label' => "Width (cm)",
 				'class' => 'dim two-d',
 				'autocomplete' => 'off',
 				'value' => $work->width ?: ''
 			));?>
-			<?=$this->form->field('depth', array(
+			<?=$this->form->field('work.depth', array(
 				'label' => "Depth (cm)",
 				'class' => 'dim three-d',
 				'autocomplete' => 'off',
 				'value' => $work->depth ?: ''
 			));?>
-			<?=$this->form->field('diameter', array(
+			<?=$this->form->field('work.diameter', array(
 				'label' => "Diameter (cm)",
 				'class' => 'dim three-d',
 				'autocomplete' => 'off',
 				'value' => $work->diameter ?: ''
 			));?>
-			<?=$this->form->field('running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
-			<?=$this->form->field('measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
+			<?=$this->form->field('work.running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
+			<?=$this->form->field('work.measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
 
 			<div class="certification control-group" style="margin-bottom: 0">
 				<label class="control-label">Additional Notes</label>
 
 				<div class="controls">
 					<label class="checkbox">
-						<?=$this->form->checkbox('certification', array('checked' => $work->attribute('certification')));?> Certificate of Authenticity
+						<?=$this->form->checkbox('work.certification', array('checked' => $work->attribute('certification')));?> Certificate of Authenticity
 					</label>
 				</div>
 			</div>
 			<div class="signed control-group" style="margin-bottom: 0;">
 				<div class="controls">
 					<label class="checkbox">
-						<?=$this->form->checkbox('signed', array('class' => 'two-d', 'checked' => $work->attribute('signed')));?> Artwork is Signed
+						<?=$this->form->checkbox('work.signed', array('class' => 'two-d', 'checked' => $work->attribute('signed')));?> Artwork is Signed
 					</label>
 				</div>
 			</div>
 			<div class="framed control-group" style="margin-bottom: 0;">
 				<div class="controls">
 					<label class="checkbox">
-						<?=$this->form->checkbox('framed', array('class' => 'two-d', 'checked' => $work->attribute('framed')));?> Artwork is Framed
+						<?=$this->form->checkbox('work.framed', array('class' => 'two-d', 'checked' => $work->attribute('framed')));?> Artwork is Framed
 					</label>
 				</div>
 			</div>
@@ -229,16 +230,16 @@ foreach ($users as $user) {
 				<?php $packing_types_list = array_merge(array('' => 'Choose one...'), $packing_types_list); ?>
 
 				<div class="control-group">
-					<?=$this->form->label('packing_type', 'Packing Type'); ?>
+					<?=$this->form->label('work.packing_type', 'Packing Type'); ?>
 					<div class="controls">
-						<?=$this->form->select('packing_type', $packing_types_list, array('value' => $work->attribute('packing_type'))); ?>
+						<?=$this->form->select('work.packing_type', $packing_types_list, array('value' => $work->attribute('packing_type'))); ?>
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label for="WorksPackPrice" class="control-label">Packing Cost</label>
 					<div class="controls control-row">
-						<input type="text" name="pack_price" autocomplete="off" id="WorksPackPrice" class="span1" value="<?=$work->attribute('pack_price');?>">
+						<input type="text" name="work[pack_price]" autocomplete="off" id="WorksPackPrice" class="span1" value="<?=$work->attribute('pack_price');?>">
 
 						<?=$this->form->select('pack_price_per', $currencies_list, array('value' => $work->attribute('pack_price_per'), 'class' => 'span1')); ?>
 					</div>
@@ -249,9 +250,9 @@ foreach ($users as $user) {
 					<?php $locations_list = array_merge(array('' => 'Select location...'), $locations_list); ?>
 
 					<div class="control-group">
-						<?=$this->form->label('location', 'Location', array('class' => 'control-label')); ?>
+						<?=$this->form->label('work.location', 'Location', array('class' => 'control-label')); ?>
 						<div class="controls control-row">
-							<input type="text" name="location" autocomplete="off" class="span2" id="WorksLocation" value="<?=$work->location?>">
+							<input type="text" name="work[location]" autocomplete="off" class="span2" id="WorksLocation" value="<?=$work->location?>">
 							<?=$this->form->select('select_location', $locations_list, array('class' => 'span1', 'value' => $work->location)); ?>
 						</div>
 					</div>
@@ -268,40 +269,40 @@ foreach ($users as $user) {
 
 						</script>
 				<?php else: ?>
-					<?=$this->form->field('location', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $location_names));?>
+					<?=$this->form->field('work.location', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $location_names));?>
 				<?php endif; ?>
 
-				<?=$this->form->field('in_time', array('label' => 'Received Time', 'autocomplete' => 'off', 'value' => $work->attribute('in_time')));?>
-				<?=$this->form->field('in_from', array('label' => 'Sent From', 'autocomplete' => 'off', 'value' => $work->attribute('in_from')));?>
+				<?=$this->form->field('work.in_time', array('label' => 'Received Time', 'autocomplete' => 'off', 'value' => $work->attribute('in_time')));?>
+				<?=$this->form->field('work.in_from', array('label' => 'Sent From', 'autocomplete' => 'off', 'value' => $work->attribute('in_from')));?>
 
 				<?php $users_list = array_merge(array('' => 'Choose one...'), $users_list); ?>
 
 				<div class="control-group">
-					<?=$this->form->label('in_operator', 'Received By'); ?>
+					<?=$this->form->label('work.in_operator', 'Received By'); ?>
 					<div class="controls">
-						<?=$this->form->select('in_operator', $users_list, array('value' => $work->attribute('in_operator'))); ?>
+						<?=$this->form->select('work.in_operator', $users_list, array('value' => $work->attribute('in_operator'))); ?>
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label for="WorksBuyPrice" class="control-label">Purchase Price</label>
 					<div class="controls control-row">
-						<input type="text" name="buy_price" autocomplete="off" id="WorksBuyPrice" class="span1" value="<?=$work->attribute('buy_price'); ?>">
+						<input type="text" name="work[buy_price]" autocomplete="off" id="WorksBuyPrice" class="span1" value="<?=$work->attribute('buy_price'); ?>">
 
-						<?=$this->form->select('buy_price_per', $currencies_list, array('class' => 'span1', 'value' => $work->attribute('buy_price_per'))); ?>
+						<?=$this->form->select('work.buy_price_per', $currencies_list, array('class' => 'span1', 'value' => $work->attribute('buy_price_per'))); ?>
 					</div>
 				</div>
 
 				<div class="control-group">
 					<label for="WorksSellPrice" class="control-label">Sale Price</label>
 					<div class="controls control-row">
-						<input type="text" name="sell_price" autocomplete="off" id="WorksSellPrice" class="span1" value="<?=$work->attribute('sell_price'); ?>">
+						<input type="text" name="work[sell_price]" autocomplete="off" id="WorksSellPrice" class="span1" value="<?=$work->attribute('sell_price'); ?>">
 
-						<?=$this->form->select('sell_price_per', $currencies_list, array('class' => 'span1', 'value' => $work->attribute('sell_price_per'))); ?>
+						<?=$this->form->select('work.sell_price_per', $currencies_list, array('class' => 'span1', 'value' => $work->attribute('sell_price_per'))); ?>
 					</div>
 				</div>
 
-				<?=$this->form->field('sell_date', array('label' => 'Date of Sale', 'autocomplete' => 'off', 'value' => $work->attribute('sell_date')));?>
+				<?=$this->form->field('work.sell_date', array('label' => 'Date of Sale', 'autocomplete' => 'off', 'value' => $work->attribute('sell_date')));?>
 
 			<?php endif; ?>
 
@@ -363,7 +364,7 @@ $(document).ready(function() {
 	var classifications = <?php echo json_encode($classifications); ?>;
 
 	function handleFields() {
-		var work = $('#WorksClassification').val();
+		var work = $('#ArchivesClassification').val();
 
 		$('#WorksForm .dim').closest('.control-group').hide();
 
@@ -387,7 +388,7 @@ $(document).ready(function() {
 
 	}
 
-	$('#WorksClassification').change(function() {
+	$('#ArchivesClassification').change(function() {
 		handleFields();
 	});
 
@@ -403,7 +404,7 @@ $(document).ready(function() {
 			<h3>Delete Artwork</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$work->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$work->archive->name; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>

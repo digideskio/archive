@@ -25,13 +25,20 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 	public $controller = 'app\\controllers\WorksController';
 
 	public function setUp() {
-	
-		$work = Works::create();
-		$data = array(
-			'title' => 'Artwork Title',
+		//Create an archive and work pair for testing purposes
+		$archive_data = array(
+			'name' => 'First Artwork Title',
+			'controller' => 'works'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$work->save($data);
+		$work = Works::create(array(
+			'id' => $archive->id,
+			'materials' => 'The Materials'
+		));
+
+		$success = $work->save();
 
 	}
 
@@ -59,7 +66,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$work = $works->first();
 
-		$this->assertEqual('Artwork Title', $work->title);
+		$this->assertEqual('First Artwork Title', $work->archive->name);
 		$this->assertEqual(1, $total);
 
 		$this->assertTrue(isset($data['page']));
@@ -71,13 +78,13 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$data = $this->call('view', array(
 			'params' => array(
-				'slug' => 'Artwork-Title'
+				'slug' => 'First-Artwork-Title'
 			)
 		));
 
 		$work = $data['work'];
 
-		$this->assertEqual('Artwork Title', $work->title);
+		$this->assertEqual('First Artwork Title', $work->archive->name);
 
 	}
 
@@ -92,29 +99,80 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 			'params' => array()
 		));
 
+		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		// Test that the action does not save if data is posted but not the
+		// required objects
+		$data = $this->call('add', array(
+			'data' => array('fake' => 'fake')
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		// Check that no new records were created
+		$this->assertEqual(1, Works::count());
+		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(0, Links::count());
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'data' => array('archive' => array('name' => ''))
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
+		$this->assertTrue(!empty($errors));
+
+		// Check that no new records were created
+		$this->assertEqual(1, Works::count());
+		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(0, Links::count());
 
 		// Test that this action processes and saves the correct data, namely
 		// a work, archive, and link model
-		$title = 'Artwork New Title';
+		$name = 'Artwork New Title';
 		$slug = 'Artwork-New-Title';
-		$url = 'http://example.com/artwork-new-title';
+		$materials = 'Artwork New Materials';
+		$url = 'http://example.com/artwork-new';
 
 		$data = $this->call('add', array(
-			'data' => array('work' => compact('title', 'url'))
+			'data' => array(
+				'archive' => compact('name'),
+				'work' => compact('materials'),
+				'link' => compact('url')
+			)
 		));
 
-		$work = Works::find('first', array(
-			'conditions' => compact('title')
-		));
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/works/view/Artwork-New-Title', $data->headers["Location"]);
 
-		$this->assertTrue(!empty($work));
-
+		// Look up the objects that were saved
 		$archive = Archives::find('first', array(
 			'conditions' => compact('slug')
 		));
 
 		$this->assertTrue(!empty($archive));
+		$this->assertEqual($name, $archive->name);
+		$this->assertEqual('works', $archive->controller);
+
+		$work = Works::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($work));
+		$this->assertEqual($materials, $work->materials);
 
 		$link = Links::find('first', array(
 			'conditions' => compact('url')
@@ -122,7 +180,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($link));
 
-		$this->assertEqual($title, $link->title);
+		$this->assertEqual($name, $link->title);
 
 	}
 
@@ -149,36 +207,96 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		// a new ArchivesDocument to connect the work and the document
 		$data = $this->call('add', array(
 			'data' => array(
-				'work' => array(
-					'title' => 'Artwork With Doc Title',
+				'archive' => array(
+					'name' => 'Artwork With Doc Title',
 				),
+				'work' => array(),
+				'link' => array(),
 				'documents' => array($document->id)
 			)
 		));
 
-		$work = Works::find('first', array(
-			'conditions' => array('title' => 'Artwork With Doc Title')
+		$archive = Archives::find('first', array(
+			'conditions' => array('name' => 'Artwork With Doc Title')
 		));
 
 		$archives_document = ArchivesDocuments::first();
 
-		$this->assertEqual($work->id, $archives_document->archive_id);
+		$this->assertEqual($archive->id, $archives_document->archive_id);
 		$this->assertEqual($document->id, $archives_document->document_id);
 
 	}
 
 	public function testEdit() {
 
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/works/view/{:slug}', array('Works::view'));
+
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'Artwork-Title'
+				'slug' => 'First-Artwork-Title'
 			)
 		));
 
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['work']));
+
+		$archive = $data['archive'];
 		$work = $data['work'];
 
-		$this->assertEqual('Artwork Title', $work->title);
+		$this->assertEqual('First Artwork Title', $archive->name);
 
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'params' => array(
+				'slug' => 'First-Artwork-Title'
+			),
+			'data' => array(
+				'archive' => array('name' => '')
+			)
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['work']));
+
+		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
+		$this->assertTrue(!empty($errors));
+
+		// Test that the records can be saved with new data
+		$name = 'Artwork Update Title';
+		$materials = "Artwork Update Materials";
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => 'First-Artwork-Title'
+			),
+			'data' => array(
+				'archive' => compact('name'),
+				'work' => compact('materials')
+			)
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/works/view/First-Artwork-Title', $data->headers["Location"]);
+
+		// Look up the objects that were saved
+		$archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$this->assertTrue(!empty($archive));
+		$this->assertEqual($name, $archive->name);
+		$this->assertEqual('works', $archive->controller);
+
+		$work = Works::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($work));
+		$this->assertEqual($materials, $work->materials);
 	}
 
 	public function testDelete() {}

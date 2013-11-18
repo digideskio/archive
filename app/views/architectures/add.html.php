@@ -43,28 +43,29 @@ $this->form->config(
 	</div>
 </div>
 
+<?=$this->form->create(compact('archive', 'architecture')); ?>
 <div class="well">
-<?=$this->form->create($architecture); ?>
 	<legend>Project Info</legend>
-    <?=$this->form->field('architect', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('title', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('client', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('project_lead', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('consultants', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('remarks', array('type' => 'textarea'));?>
-	<?=$this->form->field('area', array(
+    <?=$this->form->field('architecture.architect', array('autocomplete' => 'off', 'label' => 'Architect'));?>
+    <?=$this->form->field('archive.name', array('autocomplete' => 'off', 'label' => 'Title'));?>
+    <?=$this->form->field('architecture.client', array('autocomplete' => 'off', 'label' => 'Client'));?>
+    <?=$this->form->field('architecture.project_lead', array('autocomplete' => 'off', 'label' => 'Project Lead'));?>
+    <?=$this->form->field('architecture.consultants', array('autocomplete' => 'off', 'label' => 'Consultants'));?>
+    <?=$this->form->field('architecture.remarks', array('type' => 'textarea', 'label' => 'Remarks'));?>
+	<?=$this->form->field('architecture.area', array(
 		'autocomplete' => 'off',
 		'label' => "Area (square meters)"
 	));?>
-    <?=$this->form->field('materials', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('earliest_date', array('autocomplete' => 'off', 'label' => 'Design Date'));?>
-    <?=$this->form->field('latest_date', array('autocomplete' => 'off', 'label' => 'Completion Date'));?>
-    <?=$this->form->field('status', array('autocomplete' => 'off', 'label' => 'Project Status'));?>
-    <?=$this->form->field('location', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('city', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('country', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('annotation', array('type' => 'textarea'));?>
-    <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/architectures', array('class' => 'btn')); ?>
-<?=$this->form->end(); ?>
+    <?=$this->form->field('architecture.materials', array('autocomplete' => 'off', 'label' => 'Materials'));?>
+    <?=$this->form->field('archive.earliest_date', array('autocomplete' => 'off', 'label' => 'Design Date'));?>
+    <?=$this->form->field('archive.latest_date', array('autocomplete' => 'off', 'label' => 'Completion Date'));?>
+    <?=$this->form->field('architecture.status', array('autocomplete' => 'off', 'label' => 'Project Status'));?>
+    <?=$this->form->field('architecture.location', array('autocomplete' => 'off', 'label' => 'Location'));?>
+    <?=$this->form->field('architecture.city', array('autocomplete' => 'off', 'label' => 'City'));?>
+    <?=$this->form->field('architecture.country', array('autocomplete' => 'off', 'label' => 'Country'));?>
+    <?=$this->form->field('architecture.annotation', array('type' => 'textarea', 'label' => 'Annotation'));?>
 </div>
+<div class="well">
+	<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
+</div>
+<?=$this->form->end(); ?>

@@ -21,57 +21,20 @@ class ArchitecturesTest extends \lithium\test\Unit {
 		ArchivesHistories::find("all")->delete();
 	}
 
-	public function testSave() {
-	
-		$architecture = Architectures::create();
-		$data = array(
-			'title' => 'Building Name',
-		);
-
-		$success = $architecture->save($data);
-
-		$this->assertTrue($success);
-
-		$data = array(
-			'earliest_date' => '2010',
-		);
-
-		$success = $architecture->save($data);
-
-		$this->assertTrue($success);
-
-	}
-
-	public function testCreateWithNoTitle() {
-		$architecture = Architectures::create();
+	public function testCreateWithNoId() {
 		$data = array (
-			"title" => "",
+			"id" => "",
 			"architect" => "The Architect"
 		);
+		$architecture = Architectures::create($data);
+
+		$this->assertFalse($architecture->validates());
 		
-		$this->assertFalse($architecture->save($data), "The architecture was able to be saved without a title.");
+		$this->assertFalse($architecture->save($data), "The architecture was able to be saved without an id.");
 
 		$errors = $architecture->errors();
 
-		$this->assertEqual('Please enter a title.', $errors['title'][0]);
-
-	}
-
-	public function testInvalidDates() {
-
-		$architecture = Architectures::create();
-		$data = array (
-			"title" => "Book Title",
-			"earliest_date" => 'X',
-			"latest_date" => 'Y'
-		);
-		
-		$this->assertFalse($architecture->save($data), "The architecture was able to be saved with an invalid date.");
-
-		$errors = $architecture->errors();
-
-		$this->assertEqual('Please enter a valid date.', $errors['earliest_date'][0]);
-		$this->assertEqual('Please enter a valid date.', $errors['latest_date'][0]);
+		$this->assertEqual('This field may not be empty.', $errors['id'][0]);
 
 	}
 

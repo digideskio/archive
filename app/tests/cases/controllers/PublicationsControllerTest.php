@@ -13,8 +13,6 @@ use app\models\ArchivesLinks;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
 
-use lithium\security\Auth;
-use lithium\storage\Session;
 use lithium\action\Request;
 use lithium\net\http\Router;
 
@@ -23,10 +21,18 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 	public $controller = 'app\\controllers\PublicationsController';
 
 	public function setUp() {
-	
+		// Create an archive and publications pair for testing purposes
+		$archive_data = array(
+			'name' => 'First Publication Title',
+			'controller' => 'publications'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$pub = Publications::create();
 		$data = array(
-			'title' => 'Publication Title',
+			'id' => $archive->id,
+			'publisher' => 'The Publisher',
 		);
 
 		$pub->save($data);
@@ -57,7 +63,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$pub = $pubs->first();
 
-		$this->assertEqual('Publication Title', $pub->title);
+		$this->assertEqual('First Publication Title', $pub->archive->name);
 		$this->assertEqual(1, $total);
 
 		$this->assertTrue(isset($data['page']));
@@ -69,13 +75,13 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$data = $this->call('view', array(
 			'params' => array(
-				'slug' => 'Publication-Title'
+				'slug' => 'First-Publication-Title'
 			)
 		));
 
 		$pub = $data['publication'];
 
-		$this->assertEqual('Publication Title', $pub->title);
+		$this->assertEqual('First Publication Title', $pub->archive->name);
 
 	}
 
@@ -90,29 +96,82 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 			'params' => array()
 		));
 
+		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['publication']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		// Test that the action does not save if data is posted but not the
+		// required objects
+		$data = $this->call('add', array(
+			'data' => array('fake' => 'fake')
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['publication']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		// Check that no new records were created
+		$this->assertEqual(1, Publications::count());
+		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(0, Links::count());
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'data' => array('archive' => array('name' => ''))
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['publication']));
+		$this->assertTrue(isset($data['link']));
+		$this->assertTrue(isset($data['documents']));
+
+		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
+		$this->assertTrue(!empty($errors));
+
+		// Check that no new records were created
+		$this->assertEqual(1, Publications::count());
+		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(0, Links::count());
 
 		// Test that this action processes and saves the correct data, namely
 		// a publication, archive, and link model
-		$title = 'Publication New Title';
+		$name = 'Publication New Title';
 		$slug = 'Publication-New-Title';
+		$publisher = 'New Publisher';
+		$language = 'French';
 		$url = 'http://example.com/publication-new-title';
 
 		$data = $this->call('add', array(
-			'data' => array('publication' => compact('title', 'url'))
+			'data' => array(
+				'archive' => compact('name'),
+				'publication' => compact('publisher', 'language'),
+				'link' => compact('url')
+			)
 		));
 
-		$pub = Publications::find('first', array(
-			'conditions' => compact('title')
-		));
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual("/publications/view/$slug", $data->headers["Location"]);
 
-		$this->assertTrue(!empty($pub));
-
+		// Look up the objects that were saved
 		$archive = Archives::find('first', array(
 			'conditions' => compact('slug')
 		));
 
 		$this->assertTrue(!empty($archive));
+		$this->assertEqual($name, $archive->name);
+		$this->assertEqual('publications', $archive->controller);
+		$this->assertEqual('fr', $archive->language_code);
+
+		$pub = Publications::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($pub));
+		$this->assertEqual($publisher, $pub->publisher);
 
 		$link = Links::find('first', array(
 			'conditions' => compact('url')
@@ -120,7 +179,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($link));
 
-		$this->assertEqual($title, $link->title);
+		$this->assertEqual($name, $link->title);
 
 	}
 
@@ -147,35 +206,100 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		// a new ArchivesDocument to connect the publication and the document
 		$data = $this->call('add', array(
 			'data' => array(
-				'publication' => array(
-					'title' => 'Publication With Doc Title',
+				'archive' => array(
+					'name' => 'Publication With Doc Title',
 				),
+				'publication' => array(),
+				'link' => array(),
 				'documents' => array($document->id)
 			)
 		));
 
-		$pub = Publications::find('first', array(
-			'conditions' => array('title' => 'Publication With Doc Title')
+		$archive = Archives::find('first', array(
+			'conditions' => array('name' => 'Publication With Doc Title')
 		));
 
 		$archives_document = ArchivesDocuments::first();
 
-		$this->assertEqual($pub->id, $archives_document->archive_id);
+		$this->assertEqual($archive->id, $archives_document->archive_id);
 		$this->assertEqual($document->id, $archives_document->document_id);
 
 	}
 
 	public function testEdit() {
 
+		$slug = 'First-Publication-Title';
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/publications/view/{:slug}', array('Publications::view'));
+
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'Publication-Title'
+				'slug' => $slug
 			)
 		));
 
-		$pub = $data['publication'];
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['publication']));
 
-		$this->assertEqual('Publication Title', $pub->title);
+		$archive = $data['archive'];
+		$publication = $data['publication'];
+
+		$this->assertEqual('First Publication Title', $archive->name);
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'params' => array(
+				'slug' => 'First-Publication-Title'
+			),
+			'data' => array(
+				'archive' => array('name' => '')
+			)
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['publication']));
+
+		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
+		$this->assertTrue(!empty($errors));
+
+		// Test that the records can be saved with new data
+		$name = 'Publication Update Title';
+		$publisher = 'Publication Update Publisher';
+		$language = 'Korean';
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => $slug
+			),
+			'data' => array(
+				'archive' => compact('name'),
+				'publication' => compact('publisher', 'language')
+			)
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual("/publications/view/$slug", $data->headers["Location"]);
+
+		// Look up the objects that were saved
+		$archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$this->assertTrue(!empty($archive));
+		$this->assertEqual($name, $archive->name);
+		$this->assertEqual('publications', $archive->controller);
+		$this->assertEqual('ko', $archive->language_code);
+
+		$pub = Publications::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($pub));
+		$this->assertEqual($publisher, $pub->publisher);
 
 	}
 

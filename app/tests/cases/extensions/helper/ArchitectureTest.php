@@ -16,7 +16,7 @@ class ArchitectureTest extends \lithium\test\Unit {
 	public function testCaptions() {
 
 		$data = array(
-			'title' => 'Building Title'
+			'name' => 'Building Title'
 		);
 
 		$architecture = Architectures::create($data);

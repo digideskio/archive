@@ -7,6 +7,7 @@ use app\models\PublicationsHistories;
 
 use app\models\Archives;
 use app\models\ArchivesHistories;
+use app\models\Links;
 use app\models\ArchivesLinks;
 use app\models\ArchivesDocuments;
 use app\models\Albums;
@@ -144,7 +145,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 				$publication_ids = array();
 
-				$fields = array('title', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
+				$fields = array('Archives.name', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
 
 				foreach ($fields as $field) {
 					$matching_pubs = Publications::find('all', array(
@@ -162,7 +163,7 @@ class PublicationsController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('title' => $query);
+				$conditions = $publication_ids ? array('Publications.id' => $publication_ids) : array('Archives.name' => $query);
 			}
 
 			$publications = Publications::find('all', array(
@@ -238,8 +239,6 @@ class PublicationsController extends \lithium\action\Controller {
 			));
 
 			if($publication) {
-		
-				$order = array('title' => 'ASC');
 
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
@@ -255,7 +254,7 @@ class PublicationsController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $publication->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$archives_links = ArchivesLinks::find('all', array(
@@ -269,7 +268,7 @@ class PublicationsController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $publication->id,
 					),
-					'order' => array('title' =>  'ASC')
+					'order' => array('Archives.name' =>  'ASC')
 				));
 			
 				//Send the retrieved data to the view
@@ -284,7 +283,9 @@ class PublicationsController extends \lithium\action\Controller {
 
 	public function add() {
 
+		$archive = Archives::create();
 		$publication = Publications::create();
+		$link = Links::create();
 		$documents = array();
 
 		if ($this->request->data) {
@@ -298,13 +299,56 @@ class PublicationsController extends \lithium\action\Controller {
 				));
 			}
 
-			if (isset($this->request->data['publication'])) {
-				if ($publication->save($this->request->data['publication'])) {
+			if (isset($this->request->data['archive'])) {
+				$archive_data = $this->request->data['archive'];
+				$archive_data['controller'] = 'publications';
 
-					// The slug has been saved with the Archive object, so let's look it up
-					$archive = Archives::find('first', array(
-						'conditions' => array('id' => $publication->id)
-					));
+				// Pass in any language specified for the publication
+				if (isset($this->request->data['publication'])) {
+					$pub_data = $this->request->data['publication'];
+					if (isset($pub_data['language'])) {
+						$archive_data['language'] = $pub_data['language'];
+					}
+				}
+
+				$archive = Archives::create($archive_data);
+
+				// Check if a URL for a Link was submitted. The link "validates" if the URL is
+				// valid, or blank
+				$link_data = array();
+				$link_validates = true;
+				if (isset($this->request->data['link'])) {
+					$link_data = $this->request->data['link'];
+					if (!empty($link_data['url'])) {
+						$link = Links::create($link_data);
+						$link_validates = $link->validates();
+					}
+				}
+
+				if ($archive->validates() && $link_validates) {
+
+					$archive = Archives::create();
+					$archive->save($archive_data);
+
+					// Save a publication along with this archive
+					$pub_data = isset($this->request->data['publication']) ? $this->request->data['publication'] : array();
+					$pub_data['id'] = $archive->id;
+
+					$publication = Publications::create();
+					$publication->save($pub_data);
+
+					// If Link data was supplied, save Link and ArchivesLinks objects
+					if (!empty($link_data) && !empty($link_data['url'])) {
+						$link_data['title'] = $archive->name;
+						$link = Links::create();
+						$link->save($link_data);
+
+						$archives_link = ArchivesLinks::create();
+						$archives_link->save(array(
+							'archive_id' => $archive->id,
+							'link_id' => $link->id
+						));
+					}
 
 					// If any documents were submitted, save them as ArchivesDocuments
 					$archive_id = $archive->id;
@@ -341,54 +385,98 @@ class PublicationsController extends \lithium\action\Controller {
 			return $lang->name;
 		}, array('collect' => false));
 
-		return compact('publication', 'pub_classifications', 'pub_types', 'locations', 'language_names', 'documents');
+		return compact(
+			'archive',
+			'publication',
+			'link',
+			'documents',
+			'pub_classifications',
+			'pub_types',
+			'locations',
+			'language_names'
+		);
 	}
 
 	public function edit() {
 
-		$publication = Publications::first(array(
-			'with' => 'Archives',
-			'conditions' => array('Archives.slug' => $this->request->params['slug'])
-		));
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
 
-		$pub_classifications = Publications::classifications();
-		$pub_types = Publications::types();
+			$publication = Publications::first(array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
+			));
 
-		if (!$publication) {
-			return $this->redirect('Publications::index');
+			if (empty($publication)) {
+				return $this->redirect('Publications::index');
+			}
+
+			$archive = $publication->archive;
+
+			if ($this->request->data) {
+
+				if (isset($this->request->data['archive'])) {
+
+					$archive_data = $this->request->data['archive'];
+
+					// Pass in any language specified for the publication
+					if (isset($this->request->data['publication'])) {
+						$pub_data = $this->request->data['publication'];
+						if (isset($pub_data['language'])) {
+							$archive_data['language'] = $pub_data['language'];
+						}
+					}
+
+					if ($archive->save($archive_data)) {
+
+						$pub_data = isset($this->request->data['publication']) ? $this->request->data['publication'] : array();
+						$publication->save($pub_data);
+
+						return $this->redirect(array('Publications::view', 'slug' => $archive->slug));
+					}
+				}
+			}
+
+			$publication = Publications::first(array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.slug' => $this->request->params['slug'])
+			));
+
+			$pub_classifications = Publications::classifications();
+			$pub_types = Publications::types();
+
+			$publications_locations = Publications::find('all', array(
+				'fields' => 'location',
+				'group' => 'location',
+				'conditions' => array('location' => array('!=' => '')),
+				'order' => array('location' => 'ASC')
+			));
+
+			$locations = $publications_locations->map(function($loc) {
+				return $loc->location;
+			}, array('collect' => false));
+
+			$languages = Languages::find('all', array(
+				'fields' => 'name',
+			));
+
+			$language_names = $languages->map(function($lang) {
+				return $lang->name;
+			}, array('collect' => false));
+
+			return compact(
+				'archive',
+				'publication',
+				'pub_classifications',
+				'pub_types',
+				'archives_documents',
+				'locations',
+				'language_names'
+			);
+
 		}
 
-		if (($this->request->data) && $publication->save($this->request->data)) {
-			return $this->redirect(array('Publications::view', 'args' => array($publication->archive->slug)));
-		}
-
-		$publications_locations = Publications::find('all', array(
-			'fields' => 'location',
-			'group' => 'location',
-			'conditions' => array('location' => array('!=' => '')),
-			'order' => array('location' => 'ASC')
-		));
-
-		$locations = $publications_locations->map(function($loc) {
-			return $loc->location;
-		}, array('collect' => false));
-
-		$languages = Languages::find('all', array(
-			'fields' => 'name',
-		));
-
-		$language_names = $languages->map(function($lang) {
-			return $lang->name;
-		}, array('collect' => false));
-
-		return compact(
-			'publication',
-			'pub_classifications',
-			'pub_types',
-			'archives_documents',
-			'locations',
-			'language_names'
-		);
+		$this->redirect(array('Publications::index'));
 	}
 
 	public function attachments() {
@@ -403,15 +491,13 @@ class PublicationsController extends \lithium\action\Controller {
 		));
 
 		if ($publication) {
-			
-			$order = array('title' => 'ASC');
 
 			$albums = Albums::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'conditions' => array(
 					'Components.archive_id2' => $publication->id,
 				),
-				'order' => $order
+				'order' => array('Archives.name' =>  'ASC')
 			));
 
 			$album_ids = array();
@@ -425,7 +511,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 			$other_albums = Albums::find('all', array(
 				'with' => 'Archives',
-				'order' => $order,
+				'order' => array('Archives.name' =>  'ASC'),
 				'conditions' => $other_album_conditions
 			));
 
@@ -444,14 +530,12 @@ class PublicationsController extends \lithium\action\Controller {
 				'order' => array('Links.date_modified' =>  'DESC')
 			));
 
-			$order = array('title' => 'ASC');
-
 			$exhibitions = Exhibitions::find('all', array(
 				'with' => array('Archives', 'Components'),
 				'conditions' => array(
 					'Components.archive_id2' => $publication->id,
 				),
-				'order' => $order
+				'order' => array('Archives.name' =>  'ASC')
 			));
 
 			$exhibition_ids = array();
@@ -465,7 +549,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 			$other_exhibitions = Exhibitions::find('all', array(
 				'with' => 'Archives',
-				'order' => $order,
+				'order' => array('Archives.name' =>  'ASC'),
 				'conditions' => $other_exhibition_conditions
 			));
 			

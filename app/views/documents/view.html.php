@@ -106,7 +106,7 @@ $this->title($document->title);
 	
 			<div class="alert alert-block alert-info">
 			<p>
-				<?php echo $exhibition->title . ', '; ?>
+				<?php echo $exhibition->archive->name . ', '; ?>
 					
 					<?php if($exhibition->venue) { echo $exhibition->venue; } ?>
 
@@ -231,7 +231,7 @@ $this->title($document->title);
 							
 								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
-									$album->title,
+									$album->archive->name,
 									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
@@ -250,7 +250,7 @@ $this->title($document->title);
 							
 								<?php foreach($works as $work): ?>
 								<li><strong><?=$this->html->link(
-									$work->title,
+									$work->archive->name,
 									'/works/view/'.$work->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
@@ -270,7 +270,7 @@ $this->title($document->title);
 							
 								<?php foreach($architectures as $architecture): ?>
 								<li><strong><?=$this->html->link(
-									$architecture->title,
+									$architecture->archive->name,
 									'/architectures/view/'.$architecture->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
@@ -289,7 +289,7 @@ $this->title($document->title);
 							
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
-									$exhibition->title,
+									$exhibition->archive->name,
 									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
@@ -308,7 +308,7 @@ $this->title($document->title);
 							
 								<?php foreach($publications as $publication): ?>
 								<li><strong><?=$this->html->link(
-									$publication->title,
+									$publication->archive->name,
 									'/publications/view/'.$publication->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>

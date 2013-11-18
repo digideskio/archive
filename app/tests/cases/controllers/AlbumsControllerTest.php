@@ -5,6 +5,7 @@ namespace app\tests\cases\controllers;
 use app\controllers\AlbumsController;
 
 use app\models\Albums;
+use app\models\AlbumsHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
 use app\models\Works;
@@ -18,18 +19,26 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 	public $controller = 'app\controllers\AlbumsController';
 
 	public function setUp() {
-		$album = Albums::create();
-		$data = array(
-			'title' => 'First Album Title',
-			'remarks' => 'First Album Description'
+		//Create an archive and album pair for testing purposes
+		$archive_data = array(
+			'name' => 'First Album Title',
+			'controller' => 'albums'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$album->save($data);
+		$album = Albums::create(array(
+			'id' => $archive->id,
+			'remarks' => 'First Album Description'
+		));
+
+		$success = $album->save();
 	
 	}
 
 	public function tearDown() {
 		Albums::all()->delete();
+		AlbumsHistories::all()->delete();
 	
 		Works::all()->delete();
 		WorksHistories::all()->delete();
@@ -48,7 +57,8 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$album = $albums->first();
 
-		$this->assertEqual('First Album Title', $album->title);
+		$this->assertEqual('First Album Title', $album->archive->name);
+		$this->assertEqual('First Album Description', $album->remarks);
 	
 	}
 
@@ -62,7 +72,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$album = $data['album'];
 
-		$this->assertEqual('First Album Title', $album->title);
+		$this->assertEqual('First Album Title', $album->archive->name);
 		$this->assertEqual('First Album Description', $album->remarks);
 	
 	}
@@ -78,28 +88,70 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 			'params' => array()
 		));
 
+		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['album']));
+		$this->assertTrue(isset($data['archives']));
+
+		// Test that the action does not save if data is posted but not the
+		// required objects
+		$data = $this->call('add', array(
+			'data' => array('fake' => 'fake')
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['album']));
+		$this->assertTrue(isset($data['archives']));
+
+		// Check that no new albums or archives were created
+		$this->assertEqual(1, Albums::count());
+		$this->assertEqual(1, Archives::count());
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('add', array(
+			'data' => array('archive' => array('name' => ''))
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['album']));
+		$this->assertTrue(isset($data['archives']));
+
+		$errors = $data['archive']->errors();
+		$this->assertTrue(!empty($errors));
+
+		// Check that no new albums or archives were created
+		$this->assertEqual(1, Albums::count());
+		$this->assertEqual(1, Archives::count());
 
 		// Test that this action processes and saves the correct data, namely
 		// an album and archive
-		$title = 'Album New Title';
+		$name = 'Album New Title';
 		$slug = 'Album-New-Title';
+		$remarks = "Album New Description";
 
 		$data = $this->call('add', array(
-			'data' => array('album' => compact('title'))
+			'data' => array(
+				'archive' => compact('name'),
+				'album' => compact('remarks')
+			)
 		));
 
-		$album = Albums::find('first', array(
-			'conditions' => compact('title')
-		));
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/albums/view/Album-New-Title', $data->headers["Location"]);
 
-		$this->assertTrue(!empty($album));
-
+		// Look up the objects that were saved
 		$archive = Archives::find('first', array(
 			'conditions' => compact('slug')
 		));
 
 		$this->assertTrue(!empty($archive));
+
+		$album = Albums::find('first', array(
+			'conditions' => array('id' => $archive->id)
+		));
+
+		$this->assertTrue(!empty($album));
 
 	}
 
@@ -111,13 +163,21 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		
 		// Create a new archive (it could represent an artwork, publication, or something
 		// else) which we will use to seed the new album
-		$work = Works::create();
 
-		$work_data = array(
-			'title' => 'Artwork Title'
+		//Create an archive and work pair for testing purposes
+		$archive_data = array(
+			'name' => 'First Artwork Title',
+			'controller' => 'works'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$work->save($work_data);
+		$work = Works::create(array(
+			'id' => $archive->id,
+			'materials' => 'The Materials'
+		));
+
+		$work->save();
 
 		// Test that the archive is loaded and passed to the view
 		$data = $this->call('add', array(
@@ -134,12 +194,13 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Test that this action processes and saves the correct data, including
 		// a new component representing the artwork we passed in
-		$title = 'Album New Title';
+		$name = 'Album New Title';
 		$slug = 'Album-New-Title';
 
 		$data = $this->call('add', array(
 			'data' => array(
-				'album' => compact('title'),
+				'archive' => compact('name'),
+				'album' => array(),
 				'archives' => array($work->id)
 			)
 		));
@@ -160,20 +221,64 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 	public function testEdit() {
 
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/albums/view/{:slug}', array('Albums::view'));
+
+		// Test that an album is looked up and passed to the view
 		$data = $this->call('edit', array(
 			'params' => array(
 				'slug' => 'First-Album-Title'
 			)
 		));
 
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['album']));
+		$this->assertTrue(isset($data['archives_documents']));
+
 		$album = $data['album'];
 
-		$this->assertEqual('First Album Title', $album->title);
-	
+		$this->assertEqual('First Album Title', $album->archive->name);
+
+		// Test that the action does not save and reports errors if we do not
+		// post the required data
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => 'First-Album-Title'
+			),
+			'data' => array(
+				'archive' => array('name' => '')
+			)
+		));
+
+		$this->assertTrue(isset($data['archive']));
+		$this->assertTrue(isset($data['album']));
+
+		$errors = $data['archive']->errors();
+		$this->assertTrue(!empty($errors));
+
+		// Test that the album and archive can be saved with new data
+		$name = 'Album Update Title';
+		$remarks = "Album Update Description";
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'slug' => 'First-Album-Title'
+			),
+			'data' => array(
+				'archive' => compact('name'),
+				'album' => compact('remarks')
+			)
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/albums/view/First-Album-Title', $data->headers["Location"]);
+
 	}
 
 	public function testDelete() {}
-	
+
 	public function testRules() {
 	
 		$ctrl = new AlbumsController();

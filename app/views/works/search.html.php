@@ -4,7 +4,7 @@ $this->title('Search Artwork');
 
 $conditions_list = array(
 	'' => 'Search by...',
-	'title' => 'Title',
+	'Archives.name' => 'Title',
 	'artist' => 'Artist',
 	'classification' => 'Classification',
 	'earliest_date' => 'Year',
@@ -110,6 +110,12 @@ if ($inventory) {
 
 
 	<?php $condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column ?>
+
+	<?php
+		if ($condition == 'Archives.name') {
+			$condition_class = '.info-title';
+		}
+	?>
 
 	<script>
 

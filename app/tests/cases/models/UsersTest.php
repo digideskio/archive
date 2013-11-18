@@ -13,7 +13,6 @@ class UsersTest extends \lithium\test\Unit {
 	public function tearDown() {}
 	
 	public function testCreateUser() {
-		$user = Users::create();
 		$data = array(
 			"username" => "test",
 			"password" => "abcd",
@@ -21,8 +20,9 @@ class UsersTest extends \lithium\test\Unit {
 			"email" => "email@example.com",
 			"role_id" => '3'
 		);
+		$user = Users::create($data);
 		
-		
+		$this->assertTrue($user->validates());
 		$this->assertTrue($user->save($data));
 		$this->assertEqual($user->username, "test");
 		$this->assertEqual($user->name, "Full Name");
@@ -32,7 +32,6 @@ class UsersTest extends \lithium\test\Unit {
 		
 		$this->assertTrue($check);
 		
-		$repeat_user = Users::create();
 		$repeat_username_data = array(
 			"username" => "test",
 			"password" => "efgh",
@@ -40,6 +39,9 @@ class UsersTest extends \lithium\test\Unit {
 			"email" => "test@example.com",
 			"role_id" => '3'
 		);
+		$repeat_user = Users::create($data);
+
+		$this->assertFalse($repeat_user->validates());
 		
 		$this->assertFalse($repeat_user->save($repeat_username_data));
 		
@@ -55,6 +57,7 @@ class UsersTest extends \lithium\test\Unit {
 			"role_id" => '3'
 		));
 		
+		$this->assertFalse($user->validates());
 		$this->assertFalse($user->save());
 	}
 	
@@ -67,6 +70,7 @@ class UsersTest extends \lithium\test\Unit {
 			"role_id" => '3'
 		));
 		
+		$this->assertFalse($user->validates());
 		$this->assertFalse($user->save());
 	}
 	
@@ -79,6 +83,7 @@ class UsersTest extends \lithium\test\Unit {
 			"role_id" => '3'
 		));
 		
+		$this->assertFalse($user->validates());
 		$this->assertFalse($user->save());
 	}
 	
@@ -91,6 +96,7 @@ class UsersTest extends \lithium\test\Unit {
 			"role_id" => '3'
 		));
 		
+		$this->assertFalse($user->validates());
 		$this->assertFalse($user->save());
 	}
 	
@@ -102,6 +108,7 @@ class UsersTest extends \lithium\test\Unit {
 			"email" => "email"
 		));
 		
+		$this->assertFalse($user->validates());
 		$this->assertFalse($user->save());
 	}
 

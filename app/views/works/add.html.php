@@ -157,7 +157,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 <div class="row">
 
-<?=$this->form->create(compact('work'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('archive', 'work', 'link'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 		<div class="well">
@@ -166,14 +166,14 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			<?=$this->form->field('work.artist', array('label' => 'Artist', 'value' => $artist, 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.artist_native_name', array('value' => $artist_native_name, 'label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
 
-			<?=$this->form->field('work.title', array('label' => 'Title', 'autocomplete' => 'off'));?>
-			<?=$this->form->field('work.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off'));?>
-			<?=$this->form->field('work.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off'));?>
-			<?=$this->form->field('work.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('archive.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
 
 			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
-			<?=$this->form->field('work.url', array('label' => 'URL', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('link.url', array('label' => 'URL', 'autocomplete' => 'off'));?>
 
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>
@@ -203,12 +203,18 @@ $in_time = $work->in_time ?: date('Y-m-d');
 	<div class="well">
 		<legend>Details</legend>
 
+			<?=$this->form->field('work.annotation', array(
+				'label' => 'Annotation',
+				'type' => 'textarea', 
+				'rows' => '5', 
+				'style' => 'width:90%;',
+			));?>
 		<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
 
 		<div class="control-group">
-			<?=$this->form->label('work.classification', 'Classification', array('class' => 'control-label')); ?>
+			<?=$this->form->label('archive.classification', 'Classification', array('class' => 'control-label')); ?>
 			<div class="controls">
-				<?=$this->form->select('work.classification', $work_classes_list, array('id' => 'WorksClassification')); ?>
+				<?=$this->form->select('archive.classification', $work_classes_list); ?>
 			</div>
 		</div>
 
@@ -289,7 +295,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 				<?php $locations_list = array_merge(array('' => 'Select location...'), $locations_list); ?>
 
-				<div class="control-group">
+				<div class="control-group"><span></span>
 					<?=$this->form->label('work.location', 'Location', array('class' => 'control-label')); ?>
 					<div class="controls control-row">
 						<input type="text" name="work[location]" autocomplete="off" class="span2" id="WorksLocation" value="<?=$work->location?>">
@@ -402,7 +408,7 @@ $(document).ready(function() {
 	var classifications = <?php echo json_encode($classifications); ?>;
 
 	function handleFields() {
-		var work = $('#WorksClassification').val();
+		var work = $('#ArchivesClassification').val();
 
 		$('#WorksForm .dim').closest('.control-group').hide();
 
@@ -426,7 +432,7 @@ $(document).ready(function() {
 
 	}
 
-	$('#WorksClassification').change(function() {
+	$('#ArchivesClassification').change(function() {
 		handleFields();
 	});
 

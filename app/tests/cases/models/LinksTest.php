@@ -20,8 +20,9 @@ class LinksTest extends \lithium\test\Unit {
 		$data = array(
 			'url' => 'http://example.com'
 		);
+		$link = Links::create($data);
 
-		$link = Links::create();
+		$this->assertTrue($link->validates());
 
 		$this->assertTrue($link->save($data));
 
@@ -45,25 +46,32 @@ class LinksTest extends \lithium\test\Unit {
 	}
 
 	public function testCreateLinksWithNoUrl() {
-		$link = Links::create();
 		$data = array (
 			"url" => "",
 		);
+		$link = Links::create($data);
+
+		$this->assertFalse($link->validates());
 
 		$this->assertFalse($link->save($data));
 	}
 
 	public function testCreateLinksWithBadUrl() {
-		$link = Links::create();
 		$data = array (
 			"url" => "http://example com",
 		);
+		$link = Links::create($data);
+
+		$this->assertFalse($link->validates());
 
 		$this->assertFalse($link->save($data));
 
 		$data = array (
 			"url" => "example.com",
 		);
+		$link = Links::create($data);
+
+		$this->assertFalse($link->validates());
 
 		$this->assertFalse($link->save($data));
 	}

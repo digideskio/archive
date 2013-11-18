@@ -1,6 +1,6 @@
 <?php
 
-$this->title($publication->title);
+$this->title($publication->archive->name);
 
 ?>
 
@@ -15,7 +15,7 @@ $this->title($publication->title);
 	</li>
 
 	<li>
-	<?=$this->html->link($publication->title,'/publications/view/'.$publication->archive->slug); ?>
+	<?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	

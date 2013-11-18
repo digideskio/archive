@@ -19,7 +19,7 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 
 		$architecture = Architectures::create();
 		$data = array(
-			'title' => 'Building Title',
+			'id' => '1',
 			'architect' => 'The Architect',
 			'creation_number' => 'A001',
 			'client' => 'The Client',
@@ -64,7 +64,6 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 
 		$architecture_history = ArchitecturesHistories::first();
 
-		$this->assertEqual($architecture->title, $architecture_history->title);
 		$this->assertEqual($architecture->architect, $architecture_history->architect);
 		$this->assertEqual($architecture->creation_number, $architecture_history->creation_number);
 		$this->assertEqual($architecture->client, $architecture_history->client);
@@ -101,7 +100,7 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 	
 		$architecture = Architectures::first();
 		$data = array(
-			'title' => 'New Title'
+			'architect' => 'New Architect'
 		);
 
 		$architecture->save($data); 
@@ -116,7 +115,7 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 			)
 		));
 
-		$this->assertEqual($architecture->title, $architecture_history->title);
+		$this->assertEqual($architecture->architect, $architecture_history->architect);
 
 	}
 

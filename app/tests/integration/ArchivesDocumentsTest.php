@@ -88,9 +88,18 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document= Documents::first();
 
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'name' => 'Artwork Title',
+			'controller' => 'works'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$work = Works::create();
 		$work_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id,
+			'architect' => 'The Architect',
 		);
 
 		$work->save($work_data);
@@ -115,9 +124,18 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document = Documents::first();
 
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'name' => 'Architecture Title',
+			'controller' => 'architectures'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$architecture = Architectures::create();
 		$arc_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id,
+			'architect' => 'The Architect',
 		);
 
 		$architecture->save($arc_data);
@@ -142,12 +160,20 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document = Documents::first();
 
-		$album = Albums::create();
-		$al_data = array(
-			'title' => 'The Title',
+		//Create an archive and album pair for testing purposes
+		$archive_data = array(
+			'name' => 'Album Title',
+			'controller' => 'albums'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$album->save($al_data);
+		$album = Albums::create(array(
+			'id' => $archive->id,
+			'remarks' => 'Album Description'
+		));
+
+		$album->save();
 
 		$archive_document = ArchivesDocuments::create();
 		$ad_data = array(
@@ -169,9 +195,17 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		$document = Documents::first();
 
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'name' => 'Exhibition Title',
+			'controller' => 'exhibitions'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$exhibit = Exhibitions::create();
 		$ex_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id
 		);
 
 		$exhibit->save($ex_data);
@@ -191,14 +225,22 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
-	
+
 	public function testPublicationsDocuments() {
 
 		$document = Documents::first();
 
+		// Create an archive and architecture pair for testing purposes
+		$archive_data = array(
+			'name' => 'Publication Title',
+			'controller' => 'publications'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$pub = Publications::create();
 		$pub_data = array(
-			'title' => 'The Title',
+			'id' => $archive->id,
 		);
 
 		$pub->save($pub_data);

@@ -20,7 +20,7 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 
 		$album = Albums::create();
 		$data = array (
-			'title' => 'Artwork Title',
+			'id' => '1',
 			'remarks' => 'Some remarks'
 		);
 
@@ -43,7 +43,6 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 
 		$album_history = AlbumsHistories::first();
 
-		$this->assertEqual($album->title, $album_history->title);
 		$this->assertEqual($album->remarks, $album_history->remarks);
 
 		$this->assertNull($album_history->end_date);
@@ -58,7 +57,7 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 	
 		$album = Albums::first();
 		$data = array(
-			'title' => 'New Title'
+			'remarks' => 'New remarks'
 		);
 
 		$album->save($data); 
@@ -73,7 +72,7 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 			)
 		));
 
-		$this->assertEqual($album->title, $album_history->title);
+		$this->assertEqual($album->remarks, $album_history->remarks);
 
 	}
 

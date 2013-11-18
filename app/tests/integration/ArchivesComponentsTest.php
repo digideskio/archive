@@ -21,13 +21,20 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function setup() {
 
-		$work = Works::create();
-		$data = array(
-			'title' => 'The Title',
-			'artist' => 'The Artist',
+		//Create an archive and work pair for testing purposes
+		$archive_data = array(
+			'name' => 'The Artwork Title',
+			'controller' => 'works'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$work->save($data);
+		$work = Works::create(array(
+			'id' => $archive->id,
+			'materials' => 'The Materials'
+		));
+
+		$success = $work->save();
 
 	}
 
@@ -79,13 +86,20 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function testAlbumsComponents() {
 
-		$album = Albums::create();
-		$album_data = array(
-			'title' => 'Album Title',
-			'description' => 'some words',
+		//Create an archive and album pair for testing purposes
+		$archive_data = array(
+			'name' => 'Album Title',
+			'controller' => 'albums'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$album->save($album_data);
+		$album = Albums::create(array(
+			'id' => $archive->id,
+			'remarks' => 'Album Description'
+		));
+
+		$album->save();
 
 		$work = Works::first();
 
@@ -116,9 +130,17 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function testExhibitionsComponents() {
 
+		//Create an archive and exhibition pair for testing purposes
+		$archive_data = array(
+			'name' => 'Exhibition Title',
+			'controller' => 'exhibitions'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
 		$exhibition = Exhibitions::create();
 		$ex_data = array(
-			'title' => 'Exhibition Title',
+			'id' => $archive->id,
 			'remarks' => 'some words',
 		);
 

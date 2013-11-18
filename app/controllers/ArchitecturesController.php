@@ -112,7 +112,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 
 				$architecture_ids = array();
 
-				$fields = array('title', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
+				$fields = array('Archives.name', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
 
 				foreach ($fields as $field) {
 					$matching_works = Architectures::find('all', array(
@@ -130,7 +130,7 @@ class ArchitecturesController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('title' => $query);
+				$conditions = $architecture_ids ?  array('Architectures.id' => $architecture_ids) : array('Archives.name' => $query);
 
 			}
 
@@ -187,43 +187,82 @@ class ArchitecturesController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-        
+
+		$archive = Archives::create();
 		$architecture = Architectures::create();
 
-		if (($this->request->data) && $architecture->save($this->request->data)) {
-			//The slug has been saved with the Archive object, so let's look it up
-			$archive = Archives::find('first', array(
-				'conditions' => array('id' => $architecture->id)
-			));
-			return $this->redirect(array('Architectures::view', 'args' => array($archive->slug)));
+		if ($this->request->data) {
+
+			if (isset($this->request->data['archive'])) {
+				$archive_data = $this->request->data['archive'];
+				$archive_data['controller'] = 'architectures';
+				if ($archive->save($archive_data)) {
+
+					// Save an architecture along with this archive
+					$architecture_data = isset($this->request->data['architecture']) ? $this->request->data['architecture'] : array();
+					$architecture_data['id'] = $archive->id;
+
+					$architecture = Architectures::create();
+					$architecture->save($architecture_data);
+
+					return $this->redirect(array('Architectures::view', 'slug' => $archive->slug));
+				}
+
+			}
+
 		}
-		return compact('architecture');
+
+		return compact('archive', 'architecture');
 	}
 
 	public function edit() {
-		
-		$architecture = Architectures::first(array(
-			'with' => 'Archives',
-			'conditions' => array('Archives.slug' => $this->request->params['slug']),
-		));
-		
-		$archives_documents = ArchivesDocuments::find('all', array(
-			'with' => array(
-				'Documents',
-				'Documents.Formats'
-			),
-			'conditions' => array('ArchivesDocuments.archive_id' => $architecture->id),
-			'order' => array('Documents.slug' => 'ASC')
-		));
 
-		if (!$architecture) {
-			return $this->redirect('Architectures::index');
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+
+			$architecture = Architectures::first(array(
+				'with' => 'Archives',
+				'conditions' => array(
+					'Archives.slug' => $this->request->params['slug'],
+				)
+			));
+
+			if (!$architecture) {
+				return $this->redirect('Architectures::index');
+			}
+
+			$archive = $architecture->archive;
+
+			if ($this->request->data) {
+
+				if (isset($this->request->data['archive'])) {
+
+					$archive_data = $this->request->data['archive'];
+
+					if ($archive->save($archive_data)) {
+
+						$architecture_data = isset($this->request->data['architecture']) ? $this->request->data['architecture'] : array();
+						$architecture->save($architecture_data);
+
+						return $this->redirect(array('Architectures::view', 'slug' => $architecture->archive->slug));
+					}
+				}
+			}
+
+			$archives_documents = ArchivesDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Documents.Formats'
+				),
+				'conditions' => array('archive_id' => $architecture->id),
+				'order' => array('Documents.slug' => 'ASC')
+			));
+
+			return compact('archive', 'architecture', 'archives_documents');
 		}
-		if (($this->request->data) && $architecture->save($this->request->data)) {
-			return $this->redirect(array('Architectures::view', 'args' => array($architecture->archive->slug)));
-		}
-		
-		return compact('architecture', 'archives_documents');
+
+		//since no record was specified, redirect to the index page
+		$this->redirect(array('Architectures::index'));
 	}
 
 	public function history() {

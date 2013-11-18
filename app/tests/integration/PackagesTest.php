@@ -11,14 +11,20 @@ use li3_filesystem\extensions\storage\FileSystem;
 class PackagesTest extends \lithium\test\Unit {
 
 	public function setUp() {
-
-		$data = array(
-			'title' => 'Album Title',
-			'filesystem' => 'secure'
+		//Create an archive and album pair for testing purposes
+		$archive_data = array(
+			'name' => 'Album Title',
+			'controller' => 'albums'
 		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
 
-		$album = Albums::create();
-		$album->save($data);
+		$album = Albums::create(array(
+			'id' => $archive->id,
+			'remarks' => 'Album Description'
+		));
+
+		$album->save();
 
 	}
 	
@@ -32,16 +38,13 @@ class PackagesTest extends \lithium\test\Unit {
 
 	public function testAlbumsPackages() {
 
-		/*$album = Albums::find('first', array(
-			'with' => 'Archives',
-			'conditions' => array('slug' => 'Album-Title')
+		$album = Albums::find('first', array(
+			'with' => 'Archives'
 		));
 
-		$this->assertTrue($album);*/
-
 		$data = array(
-			'album_id' => '1',
-			'slug' => 'Album-Title',
+			'album_id' => $album->id,
+			'slug' => $album->archive->slug,
 			'filesystem' => 'secure'
 		);
 

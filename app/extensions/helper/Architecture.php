@@ -11,7 +11,7 @@ class Architecture extends \lithium\template\Helper {
     
     	$caption = array_filter(array(
 			$this->escape($architecture->architect),
-    		'<em>' . $this->escape($architecture->title) . '</em>',
+    		'<em>' . $this->escape($archive->name) . '</em>',
     		$this->escape($years),
     		$this->escape($architecture->location),
     		$this->escape($architecture->city),

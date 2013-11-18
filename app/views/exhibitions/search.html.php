@@ -4,7 +4,7 @@ $this->title('Search Exhibitions');
 
 $conditions_list = array(
 	'' => 'Search by...',
-	'title' => 'Title',
+	'Archives.name' => 'Title',
 	'venue' => 'Venue',
 	'city' => 'City',
 	'country' => 'Country',

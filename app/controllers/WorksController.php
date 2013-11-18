@@ -85,7 +85,6 @@ class WorksController extends \lithium\action\Controller {
 		$limit = !(intval($limit)) ? $total : $limit;
 
 		$works = Works::find('artworks', array(
-			'with' => 'Archives',
 			'limit' => $limit,
 			'conditions' => $filter,
 			'page' => $page
@@ -134,7 +133,7 @@ class WorksController extends \lithium\action\Controller {
 				if ($condition == 'artist') {
 					$fields = array('artist', 'artist_native_name');
 				} else {
-					$fields = array('title', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+					$fields = array('Archives.name', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
 				}
 
 				foreach ($fields as $field) {
@@ -246,7 +245,7 @@ class WorksController extends \lithium\action\Controller {
 		if (!Environment::get('inventory')) {
 			return $this->redirect('Works::index'); 
 		}
-    
+
 		$works_locations = Works::find('all', array(
 			'fields' => array('location', 'count(location) as works'),
 			'group' => 'location',
@@ -290,8 +289,6 @@ class WorksController extends \lithium\action\Controller {
 			));
 
 			if($work) {
-	
-				$order = array('title' => 'ASC');
 
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
@@ -307,7 +304,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 		
 				$exhibitions = Exhibitions::find('all', array(
@@ -315,7 +312,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$archives_links = ArchivesLinks::find('all', array(
@@ -336,7 +333,9 @@ class WorksController extends \lithium\action\Controller {
 
 	public function add() {
 		
+		$archive = Archives::create();
 		$work = Works::create();
+		$link = Links::create();
 		$documents = array();
 
 		if ($this->request->data) {
@@ -350,13 +349,47 @@ class WorksController extends \lithium\action\Controller {
 				));
 			}
 
-			if (isset($this->request->data['work'])) {
-				if ($work->save($this->request->data['work'])) {
+			if (isset($this->request->data['archive'])) {
+				$archive_data = $this->request->data['archive'];
+				$archive_data['controller'] = 'works';
+				$archive = Archives::create($archive_data);
 
-					// The slug has been saved with the Archive object, so let's look it up
-					$archive = Archives::find('first', array(
-						'conditions' => array('id' => $work->id)
-					));
+				// Check if a URL for a Link was submitted. The link "validates" if the URL is
+				// valid, or blank
+				$link_data = array();
+				$link_validates = true;
+				if (isset($this->request->data['link'])) {
+					$link_data = $this->request->data['link'];
+					if (!empty($link_data['url'])) {
+						$link = Links::create($link_data);
+						$link_validates = $link->validates();
+					}
+				}
+
+				if ($archive->validates() && $link_validates) {
+
+					$archive = Archives::create();
+					$archive->save($archive_data);
+
+					// Save a work along with this archive
+					$work_data = isset($this->request->data['work']) ? $this->request->data['work'] : array();
+					$work_data['id'] = $archive->id;
+
+					$work = Works::create();
+					$work->save($work_data);
+
+					// If Link data was supplied, save Link and ArchivesLinks objects
+					if (!empty($link_data) && !empty($link_data['url'])) {
+						$link_data['title'] = $archive->name;
+						$link = Links::create();
+						$link->save($link_data);
+
+						$archives_link = ArchivesLinks::create();
+						$archives_link->save(array(
+							'archive_id' => $archive->id,
+							'link_id' => $link->id
+						));
+					}
 
 					// If any documents were submitted, save them as ArchivesDocuments
 					$archive_id = $archive->id;
@@ -413,11 +446,12 @@ class WorksController extends \lithium\action\Controller {
 
 		$classifications = Works::classifications();
 
-		return compact('work', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
+		return compact('archive', 'work', 'link', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
 	}
 
 	public function edit() {
 		
+		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 		
 			$work = Works::first(array(
@@ -425,125 +459,139 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 		
-			if($work) {
+			if (empty($work)) {
+				return $this->redirect('Works::index');
+			}
 
-				$works_artists = Works::find('all', array(
-					'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
-					'group' => array('artist', 'artist_native_name'),
-					'order' => array('works' => 'DESC')
-				));
+			$archive = $work->archive;
 
-				$artists = $works_artists->map(function($wa) {
-					if ($wa->artist || $wa->artist_native_name) {
-						return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
+			if ($this->request->data) {
+
+				if (isset($this->request->data['archive'])) {
+
+					$archive_data = $this->request->data['archive'];
+
+					if ($archive->save($archive_data)) {
+
+						$work_data = isset($this->request->data['work']) ? $this->request->data['work'] : array();
+						$work->save($work_data);
+
+						return $this->redirect(array('Works::view', 'slug' => $archive->slug));
 					}
-				}, array('collect' => false));
-
-				$artists = array_filter($artists);
-
-				$works_materials = Works::find('all', array(
-					'fields' => array('materials', 'count(materials) as works'),
-					'group' => 'materials',
-					'conditions' => array('materials' => array('!=' => '')),
-					'order' => array('works' => 'DESC', 'materials' => 'ASC')
-				));
-
-				$materials = $works_materials->map(function($wm) {
-					return $wm->materials;
-				}, array('collect' => false));
-
-				$classifications = Works::classifications();
-		
-				$works_locations = Works::find('all', array(
-					'fields' => array('location'),
-					'group' => 'location',
-					'conditions' => array('location' => array('!=' => '')),
-					'order' => array('location' => 'ASC')
-				));
-
-				$locations = $works_locations->map(function($wl) {
-					return $wl->location;
-				}, array('collect' => false));
-
-				$users = Users::find('all', array(
-					'order' => array('name' => 'ASC'),
-				));
-
-				$order = array('title' => 'ASC');
-
-				$albums = Albums::find('all', array(
-					'with' => array('Archives', 'Components'),
-					'conditions' => array(
-						'Components.archive_id2' => $work->id,
-					),
-					'order' => $order
-				));
-
-				$album_ids = array();
-
-				foreach ($albums as $album) {
-					array_push($album_ids, $album->id);
 				}
+			}
 
-				//Find the albums the work is NOT in
-				$other_album_conditions = ($album_ids) ? array('Albums.id' => array('!=' => $album_ids)) : '';
+			$works_artists = Works::find('all', array(
+				'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
+				'group' => array('artist', 'artist_native_name'),
+				'order' => array('works' => 'DESC')
+			));
 
-				$other_albums = Albums::find('all', array(
-					'with' => 'Archives',
-					'order' => $order,
-					'conditions' => $other_album_conditions
-				));
-	
-				$exhibitions = Exhibitions::find('all', array(
-					'with' => array('Archives', 'Components'),
-					'conditions' => array(
-						'Components.archive_id2' => $work->id,
-					),
-					'order' => $order
-				));
-
-				$exhibition_ids = array();
-
-				foreach ($exhibitions as $exhibition) {
-					array_push($exhibition_ids, $exhibition->id);
+			$artists = $works_artists->map(function($wa) {
+				if ($wa->artist || $wa->artist_native_name) {
+					return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
 				}
-	
-				//Find the exhibitions the work is NOT in
-				$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
+			}, array('collect' => false));
 
-				$other_exhibitions = Exhibitions::find('all', array(
-					'with' => 'Archives',
-					'order' => array('earliest_date' => 'DESC'),
-					'conditions' => $other_exhibition_conditions
-				));
-		
-				$archives_documents = ArchivesDocuments::find('all', array(
-					'with' => array(
-						'Documents',
-						'Documents.Formats'
-					),
-					'conditions' => array('archive_id' => $work->id),
-					'order' => array('Documents.slug' => 'ASC')
-				));
+			$artists = array_filter($artists);
 
-				if (($this->request->data) && $work->save($this->request->data)) {
-					return $this->redirect(array('Works::view', 'args' => array($this->request->params['slug'])));
-				}
+			$works_materials = Works::find('all', array(
+				'fields' => array('materials', 'count(materials) as works'),
+				'group' => 'materials',
+				'conditions' => array('materials' => array('!=' => '')),
+				'order' => array('works' => 'DESC', 'materials' => 'ASC')
+			));
 
-				return compact(
-					'work', 
-					'archives_documents', 
-					'albums', 
-					'other_albums', 
-					'exhibitions', 
-					'other_exhibitions',
-					'artists',
-					'classifications',
-					'materials',
-					'locations',
-					'users'
-				);
-			}	
+			$materials = $works_materials->map(function($wm) {
+				return $wm->materials;
+			}, array('collect' => false));
+
+			$classifications = Works::classifications();
+
+			$works_locations = Works::find('all', array(
+				'fields' => array('location'),
+				'group' => 'location',
+				'conditions' => array('location' => array('!=' => '')),
+				'order' => array('location' => 'ASC')
+			));
+
+			$locations = $works_locations->map(function($wl) {
+				return $wl->location;
+			}, array('collect' => false));
+
+			$users = Users::find('all', array(
+				'order' => array('name' => 'ASC'),
+			));
+
+			$albums = Albums::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $work->id,
+				),
+				'order' => array('Archives.name' =>  'ASC')
+			));
+
+			$album_ids = array();
+
+			foreach ($albums as $album) {
+				array_push($album_ids, $album->id);
+			}
+
+			//Find the albums the work is NOT in
+			$other_album_conditions = ($album_ids) ? array('Albums.id' => array('!=' => $album_ids)) : '';
+
+			$other_albums = Albums::find('all', array(
+				'with' => 'Archives',
+				'order' => array('Archives.name' =>  'ASC'),
+				'conditions' => $other_album_conditions
+			));
+
+			$exhibitions = Exhibitions::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $work->id,
+				),
+				'order' => array('Archives.name' =>  'ASC')
+			));
+
+			$exhibition_ids = array();
+
+			foreach ($exhibitions as $exhibition) {
+				array_push($exhibition_ids, $exhibition->id);
+			}
+
+			//Find the exhibitions the work is NOT in
+			$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
+
+			$other_exhibitions = Exhibitions::find('all', array(
+				'with' => 'Archives',
+				'order' => array('earliest_date' => 'DESC'),
+				'conditions' => $other_exhibition_conditions
+			));
+
+			$archives_documents = ArchivesDocuments::find('all', array(
+				'with' => array(
+					'Documents',
+					'Documents.Formats'
+				),
+				'conditions' => array('archive_id' => $work->id),
+				'order' => array('Documents.slug' => 'ASC')
+			));
+
+			return compact(
+				'archive',
+				'work',
+				'archives_documents',
+				'albums', 
+				'other_albums',
+				'exhibitions',
+				'other_exhibitions',
+				'artists',
+				'classifications',
+				'materials',
+				'locations',
+				'users'
+			);
 		}																																		
 		
 		$this->redirect(array('Works::index'));
@@ -561,14 +609,12 @@ class WorksController extends \lithium\action\Controller {
 		
 			if($work) {
 
-				$order = array('title' => 'ASC');
-
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$album_ids = array();
@@ -582,7 +628,7 @@ class WorksController extends \lithium\action\Controller {
 
 				$other_albums = Albums::find('all', array(
 					'with' => 'Archives',
-					'order' => $order,
+					'order' => array('Archives.name' =>  'ASC'),
 					'conditions' => $other_album_conditions
 				));
 	
@@ -591,7 +637,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array(
 						'Components.archive_id2' => $work->id,
 					),
-					'order' => $order
+					'order' => array('Archives.name' =>  'ASC')
 				));
 
 				$exhibition_ids = array();
@@ -605,7 +651,7 @@ class WorksController extends \lithium\action\Controller {
 
 				$other_exhibitions = Exhibitions::find('all', array(
 					'with' => 'Archives',
-					'order' => $order,
+					'order' => array('Archives.name' =>  'ASC'),
 					'conditions' => $other_exhibition_conditions
 				));
 		

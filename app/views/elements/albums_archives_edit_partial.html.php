@@ -6,7 +6,7 @@
 		<?php $component = $album->components->first(); ?>
 			<tr>
 				<td>
-					<?=$this->html->link($album->title, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
+					<?=$this->html->link($album->archive->name, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
 				</td>
 				<td align="right" style="text-align:right">
 		<?=$this->form->create($component, array('url' => $this->url(array('Components::delete', 'id' => $component->id)), 'method' => 'post')); ?>
@@ -43,7 +43,7 @@
 				<tr>
 					<td>
 						<strong>
-							<?=$this->html->link($oc->title, $this->url(array('Albums::view', 'slug' => $oc->archive->slug))); ?>
+							<?=$this->html->link($oc->archive->name, $this->url(array('Albums::view', 'slug' => $oc->archive->slug))); ?>
 						</strong><br/>
 					</td>
 					<td align="right" style="text-align:right">

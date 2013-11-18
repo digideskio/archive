@@ -20,7 +20,7 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 
 		$publication = Publications::create();
 		$data = array(
-			'title' => 'Book Title',
+			'id' => '1',
 			'remarks' => 'Some Remarks',
 			'storage_location' => 'SL',
 			'storage_number' => 'SN',
@@ -76,7 +76,6 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 
 		$publication_history = PublicationsHistories::first();
 
-		$this->assertEqual($publication->title, $publication_history->title);
 		$this->assertEqual($publication->remarks, $publication_history->remarks);
 		$this->assertEqual($publication->storage_location, $publication_history->storage_location);
 		$this->assertEqual($publication->storage_number, $publication_history->storage_number);
@@ -122,7 +121,7 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 	
 		$publication = Publications::first();
 		$data = array(
-			'title' => 'New Title'
+			'publisher' => 'New Publisher'
 		);
 
 		$publication->save($data); 
@@ -137,7 +136,7 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 			)
 		));
 
-		$this->assertEqual($publication->title, $publication_history->title);
+		$this->assertEqual($publication->publisher, $publication_history->publisher);
 
 	}
 

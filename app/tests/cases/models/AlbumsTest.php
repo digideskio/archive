@@ -22,18 +22,20 @@ class AlbumsTest extends \lithium\test\Unit {
 
 	}
 
-	public function testCreateWithNoTitle() {
-		$album = Albums::create();
+	public function testCreateWithNoId() {
 		$data = array (
-			"title" => "",
+			"id" => "",
 			"remarks" => "This is the description."
 		);
+		$album = Albums::create($data);
+
+		$this->assertFalse($album->validates());
 		
-		$this->assertFalse($album->save($data), "The album was able to be saved without a title.");
+		$this->assertFalse($album->save($data), "The album was able to be saved without an id.");
 
 		$errors = $album->errors();
 
-		$this->assertEqual('Please enter a title.', $errors['title'][0]);
+		$this->assertEqual('This field may not be empty.', $errors['id'][0]);
 
 	}
 

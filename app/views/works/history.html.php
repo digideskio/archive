@@ -1,6 +1,6 @@
 <?php 
 
-$this->title($work->title);
+$this->title($work->archive->name);
 
 $auth = $this->authority->auth();
 
@@ -20,7 +20,7 @@ if($auth->timezone_id) {
 	</li>
 
 	<li>
-	<?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?>
+	<?=$this->html->link($work->archive->name,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	

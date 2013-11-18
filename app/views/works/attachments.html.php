@@ -1,6 +1,6 @@
 <?php
 
-$this->title($work->title);
+$this->title($work->archive->name);
 
 ?>
 
@@ -15,7 +15,7 @@ $this->title($work->title);
 	</li>
 
 	<li>
-	<?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?>
+	<?=$this->html->link($work->archive->name,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
 	
@@ -79,7 +79,7 @@ $this->title($work->title);
 			<h3>Delete Artwork</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$work->title; ?></strong>?</p>
+			<p>Are you sure you want to permanently delete <strong><?=$work->archive->name; ?></strong>?</p>
 			
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>

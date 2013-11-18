@@ -15,7 +15,7 @@ $this->Pdf->setCustomLayout(array(
 		list($r, $g, $b) = array(200,200,200);
 		$pdf->SetFillColor($r, $g, $b); 
 		$pdf->SetTextColor(0 , 0, 0);
-		$pdf->Cell(0,15, $album->title, 0,1,'C', 1);
+		$pdf->Cell(0,15, $title, 0,1,'C', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){
@@ -164,7 +164,7 @@ EOD;
 
 foreach ($publications as $pub) {
 
-	$pub_title = $pub->title;
+	$pub_title = $pub->archive->name;
 	$pub_byline = $pub->byline();
 	$pub_publisher = $pub->publisher;
 	$pub_dates = $pub->archive->dates();

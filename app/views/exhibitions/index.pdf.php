@@ -79,7 +79,7 @@ EOD;
 
 foreach ( $exhibitions as $exhibition ) {
 
-	$exhibition_title = $exhibition->title;
+	$exhibition_title = $exhibition->archive->name;
 	$exhibition_venue = $exhibition->venue;
 	$exhibition_type = $exhibition->archive->type;
 	$city = $exhibition->city;

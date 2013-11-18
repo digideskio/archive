@@ -71,7 +71,6 @@ class SearchController extends \lithium\action\Controller {
 
 			foreach ($fields as $field) {
 				$matching_works = Works::find('artworks', array(
-					'with' => 'Archives',
 					'fields' => 'Works.id',
 					'conditions' => array("$field" => array('LIKE' => "%$query%")),
 				));
@@ -105,7 +104,6 @@ class SearchController extends \lithium\action\Controller {
 			$work_limit = !(intval($limit)) ? $works_total : $limit;
 
 			$works = Works::find('artworks', array(
-				'with' => 'Archives',
 				'conditions' => $work_conditions,
 				'limit' => $work_limit,
 			));
