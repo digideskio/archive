@@ -224,7 +224,7 @@ $(document).ready(function() {
 	$('#select-works #select-no-archives').click(function(event) {
 		event.preventDefault();
 		$('.works-checkbox').attr('checked', false);
-		$('.work-label').removeClass('checked');
+		$('.works-label').removeClass('checked');
 		handleWorksButtons();
 	});
 
