@@ -35,9 +35,6 @@ $this->Pdf->SetTextColor(0, 0, 0);
 $html = <<<EOD
 
 	<style>
-		table {
-			font-size: 12pt;
-		}
 
 		.following-page {
 			page-break-before: always;
