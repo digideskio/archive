@@ -214,14 +214,14 @@
 
 $(document).ready(function() {
 
-	$('#select-works #select-all-archives').click(function() {
+	$('#select-works #select-all-archives').click(function(event) {
 		event.preventDefault();
 		$('.works-checkbox').attr('checked', true);
 		$('.works-label').addClass('checked');
 		handleWorksButtons();
 	});
 
-	$('#select-works #select-no-archives').click(function() {
+	$('#select-works #select-no-archives').click(function(event) {
 		event.preventDefault();
 		$('.works-checkbox').attr('checked', false);
 		$('.work-label').removeClass('checked');

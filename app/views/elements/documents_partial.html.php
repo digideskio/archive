@@ -75,14 +75,14 @@
 
 $(document).ready(function() {
 
-	$('#select-docs #select-all-docs').click(function() {
+	$('#select-docs #select-all-docs').click(function(event) {
 		event.preventDefault();
 		$('.checkdocs').attr('checked', true);
 		$('.batch-checkbox').addClass('checked');
 		handleDocsButtons();
 	});
 
-	$('#select-docs #select-no-docs').click(function() {
+	$('#select-docs #select-no-docs').click(function(event) {
 		event.preventDefault();
 		$('.checkdocs').attr('checked', false);
 		$('.batch-checkbox').removeClass('checked');
