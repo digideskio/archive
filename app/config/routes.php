@@ -109,6 +109,7 @@ Router::connect('/works/attachments/{:slug}', array('Works::attachments'));
 Router::connect('/works/history/{:slug}', array('Works::history'));
 Router::connect('/works/histories/{:page:[0-9]+}', array('Works::histories'));
 Router::connect('/works/search/{:page:[0-9]+}', array('Works::search'));
+Router::connect('/works/publish', array('Works::publish'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
 if (Environment::get('architecture')) {

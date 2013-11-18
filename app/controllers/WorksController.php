@@ -17,10 +17,14 @@ use app\models\Components;
 use app\models\Links;
 use app\models\ArchivesLinks;
 
+use li3_filesystem\extensions\storage\FileSystem;
+
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\core\Environment;
 use lithium\data\collection\RecordSet;
+use lithium\template\View;
+use lithium\util\Inflector;
 
 use li3_access\security\Access;
 
@@ -58,6 +62,9 @@ class WorksController extends \lithium\action\Controller {
 			array('rule' => 'allowEditorUser', 'redirect' => "Pages::home"),
 		),
 		'history' => array(
+			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
+		),
+		'publish' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'delete' => array(
@@ -725,6 +732,55 @@ class WorksController extends \lithium\action\Controller {
 		
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Works::index'));
+	}
+
+	public function publish() {
+
+		$id = isset($this->request->query['id']) ? $this->request->query['id'] : NULL;
+
+		$works = Works::find('all', array(
+			'with' => 'Archives',
+			'conditions' => array('Archives.id' => $id),
+		));
+
+		$inventory = Environment::get('inventory');
+
+		if ($works->count() == 1) {
+			$work = $works->current();
+			$pdf = $work->archive->slug . '.pdf';
+		} else {
+			$host = Inflector::humanize($this->request->env('HTTP_HOST'));
+			$pdf = Inflector::slug($host) . '.pdf';
+		}
+
+		$config = FileSystem::config('documents');
+		$options = array(
+			'path' => $config['path']
+		);
+
+		$view  = new View(array(
+			'paths' => array(
+				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
+				'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
+			)
+		));
+
+		echo $view->render(
+			'all',
+			array('content' => compact(
+				'pdf',
+				'works',
+				'inventory',
+				'options'
+			)),
+			array(
+				'controller' => 'works',
+				'template' => 'single',
+				'type' => 'pdf',
+				'layout' => 'download'
+			)
+		);
+
 	}
 
 	public function delete() {

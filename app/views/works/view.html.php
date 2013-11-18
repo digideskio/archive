@@ -26,7 +26,8 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 
 </div>
 
-<ul class="nav nav-tabs">
+<div class="actions">
+	<ul class="nav nav-tabs">
 	<li class="active">
 		<a href="#">View</a>
 	</li>
@@ -41,7 +42,21 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 
 		<li><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
 
-</ul>
+	</ul>
+
+	<div class="btn-toolbar">
+		<div class="btn-group">
+			<?php
+				$print_query = array(
+					'id' => $work->archive->id,
+					'template' => 'single'
+				);
+				$print_url = $this->url(array('Works::publish')) . '?' . http_build_query($print_query);
+			?>
+			<a class="btn btn-inverse" href="<?=$print_url ?>"><i class="icon-print icon-white"></i> Print</a>
+		</div>
+	</div>
+</div>
 
 <div class="row">
 	<div class="span6">

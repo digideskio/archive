@@ -307,6 +307,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
 		$this->assertTrue(!empty($rules));
+		$this->assertEqual(13, sizeof($rules));
 
 		$this->assertEqual(1, sizeof($rules['index']));
 		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
@@ -340,6 +341,9 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual(1, sizeof($rules['history']));
 		$this->assertEqual('allowAnyUser', $rules['history'][0]['rule']);
+
+		$this->assertEqual(1, sizeof($rules['publish']));
+		$this->assertEqual('allowAnyUser', $rules['publish'][0]['rule']);
 
 		$this->assertEqual(1, sizeof($rules['delete']));
 		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
