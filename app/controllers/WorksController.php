@@ -752,9 +752,11 @@ class WorksController extends \lithium\action\Controller {
 			if ($works->count() == 1) {
 				$work = $works->current();
 				$pdf = $work->archive->slug . '.pdf';
+				$template = 'single';
 			} else {
 				$host = Inflector::humanize($this->request->env('HTTP_HOST'));
 				$pdf = Inflector::slug($host) . '.pdf';
+				$template = 'list';
 			}
 
 			$config = FileSystem::config('documents');
@@ -779,7 +781,7 @@ class WorksController extends \lithium\action\Controller {
 				)),
 				array(
 					'controller' => 'works',
-					'template' => 'single',
+					'template' => $template,
 					'type' => 'pdf',
 					'layout' => 'download'
 				)
