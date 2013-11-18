@@ -736,50 +736,55 @@ class WorksController extends \lithium\action\Controller {
 
 	public function publish() {
 
-		$id = isset($this->request->query['id']) ? $this->request->query['id'] : NULL;
+		$query = $this->request->query;
+		$data = $this->request->data ?: $this->request->query;
 
-		$works = Works::find('all', array(
-			'with' => 'Archives',
-			'conditions' => array('Archives.id' => $id),
-		));
+		if (isset($data['archives'])) {
+			$archive_ids = $data['archives'];
 
-		$inventory = Environment::get('inventory');
+			$works = Works::find('all', array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.id' => $archive_ids),
+			));
 
-		if ($works->count() == 1) {
-			$work = $works->current();
-			$pdf = $work->archive->slug . '.pdf';
-		} else {
-			$host = Inflector::humanize($this->request->env('HTTP_HOST'));
-			$pdf = Inflector::slug($host) . '.pdf';
+			$inventory = Environment::get('inventory');
+
+			if ($works->count() == 1) {
+				$work = $works->current();
+				$pdf = $work->archive->slug . '.pdf';
+			} else {
+				$host = Inflector::humanize($this->request->env('HTTP_HOST'));
+				$pdf = Inflector::slug($host) . '.pdf';
+			}
+
+			$config = FileSystem::config('documents');
+			$options = array(
+				'path' => $config['path']
+			);
+
+			$view  = new View(array(
+				'paths' => array(
+					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
+					'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
+				)
+			));
+
+			echo $view->render(
+				'all',
+				array('content' => compact(
+					'pdf',
+					'works',
+					'inventory',
+					'options'
+				)),
+				array(
+					'controller' => 'works',
+					'template' => 'single',
+					'type' => 'pdf',
+					'layout' => 'download'
+				)
+			);
 		}
-
-		$config = FileSystem::config('documents');
-		$options = array(
-			'path' => $config['path']
-		);
-
-		$view  = new View(array(
-			'paths' => array(
-				'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',
-				'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
-			)
-		));
-
-		echo $view->render(
-			'all',
-			array('content' => compact(
-				'pdf',
-				'works',
-				'inventory',
-				'options'
-			)),
-			array(
-				'controller' => 'works',
-				'template' => 'single',
-				'type' => 'pdf',
-				'layout' => 'download'
-			)
-		);
 
 	}
 

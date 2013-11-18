@@ -14,7 +14,6 @@
 
 <?php endif; ?>
 
-<?php if($authority_can_edit): ?>
 <form method="post">
 	
 	<table class="table table-bordered">
@@ -31,14 +30,18 @@
 			<li id="select-no-archives"><a href="#"><i class="icon-remove"></i> Select None</a></li>
 		  </ul>
 		</div>
+		<?php if($authority_can_edit): ?>
 		<div class="btn-group">
 		<?=$this->form->submit('Create Album', array('onclick' => "this.form.action='/albums/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		</div>
+		<?php endif; ?>
+		<div class="btn-group">
+		<?=$this->form->submit('Print', array('onclick' => "this.form.action='/works/publish'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
 	</div>
 	</td></tr>
 	</tbody>
 	</table>
-<?php endif; ?>
 
 <?php
 	$layout = 'table';

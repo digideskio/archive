@@ -48,7 +48,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 		<div class="btn-group">
 			<?php
 				$print_query = array(
-					'id' => $work->archive->id,
+					'archives' => $work->archive->id,
 					'template' => 'single'
 				);
 				$print_url = $this->url(array('Works::publish')) . '?' . http_build_query($print_query);

@@ -39,6 +39,10 @@ $html = <<<EOD
 			font-size: 12pt;
 		}
 
+		.following-page {
+			page-break-before: always;
+		}
+
 		.image-artwork {
 			height: 400px;
 		}
@@ -51,7 +55,17 @@ $html .= <<<EOD
 
 EOD;
 
+$page_class = "first-page";
+
 foreach ($works as $work) {
+
+$html .= <<<EOD
+	
+	<div class="$page_class page-artwork">
+
+EOD;
+
+	$page_class = 'following-page';
 
 	$document = $work->documents('first');
 	if (!empty($document) && !empty($document->id)) {
@@ -90,6 +104,7 @@ EOD;
 $html .= <<<EOD
 
 	<p>$caption</p>
+	</div>
 
 EOD;
 
