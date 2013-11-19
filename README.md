@@ -130,6 +130,9 @@ Other customizations are set via Environment variables, and can therefore be tun
 	Environment::set('production', array('inventory' => true));
 
 Other session variables are:
+	'organization' => array(
+		'name' => 'YOUR_NAME'
+	)
 
 	'inventory =>       true/false
 	'architecture' =>   true/false
