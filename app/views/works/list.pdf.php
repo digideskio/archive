@@ -2,6 +2,7 @@
 
 $options = $content['options'];
 $works = $content['works'];
+$parent = $content['parent'];
 $inventory = $content['inventory'];
 $pdf = $content['pdf'];
 
@@ -53,6 +54,29 @@ $html = <<<EOD
 
 	</style>
 EOD;
+
+if (!empty($parent->name)) {
+
+	$heading = $this->escape($parent->name);
+
+$html .= <<<EOD
+
+	<h3>$heading</h3>
+
+EOD;
+
+	$dates = $this->escape($parent->dates());
+
+	if (!empty($dates)) {
+
+$html .= <<<EOD
+
+	<p>$dates</p>
+
+EOD;
+
+	}
+}
 
 $html .= <<<EOD
 

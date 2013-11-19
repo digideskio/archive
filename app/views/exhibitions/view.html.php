@@ -23,6 +23,7 @@ $authority_can_edit = $this->authority->canEdit();
 
 </div>
 
+<div class="actions">
 <ul class="nav nav-tabs">
 	<li class="active">
 		<a href="#">View</a>
@@ -38,6 +39,19 @@ $authority_can_edit = $this->authority->canEdit();
 		<li><?=$this->html->link('History','/exhibitions/history/'.$exhibition->archive->slug); ?></li>
 
 </ul>
+<div class="btn-toolbar">
+	<div class="btn-group">
+		<?php
+			$print_query = array(
+				'exhibition' => $exhibition->archive->id,
+				'template' => 'list'
+			);
+			$print_url = $this->url(array('Works::publish')) . '?' . http_build_query($print_query);
+		?>
+		<a class="btn btn-inverse" href="<?=$print_url ?>"><i class="icon-print icon-white"></i> Print</a>
+	</div>
+</div>
+</div>
 
 <?=$this->partial->exhibition(compact('exhibition')); ?>
 

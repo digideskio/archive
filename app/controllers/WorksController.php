@@ -739,8 +739,34 @@ class WorksController extends \lithium\action\Controller {
 		$query = $this->request->query;
 		$data = $this->request->data ?: $this->request->query;
 
-		if (isset($data['archives'])) {
-			$archive_ids = $data['archives'];
+		$archive_ids = isset($data['archives']) ? $data['archives'] : array();
+		$exhibition_id = isset($data['exhibition']) ? $data['exhibition'] : NULL;
+
+		if ($archive_ids || $exhibition_id) {
+
+			$parent = Archives::create();
+
+			if (!empty($exhibition_id)) {
+				$parent = Archives::find('first', array(
+					'conditions' => array(
+						'Archives.id' => $exhibition_id
+					)
+				));
+
+				$exhibitions_works = Components::find('all', array(
+					'fields' => 'archive_id2',
+					'conditions' => array(
+						'archive_id1' => $parent->id,
+						'type' => 'exhibitions_works'
+					),
+				));
+
+				$work_ids = $exhibitions_works->map(function($ew) {
+					return $ew->archive_id2;
+				}, array('collect' => false));
+
+				$archive_ids = array_merge($archive_ids, $work_ids);
+			}
 
 			$works = Works::find('all', array(
 				'with' => 'Archives',
@@ -749,7 +775,10 @@ class WorksController extends \lithium\action\Controller {
 
 			$inventory = Environment::get('inventory');
 
-			if ($works->count() == 1) {
+			if (!empty($parent->name)) {
+				$pdf = $parent->slug . '.pdf';
+				$template = 'list';
+			} elseif ($works->count() == 1) {
 				$work = $works->current();
 				$pdf = $work->archive->slug . '.pdf';
 				$template = 'single';
@@ -776,6 +805,7 @@ class WorksController extends \lithium\action\Controller {
 				array('content' => compact(
 					'pdf',
 					'works',
+					'parent',
 					'inventory',
 					'options'
 				)),
