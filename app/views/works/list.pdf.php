@@ -100,9 +100,6 @@ EOD;
 foreach ($works as $work) {
 
 $html .= <<<EOD
-	
-	<tr>
-		<td>
 
 EOD;
 
@@ -115,7 +112,14 @@ EOD;
 
 $html .= <<<EOD
 	
-	<p>$thumb_img</p>
+	<tr>
+		<td>
+	
+		<p>$thumb_img</p>
+
+		</td>
+
+	</tr>
 
 EOD;
 
@@ -142,14 +146,20 @@ EOD;
 		$price = $sell_price ? $currency . ' ' . $sell_price : NULL;
 	}
 
-	$caption = implode(', ', array_filter(array($artist, $title, $materials, $dimensions, $price)));
+	$caption = implode(', ', array_filter(array($artist, $title, $materials, $dimensions)));
 
 $html .= <<<EOD
 
-	<p>$caption</p>
-	<p>&nbsp;</p>
-	</td>
+	<tr>
+		<td width="70%">
+			<p>$caption</p>
+			<p>&nbsp;</p>
+		</td>
+		<td width="30%">
+			<p>$price</p>
+		</td>
 	</tr>
+		
 
 EOD;
 
