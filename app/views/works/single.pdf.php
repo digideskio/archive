@@ -91,9 +91,9 @@ EOD;
 	$price = '';
 
 	if (!empty($inventory)) {
-		$sell_price = (float) $work->attribute('sell_price');
+		$sell_price = $work->attribute('sell_price');
 		$currency = $this->escape($work->attribute('sell_price_per'));
-		$price = $sell_price ? $currency . ' ' . number_format($sell_price) : NULL;
+		$price = $sell_price ? $currency . ' ' . $sell_price : NULL;
 	}
 
 	$caption = implode('<br/>', array_filter(array($artist, $title, $materials, $dimensions, $price)));
