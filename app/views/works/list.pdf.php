@@ -7,15 +7,15 @@ $artists = $content['artists'];
 $inventory = $content['inventory'];
 $pdf = $content['pdf'];
 
-$title = "";
+$title = $options['title'];
 
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $title){
 		list($r, $g, $b) = array(255,255,255);
 		$pdf->SetFillColor($r, $g, $b); 
-		$pdf->SetTextColor(0 , 0, 0);
-		$pdf->Cell(0,15, $title, 0,1,'C', 1);
+		$pdf->SetTextColor(0 , 136, 204);
+		$pdf->Cell(0,15, $title, 0,1,'L', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){

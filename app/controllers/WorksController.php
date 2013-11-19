@@ -799,9 +799,12 @@ class WorksController extends \lithium\action\Controller {
 				$template = 'list';
 			}
 
+			$organization = Environment::get('organization');
+			$title = isset($organization['name']) ? $organization['name'] : '';
 			$config = FileSystem::config('documents');
 			$options = array(
-				'path' => $config['path']
+				'path' => $config['path'],
+				'title' => $title
 			);
 
 			$view  = new View(array(
