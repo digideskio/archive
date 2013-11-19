@@ -76,7 +76,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
 <div class="row">
 
-<?=$this->form->create(compact('archive', 'exhibition', 'link'), array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('archive', 'exhibition', 'link', 'archives'), array('id' => 'ExhibitionsForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 
@@ -110,6 +110,23 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 				</div>
 			</div>
 		</div>
+
+		<?php if (!empty($archives)): ?>
+		<div class="well">
+			<legend>Exhibition Components</legend>
+			<?php foreach ($archives as $archive): ?>
+				<label class="checkbox">
+				<?=$this->form->checkbox('archives[]', array('id' => "Archive-$archive->id", 'value' => $archive->id, 'hidden' => false, 'checked' => 'checked'));?>
+				<?=$archive->name ?>
+				<?php if ($archive->years()): ?>
+					(<?=$archive->years(); ?>)
+				<?php endif; ?>
+				</label>
+
+			<?php endforeach; ?>
+
+		</div>
+		<?php endif; ?>
 
 		<div class="well">
 			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>

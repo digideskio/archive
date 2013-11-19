@@ -307,8 +307,18 @@ class ExhibitionsController extends \lithium\action\Controller {
 		$exhibition = Exhibitions::create();
 		$link = Links::create();
 		$documents = array();
+		$archives = array();
 
 		if ($this->request->data) {
+
+			if (isset($this->request->data['archives'])) {
+				$archive_ids = $this->request->data['archives'];
+
+				$archives = Archives::find('all', array(
+					'conditions' => array('Archives.id' => $archive_ids),
+					'order' => array('earliest_date' => 'DESC')
+				));
+			}
 
 			if (isset($this->request->data['documents'])) {
 				$document_ids = $this->request->data['documents'];
@@ -368,6 +378,26 @@ class ExhibitionsController extends \lithium\action\Controller {
 							'archive_id' => $archive->id,
 							'link_id' => $link->id
 						));
+					}
+
+					// If any archive ids were submitted, save them as Components
+					foreach ($archives as $a) {
+						$archive_id1 = $archive->id;
+						$archive_id2 = $a->id;
+
+						$type = '';
+
+						switch ($a->controller) {
+							case 'works':
+								$type = 'exhibitions_works';
+								break;
+							case 'publications':
+								$type = 'exhibitions_publications';
+								break;
+						}
+
+						$component = Components::create();
+						$component->save(compact('archive_id1', 'archive_id2', 'type'));
 					}
 
 					// If any documents were submitted, save them as ArchivesDocuments
@@ -434,6 +464,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'archive',
 			'exhibition',
 			'link',
+			'archives',
 			'documents',
 			'titles',
 			'venues',

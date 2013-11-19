@@ -34,6 +34,9 @@
 		<div class="btn-group">
 		<?=$this->form->submit('Create Album', array('onclick' => "this.form.action='/albums/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
+		<div class="btn-group">
+		<?=$this->form->submit('Create Exhibition', array('onclick' => "this.form.action='/exhibitions/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		</div>
 		<?php endif; ?>
 		<div class="btn-group">
 		<?=$this->form->submit('Print', array('onclick' => "this.form.action='/works/publish'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>

@@ -12,6 +12,8 @@ use app\models\Links;
 use app\models\ArchivesLinks;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
+use app\models\Works;
+use app\models\Components;
 
 use lithium\action\Request;
 use lithium\net\http\Router;
@@ -52,6 +54,8 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		Documents::all()->delete();
 		ArchivesDocuments::all()->delete();
+
+		Components::all()->delete();
 	
 	}
 
@@ -100,6 +104,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(isset($data['exhibition']));
 		$this->assertTrue(isset($data['link']));
 		$this->assertTrue(isset($data['documents']));
+		$this->assertTrue(isset($data['archives']));
 
 		// Test that the action does not save if data is posted but not the
 		// required objects
@@ -111,11 +116,13 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(isset($data['exhibition']));
 		$this->assertTrue(isset($data['link']));
 		$this->assertTrue(isset($data['documents']));
+		$this->assertTrue(isset($data['archives']));
 
 		// Check that no new records were created
 		$this->assertEqual(1, Exhibitions::count());
 		$this->assertEqual(1, Archives::count());
 		$this->assertEqual(0, Links::count());
+		$this->assertEqual(0, Components::count());
 
 		// Test that the action does not save and reports errors if we do not
 		// post the required data
@@ -127,6 +134,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(isset($data['exhibition']));
 		$this->assertTrue(isset($data['link']));
 		$this->assertTrue(isset($data['documents']));
+		$this->assertTrue(isset($data['archives']));
 
 		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
 		$this->assertTrue(!empty($errors));
@@ -135,6 +143,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual(1, Exhibitions::count());
 		$this->assertEqual(1, Archives::count());
 		$this->assertEqual(0, Links::count());
+		$this->assertEqual(0, Components::count());
 
 		// Test that this action processes and saves the correct data, namely
 		// an exhibition, archive, and link model
@@ -179,6 +188,70 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual($name, $link->title);
 
+	}
+
+	public function testAddWithArchives() {
+
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/exhibitions/view/{:slug}', array('Albums::view'));
+
+		// Create a new archive (it could represent an artwork, publication, or something
+		// else) which we will use to seed the new album
+
+		//Create an archive and work pair for testing purposes
+		$archive_data = array(
+			'name' => 'First Artwork Title',
+			'controller' => 'works'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
+		$work = Works::create(array(
+			'id' => $archive->id,
+			'materials' => 'The Materials'
+		));
+
+		$work->save();
+
+		// Test that the archive is loaded and passed to the view
+		$data = $this->call('add', array(
+			'data' => array('archives' => array($work->id))
+		));
+
+		$this->assertTrue(isset($data['archives']));
+
+		// Check that the archive loaded matches the id we passed in
+		$archives = $data['archives'];
+		$found_work_archive = $archives->first();
+
+		$this->assertEqual($work->id, $found_work_archive->id);
+
+		// Test that this action processes and saves the correct data, including
+		// a new component representing the artwork we passed in
+		$name = 'Exhibition New Title';
+		$slug = 'Exhibition-New-Title';
+
+		$data = $this->call('add', array(
+			'data' => array(
+				'archive' => compact('name'),
+				'exhibition' => array(),
+				'archives' => array($work->id)
+			)
+		));
+
+		$exhibition_archive = Archives::find('first', array(
+			'conditions' => compact('slug')
+		));
+
+		$component = Components::find('first', array(
+			'conditions' => array(
+				'archive_id1' => $exhibition_archive->id,
+				'archive_id2' => $work->id
+			)
+		));
+
+		$this->assertTrue(!empty($component));
 	}
 
 	public function testAddWithDocuments() {
