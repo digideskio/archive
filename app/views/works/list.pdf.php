@@ -3,6 +3,7 @@
 $options = $content['options'];
 $works = $content['works'];
 $parent = $content['parent'];
+$artists = $content['artists'];
 $inventory = $content['inventory'];
 $pdf = $content['pdf'];
 
@@ -54,6 +55,17 @@ $html = <<<EOD
 
 	</style>
 EOD;
+
+if (!empty($artists)) {
+	$artist_list = implode(', ', $artists);
+
+$html .= <<<EOD
+
+	<h3>$artist_list</h3>
+
+EOD;
+
+}
 
 if (!empty($parent->name)) {
 

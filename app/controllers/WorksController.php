@@ -773,6 +773,17 @@ class WorksController extends \lithium\action\Controller {
 				'conditions' => array('Archives.id' => $archive_ids),
 			));
 
+			$works_artists = Works::find('all', array(
+				'fields' => array('artist'),
+				'group' => array('artist'),
+				'order' => array('artist' => 'ASC'),
+				'conditions' => array('Works.id' => $archive_ids),
+			));
+
+			$artists = $works_artists->map(function($wa) {
+				return $wa->artist;
+			}, array('collect' => false));
+
 			$inventory = Environment::get('inventory');
 
 			if (!empty($parent->name)) {
@@ -806,6 +817,7 @@ class WorksController extends \lithium\action\Controller {
 					'pdf',
 					'works',
 					'parent',
+					'artists',
 					'inventory',
 					'options'
 				)),
