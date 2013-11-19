@@ -121,7 +121,11 @@ EOD;
 
 	}
 
-	$artist = $this->escape($work->artist);
+	$work_artist = $this->escape($work->artist);
+
+	//Don't repeat the artist name if there is only one artist
+	$artist = sizeof($artists) > 1 ? $work_artist : NULL;
+
 	$name = $this->escape($work->archive->name);
 	$years = $this->escape($work->archive->years());
 
