@@ -4,6 +4,7 @@ namespace app\models;
 
 use lithium\util\Inflector;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 use Imagine;
 
@@ -143,6 +144,23 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 		$date_created = date("Y-m-d H:i:s");
 		$params['data']['date_created'] = $date_created;
 
+		// Set the published status
+		$published = 0;
+		if(isset($params['data']['published'])) {
+			$published = $params['data']['published'];
+		} else {
+			// If the status is not set explicitly, check the default configuration
+			$documents = Environment::get('documents');
+
+			if ($documents && isset($documents['default'])) {
+				$documents_default = $documents['default'];
+
+				if (isset($documents_default['published'])) {
+					$published = $documents_default['published'];
+				}
+			}
+		}
+
 		// Save the user_id of the uploader
 		$user_id = 0;
 		$check = (Auth::check('default')) ?: null;
@@ -247,7 +265,7 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			
 			$format_id = $format->id;
 					
-			$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height', 'date_created', 'user_id');
+			$params['data'] = compact('title', 'hash', 'file_date', 'format_id', 'slug', 'width', 'height', 'date_created', 'user_id', 'published');
 
 			//Give the file a unique filename based on its md5sum
 			$hash_name = $hash . '.' . $format->extension;
