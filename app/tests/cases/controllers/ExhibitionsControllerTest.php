@@ -13,6 +13,7 @@ use app\models\ArchivesLinks;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
 use app\models\Works;
+use app\models\WorksHistories;
 use app\models\Components;
 
 use lithium\action\Request;
@@ -56,6 +57,9 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		ArchivesDocuments::all()->delete();
 
 		Components::all()->delete();
+
+		Works::find("all")->delete();
+		WorksHistories::find("all")->delete();
 	
 	}
 
