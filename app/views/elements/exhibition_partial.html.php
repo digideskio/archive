@@ -10,9 +10,9 @@
 	<?php 
 		date_default_timezone_set('UTC');
 		
-		$location = $this->exhibition->location($exhibition->archive, $exhibition);
-		$dates = $exhibition->archive->dates();
-		$curator = $exhibition->curator;
+		$location = $this->escape($this->exhibition->location($exhibition->archive, $exhibition));
+		$dates = $this->escape($exhibition->archive->dates());
+		$curator = $this->escape($exhibition->curator);
 	?>
 	
 	<?php if($location) echo "<p>$location</p>"; ?>
