@@ -79,6 +79,15 @@ $this->form->config(
 			<?=$this->form->field('architecture.city', array('autocomplete' => 'off', 'label' => 'City'));?>
 			<?=$this->form->field('architecture.country', array('autocomplete' => 'off', 'label' => 'Country'));?>
 			<?=$this->form->field('architecture.annotation', array('type' => 'textarea', 'label' => 'Annotation'));?>
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 		<?=$this->form->end(); ?>
 		</div>

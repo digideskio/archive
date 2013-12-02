@@ -110,6 +110,15 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 			<?=$this->form->field('publication.storage_location', array('label' => 'Storage Location', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.storage_number', array('label' => 'Storage Number', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.publication_number', array('Publication Number', 'autocomplete' => 'off', 'label' => 'Publication ID'));?>
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
 
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>

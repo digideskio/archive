@@ -108,6 +108,15 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 			<?=$this->form->field('exhibition.remarks', array(
 				'type' => 'textarea',
 			));?>
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
 		</div>
 
 		<div class="well">

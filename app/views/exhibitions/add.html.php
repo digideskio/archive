@@ -98,6 +98,16 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 			<?=$this->form->field('exhibition.remarks', array('type' => 'textarea', 'label' => 'Remarks'));?>
 			<?=$this->form->field('link.url', array('autocomplete' => 'off', 'label' => 'URL'));?>
 
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
+
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>
 				<div class="controls">

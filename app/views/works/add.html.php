@@ -175,6 +175,16 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
 			<?=$this->form->field('link.url', array('label' => 'URL', 'autocomplete' => 'off'));?>
 
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
+
 			<div class="control-group" id="DocumentsGroup" style="display:none;">
 				<?=$this->form->label('documents', 'Documents', array('class' => 'control-label')); ?>
 				<div class="controls">

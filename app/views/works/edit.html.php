@@ -140,6 +140,16 @@ foreach ($users as $user) {
 			<?=$this->form->field('work.creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
 
 			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
+
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
 		</div>
 
 		<div class="well">

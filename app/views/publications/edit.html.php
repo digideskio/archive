@@ -90,6 +90,15 @@ $language_list = json_encode($language_names);
 			<?=$this->form->field('publication.storage_location', array('Storage Location' => 'Author', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.storage_number', array('Storage Number' => 'Author', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.publication_number', array('Publication Number' => 'Author', 'autocomplete' => 'off', 'label' => 'Publication ID'));?>
+			<div class="control-group" style="margin-bottom: 0">
+				<label class="control-label">Published</label>
+
+				<div class="controls">
+					<label class="checkbox">
+						<?=$this->form->checkbox('archive.published');?>
+					</label>
+				</div>
+			</div>
 
 		</div>
 
