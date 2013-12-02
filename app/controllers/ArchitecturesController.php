@@ -210,6 +210,17 @@ class ArchitecturesController extends \lithium\action\Controller {
 
 			}
 
+		} else {
+			// Check if any defaults are set
+			$archives_config = Environment::get('archives');
+
+			if ($archives_config && isset($archives_config['default'])) {
+				$archives_default = $archives_config['default'];
+
+				if (isset($archives_default['published'])) {
+					$archive->published = $archives_default['published'];
+				}
+			}
 		}
 
 		return compact('archive', 'architecture');

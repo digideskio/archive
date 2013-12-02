@@ -409,6 +409,17 @@ class WorksController extends \lithium\action\Controller {
 					return $this->redirect(array('Works::view', 'slug' => $archive->slug));
 				}
 			}
+		} else {
+			// Check if any defaults are set
+			$archives_config = Environment::get('archives');
+
+			if ($archives_config && isset($archives_config['default'])) {
+				$archives_default = $archives_config['default'];
+
+				if (isset($archives_default['published'])) {
+					$archive->published = $archives_default['published'];
+				}
+			}
 		}
 
 		$works_artists = Works::find('all', array(

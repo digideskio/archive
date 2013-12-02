@@ -21,6 +21,7 @@ use app\models\Roles;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\core\Environment;
 
 class PublicationsController extends \lithium\action\Controller {
 
@@ -359,6 +360,17 @@ class PublicationsController extends \lithium\action\Controller {
 					}
 
 					return $this->redirect(array('Publications::view', 'slug' => $archive->slug));
+				}
+			}
+		} else {
+			// Check if any defaults are set
+			$archives_config = Environment::get('archives');
+
+			if ($archives_config && isset($archives_config['default'])) {
+				$archives_default = $archives_config['default'];
+
+				if (isset($archives_default['published'])) {
+					$archive->published = $archives_default['published'];
 				}
 			}
 		}
