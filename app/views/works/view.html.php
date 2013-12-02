@@ -93,7 +93,11 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 				<tr>
 					<th><i class="icon-picture"></i></th>
 					<th class="meta"></th>
-					<th></th>
+					<th>
+						<?php if ($work->archive->published): ?>
+							<span class="label label-success">Published</span>
+						<?php endif; ?>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

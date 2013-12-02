@@ -79,7 +79,11 @@ $authority_can_edit = $this->authority->canEdit();
 				<tr>
 					<th><i class="icon-book"></i></th>
 					<th class="meta"></th>
-					<th></th>
+					<th>
+						<?php if ($publication->archive->published): ?>
+							<span class="label label-success">Published</span>
+						<?php endif; ?>
+					</th>
 				</tr>
 			</thead>
 			<tbody>

@@ -19,6 +19,12 @@
 	<?php if($dates) echo "<p>$dates</p>"; ?>
 	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
 	
+	<p>
+
+	<?php if ($exhibition->archive->published): ?>
+		<span class="label label-success">Published</span>
+	<?php endif; ?>
+
 	<?php 
 	
 		$has_components = isset($exhibition->components) && $exhibition->components->count() ? true : false;
@@ -31,11 +37,9 @@
 				$work_count =  ($ec->type == 'exhibitions_works') ? $work_count + 1 : $work_count;
 				$pub_count =  ($ec->type == 'exhibitions_publications') ? $pub_count + 1 : $pub_count;
 			}
-
-			echo '<p>';
 			
 			if ($work_count) {
-				echo '<span class="label label-success">';
+				echo '<span class="label label-info">';
 				echo $work_count;
 				echo $work_count == '1' ? ' Artwork' : ' Artworks';
 				echo '</span>';
@@ -43,16 +47,16 @@
 			}
 			
 			if ($pub_count) {
-				echo '<span class="label label-info">';
+				echo '<span class="label label-inverse">';
 				echo $pub_count;
 				echo $pub_count == '1' ? ' Publication' : ' Publications';
 				echo '</span>';
 			}
-
-			echo '</p>';
 		}
 
 	?>
+
+	</p>
 
 	<?php
 		$has_links = !empty($exhibition->archives_links) && $exhibition->archives_links->count() ? true : false;

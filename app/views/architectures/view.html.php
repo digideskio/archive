@@ -75,7 +75,11 @@ $authority_can_edit = $this->authority->canEdit();
 				<tr>
 					<th><i class="icon-road"></i></th>
 					<th class="meta"></th>
-					<th></th>
+					<th>
+						<?php if ($architecture->archive->published): ?>
+							<span class="label label-success">Published</span>
+						<?php endif; ?>
+					</th>
 				</tr>
 			</thead>
 			<tbody>
