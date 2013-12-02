@@ -31,6 +31,7 @@ class ArchivesHistoriesTest extends \lithium\test\Integration {
 			'date_modified' => '2013-01-02 11:11:11',
 			'user_id' => '1',
 			'parent_id' => '10',
+			'published' => '1',
 		);
 		$archive->save($data);
 	}
@@ -65,6 +66,7 @@ class ArchivesHistoriesTest extends \lithium\test\Integration {
 		$this->assertEqual($archive->date_modified, $archive_history->date_modified);
 		$this->assertEqual($archive->user_id, $archive_history->user_id);
 		$this->assertEqual($archive->parent_id, $archive_history->parent_id);
+		$this->assertEqual($archive->published, $archive_history->published);
 
 		$this->assertNull($archive_history->end_date);
 
