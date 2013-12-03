@@ -17,6 +17,9 @@ use app\models\ExhibitionsHistories;
 use app\models\Works;
 use app\models\WorksHistories;
 
+use app\models\Persons;
+use app\models\PersonsHistories;
+
 class ArchivesComponentsTest extends \lithium\test\Integration {
 
 	public function setup() {
@@ -51,6 +54,9 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 		Works::find("all")->delete();
 		WorksHistories::find("all")->delete();
 
+		Persons::find("all")->delete();
+		PersonsHistories::find("all")->delete();
+
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
 	}
@@ -82,6 +88,50 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 		$this->assertEqual(0, Components::count());
 	
+	}
+
+	public function testPersonsComponents() {
+
+		//Create an archive and person pair for testing purposes
+		$archive_data = array(
+			'name' => 'Person Name',
+			'controller' => 'artists'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
+		$person = Persons::create(array(
+			'id' => $archive->id,
+			'biography' => 'Person Biography'
+		));
+
+		$person->save();
+
+		$work = Works::first();
+
+		$archive_id1 = $person->id;
+		$archive_id2 = $work->id;
+
+		$type = 'persons_works';
+
+		$component = Components::create();
+		$comp_data = compact('archive_id1', 'archive_id2', 'type');
+
+		$component->save($comp_data);
+
+		$find_person = Persons::find('first', array(
+			'with' => 'Components'
+		));
+
+		$comp = $find_person->components->first();
+
+		$this->assertEqual($person->id, $comp->archive_id1);
+		$this->assertEqual($work->id, $comp->archive_id2);
+
+		$person->delete();
+
+		$this->assertEqual(0, Components::count());
+
 	}
 
 	public function testAlbumsComponents() {

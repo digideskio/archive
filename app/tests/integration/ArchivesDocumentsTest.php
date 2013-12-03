@@ -17,6 +17,9 @@ use app\models\ExhibitionsHistories;
 use app\models\Works;
 use app\models\WorksHistories;
 
+use app\models\Persons;
+use app\models\PersonsHistories;
+
 use app\models\Architectures;
 use app\models\ArchitecturesHistories;
 
@@ -52,6 +55,9 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 
 		Works::find("all")->delete();
 		WorksHistories::find("all")->delete();
+
+		Persons::find("all")->delete();
+		PersonsHistories::find("all")->delete();
 
 		Architectures::find("all")->delete();
 		ArchitecturesHistories::find("all")->delete();
@@ -151,6 +157,41 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(1, ArchivesDocuments::count());
 
 		$architecture->delete();
+
+		$this->assertEqual(0, ArchivesDocuments::count());
+
+	}
+	
+	public function testPersonsDocuments() {
+
+		$document = Documents::first();
+
+		//Create an archive and person pair for testing purposes
+		$archive_data = array(
+			'name' => 'Person Name',
+			'controller' => 'artists'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
+		$person = Persons::create(array(
+			'id' => $archive->id,
+			'biography' => 'Person Biography'
+		));
+
+		$person->save();
+
+		$archive_document = ArchivesDocuments::create();
+		$ad_data = array(
+			'archive_id' => $person->id,
+			'document_id' => $document->id,
+		);
+
+		$archive_document->save($ad_data);
+
+		$this->assertEqual(1, ArchivesDocuments::count());
+
+		$person->delete();
 
 		$this->assertEqual(0, ArchivesDocuments::count());
 
