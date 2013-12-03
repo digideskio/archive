@@ -14,6 +14,7 @@ class PersonsHistoriesTest extends \lithium\test\Integration {
 
 		$person = Persons::create();
 		$data = array (
+			'id' => '1',
 			'family_name' => 'Last Name',
 			'given_name' => 'First Name',
 			'native_family_name' => 'First',
