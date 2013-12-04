@@ -112,6 +112,13 @@ Router::connect('/works/search/{:page:[0-9]+}', array('Works::search'));
 Router::connect('/works/publish', array('Works::publish'));
 Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
+Router::connect('/artists', array('Persons::index'));
+Router::connect('/artists/add', array('Persons::add'));
+Router::connect('/artists/pages/{:page:[0-9]+}', array('Persons::index'));
+Router::connect('/artists/view/{:slug}', array('Persons::view'));
+Router::connect('/artists/edit/{:slug}', array('Persons::edit'));
+Router::connect('/artists/delete/{:slug}', array('Persons::delete'));
+
 if (Environment::get('architecture')) {
 	Router::connect('/architectures/pages/{:page:[0-9]+}', array('Architectures::index'));
 	Router::connect('/architectures/view/{:slug}', array('Architectures::view'));
