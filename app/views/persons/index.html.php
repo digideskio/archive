@@ -42,7 +42,11 @@ $authority_is_admin = $this->authority->isAdmin();
 	<p>
 		<?=$this->html->link(
 			$person->archive->name,
-			$this->url(array('Persons::view')) . '/' . $person->archive->slug
+			$this->url(array(
+				'controller' => 'persons',
+				'action' => 'view',
+				'slug' => $person->archive->slug
+			))
 		); ?>
 	</p>
 
