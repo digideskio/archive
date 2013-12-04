@@ -30,6 +30,21 @@ class PersonsController extends \lithium\action\Controller {
 
 	public function index() {
 
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
+		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
+		$total = Persons::count();
+
+		$limit = ($limit == 'all') ? $total : $limit;
+		
+		$persons = Persons::find('all', array(
+			'with' => 'Archives',
+			'order' => array('Archives.name' => 'ASC'),
+			'limit' => $limit,
+			'page' => $page
+		));
+
+		return compact('persons', 'total', 'page', 'limit');
+
 	}
 
 	public function add() {
