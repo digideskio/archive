@@ -127,11 +127,73 @@ class PersonsController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-
+	
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			//Get single record from the database where the slug matches the URL
+			$person = Persons::first(array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
+			));
+			
+			if (!$person) {
+				$this->redirect(array('Persons::index'));
+			} else {
+			
+				//Send the retrieved data to the view
+				return compact('person');
+			
+			}
+		}
+		
+		//since no record was specified, redirect to the index page
+		//$this->redirect(array('Persons::index'));
 	}
 
 	public function edit() {
+		
+		//Don't run the query if no slug is provided
+		if(isset($this->request->params['slug'])) {
+		
+			$person = Persons::first(array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
+			));
+		
+			if (empty($person)) {
+				return $this->redirect('Persons::index');
+			}
 
+			$archive = $person->archive;
+
+			if ($this->request->data) {
+
+				if (isset($this->request->data['archive'])) {
+
+					$archive_data = $this->request->data['archive'];
+
+					if ($archive->save($archive_data)) {
+
+						$person_data = isset($this->request->data['person']) ? $this->request->data['person'] : array();
+						$person->save($person_data);
+
+						return $this->redirect(array('Persons::view', 'slug' => $archive->slug));
+					}
+				}
+			}
+
+			$classifications = array('Artist');
+
+			return compact(
+				'archive',
+				'person',
+				'classifications'
+			);
+		}
+
+		$this->redirect(array('Persons::index'));
+		
 	}
 
 	public function delete() {
