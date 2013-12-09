@@ -83,18 +83,6 @@ if($auth->timezone_id) {
 					</tr>
 				<?php endif; ?>
 
-				<?php if( $wh->artist || $wh->artist_native_name ): ?>
-					<tr>
-					<td class="meta">Artist</td>
-					<td>
-						<?=$wh->artist ?>
-						<?php if ($wh->artist_native_name): ?>
-							(<?=$wh->artist_native_name ?>)
-						<?php endif; ?>
-					</td>
-					</tr>
-				<?php endif; ?>
-
 				<?php if( $ah->names() ): ?>
 					<tr>
 					<td class="meta">Title</td>

@@ -84,7 +84,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 	
 		<div class="alert alert-block">
     	<p>
-    		<?=$this->artwork->caption($work->archive, $work); ?>
+    		<?=$this->artwork->caption($work); ?>
     	</p>
 		</div>
 	
@@ -105,7 +105,14 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td><i class="icon-font"></i></td>
 					<td class="meta">Artist</td>
 					<td class="info-title" colspan="3">
-						<?=$this->artwork->artists($work->archive, $work, array('link' => true)); ?>
+						<ul class="unstyled" style="margin-bottom:0">
+						<?php foreach ($artists as $artist): ?>
+							<li><strong><?=$this->html->link(
+								$artist->archive->name,
+								$this->url(array('Persons::view', 'slug' => $artist->archive->slug))
+							);?></strong></li>
+						<?php endforeach; ?>
+						</ul>
 					</td>
 				</tr>
 				<tr>
@@ -162,9 +169,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td><i class="icon-gift"></i></td>
 					<td class="meta">Inventory</td>
 					<td colspan="3">
-						<?php
-							echo $work->inventory(); 
-						?>
+						<?=$this->artwork->inventory($work); ?>
 					</td>
 				</tr>
 				<?php endif; ?>
@@ -172,11 +177,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td><i class="icon-info-sign"></i></td>
 					<td class="meta">Notes</td>
 					<td colspan="3">
-						<?php 
-						
-						echo $work->notes();
-						
-						?>
+						<?=$this->artwork->inventory($work); ?>
 					
 				</tr>
 			</tbody>

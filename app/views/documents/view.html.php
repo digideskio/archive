@@ -70,7 +70,7 @@ $this->title($document->title);
    		<?php foreach($works as $work): ?>
 			<div class="alert alert-block alert-info">
 				<p>
-    				<?=$this->artwork->caption($work->archive, $work); ?>
+    				<?=$this->artwork->caption($work); ?>
 					
 					<?php
 							echo "(Photo &copy; ";

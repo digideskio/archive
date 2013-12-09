@@ -5,6 +5,11 @@ namespace app\models;
 class Components extends \lithium\data\Model {
 
 	public $belongsTo = array(
+		'Persons' => array(
+			'to' => 'app\models\Persons',
+			'key' => array(
+				'archive_id1' => 'id'
+		)),
 		'Albums' => array(
 			'to' => 'app\models\Albums',
 			'key' => array(

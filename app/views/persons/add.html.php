@@ -100,3 +100,40 @@ $this->form->config(
 
 <?=$this->form->end(); ?>
 </div>
+
+<script>
+
+$(document).ready(function() {
+
+	function calculateFullName(first, last) {
+		var fullName = [first.val(), last.val()];
+
+		return fullName.join(' ');
+	}
+
+	pGive = $('#PersonsGivenName');
+	pFam = $('#PersonsFamilyName');
+	aName = $('#ArchivesName');
+
+	pGive.bind('keyup keypress blur', function() {
+		aName.val(calculateFullName(pGive, pFam));
+	});
+
+	pFam.bind('keyup keypress blur', function() {
+		aName.val(calculateFullName(pGive, pFam));
+	});
+
+	pNatGive = $('#PersonsNativeGivenName');
+	pNatFam = $('#PersonsNativeFamilyName');
+	aNatName = $('#ArchivesNativeName');
+
+	pNatGive.bind('keyup keypress blur', function() {
+		aNatName.val(calculateFullName(pNatGive, pNatFam));
+	});
+
+	pNatFam.bind('keyup keypress blur', function() {
+		aNatName.val(calculateFullName(pNatGive, pNatFam));
+	});
+
+});
+</script>

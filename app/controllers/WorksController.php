@@ -9,6 +9,7 @@ use app\models\ArchivesHistories;
 
 use app\models\Users;
 use app\models\Roles;
+use app\models\Persons;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
 use app\models\Albums;
@@ -35,9 +36,6 @@ class WorksController extends \lithium\action\Controller {
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'search' => array(
-			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
-		),
-		'artists' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'classifications' => array(
@@ -111,7 +109,6 @@ class WorksController extends \lithium\action\Controller {
 
 		if (Environment::get('artworks')) {
 			$artworks = Environment::get('artworks');
-			$filter = isset($artworks['filter']) ? $artworks['filter'] : '';
 			
 			if (isset($artworks['search'])) {
 				$search = $artworks['search'];
@@ -131,35 +128,63 @@ class WorksController extends \lithium\action\Controller {
 
 			$query = $data['query'];
 
+			// If there is only one condition, and we are not searching for an aritst
+			// then simply pass on the single condition
 			if ($condition && $condition != 'artist') {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array($condition => array('LIKE' => "%$query%"));
 			} else {
 
 				$artwork_ids = array();
 
-				if ($condition == 'artist') {
-					$fields = array('artist', 'artist_native_name');
-				} else {
-					$fields = array('Archives.name', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
-				}
+				$name_fields = array('Archives.name', 'Archives.native_name');
 
-				foreach ($fields as $field) {
-					$matching_works = Works::find('artworks', array(
-						'with' => 'Archives',
-						'fields' => 'Works.id',
-						'conditions' => array("$field" => array('LIKE' => "%$query%")),
+				foreach ($name_fields as $field) {
+
+					// Find artists whose name matches the query
+					$artists = Persons::find('all', array(
+						'with' => array('Archives', 'Components'),
+						'fields' => array(
+							'Components.id',
+							'Components.archive_id2',
+						),
+						'conditions' => array(
+							$field => array('LIKE' => "%$query%"),
+							'Components.type' => 'persons_works',
+							'Components.role' => 'Artist'
+						)
 					));
 
-					if ($matching_works) {
-						$matching_ids = $matching_works->map(function($mw) {
-							return $mw->id;
-						}, array('collect' => false));
+					// Gather the IDs of their artworks
+					foreach ($artists as $artist) {
+						foreach ($artist->components as $c) {
+							array_push($artwork_ids, $c->archive_id2);
+						}
+					}
 
-						$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
+				}
+
+				// If there is no condition set, then search across other important
+				// artworks fields
+				if (!$condition) {
+					$fields = array('Archives.name', 'Archives.classification', 'Archives.earliest_date', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
+
+					foreach ($fields as $field) {
+						$matching_works = Works::find('artworks', array(
+							'fields' => 'Works.id',
+							'conditions' => array("$field" => array('LIKE' => "%$query%")),
+						));
+
+						if ($matching_works->count() > 0) {
+							$matching_ids = $matching_works->map(function($mw) {
+								return $mw->id;
+							}, array('collect' => false));
+
+							$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
+						}
 					}
 				}
 
-				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('artist' => $query);
+				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('Works.id' => '');
 			}
 
 			$filter = '';
@@ -189,26 +214,6 @@ class WorksController extends \lithium\action\Controller {
 		}
 
 		return compact('works', 'condition', 'query', 'total', 'page', 'limit');
-
-	}
-
-	public function artists() {
-
-		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
-			'group' => array('artist', 'artist_native_name'),
-			'order' => array('artist' => 'ASC', 'artist_native_name' => 'ASC')
-		));
-
-		$artists = $works_artists->map(function($wa) {
-			if ($wa->artist || $wa->artist_native_name) {
-				return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
-			}
-		}, array('collect' => false));
-
-		$artists = array_filter($artists);
-
-		return compact('artists');
 
 	}
 
@@ -290,12 +295,22 @@ class WorksController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$work = Works::find('first', array(
+			$works = Works::find('artworks', array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
 
+			$work = $works->first();
+
 			if($work) {
+
+				$artists = Persons::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'Components.archive_id2' => $work->id,
+					),
+					'order' => array('Archives.name' => 'ASC')
+				));
 
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
@@ -330,7 +345,7 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('Links.date_modified' =>  'DESC')
 				));
 
-				return compact('work', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
+				return compact('work', 'artists', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
 			}
 		}
 		
@@ -343,6 +358,7 @@ class WorksController extends \lithium\action\Controller {
 		$archive = Archives::create();
 		$work = Works::create();
 		$link = Links::create();
+		$artist = Persons::create();
 		$documents = array();
 
 		if ($this->request->data) {
@@ -354,6 +370,16 @@ class WorksController extends \lithium\action\Controller {
 					'with' => 'Formats',
 					'conditions' => array('Documents.id' => $document_ids),
 				));
+			}
+
+			if (isset($this->request->data['artist'])) {
+				$artist_data = $this->request->data['artist'];
+				if (isset($artist_data['id'])) {
+					$artist = Persons::find('first', array(
+						'with' => 'Archives',
+						'conditions' => array('id' => $artist_data['id'])
+					));
+				}
 			}
 
 			if (isset($this->request->data['archive'])) {
@@ -384,6 +410,18 @@ class WorksController extends \lithium\action\Controller {
 
 					$work = Works::create();
 					$work->save($work_data);
+
+					// If an Artist was named, save a Component to connect person to artwork
+					if(!empty($artist_data) && !empty($artist->id)) {
+						$persons_works = Components::create();
+
+						$persons_works->save(array(
+							'archive_id1' => $artist->id,
+							'archive_id2' => $work->id,
+							'type' => 'persons_works',
+							'role' => 'Artist'
+						));
+					}
 
 					// If Link data was supplied, save Link and ArchivesLinks objects
 					if (!empty($link_data) && !empty($link_data['url'])) {
@@ -420,21 +458,23 @@ class WorksController extends \lithium\action\Controller {
 					$archive->published = $archives_default['published'];
 				}
 			}
+
+			$artworks_config = Environment::get('artworks');
+
+			if ($artworks_config && isset($artworks_config['artist']['default'])) {
+				$default_artist = $artworks_config['artist']['default'];
+				$artist = Persons::find('first', array(
+					'with' => 'Archives',
+					'conditions' => array('Archives.name' => $default_artist)
+				));
+			}
 		}
 
-		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
-			'group' => array('artist', 'artist_native_name'),
-			'order' => array('works' => 'DESC')
+		$artists = Persons::find('all', array(
+			'with' => 'Archives',
+			'order' => array('Archives.name' => 'ASC'),
+			'conditions' => array('Archives.classification' => 'Artist')
 		));
-
-		$artists = $works_artists->map(function($wa) {
-			if ($wa->artist || $wa->artist_native_name) {
-				return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
-			}
-		}, array('collect' => false));
-
-		$artists = array_filter($artists);
 
 		$works_materials = Works::find('all', array(
 			'fields' => array('materials', 'count(materials) as works'),
@@ -464,7 +504,7 @@ class WorksController extends \lithium\action\Controller {
 
 		$classifications = Works::classifications();
 
-		return compact('archive', 'work', 'link', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
+		return compact('archive', 'work', 'artist', 'link', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
 	}
 
 	public function edit() {
@@ -483,35 +523,62 @@ class WorksController extends \lithium\action\Controller {
 
 			$archive = $work->archive;
 
+			$artist = Persons::find('first', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $work->id,
+				),
+				'order' => array('Archives.name' => 'ASC')
+			));
+
 			if ($this->request->data) {
+				$data = $this->request->data;
 
-				if (isset($this->request->data['archive'])) {
+				if (isset($data['archive'])) {
 
-					$archive_data = $this->request->data['archive'];
+					$archive_data = $data['archive'];
 
 					if ($archive->save($archive_data)) {
 
-						$work_data = isset($this->request->data['work']) ? $this->request->data['work'] : array();
+						$work_data = isset($data['work']) ? $data['work'] : array();
 						$work->save($work_data);
+
+						// Get the posted artist data
+						$artist_data = isset($data['artist']) ? $data['artist'] : array();
+						$artist_id = isset($artist_data['id']) ? $artist_data['id'] : '';
+
+						// Check if there was an artist for this work,
+						// but the posted artist does not match
+						if ($artist && ($artist->id != $artist_id)) {
+							// Delete the relationship between the work and the original artist
+							foreach ($artist->components as $c) {
+								$c->delete();
+							}
+						}
+
+						// Check if a new artist has been posted
+						if ($artist_id && (!$artist || $artist->id != $artist_id)) {
+							// Associate the artwork with the new artist
+							$persons_works = Components::create();
+
+							$persons_works->save(array(
+								'archive_id1' => $artist_id,
+								'archive_id2' => $work->id,
+								'type' => 'persons_works',
+								'role' => 'Artist'
+							));
+						}
 
 						return $this->redirect(array('Works::view', 'slug' => $archive->slug));
 					}
 				}
 			}
 
-			$works_artists = Works::find('all', array(
-				'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
-				'group' => array('artist', 'artist_native_name'),
-				'order' => array('works' => 'DESC')
+			$artists = Persons::find('all', array(
+				'with' => 'Archives',
+				'order' => array('Archives.name' => 'ASC'),
+				'conditions' => array('Archives.classification' => 'Artist')
 			));
-
-			$artists = $works_artists->map(function($wa) {
-				if ($wa->artist || $wa->artist_native_name) {
-					return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
-				}
-			}, array('collect' => false));
-
-			$artists = array_filter($artists);
 
 			$works_materials = Works::find('all', array(
 				'fields' => array('materials', 'count(materials) as works'),
@@ -599,6 +666,7 @@ class WorksController extends \lithium\action\Controller {
 			return compact(
 				'archive',
 				'work',
+				'artist',
 				'archives_documents',
 				'albums', 
 				'other_albums',
@@ -779,21 +847,18 @@ class WorksController extends \lithium\action\Controller {
 				$archive_ids = array_merge($archive_ids, $work_ids);
 			}
 
-			$works = Works::find('all', array(
-				'with' => 'Archives',
+			$works = Works::find('artworks', array(
 				'conditions' => array('Archives.id' => $archive_ids),
 			));
 
-			$works_artists = Works::find('all', array(
-				'fields' => array('artist'),
-				'group' => array('artist'),
-				'order' => array('artist' => 'ASC'),
-				'conditions' => array('Works.id' => $archive_ids),
+			$artists = Persons::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $archive_ids,
+					'Components.role' => 'artist'
+				),
+				'order' => array('Archives.name' => 'ASC')
 			));
-
-			$artists = $works_artists->map(function($wa) {
-				return $wa->artist;
-			}, array('collect' => false));
 
 			$inventory = Environment::get('inventory');
 

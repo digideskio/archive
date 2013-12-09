@@ -5,10 +5,12 @@ namespace app\controllers;
 use app\models\Persons;
 use app\models\Archives;
 use app\models\Links;
+use app\models\ArchivesLinks;
 use app\models\Components;
 use app\models\Works;
 
 use lithium\core\Environment;
+use lithium\data\collection\RecordSet;
 
 class PersonsController extends \lithium\action\Controller {
 
@@ -76,16 +78,18 @@ class PersonsController extends \lithium\action\Controller {
 					}
 				}
 
+				// Get any additional person data
+				$person_data = isset($this->request->data['person']) ? $this->request->data['person'] : array();
+				$person = Persons::create($person_data);
+
 				if ($archive->validates() && $link_validates) {
 
 					$archive = Archives::create();
 					$archive->save($archive_data);
 
 					// Save a person along with this archive
-					$person_data = isset($this->request->data['person']) ? $this->request->data['person'] : array();
 					$person_data['id'] = $archive->id;
 
-					$person = Persons::create();
 					$person->save($person_data);
 
 					// If Link data was supplied, save Link and ArchivesLinks objects
@@ -138,22 +142,30 @@ class PersonsController extends \lithium\action\Controller {
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-
-			$total = $works ? $works->count() : 0;
 			
 			if (!$person) {
 				$this->redirect(array('Persons::index'));
 			} else {
+
+				$total = Components::count('all', array(
+					'conditions' => array(
+						'archive_id1' => $person->id,
+						'type' => 'persons_works'
+					)
+				));
 
 				$persons_works = Components::find('all', array(
 					'fields' => 'archive_id2',
 					'conditions' => array(
 						'archive_id1' => $person->id,
 						'type' => 'persons_works'
-					),
+					)
 				));
 
 				$works = array();
+
+				$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
+				$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 
 				if ($persons_works->count()) {
 
@@ -162,16 +174,18 @@ class PersonsController extends \lithium\action\Controller {
 						return $pw->archive_id2;
 					}, array('collect' => false));
 
-					$works = Works::find('all', array(
-						'with' => 'Archives',
+					$works = Works::find('artworks', array(
 						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'earliest_date DESC'
+						'limit' => $limit,
+						'page' => $page
 					));
 
+				} else {
+					$works = new RecordSet();
 				}
 			
 				//Send the retrieved data to the view
-				return compact('person', 'works');
+				return compact('person', 'works', 'total', 'page', 'limit');
 			
 			}
 		}

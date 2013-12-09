@@ -56,8 +56,12 @@ $html = <<<EOD
 	</style>
 EOD;
 
-if (!empty($artists)) {
-	$artist_list = implode(', ', $artists);
+if ($artists->count() > 0) {
+	$artist_names = $artists->map(function($a) {
+		return $a->archive->name;
+	}, array('collect' => false));
+
+	$artist_list = implode(', ', $artist_names);
 
 $html .= <<<EOD
 
@@ -125,18 +129,8 @@ EOD;
 
 	}
 
-	$work_artist = $this->escape($work->artist);
-
-	//Don't repeat the artist name if there is only one artist
-	$artist = sizeof($artists) > 1 ? $work_artist : NULL;
-
-	$name = $this->escape($work->archive->name);
-	$years = $this->escape($work->archive->years());
-
-	$title = !empty($years) ? "$name, $years" : $name;
-
-	$materials = $this->escape($work->materials);
-	$dimensions = $this->escape($work->dimensions());
+	$artwork_helper = new \app\extensions\helper\Artwork();
+	$caption = $artwork_helper->caption($work, array('materials' => true));
 
 	$price = '';
 
@@ -145,8 +139,6 @@ EOD;
 		$currency = $this->escape($work->attribute('sell_price_per'));
 		$price = $sell_price ? $currency . ' ' . $sell_price : NULL;
 	}
-
-	$caption = implode(', ', array_filter(array($artist, $title, $materials, $dimensions)));
 
 $html .= <<<EOD
 

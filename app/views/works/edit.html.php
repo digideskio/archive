@@ -28,36 +28,11 @@ $this->form->config(
     )
 ); 
 
-$artist_names = array();
-$artist_native_names = array();
-$artist_names_assoc = array();
+$artists_list = array('' => 'Choose one...');
 
-foreach ($artists as $artist) {
-	if ($artist['name']) {
-		array_push($artist_names, $artist['name']);
-		$artist_name = $artist['name'];
-
-		if (!isset($artist_names_assoc[$artist_name]) || $artist_names_assoc[$artist_name] == '') {
-			$artist_names_assoc[$artist_name] = $artist['native_name'];
-		}
-	}
-	if ($artist['native_name']) {
-		array_push($artist_native_names, $artist['native_name']);
-		$artist_native_name = $artist['native_name'];
-
-		if (!isset($artist_names_assoc[$artist_native_name]) || $artist_names_assoc[$artist_native_name] == '') {
-			$artist_names_assoc[$artist_native_name] = $artist['name'];
-		}
-	}
+foreach ($artists as $a) {
+	$artists_list[$a->id] = $a->archive->names();
 }
-
-$artist_names = array_values(array_unique($artist_names));
-$artist_names_data = json_encode($artist_names);
-
-$artist_native_names = array_values(array_unique($artist_native_names));
-$artist_native_names_data = json_encode($artist_native_names);
-
-$artist_names_assoc_data = json_encode($artist_names_assoc);
 
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
@@ -125,14 +100,19 @@ foreach ($users as $user) {
 
 <div class="row">
 
-<?=$this->form->create(compact('archive', 'work'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('archive', 'work', 'artist'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 		<div class="well">
 			<legend>Artwork Info</legend>
 
-    		<?=$this->form->field('work.artist', array('label' => 'Artist', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_names_data));?>
-			<?=$this->form->field('work.artist_native_name', array('label' => 'Artist (Native Language)', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $artist_native_names_data));?>
+			<div class="control-group">
+				<?=$this->form->label('artist.id', 'Artist', array('class' => 'control-label')); ?>
+				<div class="controls">
+					<?=$this->form->select('artist.id', $artists_list, array('value' => $artist->id)); ?>
+				</div>
+			</div>
+
     		<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off', 'value' => $work->archive->native_name));?>
 			<?=$this->form->field('archive.earliest_date', array('label' => 'Earliest Date', 'autocomplete' => 'off', 'value' => $work->archive->start_date_formatted()));?>
@@ -328,34 +308,7 @@ foreach ($users as $user) {
 
 $(document).ready(function() {
 
-	var artist_names =	<?php echo $artist_names_data; ?>;
-	var artist_native_names = <?php echo $artist_native_names_data; ?>;
-	var artist_names_assoc = <?php echo $artist_names_assoc_data; ?>;
 	var materials = <?php echo $materials_data; ?>
-
-	$('#WorksArtist').typeahead(
-		{
-			source: artist_names,
-			updater: function (item) {
-				if (artist_names_assoc[item] != undefined) {
-					$('#WorksArtistNativeName').val(artist_names_assoc[item]);
-				}
-				return item;
-			}
-		}
-	);
-
-	$('#WorksArtistNativeName').typeahead(
-		{
-			source: artist_native_names,
-			updater: function (item) {
-				if (artist_names_assoc[item] != undefined) {
-					$('#WorksArtist').val(artist_names_assoc[item]);
-				}
-				return item;
-			}
-		}
-	);
 
 	$('#WorksMaterials').typeahead(
 		{

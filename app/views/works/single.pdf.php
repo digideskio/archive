@@ -79,14 +79,8 @@ EOD;
 
 	}
 
-	$artist = $this->escape($work->artist);
-	$name = $this->escape($work->archive->name);
-	$years = $this->escape($work->archive->years());
-
-	$title = !empty($years) ? "$name, $years" : $name;
-
-	$materials = $this->escape($work->materials);
-	$dimensions = $this->escape($work->dimensions());
+	$artwork_helper = new \app\extensions\helper\Artwork();
+	$caption = $artwork_helper->caption($work, array('materials' => true, 'separator' => '<br/>'));
 
 	$price = '';
 
@@ -96,7 +90,7 @@ EOD;
 		$price = $sell_price ? $currency . ' ' . $sell_price : NULL;
 	}
 
-	$caption = implode('<br/>', array_filter(array($artist, $title, $materials, $dimensions, $price)));
+	$caption = implode('<br/>', array_filter(array($caption, $price)));
 
 $html .= <<<EOD
 

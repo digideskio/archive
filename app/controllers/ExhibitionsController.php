@@ -20,6 +20,7 @@ use app\models\Roles;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\core\Environment;
+use lithium\data\collection\RecordSet;
 
 use lithium\core\Libraries;
 
@@ -223,12 +224,10 @@ class ExhibitionsController extends \lithium\action\Controller {
 			$exhibitions_works = Components::find('all', array(
 				'fields' => 'archive_id2',
 				'conditions' => array(
-					'archive_id1' => $exhibition->id,
-					'type' => 'exhibitions_works'
+					'Components.archive_id1' => $exhibition->id,
+					'Components.type' => 'exhibitions_works'
 				),
 			));
-
-			$works = array();
 
 			if ($exhibitions_works->count()) {
 
@@ -237,12 +236,13 @@ class ExhibitionsController extends \lithium\action\Controller {
 					return $ew->archive_id2;
 				}, array('collect' => false));
 
-				$works = Works::find('all', array(
-					'with' => 'Archives',
+				$works = Works::find('artworks', array(
 					'conditions' => array('Works.id' => $work_ids),
-					'order' => 'earliest_date DESC'
+					'order' => 'Archives.earliest_date DESC'
 				));
 
+			} else {
+				$works = new RecordSet();
 			}
 
 			$total = $works ? $works->count() : 0;

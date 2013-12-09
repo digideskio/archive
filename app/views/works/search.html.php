@@ -25,62 +25,33 @@ if ($inventory) {
 
 ?>
 
-<div id="location" class="row-fluid">
-    
-	<ul class="breadcrumb">
-
-	<li>
-	<?=$this->html->link('Artwork','/works'); ?>
-	<span class="divider">/</span>
-	</li>
-
-	<li class="active">
-		Search
-	</li>
-
-	</ul>
-
-</div>
+<?=$this->partial->breadcrumbs(array(
+	'crumbs' => array(
+		array('title' => 'Artwork', 'url' => $this->url(array('Works::search'))),
+		array('title' => 'Search', 'active' => true)
+	)
+)); ?>
 
 <div class="actions">
-	<ul class="nav nav-tabs">
-		<li>
-			<a href="/works">Index</a>
-		</li>
 
-		<li>
-			<?=$this->html->link('Artists','/works/artists'); ?>
-		</li>
-
-		<li>
-			<?=$this->html->link('Classifications','/works/classifications'); ?>
-		</li>
-
-		<?php if($inventory): ?>
-
-			<li>
-				<?=$this->html->link('Locations','/works/locations'); ?>
-			</li>
-		
-		<?php endif; ?>
-
-		<li>
-			<?=$this->html->link('History','/works/histories'); ?>
-		</li>
-
-		<li class="active">
-			<?=$this->html->link('Search','/works/search'); ?>
-		</li>
-
-	</ul>
-	
+<?=$this->partial->navtabs(array(
+	'tabs' => array(
+		array('title' => 'Index', 'url' => $this->url(array('Works::index'))),
+		array('title' => 'Classifications', 'url' => $this->url(array('Works::classifications'))),
+		array('title' => 'Locations', 'url' => $this->url(array('Works::locations'))),
+		array('title' => 'History', 'url' => $this->url(array('Works::histories'))),
+		array('title' => 'Search', 'url' => $this->url(array('Works::search')), 'active' => true),
+	)
+)); ?>
 	<div class="btn-toolbar">
 		<?php if($authority_can_edit): ?>
 
-			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
+			<a class="btn btn-inverse" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
 		
 		<?php endif; ?>
+
 	</div>
+
 </div>
 
 <div class="well">

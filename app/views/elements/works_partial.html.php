@@ -96,7 +96,17 @@
 				<tr>
 					<td class="meta">Artist</td>
 					<td class="info-artist" colspan="3">
-						<?=$this->artwork->artists($work->archive, $work, array('link' => true)); ?>
+						<ul class="unstyled" style="margin-bottom:0">
+						<?php foreach($work->components as $component): ?>
+							<li><?=$this->html->link(
+								$component->person->archive->names(),
+								$this->url(array(
+									'Persons::view',
+									'slug' => $component->person->archive->slug
+								))
+							);?></li>
+						<?php endforeach; ?>
+						</ul>
 					</td>
 				</tr>
 				<tr>
@@ -200,9 +210,9 @@
 			<span class="label">No Preview</span>
 		<?php } ?>
 	</td>
-	<td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work->archive, $work, array('link' => true)); ?></td>
+	<td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work, array('link' => true)); ?></td>
 	<td class="info-materials"><?=$work->materials ?></td>
-    <td class="info-remarks info-annotation"><?php echo $work->notes(); ?></td>
+    <td class="info-remarks info-annotation"><?=$this->artwork->notes($work); ?></td>
     <td class="info-classification"><?=$work->archive->classification ?></td>
 </tr>
     

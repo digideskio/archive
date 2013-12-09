@@ -121,58 +121,6 @@ class Works extends \lithium\data\Model {
     	$dimensions = array_filter(array($measures, $diameter, $running_time));
     	return implode(', ', $dimensions);
     }
-    
-    public function notes($entity) {
-						
-		$annotation = $entity->annotation ? '<em>' . $entity->annotation . '</em>' : '';
-		$quantity = $entity->quantity ? 'Quantity: ' . $entity->quantity : '';
-		$remarks =  $entity->remarks ? $entity->remarks : '';
-
-		$edition = $entity->attribute('edition') ? 'Edition: ' . $entity->attribute('edition') : '';
-		$signed = $entity->attribute('signed') ? '<span class="label label-info">Signed</span>' : '';
-		$framed = $entity->attribute('framed') ? '<span class="label label-inverse">Framed</span>' : '';
-		$certification = $entity->attribute('certification') ? '<span class="label label-success">Certification</span>' : '';
-		
-		$info = array_filter(array(
-			$annotation,
-			$edition,
-			$quantity,
-			$remarks,
-			$signed,
-			$framed,
-			$certification
-		));
-		
-		return implode('<br/>', $info);
-	}
-
-	public function inventory($entity) {
-
-		$buy_price = $entity->attribute('buy_price') ? 'Purchase Price: ' . $entity->attribute('buy_price') . ' <small>' . $entity->attribute('buy_price_per'). '</small>' : '';
-		$sell_price = $entity->attribute('sell_price') ? 'Sale Price: ' . $entity->attribute('sell_price') . ' <small>' . $entity->attribute('sell_price_per'). '</small>' : '';
-
-		$sell_date = $entity->attribute('sell_date') ? 'Date of Sale: ' . $entity->attribute('sell_date')  : '';
-
-		$packing_type = $entity->attribute('packing_type') ? 'Packing Type: ' . $entity->attribute('packing_type')  : '';
-		$pack_price = $entity->attribute('pack_price') ? 'Packing Cost: ' . $entity->attribute('pack_price') . ' <small>' . $entity->attribute('pack_price_per'). '</small>' : '';
-		$in_time = $entity->attribute('in_time') ? 'Received Time: ' . $entity->attribute('in_time')  : '';
-		$in_from = $entity->attribute('in_from') ? 'Sent From: ' . $entity->attribute('in_from')  : '';
-		$in_operator = $entity->attribute('in_operator') ? 'Received By: ' . $entity->attribute('in_operator')  : '';
-
-		$info = array_filter(array(
-			$buy_price,
-			$sell_price,
-			$sell_date,
-			$packing_type,
-			$pack_price,
-			$in_time,
-			$in_from,
-			$in_operator
-		));
-
-		return implode('<br/>', $info);
-
-	}
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
 		
@@ -193,16 +141,10 @@ class Works extends \lithium\data\Model {
 
 Works::finder('artworks', function($self, $params, $chain) {
 
-	$order = '(CASE WHEN artist = \'\' THEN 1 ELSE 0 END), artist ASC, earliest_date DESC, Archives.name, materials';
-
-	$artworks = Environment::get('artworks');
-
-	if ($artworks && isset($artworks['order'])) {
-		$order = $artworks['order'];
-	}
+	$order = 'Archives.earliest_date DESC, Archives.name, materials';
 
 	$params['options']['order'] = $order;
-	$params['options']['with'] = 'Archives';
+	$params['options']['with'] = array('Archives', 'Components.Persons.Archives');
 
 	$data = $chain->next($self, $params, $chain);
 	return $data ?: null;
