@@ -45,7 +45,11 @@ class ConvertWorksArtistsToPersons extends Ruckusing_Migration_Base
 		$this->execute("UPDATE works LEFT JOIN (SELECT components.archive_id1 as person_id, components.archive_id2 as work_id, GROUP_CONCAT(if (archives.name = '', null, archives.name) SEPARATOR ', ') as artist, GROUP_CONCAT(if (archives.native_name = '', null, archives.native_name) SEPARATOR ', ') as artist_native_name FROM components LEFT JOIN archives ON components.archive_id1 = archives.id WHERE components.type = 'persons_works' AND role = 'artist' GROUP BY components.archive_id2) AS artists ON artists.work_id = works.id SET works.artist = artists.artist, works.artist_native_name = artists.artist_native_name");
 
 		// Remove components
-		$this->query("DELETE FROM components WHERE type = 'persons_works'");
+		$this->query("DELETE FROM components WHERE archive_id1 in (SELECT id FROM persons)"); 
+
+		// Remove artists
+		$this->query("DELETE FROM archives WHERE id IN (SELECT id FROM persons)");
+		$this->query("DELETE FROM persons");
 
     }//down()
 }
