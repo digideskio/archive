@@ -48,3 +48,5 @@ $this->title($person->archive->name);
 
 <p class="lead"><strong><?=$person->archive->name ?></strong></p>
 <p class="lead"><?=$person->archive->classification ?></p>
+
+<?=$this->partial->works(compact('works')); ?>

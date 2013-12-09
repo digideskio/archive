@@ -5,6 +5,8 @@ namespace app\controllers;
 use app\models\Persons;
 use app\models\Archives;
 use app\models\Links;
+use app\models\Components;
+use app\models\Works;
 
 use lithium\core\Environment;
 
@@ -136,13 +138,40 @@ class PersonsController extends \lithium\action\Controller {
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
+
+			$total = $works ? $works->count() : 0;
 			
 			if (!$person) {
 				$this->redirect(array('Persons::index'));
 			} else {
+
+				$persons_works = Components::find('all', array(
+					'fields' => 'archive_id2',
+					'conditions' => array(
+						'archive_id1' => $person->id,
+						'type' => 'persons_works'
+					),
+				));
+
+				$works = array();
+
+				if ($persons_works->count()) {
+
+					//Get all the work IDs in a plain array
+					$work_ids = $persons_works->map(function($pw) {
+						return $pw->archive_id2;
+					}, array('collect' => false));
+
+					$works = Works::find('all', array(
+						'with' => 'Archives',
+						'conditions' => array('Works.id' => $work_ids),
+						'order' => 'earliest_date DESC'
+					));
+
+				}
 			
 				//Send the retrieved data to the view
-				return compact('person');
+				return compact('person', 'works');
 			
 			}
 		}
