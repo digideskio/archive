@@ -193,7 +193,7 @@ class Works extends \lithium\data\Model {
 
 Works::finder('artworks', function($self, $params, $chain) {
 
-	$order = '(CASE WHEN artist = \'\' THEN 1 ELSE 0 END), artist ASC, earliest_date DESC, Archives.name, materials';
+	$order = 'Archives.earliest_date DESC, Archives.name, materials';
 
 	$artworks = Environment::get('artworks');
 
