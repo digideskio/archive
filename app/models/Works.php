@@ -195,12 +195,6 @@ Works::finder('artworks', function($self, $params, $chain) {
 
 	$order = 'Archives.earliest_date DESC, Archives.name, materials';
 
-	$artworks = Environment::get('artworks');
-
-	if ($artworks && isset($artworks['order'])) {
-		$order = $artworks['order'];
-	}
-
 	$params['options']['order'] = $order;
 	$params['options']['with'] = 'Archives';
 
