@@ -196,7 +196,7 @@ Works::finder('artworks', function($self, $params, $chain) {
 	$order = 'Archives.earliest_date DESC, Archives.name, materials';
 
 	$params['options']['order'] = $order;
-	$params['options']['with'] = 'Archives';
+	$params['options']['with'] = array('Archives', 'Components.Persons.Archives');
 
 	$data = $chain->next($self, $params, $chain);
 	return $data ?: null;
