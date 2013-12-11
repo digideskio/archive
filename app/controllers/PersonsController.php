@@ -163,9 +163,9 @@ class PersonsController extends \lithium\action\Controller {
 					}, array('collect' => false));
 
 					$works = Works::find('all', array(
-						'with' => 'Archives',
+						'with' => array('Archives', 'Components.Persons.Archives'),
 						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'earliest_date DESC'
+						'order' => 'Archives.earliest_date DESC'
 					));
 
 				}
