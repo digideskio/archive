@@ -98,13 +98,13 @@
 					<td class="info-artist" colspan="3">
 						<ul class="unstyled" style="margin-bottom:0">
 						<?php foreach($work->components as $component): ?>
-							<li><strong><?=$this->html->link(
+							<li><?=$this->html->link(
 								$component->person->archive->names(),
 								$this->url(array(
 									'Persons::view',
 									'slug' => $component->person->archive->slug
 								))
-							);?></strong></li>
+							);?></li>
 						<?php endforeach; ?>
 						</ul>
 					</td>
