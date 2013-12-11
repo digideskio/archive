@@ -96,7 +96,17 @@
 				<tr>
 					<td class="meta">Artist</td>
 					<td class="info-artist" colspan="3">
-						<?=$this->artwork->artists($work->archive, $work, array('link' => true)); ?>
+						<ul class="unstyled" style="margin-bottom:0">
+						<?php foreach($work->components as $component): ?>
+							<li><strong><?=$this->html->link(
+								$component->person->archive->names(),
+								$this->url(array(
+									'Persons::view',
+									'slug' => $component->person->archive->slug
+								))
+							);?></strong></li>
+						<?php endforeach; ?>
+						</ul>
 					</td>
 				</tr>
 				<tr>
