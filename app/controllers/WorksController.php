@@ -9,6 +9,7 @@ use app\models\ArchivesHistories;
 
 use app\models\Users;
 use app\models\Roles;
+use app\models\Persons;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
 use app\models\Albums;
@@ -297,6 +298,14 @@ class WorksController extends \lithium\action\Controller {
 
 			if($work) {
 
+				$artists = Persons::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'conditions' => array(
+						'Components.archive_id2' => $work->id,
+					),
+					'order' => array('Archives.name' => 'ASC')
+				));
+
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
@@ -330,7 +339,7 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('Links.date_modified' =>  'DESC')
 				));
 
-				return compact('work', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
+				return compact('work', 'artists', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
 			}
 		}
 		

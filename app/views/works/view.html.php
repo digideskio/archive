@@ -106,6 +106,14 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td class="meta">Artist</td>
 					<td class="info-title" colspan="3">
 						<?=$this->artwork->artists($work->archive, $work, array('link' => true)); ?>
+						<ul class="unstyled" style="margin-bottom:0">
+						<?php foreach ($artists as $artist): ?>
+							<li><strong><?=$this->html->link(
+								$artist->archive->name,
+								$this->url(array('Persons::view', 'slug' => $artist->archive->slug))
+							);?></strong></li>
+						<?php endforeach; ?>
+						</ul>
 					</td>
 				</tr>
 				<tr>
