@@ -131,35 +131,58 @@ class WorksController extends \lithium\action\Controller {
 
 			$query = $data['query'];
 
+			// If there is only one condition, and we are not searching for an aritst
+			// then simply pass on the single condition
 			if ($condition && $condition != 'artist') {
-				$conditions = array("$condition" => array('LIKE' => "%$query%"));
+				$conditions = array($condition => array('LIKE' => "%$query%"));
 			} else {
 
 				$artwork_ids = array();
 
-// TODO
-// If there is a $condition but the condition != 'artist', do the search just on that field
-// If condition is artist, or there is no condition, then search for all of the Persons whose
-// name matches, and look up the artwork_ids for their artworks
-// If there is no condition at all, combine the artist search with all the other $fields searches
-				if ($condition == 'artist') {
-					//$fields = array('artist', 'artist_native_name');
-				} else {
-					$fields = array('Archives.name', 'Archives.classification', 'Archives.earliest_date', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
-				}
+				$name_fields = array('Archives.name', 'Archives.native_name');
 
-				foreach ($fields as $field) {
-					$matching_works = Works::find('artworks', array(
-						'fields' => 'Works.id',
-						'conditions' => array("$field" => array('LIKE' => "%$query%")),
+				foreach ($name_fields as $field) {
+
+					// Find artists whose name matches the query
+					$artists = Persons::find('all', array(
+						'with' => array('Archives', 'Components'),
+						'fields' => 'Components.archive_id2',
+						'conditions' => array(
+							$field => array('LIKE' => "%$query%"),
+							'Components.type' => 'persons_works',
+							'Components.role' => 'Artist'
+						)
 					));
 
-					if ($matching_works) {
-						$matching_ids = $matching_works->map(function($mw) {
-							return $mw->id;
-						}, array('collect' => false));
+					//TODO Finish this section to select artwork IDs correctly
 
-						$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
+					// Gather the IDs of their artworks
+					foreach ($artists as $artist) {
+						foreach ($artist->components as $c) {
+							array_push($artwork_ids, $c->archive_id2);
+						}
+					}
+
+				}
+
+				// If there is no condition set, then search across other important
+				// artworks fields
+				if (!$condition) {
+					$fields = array('Archives.name', 'Archives.classification', 'Archives.earliest_date', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
+
+					foreach ($fields as $field) {
+						$matching_works = Works::find('artworks', array(
+							'fields' => 'Works.id',
+							'conditions' => array("$field" => array('LIKE' => "%$query%")),
+						));
+
+						if ($matching_works->count() > 0) {
+							$matching_ids = $matching_works->map(function($mw) {
+								return $mw->id;
+							}, array('collect' => false));
+
+							$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
+						}
 					}
 				}
 
