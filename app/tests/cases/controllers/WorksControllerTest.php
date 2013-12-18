@@ -391,16 +391,13 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
 		$this->assertTrue(!empty($rules));
-		$this->assertEqual(13, sizeof($rules));
+		$this->assertEqual(12, sizeof($rules));
 
 		$this->assertEqual(1, sizeof($rules['index']));
 		$this->assertEqual('allowAnyUser', $rules['index'][0]['rule']);
 
 		$this->assertEqual(1, sizeof($rules['search']));
 		$this->assertEqual('allowAnyUser', $rules['search'][0]['rule']);
-
-		$this->assertEqual(1, sizeof($rules['artists']));
-		$this->assertEqual('allowAnyUser', $rules['artists'][0]['rule']);
 
 		$this->assertEqual(1, sizeof($rules['classifications']));
 		$this->assertEqual('allowAnyUser', $rules['classifications'][0]['rule']);

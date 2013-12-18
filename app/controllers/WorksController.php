@@ -38,9 +38,6 @@ class WorksController extends \lithium\action\Controller {
 		'search' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
-		'artists' => array(
-			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
-		),
 		'classifications' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
@@ -217,26 +214,6 @@ class WorksController extends \lithium\action\Controller {
 		}
 
 		return compact('works', 'condition', 'query', 'total', 'page', 'limit');
-
-	}
-
-	public function artists() {
-
-		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
-			'group' => array('artist', 'artist_native_name'),
-			'order' => array('artist' => 'ASC', 'artist_native_name' => 'ASC')
-		));
-
-		$artists = $works_artists->map(function($wa) {
-			if ($wa->artist || $wa->artist_native_name) {
-				return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
-			}
-		}, array('collect' => false));
-
-		$artists = array_filter($artists);
-
-		return compact('artists');
 
 	}
 
