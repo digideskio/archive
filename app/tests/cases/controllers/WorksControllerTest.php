@@ -10,10 +10,14 @@ use app\models\Works;
 use app\models\WorksHistories;
 use app\models\Archives;
 use app\models\ArchivesHistories;
+use app\models\Persons;
+use app\models\PersonsHistories;
 use app\models\Links;
 use app\models\ArchivesLinks;
 use app\models\Documents;
 use app\models\ArchivesDocuments;
+use app\models\Components;
+use app\models\ComponentsHistories;
 
 use lithium\security\Auth;
 use lithium\storage\Session;
@@ -40,6 +44,28 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$success = $work->save();
 
+		//Create a couple of artists for testing purposes
+		$first_artist = Archives::create();
+		$first_artist->save(array(
+			'name' => 'First Artist Name',
+			'controller' => 'artists',
+			'category' => 'Artist'
+		));
+		$first_person = Persons::create();
+		$first_person->save(array(
+			'id' => $first_artist->id
+		));
+
+		$second_artist = Archives::create();
+		$second_artist->save(array(
+			'name' => 'Second Artist Name',
+			'controller' => 'artists',
+			'category' => 'Artist'
+		));
+		$second_person = Persons::create();
+		$second_person->save(array(
+			'id' => $second_artist->id
+		));
 	}
 
 	public function tearDown() {
@@ -50,11 +76,17 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
 
+		Persons::find("all")->delete();
+		PersonsHistories::find("all")->delete();
+
 		Links::all()->delete();
 		ArchivesLinks::all()->delete();
 
 		Documents::all()->delete();
 		ArchivesDocuments::all()->delete();
+
+		Components::find("all")->delete();
+		ComponentsHistories::find("all")->delete();
 	
 	}
 
@@ -101,6 +133,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['artist']));
 		$this->assertTrue(isset($data['link']));
 		$this->assertTrue(isset($data['documents']));
 
@@ -112,12 +145,14 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['artist']));
 		$this->assertTrue(isset($data['link']));
 		$this->assertTrue(isset($data['documents']));
 
 		// Check that no new records were created
 		$this->assertEqual(1, Works::count());
-		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(3, Archives::count());
+		$this->assertEqual(0, Components::count());
 		$this->assertEqual(0, Links::count());
 
 		// Test that the action does not save and reports errors if we do not
@@ -128,6 +163,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['artist']));
 		$this->assertTrue(isset($data['link']));
 		$this->assertTrue(isset($data['documents']));
 
@@ -136,21 +172,26 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Check that no new records were created
 		$this->assertEqual(1, Works::count());
-		$this->assertEqual(1, Archives::count());
+		$this->assertEqual(3, Archives::count());
+		$this->assertEqual(0, Components::count());
 		$this->assertEqual(0, Links::count());
 
 		// Test that this action processes and saves the correct data, namely
-		// a work, archive, and link model
+		// a work, archive, a link model, and a component for the artist association
 		$name = 'Artwork New Title';
 		$slug = 'Artwork-New-Title';
 		$materials = 'Artwork New Materials';
 		$url = 'http://example.com/artwork-new';
+		$artist = Archives::find('first', array(
+			'conditions' => array('name' => 'First Artist Name')
+		));
 
 		$data = $this->call('add', array(
 			'data' => array(
 				'archive' => compact('name'),
 				'work' => compact('materials'),
-				'link' => compact('url')
+				'artist' => array('id' => $artist->id),
+				'link' => compact('url'),
 			)
 		));
 
@@ -173,6 +214,13 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($work));
 		$this->assertEqual($materials, $work->materials);
+
+		// Check that a component was created to associate this work with the correct artist
+		$persons_works = Components::find('first', array(
+			'conditions' => array('archive_id2' => $work->id)
+		));
+
+		$this->assertEqual($artist->id, $persons_works->archive_id1);
 
 		$link = Links::find('first', array(
 			'conditions' => compact('url')
@@ -268,9 +316,10 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$name = 'Artwork Update Title';
 		$materials = "Artwork Update Materials";
 
+		$slug = 'First-Artwork-Title';
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'First-Artwork-Title'
+				'slug' => $slug
 			),
 			'data' => array(
 				'archive' => compact('name'),
