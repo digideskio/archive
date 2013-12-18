@@ -28,52 +28,11 @@ $this->form->config(
     )
 ); 
 
-$artist_names = array();
-$artist_native_names = array();
-$artist_names_assoc = array();
+$artists_list = array('' => 'Choose one...');
 
-foreach ($artists as $artist) {
-	if ($artist['name']) {
-		array_push($artist_names, $artist['name']);
-		$artist_name = $artist['name'];
-
-		if (!isset($artist_names_assoc[$artist_name]) || $artist_names_assoc[$artist_name] == '') {
-			$artist_names_assoc[$artist_name] = $artist['native_name'];
-		}
-	}
-	if ($artist['native_name']) {
-		array_push($artist_native_names, $artist['native_name']);
-		$artist_native_name = $artist['native_name'];
-
-		if (!isset($artist_names_assoc[$artist_native_name]) || $artist_names_assoc[$artist_native_name] == '') {
-			$artist_names_assoc[$artist_native_name] = $artist['name'];
-		}
-	}
+foreach ($artists as $a) {
+	$artists_list[$a->id] = $a->archive->names();
 }
-
-$artist_names = array_values(array_unique($artist_names));
-$artist_names_data = json_encode($artist_names);
-
-$artist_native_names = array_values(array_unique($artist_native_names));
-$artist_native_names_data = json_encode($artist_native_names);
-
-$artist_names_assoc_data = json_encode($artist_names_assoc);
-
-$default_artist = $artist_names ? $artist_names[0] : '';
-
-$artworks = \lithium\core\Environment::get('artworks');
-if ($artworks && isset($artworks['artist']) && isset($artworks['artist']['default'])) {
-	if ($artworks['artist']['default']) {
-		$default_artist = $artworks['artist']['default'] === true ? $default_artist : $artworks['artist']['default'];
-	} else {
-		$default_artist = '';
-	}
-}
-
-$default_artist_native_name = isset($artist_names_assoc[$default_artist]) ? $artist_names_assoc[$default_artist] : '';
-
-$artist = $work->artist ?: $default_artist;
-$artist_native_name = $work->artist_native_name ?: $default_artist_native_name;
 
 $classification_names = array_keys($classifications);
 $work_classes_list = array_combine($classification_names, $classification_names);
@@ -157,14 +116,18 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 <div class="row">
 
-<?=$this->form->create(compact('archive', 'work', 'link'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
+<?=$this->form->create(compact('archive', 'work', 'artist', 'link'), array('id' => 'WorksForm', 'class' => 'form-horizontal')); ?>
 
 	<div class="span5">
 		<div class="well">
 			<legend>Artwork Info</legend>
 
-			<?=$this->form->field('work.artist', array('label' => 'Artist', 'value' => $artist, 'autocomplete' => 'off'));?>
-			<?=$this->form->field('work.artist_native_name', array('value' => $artist_native_name, 'label' => 'Artist (Native Language)', 'autocomplete' => 'off'));?>
+			<div class="control-group">
+				<?=$this->form->label('artist.id', 'Artist', array('class' => 'control-label')); ?>
+				<div class="controls">
+					<?=$this->form->select('artist.id', $artists_list); ?>
+				</div>
+			</div>
 
 			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.native_name', array('label' => 'Title (Native Language)', 'autocomplete' => 'off'));?>
@@ -371,36 +334,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 <script>
 
 $(document).ready(function() {
-
-	var artist_names =	<?php echo $artist_names_data; ?>;
-	var artist_native_names = <?php echo $artist_native_names_data; ?>;
-	var artist_names_assoc = <?php echo $artist_names_assoc_data; ?>;
 	var materials = <?php echo $materials_data; ?>
-
-	$('#WorksArtist').typeahead(
-		{
-			source: artist_names,
-			updater: function (item) {
-				if (artist_names_assoc[item] != undefined) {
-					$('#WorksArtistNativeName').val(artist_names_assoc[item]);
-				}
-				return item;
-			}
-		}
-	);
-
-	$('#WorksArtistNativeName').typeahead(
-		{
-			source: artist_native_names,
-			updater: function (item) {
-				if (artist_names_assoc[item] != undefined) {
-					$('#WorksArtist').val(artist_names_assoc[item]);
-				}
-				return item;
-			}
-		}
-	);
-
 	$('#WorksMaterials').typeahead(
 		{
 			source: materials

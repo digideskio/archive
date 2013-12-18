@@ -352,6 +352,7 @@ class WorksController extends \lithium\action\Controller {
 		$archive = Archives::create();
 		$work = Works::create();
 		$link = Links::create();
+		$artist = Persons::create();
 		$documents = array();
 
 		if ($this->request->data) {
@@ -363,6 +364,16 @@ class WorksController extends \lithium\action\Controller {
 					'with' => 'Formats',
 					'conditions' => array('Documents.id' => $document_ids),
 				));
+			}
+
+			if (isset($this->request->data['artist'])) {
+				$artist_data = $this->request->data['artist'];
+				if (isset($artist_data['id'])) {
+					$artist = Persons::find('first', array(
+						'with' => 'Archives',
+						'conditions' => array('id' => $artist_data['id'])
+					));
+				}
 			}
 
 			if (isset($this->request->data['archive'])) {
@@ -393,6 +404,18 @@ class WorksController extends \lithium\action\Controller {
 
 					$work = Works::create();
 					$work->save($work_data);
+
+					// If an Artist was named, save a Component to connect person to artwork
+					if(!empty($artist_data) && !empty($artist->id)) {
+						$persons_works = Components::create();
+
+						$persons_works->save(array(
+							'archive_id1' => $artist->id,
+							'archive_id2' => $work->id,
+							'type' => 'persons_works',
+							'role' => 'Artist'
+						));
+					}
 
 					// If Link data was supplied, save Link and ArchivesLinks objects
 					if (!empty($link_data) && !empty($link_data['url'])) {
@@ -429,21 +452,23 @@ class WorksController extends \lithium\action\Controller {
 					$archive->published = $archives_default['published'];
 				}
 			}
+
+			$artworks_config = Environment::get('artworks');
+
+			if ($artworks_config && isset($artworks_config['artist']['default'])) {
+				$default_artist = $artworks_config['artist']['default'];
+				$artist = Persons::find('first', array(
+					'with' => 'Archives',
+					'conditions' => array('Archives.name' => $default_artist)
+				));
+			}
 		}
 
-		$works_artists = Works::find('all', array(
-			'fields' => array('artist', 'artist_native_name', 'count(artist) as works'),
-			'group' => array('artist', 'artist_native_name'),
-			'order' => array('works' => 'DESC')
+		$artists = Persons::find('all', array(
+			'with' => 'Archives',
+			'order' => array('Archives.name' => 'ASC'),
+			'conditions' => array('Archives.classification' => 'Artist')
 		));
-
-		$artists = $works_artists->map(function($wa) {
-			if ($wa->artist || $wa->artist_native_name) {
-				return array('name' => $wa->artist, 'native_name' => $wa->artist_native_name, 'works' => $wa->works);
-			}
-		}, array('collect' => false));
-
-		$artists = array_filter($artists);
 
 		$works_materials = Works::find('all', array(
 			'fields' => array('materials', 'count(materials) as works'),
@@ -473,7 +498,7 @@ class WorksController extends \lithium\action\Controller {
 
 		$classifications = Works::classifications();
 
-		return compact('archive', 'work', 'link', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
+		return compact('archive', 'work', 'artist', 'link', 'artists', 'classifications', 'materials', 'locations', 'users', 'documents');
 	}
 
 	public function edit() {
