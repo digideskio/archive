@@ -526,17 +526,42 @@ class WorksController extends \lithium\action\Controller {
 			));
 
 			if ($this->request->data) {
+				$data = $this->request->data;
 
-				if (isset($this->request->data['archive'])) {
+				if (isset($data['archive'])) {
 
-					$archive_data = $this->request->data['archive'];
+					$archive_data = $data['archive'];
 
 					if ($archive->save($archive_data)) {
 
-						$work_data = isset($this->request->data['work']) ? $this->request->data['work'] : array();
+						$work_data = isset($data['work']) ? $data['work'] : array();
 						$work->save($work_data);
 
-						// If the artist has changed, delete and create Components as necessary
+						// Get the posted artist data
+						$artist_data = isset($data['artist']) ? $data['artist'] : array();
+						$artist_id = isset($artist_data['id']) ? $artist_data['id'] : '';
+
+						// Check if there was an artist for this work,
+						// but the posted artist does not match
+						if ($artist && ($artist->id != $artist_id)) {
+							// Delete the relationship between the work and the original artist
+							foreach ($artist->components as $c) {
+								$c->delete();
+							}
+						}
+
+						// Check if a new artist has been posted
+						if ($artist_id && (!$artist || $artist->id != $artist_id)) {
+							// Associate the artwork with the new artist
+							$persons_works = Components::create();
+
+							$persons_works->save(array(
+								'archive_id1' => $artist_id,
+								'archive_id2' => $work->id,
+								'type' => 'persons_works',
+								'role' => 'Artist'
+							));
+						}
 
 						return $this->redirect(array('Works::view', 'slug' => $archive->slug));
 					}
