@@ -112,7 +112,6 @@ class WorksController extends \lithium\action\Controller {
 
 		if (Environment::get('artworks')) {
 			$artworks = Environment::get('artworks');
-			$filter = isset($artworks['filter']) ? $artworks['filter'] : '';
 			
 			if (isset($artworks['search'])) {
 				$search = $artworks['search'];
@@ -138,15 +137,19 @@ class WorksController extends \lithium\action\Controller {
 
 				$artwork_ids = array();
 
+// TODO
+// If there is a $condition but the condition != 'artist', do the search just on that field
+// If condition is artist, or there is no condition, then search for all of the Persons whose
+// name matches, and look up the artwork_ids for their artworks
+// If there is no condition at all, combine the artist search with all the other $fields searches
 				if ($condition == 'artist') {
-					$fields = array('artist', 'artist_native_name');
+					//$fields = array('artist', 'artist_native_name');
 				} else {
-					$fields = array('Archives.name', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+					$fields = array('Archives.name', 'Archives.classification', 'Archives.earliest_date', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
 				}
 
 				foreach ($fields as $field) {
 					$matching_works = Works::find('artworks', array(
-						'with' => 'Archives',
 						'fields' => 'Works.id',
 						'conditions' => array("$field" => array('LIKE' => "%$query%")),
 					));
@@ -160,7 +163,7 @@ class WorksController extends \lithium\action\Controller {
 					}
 				}
 
-				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('artist' => $query);
+				$conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('Works.id' => '');
 			}
 
 			$filter = '';
