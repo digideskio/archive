@@ -146,15 +146,16 @@ class WorksController extends \lithium\action\Controller {
 					// Find artists whose name matches the query
 					$artists = Persons::find('all', array(
 						'with' => array('Archives', 'Components'),
-						'fields' => 'Components.archive_id2',
+						'fields' => array(
+							'Components.id',
+							'Components.archive_id2',
+						),
 						'conditions' => array(
 							$field => array('LIKE' => "%$query%"),
 							'Components.type' => 'persons_works',
 							'Components.role' => 'Artist'
 						)
 					));
-
-					//TODO Finish this section to select artwork IDs correctly
 
 					// Gather the IDs of their artworks
 					foreach ($artists as $artist) {
