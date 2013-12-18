@@ -29,7 +29,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 	public $controller = 'app\\controllers\WorksController';
 
 	public function setUp() {
-		//Create an archive and work pair for testing purposes
+		// Create an archive and work pair for testing purposes
 		$archive_data = array(
 			'name' => 'First Artwork Title',
 			'controller' => 'works'
@@ -44,7 +44,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$success = $work->save();
 
-		//Create a couple of artists for testing purposes
+		// Create a couple of artists for testing purposes
 		$first_artist = Archives::create();
 		$first_artist->save(array(
 			'name' => 'First Artist Name',
@@ -66,6 +66,16 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$second_person->save(array(
 			'id' => $second_artist->id
 		));
+
+		// Associate the first artwork with the first artist
+		$persons_works = Components::create();
+		$persons_works->save(array(
+			'archive_id1' => $first_artist->id,
+			'archive_id2' => $work->id,
+			'category' => 'persons_works',
+			'role' => 'artist'
+		));
+
 	}
 
 	public function tearDown() {
@@ -118,6 +128,12 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual('First Artwork Title', $work->archive->name);
 
+		$this->assertTrue(isset($data['artists']));
+
+		$artists = $data['artists'];
+		$artist = $artists->first();
+
+		$this->assertEqual('First Artist Name', $artist->archive->name);
 	}
 
 	public function testAdd() {
@@ -152,7 +168,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		// Check that no new records were created
 		$this->assertEqual(1, Works::count());
 		$this->assertEqual(3, Archives::count());
-		$this->assertEqual(0, Components::count());
+		$this->assertEqual(1, Components::count());
 		$this->assertEqual(0, Links::count());
 
 		// Test that the action does not save and reports errors if we do not
@@ -173,7 +189,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		// Check that no new records were created
 		$this->assertEqual(1, Works::count());
 		$this->assertEqual(3, Archives::count());
-		$this->assertEqual(0, Components::count());
+		$this->assertEqual(1, Components::count());
 		$this->assertEqual(0, Links::count());
 
 		// Test that this action processes and saves the correct data, namely
