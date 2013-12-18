@@ -26,6 +26,8 @@
 			<li <?php if ($c == 'publications') echo 'class="active"'; ?> >
 				<a href="/publications"><i class="icon-book"></i> Publications</a></li>
 			<li class="divider"></li>
+			<li <?php if ($c == 'persons') echo 'class="active"'; ?> >
+				<a href="/artists"><i class="icon-font"></i> Artists</a></li>
 			<li <?php if ($c == 'albums') echo 'class="active"'; ?> >
 				<a href="/albums"><i class="icon-briefcase"></i> Albums</a></li>
 			<li <?php if ($c == 'documents') echo 'class="active"'; ?> >
