@@ -305,11 +305,14 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['artist']));
 
 		$archive = $data['archive'];
 		$work = $data['work'];
+		$work_artist = $data['artist'];
 
 		$this->assertEqual('First Artwork Title', $archive->name);
+		$this->assertEqual('First Artist Name', $work_artist->archive->name);
 
 		// Test that the action does not save and reports errors if we do not
 		// post the required data
@@ -324,6 +327,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['archive']));
 		$this->assertTrue(isset($data['work']));
+		$this->assertTrue(isset($data['artist']));
 
 		$errors = isset($data['archive']) ? $data['archive']->errors() : '';
 		$this->assertTrue(!empty($errors));
@@ -331,6 +335,9 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		// Test that the records can be saved with new data
 		$name = 'Artwork Update Title';
 		$materials = "Artwork Update Materials";
+		$artist = Archives::find('first', array(
+			'conditions' => array('name' => 'Second Artist Name')
+		));
 
 		$slug = 'First-Artwork-Title';
 		$data = $this->call('edit', array(
@@ -339,7 +346,8 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 			),
 			'data' => array(
 				'archive' => compact('name'),
-				'work' => compact('materials')
+				'work' => compact('materials'),
+				'artist' => array('id' => $artist->id)
 			)
 		));
 
@@ -362,6 +370,17 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(!empty($work));
 		$this->assertEqual($materials, $work->materials);
+
+		// Check that a component was created to associate this work with the correct artist
+		$persons_works = Components::find('all', array(
+			'conditions' => array('archive_id2' => $work->id)
+		));
+
+		$this->assertEqual(1, sizeof($persons_works));
+
+		$pw = $persons_works->first();
+
+		$this->assertEqual($artist->id, $pw->archive_id1);
 	}
 
 	public function testDelete() {}
