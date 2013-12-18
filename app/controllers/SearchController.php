@@ -13,6 +13,7 @@ use app\models\Albums;
 use app\models\Exhibitions;
 use app\models\Publications;
 use app\models\Links;
+use app\models\Persons;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
@@ -67,7 +68,34 @@ class SearchController extends \lithium\action\Controller {
 
 			$artwork_ids = array();
 
-			$fields = array('Archives.name', 'artist', 'artist_native_name', 'classification', 'earliest_date', 'materials', 'remarks', 'creation_number', 'annotation');
+			$name_fields = array('Archives.name', 'Archives.native_name');
+
+			foreach ($name_fields as $field) {
+
+				// Find artists whose name matches the query
+				$artists = Persons::find('all', array(
+					'with' => array('Archives', 'Components'),
+					'fields' => array(
+						'Components.id',
+						'Components.archive_id2',
+					),
+					'conditions' => array(
+						$field => array('LIKE' => "%$query%"),
+						'Components.type' => 'persons_works',
+						'Components.role' => 'Artist'
+					)
+				));
+
+				// Gather the IDs of their artworks
+				foreach ($artists as $artist) {
+					foreach ($artist->components as $c) {
+						array_push($artwork_ids, $c->archive_id2);
+					}
+				}
+
+			}
+
+			$fields = array('Archives.name', 'Archives.classification', 'Archives.earliest_date', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
 
 			foreach ($fields as $field) {
 				$matching_works = Works::find('artworks', array(
