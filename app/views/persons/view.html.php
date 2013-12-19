@@ -50,3 +50,5 @@ $this->title($person->archive->name);
 <p class="lead"><?=$person->archive->classification ?></p>
 
 <?=$this->partial->works(compact('works')); ?>
+
+<?=$this->pagination->pager('artists', 'view/' . $person->archive->slug, $page, $total, $limit, array('limit' => $limit)); ?>

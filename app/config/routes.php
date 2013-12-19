@@ -115,6 +115,7 @@ Router::connect('/works/delete/{:slug}', array('Works::delete'));
 Router::connect('/artists', array('Persons::index'));
 Router::connect('/artists/add', array('Persons::add'));
 Router::connect('/artists/pages/{:page:[0-9]+}', array('Persons::index'));
+Router::connect('/artists/view/{:slug}/{:page:[0-9]+}', array('Persons::view'));
 Router::connect('/artists/view/{:slug}', array('Persons::view'));
 Router::connect('/artists/edit/{:slug}', array('Persons::edit'));
 Router::connect('/artists/delete/{:slug}', array('Persons::delete'));

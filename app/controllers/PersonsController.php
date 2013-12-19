@@ -145,15 +145,25 @@ class PersonsController extends \lithium\action\Controller {
 				$this->redirect(array('Persons::index'));
 			} else {
 
+				$total = Components::count('all', array(
+					'conditions' => array(
+						'archive_id1' => $person->id,
+						'type' => 'persons_works'
+					)
+				));
+
 				$persons_works = Components::find('all', array(
 					'fields' => 'archive_id2',
 					'conditions' => array(
 						'archive_id1' => $person->id,
 						'type' => 'persons_works'
-					),
+					)
 				));
 
 				$works = array();
+
+				$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
+				$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 
 				if ($persons_works->count()) {
 
@@ -165,13 +175,15 @@ class PersonsController extends \lithium\action\Controller {
 					$works = Works::find('all', array(
 						'with' => array('Archives', 'Components.Persons.Archives'),
 						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'Archives.earliest_date DESC'
+						'order' => 'Archives.earliest_date DESC',
+						'limit' => $limit,
+						'page' => $page
 					));
 
 				}
 			
 				//Send the retrieved data to the view
-				return compact('person', 'works');
+				return compact('person', 'works', 'total', 'page', 'limit');
 			
 			}
 		}
