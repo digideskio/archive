@@ -46,7 +46,7 @@ $this->title($person->archive->name);
 )); ?>
 </div>
 
-<p class="lead"><strong><?=$person->archive->name ?></strong></p>
+<p class="lead"><strong><?=$person->archive->names() ?></strong></p>
 <p class="lead"><?=$person->archive->classification ?></p>
 
 <?=$this->partial->works(compact('works')); ?>
