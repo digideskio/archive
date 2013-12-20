@@ -5,6 +5,7 @@ namespace app\controllers;
 use app\models\Persons;
 use app\models\Archives;
 use app\models\Links;
+use app\models\ArchivesLinks;
 use app\models\Components;
 use app\models\Works;
 
@@ -88,7 +89,6 @@ class PersonsController extends \lithium\action\Controller {
 					// Save a person along with this archive
 					$person_data['id'] = $archive->id;
 
-					$person = Persons::create();
 					$person->save($person_data);
 
 					// If Link data was supplied, save Link and ArchivesLinks objects
@@ -141,8 +141,6 @@ class PersonsController extends \lithium\action\Controller {
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-
-			$total = $works ? $works->count() : 0;
 			
 			if (!$person) {
 				$this->redirect(array('Persons::index'));
