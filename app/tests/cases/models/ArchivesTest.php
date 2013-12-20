@@ -443,6 +443,21 @@ class ArchivesTest extends \lithium\test\Unit {
 		$this->assertEqual('ko', $archive->language_code);
 	}
 
+	public function testDateCreatedModifiedFilter() {
+
+		$archive = Archives::create();
+		$archive->save(array(
+			'name' => 'Title',
+		));
+
+		$this->assertTrue(strtotime($component->date_created) != false);
+		$this->assertTrue(strtotime($component->date_modified) != false);
+
+		$this->assertTrue($archive->date_created != '0000-00-00 00:00:00');
+		$this->assertTrue($archive->date_modified != '0000-00-00 00:00:00');
+
+	}
+
 }
 
 ?>
