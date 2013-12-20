@@ -76,13 +76,16 @@ class PersonsController extends \lithium\action\Controller {
 					}
 				}
 
+				// Get any additional person data
+				$person_data = isset($this->request->data['person']) ? $this->request->data['person'] : array();
+				$person = Persons::create($person_data);
+
 				if ($archive->validates() && $link_validates) {
 
 					$archive = Archives::create();
 					$archive->save($archive_data);
 
 					// Save a person along with this archive
-					$person_data = isset($this->request->data['person']) ? $this->request->data['person'] : array();
 					$person_data['id'] = $archive->id;
 
 					$person = Persons::create();
