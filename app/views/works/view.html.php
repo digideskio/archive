@@ -84,7 +84,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 	
 		<div class="alert alert-block">
     	<p>
-    		<?=$this->artwork->caption($work->archive, $work); ?>
+    		<?=$this->artwork->caption($work); ?>
     	</p>
 		</div>
 	

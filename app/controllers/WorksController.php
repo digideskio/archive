@@ -295,10 +295,12 @@ class WorksController extends \lithium\action\Controller {
 		if(isset($this->request->params['slug'])) {
 		
 			//Get single record from the database where the slug matches the URL
-			$work = Works::find('first', array(
+			$works = Works::find('artworks', array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
+
+			$work = $works->first();
 
 			if($work) {
 
