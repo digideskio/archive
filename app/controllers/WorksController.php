@@ -847,21 +847,18 @@ class WorksController extends \lithium\action\Controller {
 				$archive_ids = array_merge($archive_ids, $work_ids);
 			}
 
-			$works = Works::find('all', array(
-				'with' => 'Archives',
+			$works = Works::find('artworks', array(
 				'conditions' => array('Archives.id' => $archive_ids),
 			));
 
-			$works_artists = Works::find('all', array(
-				'fields' => array('artist'),
-				'group' => array('artist'),
-				'order' => array('artist' => 'ASC'),
-				'conditions' => array('Works.id' => $archive_ids),
+			$artists = Persons::find('all', array(
+				'with' => array('Archives', 'Components'),
+				'conditions' => array(
+					'Components.archive_id2' => $archive_ids,
+					'Components.role' => 'artist'
+				),
+				'order' => array('Archives.name' => 'ASC')
 			));
-
-			$artists = $works_artists->map(function($wa) {
-				return $wa->artist;
-			}, array('collect' => false));
 
 			$inventory = Environment::get('inventory');
 
