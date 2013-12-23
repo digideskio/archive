@@ -72,7 +72,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$persons_works->save(array(
 			'archive_id1' => $first_artist->id,
 			'archive_id2' => $work->id,
-			'category' => 'persons_works',
+			'type' => 'persons_works',
 			'role' => 'artist'
 		));
 
