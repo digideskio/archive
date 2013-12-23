@@ -49,6 +49,8 @@ $this->title($person->archive->name);
 <p class="lead"><strong><?=$person->archive->names() ?></strong></p>
 <p class="lead"><?=$person->archive->classification ?></p>
 
-<?=$this->partial->works(compact('works')); ?>
+<?php if ($works->count() > 0): ?>
+	<?=$this->partial->works(compact('works')); ?>
 
-<?=$this->pagination->pager('artists', 'view/' . $person->archive->slug, $page, $total, $limit, array('limit' => $limit)); ?>
+	<?=$this->pagination->pager('artists', 'view/' . $person->archive->slug, $page, $total, $limit, array('limit' => $limit)); ?>
+<?php endif; ?>
