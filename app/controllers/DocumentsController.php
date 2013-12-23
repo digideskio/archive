@@ -154,11 +154,26 @@ class DocumentsController extends \lithium\action\Controller {
 					'order' => 'earliest_date DESC'
 				));
 
-				$works = Works::find('all', array(
+				$works_with_documents = Works::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
-					'conditions' => array('ArchivesDocuments.document_id' => $document->id),
-					'order' => 'earliest_date DESC'
+					'fields' => array('Archives.id', 'Works.id'),
+					'conditions' => array('ArchivesDocuments.document_id' => $document->id)
 				));
+
+				$work_ids = array();
+
+				if ($works_with_documents->count()) {
+
+					//Get all the work IDs in a plain array
+					$work_ids = $works_with_documents->map(function($wwd) {
+						return $wwd->id;
+					}, array('collect' => false));
+
+					$works = Works::find('artworks', array(
+						'conditions' => array('Works.id' => $work_ids)
+					));
+
+				}
 
 				$architectures = Architectures::find('all', array(
 					'with' => array('Archives', 'ArchivesDocuments'),
