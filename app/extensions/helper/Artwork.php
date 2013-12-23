@@ -18,6 +18,17 @@ class Artwork extends \lithium\template\Helper {
 			$title = '';
 		}
 
+		if (!empty($artwork->components)) {
+			$components = $artwork->components;
+			$artists = $components->map(function($c) {
+				if ($c->type == 'persons_works') {
+					return $c->person->archive->name;
+				}
+			}, array('collect' => false));
+		} else {
+			$artists = array();
+		}
+
 		if (isset($options['link']) && $options['link']) {
 			$html = new Html();
 			$title = $html->link(
@@ -30,11 +41,14 @@ class Artwork extends \lithium\template\Helper {
 
 		$display_title = $title ? '<em>' . $title . '</em>' : '';
     
-    	$caption = array_filter(array(
-			$display_title,
-    		$this->escape($years),
-    		$this->escape($artwork->dimensions()), 
-			$this->escape($artwork->measurement_remarks)
+		$caption = array_filter(array_merge(
+			$artists,
+			array(
+				$display_title,
+				$this->escape($years),
+				$this->escape($artwork->dimensions()),
+				$this->escape($artwork->measurement_remarks)
+			)
     	));
     	
     	return implode(', ', $caption) . '.';

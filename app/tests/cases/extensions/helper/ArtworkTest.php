@@ -56,7 +56,7 @@ class ArtworkTest extends \lithium\test\Unit {
 		$persons_works->save(array(
 			'archive_id1' => $first_artist->id,
 			'archive_id2' => $work->id,
-			'category' => 'persons_works',
+			'type' => 'persons_works',
 			'role' => 'artist'
 		));
 
@@ -110,7 +110,7 @@ class ArtworkTest extends \lithium\test\Unit {
 
 		$caption = $helper->caption($work);
 
-		$this->assertEqual('<em>First Artwork Title</em>, 2004–2005, 40 × 50 cm.', $caption);
+		$this->assertEqual('First Artist Name, <em>First Artwork Title</em>, 2004–2005, 40 × 50 cm.', $caption);
 
 	}
 }
