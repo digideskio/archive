@@ -107,8 +107,6 @@ class AlbumsController extends \lithium\action\Controller {
 					),
 				));
 
-				$works = new RecordSet();
-
 				if ($album_works->count()) {
 
 					//Get all the work IDs in a plain array
@@ -121,6 +119,8 @@ class AlbumsController extends \lithium\action\Controller {
 						'order' => 'Archives.earliest_date DESC'
 					));
 
+				} else {
+					$works = new RecordSet();
 				}
 
 				$album_publications = Components::find('all', array(
