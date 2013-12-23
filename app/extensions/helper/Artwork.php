@@ -29,6 +29,8 @@ class Artwork extends \lithium\template\Helper {
 			$artists = array();
 		}
 
+		$display_artists = $this->escape(implode(', ', $artists));
+
 		if (isset($options['link']) && $options['link']) {
 			$html = new Html();
 			$title = $html->link(
@@ -41,14 +43,12 @@ class Artwork extends \lithium\template\Helper {
 
 		$display_title = $title ? '<em>' . $title . '</em>' : '';
     
-		$caption = array_filter(array_merge(
-			$artists,
-			array(
-				$display_title,
-				$this->escape($years),
-				$this->escape($artwork->dimensions()),
-				$this->escape($artwork->measurement_remarks)
-			)
+		$caption = array_filter( array(
+			$display_artists,
+			$display_title,
+			$this->escape($years),
+			$this->escape($artwork->dimensions()),
+			$this->escape($artwork->measurement_remarks)
     	));
     	
     	return implode(', ', $caption) . '.';
