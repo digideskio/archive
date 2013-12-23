@@ -79,15 +79,6 @@ EOD;
 
 	}
 
-	$artist = $this->escape($work->artist);
-	$name = $this->escape($work->archive->name);
-	$years = $this->escape($work->archive->years());
-
-	$title = !empty($years) ? "$name, $years" : $name;
-
-	$materials = $this->escape($work->materials);
-	$dimensions = $this->escape($work->dimensions());
-
 	$artwork_helper = new \app\extensions\helper\Artwork();
 	$caption = $artwork_helper->caption($work, array('materials' => true, 'separator' => '<br/>'));
 
