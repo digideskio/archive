@@ -31,42 +31,6 @@ class Artwork extends \lithium\template\Helper {
 
 	}
 
-	public function artists($archive, $work, $options = array()) {
-
-		$artist = '';
-		$artist_native_name = '';
-
-		if (isset($options['link']) && $options['link'] == true) {
-			$html = new Html();
-			$artist_search_path = "/works/search?condition=artist&query=";
-
-			if ($work->artist != '') {
-				$artist_query = urlencode($work->artist);
-				$artist = $html->link($work->artist, $artist_search_path . $artist_query);
-			}
-
-			if ($work->artist_native_name != '') {
-				$artist_query = urlencode($work->artist_native_name);
-				$artist_native_name = $html->link($work->artist_native_name, $artist_search_path . $artist_query);
-			}
-		} else {
-			$artist = $this->escape($work->artist);
-			$artist_native_name = $this->escape($work->artist_native_name);
-		}
-		
-		if ($artist_native_name != '') {
-			$artist_native_name = "(" . $artist_native_name . ")";
-		}
-
-		$artists = array_filter(array(
-			$artist,
-			$artist_native_name
-		));
-
-		return implode(' ', $artists);
-
-	}
-
 }
 
 ?>

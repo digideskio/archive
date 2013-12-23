@@ -65,38 +65,6 @@ class ArtworkTest extends \lithium\test\Unit {
 
 	}
 
-	public function testArtists() {
-
-		$helper = new Artwork();
-		$html = new Html();
-
-		$data = array(
-			'artist' => 'The Artist'
-		);
-
-		$work = Works::create($data);
-
-		$artists = $helper->artists($work->archive, $work);
-
-		$this->assertEqual($data['artist'], $artists);
-
-		$artists = $helper->artists($work->archive, $work, array('link' => true));
-
-		$this->assertTrue(strpos($artists, 'href') != false);
-
-		$data = array(
-			'artist' => 'The Artist',
-			'artist_native_name' => '艺术家'
-		);
-
-		$work = Works::create($data);
-
-		$artists = $helper->artists($work->archive, $work);
-
-		$this->assertEqual("{$data['artist']} ({$data['artist_native_name']})", $artists);
-
-	}
-
 }
 
 ?>
