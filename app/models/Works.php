@@ -28,6 +28,14 @@ class Works extends \lithium\data\Model {
 		)),
 	);
 
+	public $hasOne = array(
+		'ViewWorksArtists' => array(
+			'to' => 'app\models\ViewWorksArtists',
+			'key' => array(
+				'id' => 'work_id'
+			)
+	));
+
 	public $belongsTo = array(
 		'Archives' => array (
 			'to' => 'app\models\Archives',
@@ -141,10 +149,10 @@ class Works extends \lithium\data\Model {
 
 Works::finder('artworks', function($self, $params, $chain) {
 
-	$order = 'Archives.earliest_date DESC, Archives.name, materials';
+	$order = '(CASE WHEN ViewWorksArtists.artist_sort = \'\' OR ViewWorksArtists.artist_sort IS NULL THEN 1 ELSE 0 END), ViewWorksArtists.artist_sort ASC, Archives.earliest_date DESC, Archives.name, materials';
 
 	$params['options']['order'] = $order;
-	$params['options']['with'] = array('Archives', 'Components.Persons.Archives');
+	$params['options']['with'] = array('ViewWorksArtists', 'Archives', 'Components.Persons.Archives');
 
 	$data = $chain->next($self, $params, $chain);
 	return $data ?: null;
