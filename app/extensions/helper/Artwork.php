@@ -10,9 +10,13 @@ class Artwork extends \lithium\template\Helper {
 
 	public function caption(Record $artwork, $options = array()) {
 
-    	$years = $artwork->archive->years();
-
-		$title = $artwork->archive->name;
+		if (!empty($artwork->archive)) {
+			$years = $artwork->archive->years();
+			$title = $artwork->archive->name;
+		} else {
+			$years = '';
+			$title = '';
+		}
 
 		if (isset($options['link']) && $options['link']) {
 			$html = new Html();
@@ -23,9 +27,11 @@ class Artwork extends \lithium\template\Helper {
 		} else {
 			$title = $this->escape($title);
 		}
+
+		$display_title = $title ? '<em>' . $title . '</em>' : '';
     
     	$caption = array_filter(array(
-    		'<em>' . $title .'</em>',
+			$display_title,
     		$this->escape($years),
     		$this->escape($artwork->dimensions()), 
 			$this->escape($artwork->measurement_remarks)
