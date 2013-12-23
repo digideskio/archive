@@ -52,7 +52,7 @@ class Artwork extends \lithium\template\Helper {
 
 		$separator = isset($options['separator']) ? $options['separator'] : ', ';
     
-		$caption = array_filter( array(
+		$caption = array_filter(array(
 			$display_artists,
 			$display_title,
 			$this->escape($materials),
