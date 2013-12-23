@@ -67,21 +67,29 @@ class PackagesController extends \lithium\action\Controller {
 				),
 			));
 
-			$works = Works::find('all', array(
-				'with' => array('Archives', 'Components'),
+			$album_works = Components::find('all', array(
+				'fields' => 'archive_id2',
 				'conditions' => array(
 					'Components.archive_id1' => $album->id,
 					'Components.type' => 'albums_works',
 				),
-				'order' => 'Archives.earliest_date DESC',
 			));
 
-			$work_ids = array();
+			if ($album_works->count()) {
 
-			if ($works->count()) {
-				$work_ids = $works->map(function($w) {
-					return $w->id;
+				//Get all the work IDs in a plain array
+				$work_ids = $album_works->map(function($aw) {
+					return $aw->archive_id2;
 				}, array('collect' => false));
+
+				$works = Works::find('artworks', array(
+					'conditions' => array('Works.id' => $work_ids),
+					'order' => 'Archives.earliest_date DESC'
+				));
+
+			} else {
+				$works = new RecordSet();
+				$work_ids = array();
 			}
 
 			$publications = Publications::find('all', array(
