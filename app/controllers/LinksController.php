@@ -15,6 +15,7 @@ use app\models\Roles;
 
 use lithium\action\DispatchException;
 use lithium\security\Auth;
+use lithium\data\collection\RecordSet;
 
 class LinksController extends \lithium\action\Controller {
 
@@ -119,11 +120,28 @@ class LinksController extends \lithium\action\Controller {
 
 		$link = Links::first($this->request->id);
 
-		$works = Works::find('all', array(
+		$works_with_links = Works::find('all', array(
 			'with' => array('ArchivesLinks', 'Archives'),
+			'fields' => array('Archives.id', 'Works.id'),
 			'conditions' => array('ArchivesLinks.link_id' => $link->id),
-			'order' => array('Archives.earliest_date' => 'DESC')
 		));
+
+		$work_ids = array();
+
+		if ($works_with_links->count()) {
+
+			//Get all the work IDs in a plain array
+			$work_ids = $works_with_links->map(function($wwl) {
+				return $wwl->id;
+			}, array('collect' => false));
+
+			$works = Works::find('artworks', array(
+				'conditions' => array('Works.id' => $work_ids)
+			));
+
+		} else {
+			$works = new RecordSet();
+		}
 
 		$exhibitions = Exhibitions::find('all', array(
 			'with' => array('ArchivesLinks', 'Archives'),

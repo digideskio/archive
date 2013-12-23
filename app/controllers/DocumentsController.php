@@ -18,6 +18,7 @@ use li3_filesystem\extensions\storage\FileSystem;
 use lithium\action\DispatchException;
 use lithium\security\Auth;
 use lithium\core\Environment;
+use lithium\data\collection\RecordSet;
 
 class DocumentsController extends \lithium\action\Controller {
 
@@ -173,6 +174,8 @@ class DocumentsController extends \lithium\action\Controller {
 						'conditions' => array('Works.id' => $work_ids)
 					));
 
+				} else {
+					$works = new RecordSet();
 				}
 
 				$architectures = Architectures::find('all', array(
