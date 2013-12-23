@@ -101,6 +101,20 @@ class ArtworkTest extends \lithium\test\Unit {
 
 	}
 
+	public function testWorksArchivesCaptionWithLink() {
+		$work = Works::find('first', array(
+			'with' => 'Archives',
+		));
+
+		$helper = new Artwork();
+
+		$caption = $helper->caption($work, array('link' => true));
+
+		$this->assertEqual('<em><a href="/works/view/First-Artwork-Title">First Artwork Title</a></em>, 2004–2005, 40 × 50 cm.', $caption);
+
+	}
+
+
 	public function testArtworksCaption() {
 		$works = Works::find('artworks');
 
