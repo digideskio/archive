@@ -53,7 +53,7 @@ EOD;
 
 foreach( $works as $work) {
 
-$caption = $this->artwork->caption($work->archive, $work); 
+$caption = $this->artwork->caption($work); 
 
 	$work_documents = $work->documents('all');
 
@@ -104,7 +104,7 @@ foreach ($documents as $doc) {
 			'order' => 'earliest_date DESC'
 		));
 
-		$caption = $doc_work ? $this->artwork->caption($doc_work->archive, $doc_work) : $doc->title;
+		$caption = $doc_work ? $this->artwork->caption($doc_work) : $doc->title;
 		$remarks = $doc->remarks;
 
 		if ($doc->published) {

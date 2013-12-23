@@ -34,7 +34,7 @@
 	</td>
     <td>
 		<h5><?=$this->html->link($work->title,'/works/view/'.$work->archive->slug); ?></h5>
-		<p><small><?=$this->artwork->caption($work->archive, $work); ?></small></p>
+		<p><small><?=$this->artwork->caption($work); ?></small></p>
 		<blockquote class="pull-right"><?=$work->annotation ?></blockquote>
 </tr>
     

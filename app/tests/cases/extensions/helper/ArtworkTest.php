@@ -22,32 +22,35 @@ class ArtworkTest extends \lithium\test\Unit {
 		);
 
 		$work = Works::create($data);
-		$archive = Archives::create($data);
+		$work->archive = Archives::create($data);
 
 		$helper = new Artwork();
 
-		$caption = $helper->caption($archive, $work);
+		$caption = $helper->caption($work);
 
 		$this->assertEqual('<em>Artwork Title</em>.', $caption);
 
 		$data['artist'] = 'Artist Name';
 
 		$work = Works::create($data);
-		$caption = $helper->caption($archive, $work);
+		$work->archive = Archives::create($data);
+		$caption = $helper->caption($work);
 
 		$this->assertEqual('Artist Name, <em>Artwork Title</em>.', $caption);
 
 		$data['earliest_date'] = '2004-05-15';
 
-		$archive = Archives::create($data);
-		$caption = $helper->caption($archive, $work);
+		$work = Works::create($data);
+		$work->archive = Archives::create($data);
+		$caption = $helper->caption($work);
 
 		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004.', $caption); 
 
 		$data['latest_date'] = '2005-02-20';
 
-		$archive = Archives::create($data);
-		$caption = $helper->caption($archive, $work);
+		$work = Works::create($data);
+		$work->archive = Archives::create($data);
+		$caption = $helper->caption($work);
 
 		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004–2005.', $caption); 
 
@@ -55,11 +58,12 @@ class ArtworkTest extends \lithium\test\Unit {
 		$data['width'] = 50;
 
 		$work = Works::create($data);
-		$caption = $helper->caption($archive, $work);
+		$work->archive = Archives::create($data);
+		$caption = $helper->caption($work);
 
 		$this->assertEqual('Artist Name, <em>Artwork Title</em>, 2004–2005, 40 × 50 cm.', $caption);
 
-		$caption = $helper->caption($archive, $work, array('link' => true));
+		$caption = $helper->caption($work, array('link' => true));
 
 		$this->assertEqual('Artist Name, <em><a href="/works/view/">Artwork Title</a></em>, 2004–2005, 40 × 50 cm.', $caption);
 
