@@ -124,6 +124,19 @@ class ArtworkTest extends \lithium\test\Unit {
 
 	}
 
+	public function testWorksArchivesCaptionWithSeparator() {
+		$work = Works::find('first', array(
+			'with' => 'Archives',
+		));
+
+		$helper = new Artwork();
+
+		$caption = $helper->caption($work, array('separator' => '<br/>'));
+
+		$this->assertEqual('<em>First Artwork Title</em><br/>2004–2005<br/>40 × 50 cm.', $caption);
+
+	}
+
 
 	public function testArtworksCaption() {
 		$works = Works::find('artworks');

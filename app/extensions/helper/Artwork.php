@@ -49,6 +49,8 @@ class Artwork extends \lithium\template\Helper {
 		} else {
 			$materials = '';
 		}
+
+		$separator = isset($options['separator']) ? $options['separator'] : ', ';
     
 		$caption = array_filter( array(
 			$display_artists,
@@ -59,7 +61,7 @@ class Artwork extends \lithium\template\Helper {
 			$this->escape($artwork->measurement_remarks)
     	));
     	
-    	return implode(', ', $caption) . '.';
+    	return implode($separator, $caption) . '.';
 
 	}
 
