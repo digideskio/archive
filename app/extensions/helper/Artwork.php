@@ -18,15 +18,16 @@ class Artwork extends \lithium\template\Helper {
 			$title = '';
 		}
 
+		$artists = array();
+
 		if (!empty($artwork->components)) {
 			$components = $artwork->components;
-			$artists = $components->map(function($c) {
+
+			foreach ($components as $c) {
 				if ($c->type == 'persons_works') {
-					return $c->person->archive->name;
+					array_push($artists, $c->person->archive->name);
 				}
-			}, array('collect' => false));
-		} else {
-			$artists = array();
+			}
 		}
 
 		$display_artists = $this->escape(implode(', ', $artists));
