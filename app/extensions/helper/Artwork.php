@@ -65,6 +65,68 @@ class Artwork extends \lithium\template\Helper {
 
 	}
 
+	public function notes(Record $artwork, $options = array()) {
+
+		$a = $artwork;
+						
+		$annotation = $a->annotation ? '<em>' . $this->escape($a->annotation) . '</em>' : '';
+		$quantity = $a->quantity ? 'Quantity: ' . $this->escape($a->quantity) : '';
+		$remarks =  $a->remarks ? $this->escape($a->remarks) : '';
+
+		$edition = $a->attribute('edition') ? 'Edition: ' . $this->escape($a->attribute('edition')) : '';
+		$signed = $a->attribute('signed') ? '<span class="label label-info">Signed</span>' : '';
+		$framed = $a->attribute('framed') ? '<span class="label label-inverse">Framed</span>' : '';
+		$certification = $a->attribute('certification') ? '<span class="label label-success">Certification</span>' : '';
+		
+		$info = array_filter(array(
+			$annotation,
+			$edition,
+			$quantity,
+			$remarks,
+			$signed,
+			$framed,
+			$certification
+		));
+
+		$separator = isset($options['separator']) ? $options['separator'] : '<br/>';
+		
+		return implode($separator, $info);
+
+	}
+
+	public function inventory(Record $artwork, $options = array()) {
+
+		$a = $artwork;
+
+		$buy_price = $a->attribute('buy_price') ? 'Purchase Price: ' . $this->escape($a->attribute('buy_price')) . ' <small>' . $this->escape($a->attribute('buy_price_per')) . '</small>' : '';
+		$sell_price = $a->attribute('sell_price') ? 'Sale Price: ' . $this->escape($a->attribute('sell_price')) . ' <small>' . $this->escape($a->attribute('sell_price_per')) . '</small>' : '';
+
+		$sell_date = $a->attribute('sell_date') ? 'Date of Sale: ' . $this->escape($a->attribute('sell_date'))  : '';
+
+		$packing_type = $a->attribute('packing_type') ? 'Packing Type: ' . $this->escape($a->attribute('packing_type'))  : '';
+		$pack_price = $a->attribute('pack_price') ? 'Packing Cost: ' . $this->escape($a->attribute('pack_price')) . ' <small>' . $this->escape($a->attribute('pack_price_per')) . '</small>' : '';
+		$in_time = $a->attribute('in_time') ? 'Received Time: ' . $this->escape($a->attribute('in_time'))  : '';
+		$in_from = $a->attribute('in_from') ? 'Sent From: ' . $this->escape($a->attribute('in_from'))  : '';
+		$in_operator = $a->attribute('in_operator') ? 'Received By: ' . $this->escape($a->attribute('in_operator'))  : '';
+
+		$info = array_filter(array(
+			$buy_price,
+			$sell_price,
+			$sell_date,
+			$packing_type,
+			$pack_price,
+			$in_time,
+			$in_from,
+			$in_operator
+		));
+
+		$separator = isset($options['separator']) ? $options['separator'] : '<br/>';
+		
+		return implode($separator, $info);
+
+	}
+
+
 }
 
 ?>

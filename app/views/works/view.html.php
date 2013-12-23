@@ -169,9 +169,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td><i class="icon-gift"></i></td>
 					<td class="meta">Inventory</td>
 					<td colspan="3">
-						<?php
-							echo $work->inventory(); 
-						?>
+						<?=$this->artwork->inventory($work); ?>
 					</td>
 				</tr>
 				<?php endif; ?>
@@ -179,11 +177,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td><i class="icon-info-sign"></i></td>
 					<td class="meta">Notes</td>
 					<td colspan="3">
-						<?php 
-						
-						echo $work->notes();
-						
-						?>
+						<?=$this->artwork->inventory($work); ?>
 					
 				</tr>
 			</tbody>
