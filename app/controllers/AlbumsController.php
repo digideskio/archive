@@ -102,8 +102,8 @@ class AlbumsController extends \lithium\action\Controller {
 				$album_works = Components::find('all', array(
 					'fields' => 'archive_id2',
 					'conditions' => array(
-						'archive_id1' => $album->id,
-						'type' => 'albums_works',
+						'Components.archive_id1' => $album->id,
+						'Components.type' => 'albums_works',
 					),
 				));
 
@@ -116,8 +116,7 @@ class AlbumsController extends \lithium\action\Controller {
 						return $aw->archive_id2;
 					}, array('collect' => false));
 
-					$works = Works::find('all', array(
-						'with' => 'Archives',
+					$works = Works::find('artworks', array(
 						'conditions' => array('Works.id' => $work_ids),
 						'order' => 'Archives.earliest_date DESC'
 					));
@@ -347,14 +346,31 @@ class AlbumsController extends \lithium\action\Controller {
 				
 				$pdf = $album->archive->slug . '-' . $options['view'] . '.pdf';
 
-				$works = Works::find('all', array(
-					'with' => array('Archives', 'Components'),
+				$work_ids = array();
+
+				$album_works = Components::find('all', array(
+					'fields' => 'archive_id2',
 					'conditions' => array(
 						'Components.archive_id1' => $album->id,
 						'Components.type' => 'albums_works',
 					),
-					'order' => 'Archives.earliest_date DESC',
 				));
+
+				$works = new RecordSet();
+
+				if ($album_works->count()) {
+
+					//Get all the work IDs in a plain array
+					$work_ids = $album_works->map(function($aw) {
+						return $aw->archive_id2;
+					}, array('collect' => false));
+
+					$works = Works::find('artworks', array(
+						'conditions' => array('Works.id' => $work_ids),
+						'order' => 'Archives.earliest_date DESC'
+					));
+
+				}
 
 				$publications = Publications::find('all', array(
 					'with' => array('Archives', 'Components'),
