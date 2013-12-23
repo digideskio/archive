@@ -88,6 +88,16 @@ class ArtworkTest extends \lithium\test\Unit {
 		$this->assertEqual('40 × 50 cm.', $caption);
 	}
 
+	public function testWorksCaptionWithMaterials() {
+		$work = Works::first();
+
+		$helper = new Artwork();
+
+		$caption = $helper->caption($work, array('materials' => true));
+
+		$this->assertEqual('The Materials, 40 × 50 cm.', $caption);
+	}
+
 	public function testWorksArchivesCaption() {
 		$work = Works::find('first', array(
 			'with' => 'Archives',

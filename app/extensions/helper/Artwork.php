@@ -42,10 +42,17 @@ class Artwork extends \lithium\template\Helper {
 		}
 
 		$display_title = $title ? '<em>' . $title . '</em>' : '';
+
+		if (isset($options['materials']) && $options['materials']) {
+			$materials = $artwork->materials;
+		} else {
+			$materials = '';
+		}
     
 		$caption = array_filter( array(
 			$display_artists,
 			$display_title,
+			$this->escape($materials),
 			$this->escape($years),
 			$this->escape($artwork->dimensions()),
 			$this->escape($artwork->measurement_remarks)
