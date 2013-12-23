@@ -10,6 +10,7 @@ use app\models\Components;
 use app\models\Works;
 
 use lithium\core\Environment;
+use lithium\data\collection\RecordSet;
 
 class PersonsController extends \lithium\action\Controller {
 
@@ -173,14 +174,14 @@ class PersonsController extends \lithium\action\Controller {
 						return $pw->archive_id2;
 					}, array('collect' => false));
 
-					$works = Works::find('all', array(
-						'with' => array('Archives', 'Components.Persons.Archives'),
+					$works = Works::find('artworks', array(
 						'conditions' => array('Works.id' => $work_ids),
-						'order' => 'Archives.earliest_date DESC',
 						'limit' => $limit,
 						'page' => $page
 					));
 
+				} else {
+					$works = new RecordSet();
 				}
 			
 				//Send the retrieved data to the view
