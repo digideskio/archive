@@ -96,8 +96,6 @@ class AlbumsController extends \lithium\action\Controller {
 			)));
 			
 			if($album->exists()) {
-
-				$work_ids = array();	
 			
 				$album_works = Components::find('all', array(
 					'fields' => 'archive_id2',
