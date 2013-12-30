@@ -34,7 +34,7 @@ class PersonsController extends \lithium\action\Controller {
 
 	public function index() {
 
-		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
+		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 42;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$total = Persons::count();
 
