@@ -51,3 +51,5 @@ $authority_is_admin = $this->authority->isAdmin();
 	</p>
 
 <?php endforeach; ?>
+
+<?=$this->pagination->pager('artists', 'pages', $page, $total, $limit, array('limit' => $limit)); ?>
