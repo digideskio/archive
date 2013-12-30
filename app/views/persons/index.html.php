@@ -41,7 +41,7 @@ $authority_is_admin = $this->authority->isAdmin();
 
 	<p>
 		<?=$this->html->link(
-			$person->archive->name,
+			$person->archive->name . ' ' . $person->archive->native_name,
 			$this->url(array(
 				'controller' => 'persons',
 				'action' => 'view',
