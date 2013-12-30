@@ -43,6 +43,83 @@
 	</table>
 <?php endif; ?>
 
+<?php
+	$layout = 'thumbnails';
+	$documents_settings = \lithium\core\Environment::get('documents');
+	if ($documents_settings && isset($documents_settings['layout'])) {
+		$layout = $documents_settings['layout'];
+	}
+
+?>
+
+<?php if ($layout == "list"): ?>
+
+<table class="table table-bordered">
+
+<thead>
+	<tr>
+<?php if($authority_can_edit): ?>
+		<th style="width: 25px; text-align: center;">
+			<i class="icon-ok"></i>
+		</th>
+<?php endif; ?>
+		<th style="width: 125px;">
+			Image
+		</th>
+		<th colspan=2>Info</th>
+	</tr>
+</thead>
+
+<tbody>
+<?php foreach($documents as $document): ?>
+
+<tr>
+<?php if($authority_can_edit): ?>
+	<td>
+		<label class="batch-checkbox doc-checkbox" for="Document-<?=$document->id?>">
+		<?=$this->form->checkbox('documents[]', array('id' => "Document-$document->id", 'value' => $document->id, 'hidden' => false, 'class' => 'checkdocs'));?>
+		</label>
+	</td>
+<?php endif; ?>
+	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
+			<a href="/documents/view/<?=$document->slug?>" title="<?=$document->title?>">
+				<img width="125" src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
+			</a>
+	</td>
+	<td>
+		<strong>
+		<?=$this->html->link(
+			$document->title,
+			$this->url(array(
+				'Documents::view',
+				'slug' => $document->slug
+			))
+		); ?>
+		</strong>
+		<br/>
+		<span style="font-family: monospace">
+			<?=$document->file_date ?>
+		</span>
+		<br/>
+		<em><?=$document->remarks ?></em>
+	</td>
+	<td style="width: 125px;">
+		<span class="label"><?= $document->format->mime_type ?></span></br/>
+		<?php if ($document->width && $document->height): ?>
+			<span style="font-family: monospace">
+				<?=$document->resolution(); ?>
+			</span>
+		<?php endif; ?>
+	</td>
+</tr>
+<?php endforeach; ?>
+
+</tbody>
+
+</table>
+
+<?php else: ?>
+
 	<ul class="thumbnails">
 
 	<?php foreach($documents as $document): ?>
@@ -67,6 +144,7 @@
 	<?php endforeach; ?>
 
 	</ul>
+<?php endif; ?>
 
 <?php if($authority_can_edit): ?>
 <?=$this->form->end(); ?>
