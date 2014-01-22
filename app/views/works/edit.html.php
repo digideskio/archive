@@ -243,7 +243,7 @@ foreach ($users as $user) {
 						<?=$this->form->label('work.location', 'Location', array('class' => 'control-label')); ?>
 						<div class="controls control-row">
 							<input type="text" name="work[location]" autocomplete="off" class="span2" id="WorksLocation" value="<?=$work->location?>">
-							<?=$this->form->select('select_location', $locations_list, array('class' => 'span1', 'value' => $work->location)); ?>
+							<?=$this->form->select('work.select_location', $locations_list, array('class' => 'span1', 'value' => $work->location)); ?>
 						</div>
 					</div>
 						<script>
