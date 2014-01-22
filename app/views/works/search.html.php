@@ -6,12 +6,12 @@ $conditions_list = array(
 	'' => 'Search by...',
 	'Archives.name' => 'Title',
 	'artist' => 'Artist',
-	'classification' => 'Classification',
-	'earliest_date' => 'Year',
-	'materials' => 'Materials',
-	'remarks' => 'Remarks',
-	'creation_number' => 'Artwork ID',
-	'annotation' => 'Annotation',
+	'Archives.classification' => 'Classification',
+	'Archives.earliest_date' => 'Year',
+	'Works.materials' => 'Materials',
+	'Works.remarks' => 'Remarks',
+	'Works.creation_number' => 'Artwork ID',
+	'Works.annotation' => 'Annotation',
 );
 
 $authority_can_edit = $this->authority->canEdit();
@@ -20,7 +20,7 @@ $authority_is_admin = $this->authority->isAdmin();
 $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
 
 if ($inventory) {
-	$conditions_list['location'] = 'Location';	
+	$conditions_list['Works.location'] = 'Location';
 }
 
 ?>

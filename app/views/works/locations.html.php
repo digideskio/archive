@@ -41,7 +41,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 	<?php foreach ($locations as $location): ?>
 
 		<?php $query = urlencode($location['name']); ?>
-		<p><?=$this->html->link($location['name'], "/works/search?condition=location&query=$query"); ?> <span class="badge"><?=$location['works'] ?></span></p>
+		<p><?=$this->html->link($location['name'], "/works/search?condition=Works.location&query=$query"); ?> <span class="badge"><?=$location['works'] ?></span></p>
 
 	<?php endforeach; ?>
 </div>

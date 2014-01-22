@@ -49,7 +49,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 		?>
 
 		<li class="span3">
-			<a href="/works/search?condition=classification&query=<?=$query ?>" class="thumbnail" title="<?=$classification_name ?>">
+			<a href="/works/search?condition=Archives.classification&query=<?=$query ?>" class="thumbnail" title="<?=$classification_name ?>">
 				<span class="label label-info" style="font-weight: normal; font-size:1.1em; padding: 3px 8px 4px; text-transform: uppercase; letter-spacing: 0.2em;"><?=$classification_name ?></span>
 				<?php if($document_slug): ?>
 					<img src="/files/thumb/<?=$document_slug ?>.jpeg" alt="<?=$classification_name ?>">
