@@ -10,8 +10,12 @@ class UsersTest extends \lithium\test\Unit {
 
 	public function setUp() {}
 
-	public function tearDown() {}
+	public function tearDown() {
+
+		Users::all()->delete();
 	
+	}
+
 	public function testCreateUser() {
 		$data = array(
 			"username" => "test",
@@ -47,7 +51,35 @@ class UsersTest extends \lithium\test\Unit {
 		
 		$user->delete();
 	}
-	
+
+	public function testUserActive() {
+
+		$data = array(
+			"username" => "activity",
+			"password" => "abcd",
+			"name" => "Active User",
+			"email" => "email@example.com",
+			"role_id" => "1"
+		);
+
+		// Test that a user is set to `active` on create
+		$user = Users::create($data);
+		$user->save();
+		$this->assertTrue($user->active == true);
+
+		// Test that the active field is persisted
+		$u = Users::first();
+		$this->assertTrue($u->active == true);
+
+		// Test that the active field cannot be changed by inputted data
+		$data['active'] = false;
+		$data['email'] = "new@example.com";
+		$u->save($data);
+		$this->assertTrue($u->active == true);
+		$this->assertEqual($u->email, $data['email']);
+
+	}
+
 	public function testCreateUserWithNoUsername() {
 		$user = Users::create(array(
 			"username" => "",
