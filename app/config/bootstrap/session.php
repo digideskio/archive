@@ -49,12 +49,14 @@ Session::config(array(
  * @see lithium\security\Auth
  */
 use lithium\security\Auth;
+use lithium\security\Password;
 
 Auth::config(array(
 	'default' => array(
 		'adapter' => 'Form',
 		'model' => 'Users',
 		'fields' => array('username', 'password'),
+		'scope' => array('active' => true),
 		'session' => array(
 			'persist' => array('username')
 		),
