@@ -209,12 +209,13 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
 		$this->assertEqual('/users', $data->headers["Location"]);
 
-		// Check that the user was deleted
-		$count = Users::find('count', array(
+		// Look up the user
+		$user = Users::find('first', array(
 			'conditions' => compact('username')
 		));
 
-		$this->assertEqual(0, $count);
+		// Check that the user has been de-activated
+		$this->assertEqual(0, $user->active);
 
 	}
 

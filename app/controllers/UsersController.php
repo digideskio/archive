@@ -156,7 +156,9 @@ class UsersController extends \lithium\action\Controller {
 			throw new DispatchException($msg);
 		}
 		
-		$user->delete();
+		// Set the user to in-active
+		$user->active = false;
+		$user->save();
 			
 		return $this->redirect('Users::index');
 	}
