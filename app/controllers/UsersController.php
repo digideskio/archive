@@ -87,19 +87,12 @@ class UsersController extends \lithium\action\Controller {
 		}
 
 		if (($this->request->data) && $user->save($this->request->data)) {
-			return $this->redirect(array('Users::view', 'args' => array($user->username)));
+			return $this->redirect(array('Users::view', 'username' => $user->username));
 		}
 		return compact('user', 'role_list');
 	}
 
 	public function edit() {
-
-	    $check = (Auth::check('default')) ?: null;
-		
-		$auth = Users::first(array(
-			'conditions' => array('username' => $check['username']),
-			'with' => array('Roles')
-		));
         
 		$user = Users::first(array(
 			'conditions' => array('username' => $this->request->params['username']),
@@ -116,17 +109,33 @@ class UsersController extends \lithium\action\Controller {
 		if (!$user) {
 			return $this->redirect('Users::index');
 		}
-        
-        // If the user is not an Admin, unset the role_id from form submit just in case
-        if($auth->role->name != 'Admin' && isset($this->request->data['role_id'])) {
-        	unset($this->request->data['role_id']);
-        }
-        
-        // Unset the username just in case, because we prefer it not to be changed
-        unset($this->request->data['username']);
 		
-		if (($this->request->data) && $user->save($this->request->data)) {
-			return $this->redirect(array('Users::view', 'args' => array($user->username)));
+		if (($this->request->data)) {
+
+			$check = (Auth::check('default')) ?: null;
+
+			if ($check) {
+
+				$auth = Users::first(array(
+					'conditions' => array('username' => $check['username']),
+					'with' => array('Roles')
+				));
+
+				if ($auth) {
+
+					// If the user is not an Admin, unset the role_id from form submit just in case
+					if($auth->role->name != 'Admin' && isset($this->request->data['role_id'])) {
+						unset($this->request->data['role_id']);
+					}
+
+					// Unset the username just in case, because we prefer it not to be changed
+					unset($this->request->data['username']);
+
+					if ($user->save($this->request->data)) {
+						return $this->redirect(array('Users::view', 'username' => $user->username));
+					}
+				}
+			}
 		}
 		return compact('user', 'role_list');
 	}
