@@ -93,9 +93,11 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
+
+		$username = $this->request->params['username'];
         
 		$user = Users::first(array(
-			'conditions' => array('username' => $this->request->params['username']),
+			'conditions' => array('username' => $username),
 			'with' => array('Roles')
 		));
 		
@@ -123,16 +125,16 @@ class UsersController extends \lithium\action\Controller {
 
 				if ($auth) {
 
-					// If the user is not an Admin, unset the role_id from form submit just in case
-					if($auth->role->name != 'Admin' && isset($this->request->data['role_id'])) {
-						unset($this->request->data['role_id']);
+					// Define a whitelist of the fields that can be modified
+					$whitelist = array('name', 'email', 'password');
+
+					// If the user is an Admin, add role_id to the whitelist
+					if($auth->role->name == 'Admin') {
+						array_push($whitelist, 'role_id');
 					}
 
-					// Unset the username just in case, because we prefer it not to be changed
-					unset($this->request->data['username']);
-
-					if ($user->save($this->request->data)) {
-						return $this->redirect(array('Users::view', 'username' => $user->username));
+					if ($user->save($this->request->data, compact('whitelist'))) {
+						return $this->redirect(array('Users::view', 'username' => $username));
 					}
 				}
 			}
