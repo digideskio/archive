@@ -24,7 +24,7 @@ class Users extends \lithium\data\Model {
         'email' => array(
             array('notEmpty', 'message'=>'Include an email address.'),
             array('email', 'skipEmpty' => true, 'message' => 'The email address must be valid.')
-        ),
+        )
     );
 
 	/**
@@ -100,6 +100,38 @@ Users::applyFilter('save', function($self, $params, $chain) {
         $params['entity']->password = Password::hash($params['entity']->password);
     }
     
+    return $chain->next($self, $params, $chain);
+});
+
+/**
+ * User Active Filter
+ *
+ * When a user is created, set the `active` field to true. When a user is
+ * deleted, set it to false. The active field must not be set directly by
+ * any data input.
+ */
+
+Users::applyFilter('save', function($self, $params, $chain) {
+
+	// Check if this is a new record
+	if(!$params['entity']->exists()) {
+
+		// Set the user as active
+		$params['entity']->active = true;
+
+	} else {
+
+		// Check if the `active` field has been modified
+		if ($params['entity']->modified('active')) {
+
+			// Export 'exists', 'data', 'update', etc.
+			$export = $params['entity']->export();
+
+			// Set the active field back to its original value
+			$params['data']['active'] = $export['data']['active'];
+		}
+	}
+
     return $chain->next($self, $params, $chain);
 });
 
