@@ -195,13 +195,14 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 
 	}
 
-	public function testDelete() {
+	public function testDeleteAndActivate() {
 		// Make sure the routes are connected
 		Router::connect('/users', array('Users::index'));
+		Router::connect('/users/view/{:username}', array('Users::view'));
 
 		$username = 'editor';
 		$data = $this->call('delete', array(
-			'params' => array('username' => 'editor'),
+			'params' => compact('username'),
 			'env' => array('REQUEST_METHOD' => 'POST'), // Force the request to be a POST
 		));
 
@@ -216,6 +217,24 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 
 		// Check that the user has been de-activated
 		$this->assertEqual(0, $user->active);
+
+		// Test that the user can be activated
+		$data = $this->call('activate', array(
+			'params' => compact('username'),
+			'env' => array('REQUEST_METHOD' => 'POST'), // Force the request to be a POST
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/users/view/'.$username, $data->headers["Location"]);
+
+		// Look up the user
+		$user = Users::find('first', array(
+			'conditions' => compact('username')
+		));
+
+		// Check that the user has been de-activated
+		$this->assertEqual(1, $user->active);
 
 	}
 
@@ -262,6 +281,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
 		$this->assertTrue(!empty($rules));
+		$this->assertEqual(6, sizeof($rules));
 
 		$this->assertEqual(1, sizeof($rules['index']));
 		$this->assertEqual('allowAdminUser', $rules['index'][0]['rule']);
@@ -276,6 +296,10 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual('allowAdminOrUserRequestingSelf', $rules['edit'][0]['rule']);
 
 		$this->assertEqual(2, sizeof($rules['delete']));
+		$this->assertEqual('allowAdminUser', $rules['delete'][0]['rule']);
+		$this->assertEqual('denyUserRequestingSelf', $rules['delete'][1]['rule']);
+
+		$this->assertEqual(2, sizeof($rules['activate']));
 		$this->assertEqual('allowAdminUser', $rules['delete'][0]['rule']);
 		$this->assertEqual('denyUserRequestingSelf', $rules['delete'][1]['rule']);
 	

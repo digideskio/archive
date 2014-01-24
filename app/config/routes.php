@@ -88,6 +88,7 @@ Router::connect('/users/view/{:username}', array('Users::view'));
 Router::connect('/users/view/{:username}/{:page:[0-9]+}', array('Users::view'));
 Router::connect('/users/edit/{:username}', array('Users::edit'));
 Router::connect('/users/delete/{:username}', array('Users::delete'));
+Router::connect('/users/activate/{:username}', array('Users::activate'));
 
 Router::connect('/albums', array('Albums::index'));
 Router::connect('/albums/pages/{:page:[0-9]+}', array('Albums::index'));
