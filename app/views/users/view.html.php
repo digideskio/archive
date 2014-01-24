@@ -64,6 +64,8 @@ This user is no longer active.
 
 </div>
 
+<?php if (sizeof($archives_histories) > 0 ): ?>
+
 <table class="table">
 
 	<thead>
@@ -74,8 +76,6 @@ This user is no longer active.
 		<tr>
 	</thead>
 	<tbody>
-
-	<?php if (sizeof($archives_histories) > 0 ): ?>
 
 	<?php foreach( $archives_histories as $ah ): ?>
 
@@ -108,8 +108,6 @@ This user is no longer active.
 		</tr>
 	<?php endforeach; ?>
 
-	<?php endif; ?>
-
 	</tbody>
 
 </table>
@@ -131,3 +129,5 @@ This user is no longer active.
 			<?=$this->form->end(); ?>
 	</div>
 </div>
+
+<?php endif; ?>
