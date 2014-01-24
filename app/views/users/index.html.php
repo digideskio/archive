@@ -60,7 +60,15 @@
 	<th><?=$this->html->link($user->username,'/users/view/'.$user->username); ?></th>
 	<td><?= $user->name; ?></td>
 	<td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
-	<td><?= $user->role->name; ?></td>
+	<td class="meta">
+	<?php if($user->active): ?>
+		<?= $user->role->name; ?>
+	<?php else: ?>
+		<span class="text-error">
+			Disabled
+		</span>
+	<?php endif; ?>
+	</td>
 
 </tr>
     

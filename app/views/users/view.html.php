@@ -46,6 +46,14 @@
 
 </div>
 
+<?php if(!$user->active): ?>
+
+<div class="alert alert-error">
+This user is no longer active.
+</div>
+
+<?php endif; ?>
+
 <div class="alert alert-info">
 
 <h1><?=$user->name ?></h1>

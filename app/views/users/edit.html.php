@@ -53,6 +53,13 @@
 
 </div>
 
+<?php if(!$user->active): ?>
+
+<div class="alert alert-error">
+This user is no longer active.
+</div>
+
+<?php endif; ?>
 <div class="well">
 <?=$this->form->create($user); ?>
     <?=$this->form->field('username', array('autocomplete' => 'off', 'disabled' => 'disabled'));?>
@@ -85,7 +92,7 @@
 			<legend>Edit</legend>
 		
 			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
-				<i class="icon-white icon-trash"></i> Delete User
+				<i class="icon-white icon-ban-circle"></i> Disable Account
 			</a>
 
 	</div>
@@ -94,17 +101,17 @@
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
-			<h3>Delete User</h3>
+			<h3>Disable User</h3>
 		</div>
 		<div class="modal-body">
-			<p>Are you sure you want to permanently delete <strong><?=$user->name; ?></strong>?</p>
+			<p>Are you sure you want to remove <strong><?=$user->name; ?>'s</strong> access?</p>
 			
-			<p>By selecting <code>Delete</code>, you will remove this user from the system. Are you sure you want to continue?</p>
+			<p>By selecting <code>Disable</code> you will de-activate this user's account. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
 			<?=$this->form->create($user, array('url' => "/users/delete/$user->username", 'method' => 'post')); ?>
 			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
-			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
+			<?=$this->form->submit('Disable', array('class' => 'btn btn-danger')); ?>
 			<?=$this->form->end(); ?>
 	</div>
 </div>
