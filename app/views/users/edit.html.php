@@ -90,10 +90,16 @@ This user is no longer active.
 	<div class="well">
 
 			<legend>Edit</legend>
-		
+	
+			<?php if($user->active): ?>	
 			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
 				<i class="icon-white icon-ban-circle"></i> Disable Account
 			</a>
+			<?php else: ?>
+			<a class="btn btn-success" data-toggle="modal" href="#activateModal">
+				<i class="icon-white icon-ok-sign"></i> Activate Account
+			</a>
+			<?php endif; ?>	
 
 	</div>
 
@@ -116,4 +122,21 @@ This user is no longer active.
 	</div>
 </div>
 
+<div class="modal fade hide" id="activateModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Activate User</h3>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to enable <strong><?=$user->name; ?>'s</strong> access?</p>
+			
+			<p>By selecting <code>Activate</code> you will enable this user's account. Are you sure you want to continue?</p>
+			</div>
+			<div class="modal-footer">
+			<?=$this->form->create($user, array('url' => "/users/activate/$user->username", 'method' => 'post')); ?>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<?=$this->form->submit('Activate', array('class' => 'btn btn-success')); ?>
+			<?=$this->form->end(); ?>
+	</div>
+</div>
 <?php endif; ?> 

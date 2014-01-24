@@ -30,6 +30,10 @@ class UsersController extends \lithium\action\Controller {
 			array('rule' => 'allowAdminUser', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
 			array('rule' => 'denyUserRequestingSelf', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
 		),
+		'activate' => array(
+			array('rule' => 'allowAdminUser', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+			array('rule' => 'denyUserRequestingSelf', 'message' => 'Access Denied.', 'redirect' => "Pages::home"),
+		),
 	);
 
 	public function index() {
@@ -140,6 +144,27 @@ class UsersController extends \lithium\action\Controller {
 			}
 		}
 		return compact('user', 'role_list');
+	}
+
+	public function activate() {
+    
+		$user = Users::first(array(
+			'conditions' => array('username' => $this->request->params['username']),
+			'with' => array('Roles')
+		));
+        
+        // For the following to work, the form must have an explicit 'method' => 'post'
+        // since the default method is PUT
+		if (!$this->request->is('post')) {
+			$msg = "Users::activate can only be called with http:post or http:delete.";
+			throw new DispatchException($msg);
+		}
+		
+		// Set the user to active
+		$user->active = true;
+		$user->save();
+			
+		return $this->redirect(array('Users::view', 'username' => $user->username));
 	}
 
 	public function delete() {
