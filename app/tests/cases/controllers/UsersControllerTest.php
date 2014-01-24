@@ -9,8 +9,11 @@ use app\models\Users;
 use lithium\security\Auth;
 use lithium\storage\Session;
 use lithium\action\Request;
+use lithium\net\http\Router;
 
-class UsersControllerTest extends \lithium\test\Unit {
+class UsersControllerTest extends \li3_unit\test\ControllerUnit {
+
+	public $controller = 'app\\controllers\UsersController';
 
 	public $admin;
 	public $admin_data;
@@ -65,46 +68,170 @@ class UsersControllerTest extends \lithium\test\Unit {
 	
 	}
 
-	public function testIndex() {}
-	public function testView() {}
-	public function testAdd() {}
-	public function testEdit() {} //TODO Test that non-Amins cannot change user role, and that usernames and ids can never be changed
-	public function testDelete() {}
-	
-	public function testRegister() {
-	
-		Auth::set('default', $this->editor_data);
-	
-		$request = new Request();
-		$request->params = array(
-			'controller' => 'users'
-		);
+	public function testIndex() {
+		$data = $this->call('index');
 
-		$usersRegister = new UsersController(array('request' => $request));
-		
-		$response = $usersRegister->register();
-		$this->assertEqual($response->headers["Location"], "/login");
-		
+		$users = $data['users'];
+
+		$this->assertEqual(3, $users->count());
+	}
+
+	public function testView() {
+		$data = $this->call('view', array(
+			'params' => array(
+				'username' => 'admin'
+			)
+		));
+
+		$user = $data['user'];
+
+		$this->assertEqual('admin', $user->username);
+	}
+
+	public function testAdd() {
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/users/view/{:username}', array('Users::view'));
+
+		// Test that a model is created and passed to the view
+		$data = $this->call('add', array(
+			'params' => array()
+		));
+
+		$this->assertTrue(isset($data['user']));
+		$this->assertTrue(isset($data['role_list']));
+
+		// Test that this action processes and saves the correct data
+		$username = 'new';
+		$name = 'New';
+		$password = 'strange';
+		$email = 'new@example.com';
+		$role_id = 3;
+
+		$data = $this->call('add', array(
+			'data' => compact('username', 'name', 'password', 'email', 'role_id')
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/users/view/new', $data->headers["Location"]);
+
+		// Look up the objects that were saved
+		$user = Users::find('first', array(
+			'with' => 'Roles',
+			'conditions' => compact('username')
+		));
+
+		$this->assertTrue(!empty($user));
+		$this->assertEqual($username, $user->username);
+		$this->assertEqual('Viewer', $user->role->name);
+		$this->assertTrue($user->active == true);
+	}
+
+	public function testEdit() {
+		// Make sure the route that the edit action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/users/view/{:username}', array('Users::view'));
+
+		$data = $this->call('edit', array(
+			'params' => array(
+				'username' => 'editor'
+			)
+		));
+
+		$this->assertTrue(isset($data['user']));
+		$this->assertTrue(isset($data['role_list']));
+
+		// Set the user who will be performing the action
+		Auth::set('default', $this->editor_data);
+
+		// Test that only allowed records can be saved with new data
+		$username = 'updated'; // Not allowed to be changed
+		$name = 'Updated Name';
+		$email = 'updated@example.com';
+		$password = 'updated';
+		$role_id = '1'; // Not allowed to be changed
+
+		$data = $this->call('edit', array(
+			'params' => array('username' => 'editor'),
+			'data' => compact('username', 'name', 'email', 'password', 'role_id')
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/users/view/editor', $data->headers["Location"]);
+
+		// Look up the objects that were saved
+		$user = Users::find('first', array(
+			'with' => 'Roles',
+			'conditions' => array('username' => 'editor')
+		));
+
+		$this->assertTrue(!empty($user));
+		$this->assertEqual('editor', $user->username);
+		$this->assertEqual('Editor', $user->role->name);
+		$this->assertEqual($name, $user->name);
+		$this->assertEqual($email, $user->email);
+
+		// Set the user who will be performing the action
+		Auth::set('default', $this->admin_data);
+
+		// Test that admins can modify user roles
+		$username = 'editor';
+		$role_id = '1';
+
+		$data = $this->call('edit', array(
+			'params' => compact('username'),
+			'data' => compact('username', 'name', 'email', 'password', 'role_id')
+		));
+
+		// Look up the objects that were saved
+		$user = Users::find('first', array(
+			'with' => 'Roles',
+			'conditions' => array('username' => 'editor')
+		));
+
+		$this->assertEqual('Admin', $user->role->name);
+
+	}
+
+	public function testDelete() {}
+
+	public function testRegister() {
+		// Make sure the routes are connected
+		Router::connect('/login', 'Sessions::add');
+		Router::connect('/register', 'Users::register');
+	
+		// Test that the register route is not accessible since the system
+		// has users.
+		Auth::set('default', $this->editor_data);
+
+		$data = $this->call('register');
+		$this->assertEqual('/login', $data->headers["Location"]);
+
+		// Delete all users, then test that the register page is accessible
 		Auth::clear('default');
 		Users::all()->delete();
-		//FIXME the response now rendering into the test suite
-		/*$usersRegister = new UsersController(array('request' => $request));
-		
-		$response = $usersRegister->register();
-		
-		$this->assertNull($response);*/
-	
-		$request = new Request();
-		$request->params = array(
-			'controller' => 'users'
-		);
-		$request->data = $this->admin_data;
 
-		$usersRegister = new UsersController(array('request' => $request));
-		
-		$response = $usersRegister->register();
-		$this->assertEqual($response->headers["Location"], "/home");
-		
+		$data = $this->call('register');
+		$this->assertEqual(200, $data->status["code"]);
+
+		// Test the registration process
+		$data = $this->call('register', array(
+			'data' => $this->admin_data
+		));
+		$this->assertEqual('/home', $data->headers["Location"]);
+
+		$data = $this->call('view', array(
+			'params' => array(
+				'username' => 'admin'
+			)
+		));
+
+		$user = $data['user'];
+
+		$this->assertEqual('admin', $user->username);
+
 	}
 
 	public function testRules() {
@@ -131,6 +258,7 @@ class UsersControllerTest extends \lithium\test\Unit {
 		$this->assertEqual('denyUserRequestingSelf', $rules['delete'][1]['rule']);
 	
 	}
+
 }
 
 ?>
