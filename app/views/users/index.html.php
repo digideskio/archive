@@ -55,18 +55,23 @@
 
 <?php foreach($users as $user): ?>
 
-<tr>
+<?php $row_class = $user->active ? '' : 'error'; ?>
+<?php $text_class = $user->active ? '' : 'text-error'; ?>
 
-	<th><?=$this->html->link($user->username,'/users/view/'.$user->username); ?></th>
-	<td><?= $user->name; ?></td>
-	<td><a href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
+<tr class="<?=$row_class ?>">
+
+	<td><?=$this->html->link(
+			$user->username,'/users/view/'.$user->username,
+			array('class' => $text_class));
+		?>
+	</td>
+	<td class="muted"><?= $user->name; ?></td>
+	<td><a class="<?=$text_class ?>" href="mailto:<?= $user->email ?>"><?= $user->email ?></a></td>
 	<td class="meta">
 	<?php if($user->active): ?>
 		<?= $user->role->name; ?>
 	<?php else: ?>
-		<span class="text-error">
-			Disabled
-		</span>
+		Disabled
 	<?php endif; ?>
 	</td>
 
