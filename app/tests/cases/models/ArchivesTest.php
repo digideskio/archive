@@ -450,8 +450,8 @@ class ArchivesTest extends \lithium\test\Unit {
 			'name' => 'Title',
 		));
 
-		$this->assertTrue(strtotime($component->date_created) != false);
-		$this->assertTrue(strtotime($component->date_modified) != false);
+		$this->assertTrue(strtotime($archive->date_created) != false);
+		$this->assertTrue(strtotime($archive->date_modified) != false);
 
 		$this->assertTrue($archive->date_created != '0000-00-00 00:00:00');
 		$this->assertTrue($archive->date_modified != '0000-00-00 00:00:00');
