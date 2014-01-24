@@ -195,7 +195,28 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 
 	}
 
-	public function testDelete() {}
+	public function testDelete() {
+		// Make sure the routes are connected
+		Router::connect('/users', array('Users::index'));
+
+		$username = 'editor';
+		$data = $this->call('delete', array(
+			'params' => array('username' => 'editor'),
+			'env' => array('REQUEST_METHOD' => 'POST'), // Force the request to be a POST
+		));
+
+		// Test that the controller returns a redirect response
+		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
+		$this->assertEqual('/users', $data->headers["Location"]);
+
+		// Check that the user was deleted
+		$count = Users::find('count', array(
+			'conditions' => compact('username')
+		));
+
+		$this->assertEqual(0, $count);
+
+	}
 
 	public function testRegister() {
 		// Make sure the routes are connected
