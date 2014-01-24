@@ -71,13 +71,6 @@ class UsersTest extends \lithium\test\Unit {
 		$u = Users::first();
 		$this->assertTrue($u->active == true);
 
-		// Test that the active field cannot be changed by inputted data
-		$data['active'] = false;
-		$data['email'] = "new@example.com";
-		$u->save($data);
-		$this->assertTrue($u->active == true);
-		$this->assertEqual($u->email, $data['email']);
-
 	}
 
 	public function testCreateUserWithNoUsername() {
