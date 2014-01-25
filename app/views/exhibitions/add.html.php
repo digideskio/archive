@@ -148,6 +148,15 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 		<?=$this->partial->archives_documents_add(array(
 			'documents' => $documents,
 		)); ?>		
+		<div class="well">
+			<legend>Details</legend>
+			<?=$this->form->field('exhibition.annotation', array(
+				'label' => 'Detailed Description',
+				'type' => 'textarea',
+				'rows' => '20',
+				'style' => 'width:90%;',
+			));?>
+		</div>
 	</div>
 
 <?=$this->form->end(); ?>

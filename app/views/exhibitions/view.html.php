@@ -55,6 +55,13 @@ $authority_can_edit = $this->authority->canEdit();
 
 <?=$this->partial->exhibition(compact('exhibition')); ?>
 
+<?php if($exhibition->annotation): ?>
+	<p class="lead">Description</p>
+	<p class="muted">
+		<?php echo nl2br($this->escape($exhibition->annotation)); ?>
+	</p>
+<?php endif; ?>
+
 <?php if ($archives_links->count()): ?>
 
 	<div class="alert alert-info alert-block">
