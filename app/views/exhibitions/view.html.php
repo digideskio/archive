@@ -60,6 +60,7 @@ $authority_can_edit = $this->authority->canEdit();
 	<p class="muted">
 		<?php echo nl2br($this->escape($exhibition->annotation)); ?>
 	</p>
+	<hr/>
 <?php endif; ?>
 
 <?php if ($archives_links->count()): ?>
