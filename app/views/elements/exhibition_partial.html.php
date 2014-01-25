@@ -18,6 +18,13 @@
 	<?php if($location) echo "<p>$location</p>"; ?>
 	<?php if($dates) echo "<p>$dates</p>"; ?>
 	<?php if($curator) echo "<p>$curator, Curator</p>"; ?>
+
+	<?php if($exhibition->remarks): ?>
+		<p class="muted">
+			<?php echo nl2br($this->escape($exhibition->remarks)); ?>
+		</p>
+		<hr/>
+	<?php endif; ?>
 	
 	<p>
 
