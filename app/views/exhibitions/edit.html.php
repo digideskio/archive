@@ -84,11 +84,11 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 	<div class="span5">
 		<div class="well">
 			<legend>Exhibition Info</legend>
-			<?=$this->form->field('archive.name', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data));?>
-			<?=$this->form->field('exhibition.curator', array('autocomplete' => 'off'));?>
-			<?=$this->form->field('exhibition.venue', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data));?>
-			<?=$this->form->field('exhibition.city', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data));?>
-			<?=$this->form->field('exhibition.country', array('autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $country_data));?>
+			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $title_data));?>
+			<?=$this->form->field('exhibition.curator', array('label' => 'Curator', 'autocomplete' => 'off'));?>
+			<?=$this->form->field('exhibition.venue', array('label' => 'Venue', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $venue_data));?>
+			<?=$this->form->field('exhibition.city', array('label' => 'City', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $city_data));?>
+			<?=$this->form->field('exhibition.country', array('label' => 'Country', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $country_data));?>
 			<?=$this->form->field('archive.earliest_date', array(
 				'autocomplete' => 'off',
 				'label' => 'Opening Date',
@@ -106,6 +106,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 				</div>
 			</div>
 			<?=$this->form->field('exhibition.remarks', array(
+				'label' => 'Remarks',
 				'type' => 'textarea',
 			));?>
 			<div class="control-group" style="margin-bottom: 0">
