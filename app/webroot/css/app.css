@@ -176,3 +176,10 @@ a.text-success:hover,
 a.text-success:focus {
   color: #356635;
 }
+
+@media(min-width:767px) and (max-width:979px){
+  #sidebar .nav-list > li > a {
+    padding: 3px 5px;
+  }
+}
+
