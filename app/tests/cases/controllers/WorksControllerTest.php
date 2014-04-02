@@ -403,7 +403,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual('allowAnyUser', $rules['classifications'][0]['rule']);
 
 		$this->assertEqual(1, sizeof($rules['locations']));
-		$this->assertEqual('allowAdminUser', $rules['locations'][0]['rule']);
+		$this->assertEqual('allowAnyUser', $rules['locations'][0]['rule']);
 
 		$this->assertEqual(1, sizeof($rules['histories']));
 		$this->assertEqual('allowAnyUser', $rules['histories'][0]['rule']);

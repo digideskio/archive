@@ -42,7 +42,7 @@ class WorksController extends \lithium\action\Controller {
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
 		),
 		'locations' => array(
-			array('rule' => 'allowAdminUser', 'redirect' => "Works::index"),
+			array('rule' => 'allowAnyUser', 'redirect' => "Works::index"),
 		),
 		'histories' => array(
 			array('rule' => 'allowAnyUser', 'redirect' => "Sessions::add"),
@@ -253,21 +253,21 @@ class WorksController extends \lithium\action\Controller {
 
 	public function locations() {
 
+        $locations = array();
+
 		//Check that inventory is enabled
-		if (!Environment::get('inventory')) {
-			return $this->redirect('Works::index'); 
+		if (Environment::get('inventory')) {
+            $works_locations = Works::find('all', array(
+                'fields' => array('location', 'count(location) as works'),
+                'group' => 'location',
+                'conditions' => array('location' => array('!=' => '')),
+                'order' => array('works' => 'DESC'),
+            ));
+
+            $locations = $works_locations->map(function($wc) {
+                return array('name' => $wc->location, 'works' => $wc->works);
+            }, array('collect' => false));
 		}
-
-		$works_locations = Works::find('all', array(
-			'fields' => array('location', 'count(location) as works'),
-			'group' => 'location',
-			'conditions' => array('location' => array('!=' => '')),
-			'order' => array('works' => 'DESC'),
-		));
-
-		$locations = $works_locations->map(function($wc) {
-			return array('name' => $wc->location, 'works' => $wc->works);
-		}, array('collect' => false));
 
 		return compact('locations');
 	}
