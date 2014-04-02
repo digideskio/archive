@@ -146,12 +146,14 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(!empty($archive));
+        $this->assertEqual($archive->name, $name);
 
 		$album = Albums::find('first', array(
 			'conditions' => array('id' => $archive->id)
 		));
 
 		$this->assertTrue(!empty($album));
+        $this->assertEqual($album->remarks, $remarks);
 
 	}
 
@@ -225,10 +227,11 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		// otherwise we get an error that there is no match for this route.
 		Router::connect('/albums/view/{:slug}', array('Albums::view'));
 
+        $slug = 'First-Album-Title';
 		// Test that an album is looked up and passed to the view
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'First-Album-Title'
+				'slug' => $slug
 			)
 		));
 
@@ -244,7 +247,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		// post the required data
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'First-Album-Title'
+				'slug' => $slug
 			),
 			'data' => array(
 				'archive' => array('name' => '')
@@ -257,19 +260,27 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		$errors = $data['archive']->errors();
 		$this->assertTrue(!empty($errors));
 
-		// Test that the album and archive can be saved with new data
+        // Test that the album and archive can be saved with new data
 		$name = 'Album Update Title';
 		$remarks = "Album Update Description";
 
 		$data = $this->call('edit', array(
 			'params' => array(
-				'slug' => 'First-Album-Title'
+				'slug' => $slug
 			),
 			'data' => array(
 				'archive' => compact('name'),
-				'album' => compact('remarks')
+                'album' => compact('remarks')
 			)
 		));
+
+		$album = Albums::find('first', array(
+            'with' => 'Archives',
+			'conditions' => array('Archives.slug' => $slug)
+		));
+
+        $this->assertEqual($album->archive->name, $name);
+        $this->assertEqual($album->remarks, $remarks);
 
 		// Test that the controller returns a redirect response
 		$this->assertTrue(!empty($data->status) && $data->status['code'] == 302);
