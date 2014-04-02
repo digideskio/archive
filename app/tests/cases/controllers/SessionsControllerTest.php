@@ -15,11 +15,11 @@ class SessionsControllerTest extends \lithium\test\Unit {
 	public $user;
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		$this->user = Users::create();
 		$data = array(
 			"username" => "test",
@@ -29,18 +29,18 @@ class SessionsControllerTest extends \lithium\test\Unit {
 			"role_id" => '3'
 		);
 		$this->user->save($data);
-	
+
 	}
 
 	public function tearDown() {
-	
+
 		Users::all()->delete();
 		Auth::clear('default');
-	
+
 	}
 
 	public function testLogin() {
-	
+
 		$this->request = new Request();
 		$this->request->params = array(
 			'controller' => 'sessions'
@@ -51,19 +51,19 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		);
 
 		$session = new SessionsController(array('request' => $this->request));
-		
+
 		$response = $session->add();
-		
+
 		$this->assertEqual($response->headers["Location"], "/home");
-		
+
 		$check = (Auth::check('default')) ?: null;
-		
+
 		$this->assertTrue(!empty($check));
-	
+
 	}
 
 	public function testRedirect() {
-	
+
 		$this->request = new Request();
 		$this->request->params = array(
 			'controller' => 'sessions',
@@ -76,15 +76,15 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		);
 
 		$session = new SessionsController(array('request' => $this->request));
-		
+
 		$response = $session->add();
-		
+
 		$this->assertEqual($response->headers["Location"], "/works/histories");
-	
+
 	}
-	
+
 	public function testBadLogin() {
-	
+
 		$this->request = new Request();
 		$this->request->params = array(
 			'controller' => 'sessions'
@@ -95,21 +95,21 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		);
 
 		$session = new SessionsController(array('request' => $this->request));
-		
+
 		//$response = $session->add(); //FIXME returns an exception about missing template
-		
+
 		//$this->assertEqual($response->headers["Location"], "/login");
-		
+
 		$check = (Auth::check('default')) ?: null;
-		
+
 		$this->assertNull($check);
-		
+
 		Auth::clear('default');
-	
+
 	}
-	
+
 	public function testLogout() {
-	
+
 		$this->request = new Request();
 		$this->request->params = array(
 			'controller' => 'sessions',
@@ -121,32 +121,32 @@ class SessionsControllerTest extends \lithium\test\Unit {
 		);
 
 		$session = new SessionsController(array('request' => $this->request));
-		
+
 		/*$response = $session->delete(); //FIXME missing template exception
-		
+
 		$check = (Auth::check('default')) ?: null;
-		
+
 		$this->assertFalse($check);
-		
+
 		Auth::clear('default');*/
-	
+
 	}
-	
+
 	public function testAdminRegistration() {
-	
+
 		Users::all()->delete();
-	
+
 		$this->request = new Request();
 		$this->request->params = array(
 			'controller' => 'sessions'
 		);
-		
+
 		$session = new SessionsController(array('request' => $this->request));
-		
+
 		$response = $session->add();
-		
+
 		$this->assertEqual($response->headers["Location"], "/register");
-		
+
 	}
 }
 

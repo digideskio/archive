@@ -21,12 +21,12 @@ class PublicationsLinksController extends \lithium\action\Controller {
 	);
 
 	public function add() {
-	
+
 		if ($this->request->data) {
-	
+
 			$works_links = PublicationsLinks::create();
 			$works_links->save($this->request->data);
-			
+
 			return $this->redirect(array('Publications::attachments', 'args' => array($this->request->data['publication_slug'])));
 
 		}
@@ -34,14 +34,14 @@ class PublicationsLinksController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-        
+
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "PublicationsLinks::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		PublicationsLinks::find($this->request->id)->delete();
-		
+
 		return $this->redirect(array(
     		'Publications::attachments', 'args' => array($this->request->data['publication_slug']))
     	);

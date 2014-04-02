@@ -5,7 +5,7 @@ $this->title('Notices');
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -27,7 +27,7 @@ $this->title('Notices');
 		<?php if($this->authority->isAdmin()): ?>
 
 				<a class="btn btn-inverse" href="/notices/add"><i class="icon-plus-sign icon-white"></i> Write a Notice</a>
-		
+
 		<?php endif; ?>
 	</div>
 </div>
@@ -60,7 +60,7 @@ $this->title('Notices');
 					<?php if($this->authority->isAdmin()): ?>
 
 					<a href="/notices/edit/<?=$notice->id ?>" title="Edit Notice"><i class="icon icon-edit"></i></a>
-			
+
 					<?php endif; ?>
 				</p>
 				<?=$notice->body ?>

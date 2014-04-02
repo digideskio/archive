@@ -1,29 +1,29 @@
-<?php 
+<?php
 
 $title = $link->title ?: "Link";
 
 $this->title('Edit Link');
 
 $this->form->config(
-    array( 
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+    array(
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 ?>
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
 	<?=$this->html->link('Links','/links'); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 	<?=$this->html->link($title,'/links/view/'.$link->id); ?>
 	<span class="divider">/</span>
@@ -86,7 +86,7 @@ $this->form->config(
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong>this link</strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Link from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

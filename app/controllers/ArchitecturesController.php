@@ -51,14 +51,14 @@ class ArchitecturesController extends \lithium\action\Controller {
 		if (!Environment::get('architecture')) {
 			return $this->redirect('Pages::home');
 		}
-        
+
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('earliest_date' => 'DESC');
 		$total = Architectures::count();
 
 		$limit = ($limit == 'all') ? $total : $limit;
-		
+
 		$architectures = Architectures::find('all', array(
 			'with' => 'Archives',
 			'order' => array('Archives.earliest_date' => 'DESC'),
@@ -153,20 +153,20 @@ class ArchitecturesController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$architecture = Architectures::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-			
+
 			if(!$architecture) {
 				$this->redirect(array('Architectures::index'));
 			} else {
-		
+
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
@@ -175,13 +175,13 @@ class ArchitecturesController extends \lithium\action\Controller {
 					'conditions' => array('ArchivesDocuments.archive_id' => $architecture->id),
 					'order' => array('Documents.slug' => 'ASC')
 				));
-			
+
 				//Send the retrieved data to the view
 				return compact('architecture', 'archives_documents');
-			
+
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Architectures::index'));
 	}
@@ -280,13 +280,13 @@ class ArchitecturesController extends \lithium\action\Controller {
 
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$architecture = Architectures::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-			
+
 			if($architecture) {
 
 				$archives_histories = ArchivesHistories::find('all', array(
@@ -301,31 +301,31 @@ class ArchitecturesController extends \lithium\action\Controller {
 					'conditions' => array('architecture_id' => $architecture->id),
 					'order' => array('start_date' => 'DESC')
 				));
-		
+
 				//Send the retrieved data to the view
 				return compact('architecture', 'archives_histories', 'architectures_histories');
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Architectures::index'));
 
 	}
 
 	public function delete() {
-        
+
 		$architecture = Architectures::first(array(
 			'with' => 'Archives',
 			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
-        
+
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Architectures::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		$architecture->delete();
 		return $this->redirect('Architectures::index');
 	}

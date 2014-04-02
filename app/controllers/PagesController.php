@@ -41,7 +41,7 @@ class PagesController extends \lithium\action\Controller {
 	);
 
 	public function view() {
-        
+
 		$options = array();
 		$path = func_get_args();
 
@@ -103,7 +103,7 @@ class PagesController extends \lithium\action\Controller {
 		return compact('alerts', 'updates', 'works', 'exhibitions', 'publications', 'documents');
 
 	}
-	
+
 	public function blank() {
 		return $this->render(array('layout' => ''));
 	}

@@ -22,7 +22,7 @@ Progress Report: <?=$dates['start'] ?> - <?=$dates['end'] ?>
 <?php if ($archives->count()): ?>
 	<?php $last_controller = ''; ?>
 	<?php foreach ($archives as $archive): ?>
-<?php if ($archive->controller != $last_controller): ?> 
+<?php if ($archive->controller != $last_controller): ?>
 
 # <?php echo \lithium\util\Inflector::humanize($archive->controller); ?>
 

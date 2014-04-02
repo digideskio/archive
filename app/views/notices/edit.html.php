@@ -1,14 +1,14 @@
-<?php 
+<?php
 
 $this->title('Edit Notice');
 
 $this->form->config(
-    array( 
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+    array(
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $pages_list = array(
 	'' => 'Choose one...',
@@ -21,14 +21,14 @@ $pages_list = array(
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
 	<?=$this->html->link('Notices','/Notices'); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -82,7 +82,7 @@ $pages_list = array(
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong>this notice</strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Notice from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

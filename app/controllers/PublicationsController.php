@@ -74,7 +74,7 @@ class PublicationsController extends \lithium\action\Controller {
 		if (isset($options['classification'])) {
 			$conditions['Archives.classification'] = $options['classification'];
 		}
-		
+
 		if (isset($options['type'])) {
 			$conditions['Archives.type'] = $options['type'];
 		}
@@ -83,7 +83,7 @@ class PublicationsController extends \lithium\action\Controller {
 			'with' => 'Archives',
 			'conditions' => $conditions
 		));
-		
+
 		$publications = Publications::find('all', array(
 			'with' => 'Archives',
 			'limit' => $limit,
@@ -97,7 +97,7 @@ class PublicationsController extends \lithium\action\Controller {
 
 		return compact('publications', 'pub_classifications', 'pub_types', 'total', 'page', 'limit', 'options');
 	}
-	
+
 	public function histories() {
 
 		$limit = 50;
@@ -111,7 +111,7 @@ class PublicationsController extends \lithium\action\Controller {
 			'order' => $order,
 			'page' => $page
 		));
-		
+
 		$pub_classifications = Publications::classifications();
 		$pub_types = Publications::types();
 
@@ -119,7 +119,7 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function search() {
-		
+
 		$publications = array();
 
 		$order = array('earliest_date' => 'DESC');
@@ -229,10 +229,10 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$publication = Publications::first(array(
 				'with' => 'Archives',
@@ -271,13 +271,13 @@ class PublicationsController extends \lithium\action\Controller {
 					),
 					'order' => array('Archives.name' =>  'ASC')
 				));
-			
+
 				//Send the retrieved data to the view
 				return compact('publication', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
 
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Publications::index'));
 	}
@@ -564,7 +564,7 @@ class PublicationsController extends \lithium\action\Controller {
 				'order' => array('Archives.name' =>  'ASC'),
 				'conditions' => $other_exhibition_conditions
 			));
-			
+
 			return compact(
 				'publication',
 				'archives_documents',
@@ -582,16 +582,16 @@ class PublicationsController extends \lithium\action\Controller {
 	}
 
 	public function history() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$publication = Publications::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-			
+
 			if($publication) {
 
 				$archives_histories = ArchivesHistories::find('all', array(
@@ -606,30 +606,30 @@ class PublicationsController extends \lithium\action\Controller {
 					'conditions' => array('publication_id' => $publication->id),
 					'order' => array('start_date' => 'DESC')
 				));
-		
+
 				//Send the retrieved data to the view
 				return compact('publication', 'archives_histories', 'publications_histories');
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Publications::index'));
 	}
 
 	public function delete() {
-        
+
 		$publication = Publications::first(array(
 			'with' => 'Archives',
 			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
-        
+
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Publications::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		$publication->delete();
 		return $this->redirect('Publications::index');
 	}

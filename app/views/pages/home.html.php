@@ -10,7 +10,7 @@ $this->title('Home');
 </div>
 
 <?php foreach ($alerts as $alert): ?>
-	
+
 	<div class="alert alert-block">
 		<h4><?=$alert->subject ?> <small class="meta"><?=$alert->date_created ?></small></h4>
 		<p><?=$alert->body ?></p>
@@ -49,7 +49,7 @@ $this->title('Home');
 
 			<?php if (!$works || sizeof($works) == 0): ?>
 
-				<?=$this->html->link('Add an artwork', 'Works::add'); ?> to the Archive.	
+				<?=$this->html->link('Add an artwork', 'Works::add'); ?> to the Archive.
 
 			<?php endif; ?>
 
@@ -85,7 +85,7 @@ $this->title('Home');
 		</div>
 
 	</div>
-	
+
 	<div class="span4">
 
 		<div class="breadcrumb">
@@ -94,7 +94,7 @@ $this->title('Home');
 
 			<?php if (!$exhibitions || sizeof($exhibitions) == 0): ?>
 
-				<?=$this->html->link('Add an exhibition', 'Exhibitions::add'); ?> to the Archive.	
+				<?=$this->html->link('Add an exhibition', 'Exhibitions::add'); ?> to the Archive.
 
 			<?php endif; ?>
 
@@ -139,7 +139,7 @@ $this->title('Home');
 
 			<?php if (!$publications || sizeof($publications) == 0): ?>
 
-				<?=$this->html->link('Add a publication', 'Publications::add'); ?> to the Archive.	
+				<?=$this->html->link('Add a publication', 'Publications::add'); ?> to the Archive.
 
 			<?php endif; ?>
 

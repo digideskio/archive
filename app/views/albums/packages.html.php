@@ -9,7 +9,7 @@ if($this->authority->timezone()) {
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>

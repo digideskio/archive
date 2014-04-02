@@ -10,7 +10,7 @@ class LinksTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Links::all()->delete();
 		ArchivesLinks::all()->delete();
 	}
@@ -33,7 +33,7 @@ class LinksTest extends \lithium\test\Unit {
 	}
 
 	public function testResavingLink() {
-		
+
 		$data = array(
 			'url' => 'http://example.org'
 		);
@@ -109,7 +109,7 @@ class LinksTest extends \lithium\test\Unit {
 
 		$this->assertEqual(0, $archive_link_count);
 
-		
+
 	}
 
 }

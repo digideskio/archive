@@ -48,13 +48,13 @@ Access::config(array(
 
 Access::adapter('rule_based')->add('allowAdminUser', function($user, $request, $options){
 
-	return $user['role'] == 'Admin'; 
+	return $user['role'] == 'Admin';
 
 });
 
 Access::adapter('rule_based')->add('allowEditorUser', function($user, $request, $options){
 
-	return ($user['role'] == 'Admin' || $user['role'] == 'Editor'); 
+	return ($user['role'] == 'Admin' || $user['role'] == 'Editor');
 
 });
 

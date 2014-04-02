@@ -13,7 +13,7 @@ class ArchitecturesTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Architectures::all()->delete();
 		ArchitecturesHistories::all()->delete();
 
@@ -29,7 +29,7 @@ class ArchitecturesTest extends \lithium\test\Unit {
 		$architecture = Architectures::create($data);
 
 		$this->assertFalse($architecture->validates());
-		
+
 		$this->assertFalse($architecture->save($data), "The architecture was able to be saved without an id.");
 
 		$errors = $architecture->errors();

@@ -13,13 +13,13 @@ use lithium\action\Request;
 class PackagesControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-	
+
 	}
 
 	public function tearDown() {}
@@ -28,7 +28,7 @@ class PackagesControllerTest extends \lithium\test\Unit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new PackagesController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

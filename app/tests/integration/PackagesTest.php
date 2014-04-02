@@ -6,7 +6,7 @@ use app\models\Packages;
 use app\models\Archives;
 use app\models\Albums;
 
-use li3_filesystem\extensions\storage\FileSystem; 
+use li3_filesystem\extensions\storage\FileSystem;
 
 class PackagesTest extends \lithium\test\Unit {
 
@@ -27,7 +27,7 @@ class PackagesTest extends \lithium\test\Unit {
 		$album->save();
 
 	}
-	
+
 	public function tearDown() {
 
 		Packages::find('all')->delete();
@@ -58,7 +58,7 @@ class PackagesTest extends \lithium\test\Unit {
 
 		$this->assertEqual($filename, $package->name);
 
-		//TODO Test what is inside the package	
+		//TODO Test what is inside the package
 
 	}
 

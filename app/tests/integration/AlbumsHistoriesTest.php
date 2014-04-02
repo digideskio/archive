@@ -28,7 +28,7 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function tearDown() {
-	
+
 		Albums::find("all")->delete();
 		AlbumsHistories::find("all")->delete();
 
@@ -54,13 +54,13 @@ class AlbumsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$album = Albums::first();
 		$data = array(
 			'remarks' => 'New remarks'
 		);
 
-		$album->save($data); 
+		$album->save($data);
 
 		$count = AlbumsHistories::count();
 

@@ -31,7 +31,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		);
 		$archive = Archives::create();
 		$archive->save($archive_data);
-	
+
 		$exhibit = Exhibitions::create();
 		$data = array(
 			'id' => $archive->id,
@@ -43,7 +43,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function tearDown() {
-	
+
 		Exhibitions::all()->delete();
 		ExhibitionsHistories::all()->delete();
 
@@ -60,7 +60,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		Works::find("all")->delete();
 		WorksHistories::find("all")->delete();
-	
+
 	}
 
 	public function testIndex() {
@@ -76,7 +76,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['page']));
 		$this->assertTrue(isset($data['limit']));
-	
+
 	}
 
 	public function testView() {
@@ -300,7 +300,7 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual($document->id, $archives_document->document_id);
 
 	}
-	
+
 	public function testEdit() {
 
 		$slug = 'First-Exhibition-Title';
@@ -377,9 +377,9 @@ class ExhibitionsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function testDelete() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new ExhibitionsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

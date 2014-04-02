@@ -92,10 +92,10 @@ class MetricsController extends \lithium\action\Controller {
 		$architecture = Environment::get('architecture');
 
 		return compact(
-			'albums', 
-			'albums_works', 
-			'works', 
-			'architectures', 
+			'albums',
+			'albums_works',
+			'works',
+			'architectures',
 			'exhibitions',
 			'solo_shows',
 			'group_shows',
@@ -123,7 +123,7 @@ class MetricsController extends \lithium\action\Controller {
 
 	public function usage() {
 	    $check = (Auth::check('default')) ?: null;
-	
+
         // Look up the current user with his or her role
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),
@@ -161,7 +161,7 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		$earliest_record = ArchivesHistories::connection()->read(
-			"select date_modified from archives_histories order by date_modified ASC limit 1"	
+			"select date_modified from archives_histories order by date_modified ASC limit 1"
 		);
 
 		$all_time_date = new \DateTime($earliest_record[0]['date_modified']);
@@ -303,7 +303,7 @@ class MetricsController extends \lithium\action\Controller {
 		);
 
 		$documents_total = Documents::connection()->read(
-			"SELECT count(id) as records FROM documents" 
+			"SELECT count(id) as records FROM documents"
 		);
 
 		$documents_month = Documents::connection()->read(
@@ -344,7 +344,7 @@ class MetricsController extends \lithium\action\Controller {
 			'filename',
 			'title'
 		);
-		
+
 	}
 
 	public function report() {
@@ -356,7 +356,7 @@ class MetricsController extends \lithium\action\Controller {
 		}
 
 	    $check = (Auth::check('default')) ?: null;
-	
+
         // Look up the current user with his or her role
 		$auth = Users::first(array(
 			'conditions' => array('username' => $check['username']),

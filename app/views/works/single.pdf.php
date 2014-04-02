@@ -11,16 +11,16 @@ $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $title){
 		list($r, $g, $b) = array(255,255,255);
-		$pdf->SetFillColor($r, $g, $b); 
+		$pdf->SetFillColor($r, $g, $b);
 		$pdf->SetTextColor(0 , 136, 204);
 		$pdf->Cell(0,15, $title, 0,1,'L', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){
-		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y')); 
-		$pdf->SetY(-20); 
-		$pdf->SetTextColor(0, 0, 0); 
-		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8); 
+		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y'));
+		$pdf->SetY(-20);
+		$pdf->SetTextColor(0, 0, 0);
+		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8);
 		//$pdf->Cell(0,8, $footertext,'T',1,'C');
 	}
 ));
@@ -30,7 +30,7 @@ $this->Pdf->SetAutoPageBreak(true);
 
 $this->Pdf->AddPage('P', 'A4');
 $this->Pdf->SetTextColor(0, 0, 0);
-//$this->Pdf->SetFont($textfont,'B',20); 
+//$this->Pdf->SetFont($textfont,'B',20);
 
 $html = <<<EOD
 
@@ -57,7 +57,7 @@ $page_class = "first-page";
 foreach ($works as $work) {
 
 $html .= <<<EOD
-	
+
 	<div class="$page_class page-artwork">
 
 EOD;
@@ -72,7 +72,7 @@ EOD;
 		$thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
 
 $html .= <<<EOD
-	
+
 	<p>$thumb_img</p>
 
 EOD;

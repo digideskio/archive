@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	//Get upload endpoint
 	$upload_document_url = $this->url(array('Documents::upload'));
@@ -25,11 +25,11 @@
 		<div id="FileContainer">
 
 		<div id="dropArea">
-		
+
 		<legend>Upload a Document</legend>
 
 			<h6 style="letter-spacing:.2em; text-align:center;">Drop Files Here</h6>
-			
+
 			<hr/>
 
 		<div id="filelist">
@@ -49,7 +49,7 @@
 
 		<div id="fileMessage">
 		</div>
-		
+
 		<h3 id="fileSelectMsg">Choose File(s) to Upload</h3>
 		<a class="btn btn-inverse" id="pickfiles" href="#">Add Files</a>
 
@@ -61,7 +61,7 @@
 <script type="text/javascript">
             $(document).ready(function(){
                 var uploader = new plupload.Uploader({
-                    
+
                     runtimes : 'gears,html5,flash,silverlight,browserplus',
                     url:"<?php echo $upload_document_url; ?>",
                     browse_button : "pickfiles",
@@ -77,20 +77,20 @@
                     // Silverlight settings
                     silverlight_xap_url: "js/plupload.silverlight.xap"
                 });
-                
+
                 var fileTypes = '';
                 var fileTypesFilter = 'allow';
                 var $body = $("body");
                 var $dropArea = $("#dropArea");
 
-                $body.bind("dragenter", function(e){ 
+                $body.bind("dragenter", function(e){
                     $dropArea.addClass("draggingFile");
                     e.stopPropagation();
                     e.preventDefault();
                 });
 
                 $body.bind("dragleave", function(e){ $dropArea.removeClass("draggingFile"); });
-                
+
                 $body.bind("dragover", function(e){
                     $dropArea.addClass("draggingFile");
                     e.stopPropagation();
@@ -114,7 +114,7 @@
                     e.stopPropagation();
                     e.preventDefault();
                 });
-                
+
                 //Checks to make sure the browser supports drag and drop uploads
                 uploader.bind('Init', function(up, params){
                     if(window.FileReader && $.browser.webkit && !( (params.runtime == "flash") || (params.runtime == "silverlight") ) )
@@ -128,12 +128,12 @@
                 uploader.bind('FilesAdded', function(up, files) {
                     $dropArea.removeClass();
                     $.each(files, function(i, file) {
-                        
+
                         //Checks a comma delimted list for allowable file types set file types to allow for all
-                        
+
                         var fileExtension = file.name.substring(file.name.lastIndexOf(".")+1, file.name.length).toLowerCase();
                         var supportedExtensions = fileTypes.split(",");
-                        
+
                         var supportedFileExtension = ($.inArray(fileExtension, supportedExtensions) >= 0);
                         if(fileTypesFilter == "allow")
                         {
@@ -145,17 +145,17 @@
                             var filename = file.name;
                             if(filename.length > 50)
                             {
-                                filename = filename.substring(0,50)+"...";       
+                                filename = filename.substring(0,50)+"...";
                             }
-                                
+
                              $('#filelist').append(
-	                            '<div id="' + file.id + '" class="fileItem"><div class="filename data"><p>' + 
+	                            '<div id="' + file.id + '" class="fileItem"><div class="filename data"><p>' +
 	                            filename + '</p></div><div class="sizing data"><p>' + plupload.formatSize(file.size) +
-	                            ' / ' + '<span class="percentComplete">0%</span></p></div>' + 
+	                            ' / ' + '<span class="percentComplete">0%</span></p></div>' +
 	                            '<div class="plupload_progress"><div class="progress progress-striped active">' +
 	                            '<div class="bar"></div></div></div><hr>'
                             );
-                                
+
                             //Fire Upload Event
                             up.refresh(); // Reposition Flash/Silverlight
                             uploader.start();
@@ -187,7 +187,7 @@
 
 					$('#fileMessage').html('');
                 });
-                
+
 
                 uploader.bind('Error', function(up, err) {
                     $errorPanel = $("div.error:first");
@@ -211,7 +211,7 @@
                     $fileItem.find('.progress').removeClass('active progress-striped');
                     $fileItem.find('.progress').addClass('progress-success');
                     $('#cancel'+file.id).remove();
-                    
+
                     response = jQuery.parseJSON( response.response );
 
 					document_id = response.result;
@@ -220,11 +220,11 @@
 						option = '<option value="' + document_id + '" selected="selected">' + file.name + '</option>';
 						$('#ArchivesDocuments').append(option);
 					}
-                     
+
                 });
-                
-               
+
+
             });
-          
+
     </script>
 

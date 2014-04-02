@@ -145,7 +145,7 @@ class PackagesController extends \lithium\action\Controller {
 			$options['path'] = $documents_path;
 			$options['view'] = 'artwork';
 			$pdf = $packages_path . DIRECTORY_SEPARATOR . $album->archive->slug . '.pdf';
-			
+
 			$view  = new View(array(
 				'paths' => array(
 					'template' => '{:library}/views/{:controller}/{:template}.{:type}.php',

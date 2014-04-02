@@ -3,7 +3,7 @@
 $this->title("Add a Publication");
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -18,11 +18,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $pub_classes_list = array_combine($pub_classifications, $pub_classifications);
 $pub_types_list = array_combine($pub_types, $pub_types);
@@ -37,14 +37,14 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
 	<?=$this->html->link('Publications','/publications'); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Add
 	</li>
@@ -64,7 +64,7 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 			<ul class="dropdown-menu">
 		<?php foreach($pub_classifications as $pc): ?>
 			<li>
-				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
+				<?=$this->html->link($pc,'/publications?classification='.$pc); ?>
 			</li>
 		<?php endforeach; ?>
 			<li class="divider"></li>
@@ -103,7 +103,7 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 	<div class="span5">
 		<div class="well">
 			<legend>Publication Info</legend>
-			
+
 			<?=$this->form->field('publication.author', array('label' => 'Author', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.remarks', array('label' => 'Remarks', 'autocomplete' => 'off', 'type' => 'textarea'));?>
@@ -136,7 +136,7 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 
 		<?=$this->partial->archives_documents_add(array(
 			'documents' => $documents,
-		)); ?>		
+		)); ?>
 
 		<div class="well">
 			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
@@ -181,7 +181,7 @@ $access_date = $publication->access_date ?: date('Y-m-d');
 			<?=$this->form->field('publication.access_date', array('label' => 'Access Date', 'autocomplete' => 'off', 'value' => $access_date, 'class' => 'web'));?>
 			<?=$this->form->field('publication.subject', array('label' => 'Subject', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.language', array('label' => 'Langauge', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
-			
+
 		</div>
 	</div>
 
@@ -199,7 +199,7 @@ $(document).ready(function() {
 	$('#PublicationsForm .pages').closest('.control-group').hide();
 
 	$("#PublicationsForm label[for='ArchivesEarliestDate']").html('Date');
-	
+
 	function handleFields() {
 		var pub = $('#ArchivesClassification').val();
 
@@ -209,9 +209,9 @@ $(document).ready(function() {
 			$('#PublicationsForm .book').closest('.control-group').hide();
 		}
 
-		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Essay in Book') { 
+		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Essay in Book') {
 			$('#PublicationsForm #ArchivesEarliestDate').attr('placeholder', 'Year of Publication');
-			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher'); 	
+			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher');
 		}
 
 		if (pub == 'Newspaper') {
@@ -249,7 +249,7 @@ $(document).ready(function() {
 
 		if (pub == 'Website') {
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Website Name');
-		} 
+		}
 
 		if (pub == '') {
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher');

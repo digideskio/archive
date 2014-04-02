@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 $this->title('Documents');
 
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -31,7 +31,7 @@ $this->title('Documents');
 		<?php if($this->authority->canEdit()): ?>
 
 				<a class="btn btn-inverse" href="/documents/add"><i class="icon-plus-sign icon-white"></i> Add a Document</a>
-		
+
 		<?php endif; ?>
 
 	</div>

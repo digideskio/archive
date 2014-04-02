@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 $this->title('Metrics');
 
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -130,7 +130,7 @@ $this->title('Metrics');
 			</tbody>
 		</table>
 			<tbody>
-				
+
 			</tbody>
 		</table>
 	</div>

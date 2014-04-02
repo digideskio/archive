@@ -58,31 +58,31 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 	);
 
 	public function setUp() {
-	
+
 		$users = $this->users;
 
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-	
+
 		$admin = Users::create();
 		$admin->save($users['admin']);
-	
+
 		$editor = Users::create();
 		$editor->save($users['editor']);
-	
+
 		$viewer = Users::create();
 		$viewer->save($users['viewer']);
-	
+
 	}
 
 	public function tearDown() {
-	
+
 		Users::all()->delete();
 		Auth::clear('default');
-	
+
 	}
 
 	public function testRules() {

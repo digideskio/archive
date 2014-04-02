@@ -2,7 +2,7 @@
 
 namespace app\models;
 
-use li3_filesystem\extensions\storage\FileSystem; 
+use li3_filesystem\extensions\storage\FileSystem;
 
 class Packages extends \lithium\data\Model {
 
@@ -19,7 +19,7 @@ class Packages extends \lithium\data\Model {
 		'slug' => array(
 			array('notEmpty', 'message' => 'No Filename was suggested for the Package.')
 		),
-	);		
+	);
 
 	public function url($entity) {
 		$filename = $entity->name;

@@ -15,14 +15,14 @@
 <?php endif; ?>
 
 <form method="post">
-	
+
 	<table class="table table-bordered">
 	<tbody>
 	<tr><td>
 	<div id="works-toolbar" class="btn-toolbar">
 		<div id="select-works" class="btn-group">
 		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-			<i class="icon-ok"></i> 
+			<i class="icon-ok"></i>
 			<span class="caret"></span>
 		  </a>
 		  <ul class="dropdown-menu">
@@ -60,7 +60,7 @@
 
 <?php $count = 1; ?>
 
-<?php foreach($works as $work): ?> 
+<?php foreach($works as $work): ?>
 
 	<?php if ($count % 2 != 0): ?>
 		<div class="row">
@@ -69,7 +69,7 @@
 		<div class="span2">
 				<?php $document = $work->documents('first'); ?>
 				<ul class="thumbnails">
-				
+
 					<li class="span2">
 					<div style="position:relative;">
 					<?php if($document && $document->id): ?>
@@ -184,7 +184,7 @@
 		<th>Classification</th>
 	</tr>
 </thead>
-		
+
 <tbody>
 
 
@@ -196,13 +196,13 @@
 		<label class="batch-checkbox archives-label works-label" for="Archive-<?=$work->id?>">
 			<?=$this->form->checkbox('archives[]', array('id' => "Archive-$work->id", 'value' => $work->id, 'hidden' => false, 'class' => 'archives-checkbox works-checkbox'));?>
 		</label>
-	
+
 	</td>
 <?php endif; ?>
 	<td class="info-creation_number"><?=$work->creation_number?></td>
-	
+
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $work->documents('first'); if($document && $document->id) { ?>	
+		<?php $document = $work->documents('first'); if($document && $document->id) { ?>
 			<a href="/works/view/<?=$work->archive->slug ?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
@@ -215,9 +215,9 @@
     <td class="info-remarks info-annotation"><?=$this->artwork->notes($work); ?></td>
     <td class="info-classification"><?=$work->archive->classification ?></td>
 </tr>
-    
+
 <?php endforeach; ?>
-    
+
 </tbody>
 </table>
 

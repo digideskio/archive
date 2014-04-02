@@ -37,7 +37,7 @@ class PersonsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function tearDown() {
-	
+
 		Persons::all()->delete();
 		PersonsHistories::all()->delete();
 
@@ -243,7 +243,7 @@ class PersonsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function testRules() {
-	
+
 		$ctrl = new PersonsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

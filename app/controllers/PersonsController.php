@@ -39,7 +39,7 @@ class PersonsController extends \lithium\action\Controller {
 		$total = Persons::count();
 
 		$limit = ($limit == 'all') ? $total : $limit;
-		
+
 		$persons = Persons::find('all', array(
 			'with' => 'Archives',
 			'order' => array('Archives.name' => 'ASC'),
@@ -52,13 +52,13 @@ class PersonsController extends \lithium\action\Controller {
 	}
 
 	public function add() {
-		
+
 		$archive = Archives::create();
 		$person = Persons::create();
 		$link = Links::create();
 
 		$classifications = array('Artist');
-		
+
 		if ($this->request->data) {
 
 			if (isset($this->request->data['archive'])) {
@@ -133,16 +133,16 @@ class PersonsController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$person = Persons::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-			
+
 			if (!$person) {
 				$this->redirect(array('Persons::index'));
 			} else {
@@ -183,27 +183,27 @@ class PersonsController extends \lithium\action\Controller {
 				} else {
 					$works = new RecordSet();
 				}
-			
+
 				//Send the retrieved data to the view
 				return compact('person', 'works', 'total', 'page', 'limit');
-			
+
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		//$this->redirect(array('Persons::index'));
 	}
 
 	public function edit() {
-		
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			$person = Persons::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-		
+
 			if (empty($person)) {
 				return $this->redirect('Persons::index');
 			}
@@ -236,7 +236,7 @@ class PersonsController extends \lithium\action\Controller {
 		}
 
 		$this->redirect(array('Persons::index'));
-		
+
 	}
 
 	public function delete() {

@@ -39,7 +39,7 @@ class Persons extends \lithium\data\Model {
 Persons::applyFilter('delete', function($self, $params, $chain) {
 
 	$person_id = $params['entity']->id;
-	
+
 	Archives::find('all', array(
 		'conditions' => array('id' => $person_id)
 	))->delete();
@@ -48,7 +48,7 @@ Persons::applyFilter('delete', function($self, $params, $chain) {
 	Components::find('all', array(
 		'conditions' => array('archive_id1' => $person_id)
 	))->delete();
-	
+
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $person_id)
 	))->delete();

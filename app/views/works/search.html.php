@@ -47,7 +47,7 @@ if ($inventory) {
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-		
+
 		<?php endif; ?>
 
 	</div>
@@ -66,7 +66,7 @@ if ($inventory) {
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
 	<?=$this->form->end(); ?>
-	
+
 </div>
 
 <?php if($total > 0): ?>

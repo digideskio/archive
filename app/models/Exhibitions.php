@@ -48,12 +48,12 @@ Exhibitions::applyFilter('delete', function($self, $params, $chain) {
 	Archives::find('all', array(
 		'conditions' => array('id' => $exhibition_id)
 	))->delete();
-		
+
 	//Delete any relationships
 	Components::find('all', array(
 		'conditions' => array('archive_id1' => $exhibition_id)
 	))->delete();
-	
+
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $exhibition_id)
 	))->delete();

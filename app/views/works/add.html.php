@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Add Artwork');
 
@@ -7,7 +7,7 @@ $authority_is_admin = $this->authority->isAdmin();
 $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -22,11 +22,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $artists_list = array('' => 'Choose one...');
 
@@ -60,14 +60,14 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
 	<?=$this->html->link('Artwork','/works'); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Add
 	</li>
@@ -90,7 +90,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 	<div class="btn-toolbar">
 
 			<a class="btn btn-inverse disabled" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-		
+
 
 	</div>
 
@@ -146,7 +146,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 		<?=$this->partial->archives_documents_add(array(
 			'documents' => $documents,
-		)); ?>		
+		)); ?>
 
 		<div class="well">
 			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
@@ -160,8 +160,8 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 			<?=$this->form->field('work.annotation', array(
 				'label' => 'Annotation',
-				'type' => 'textarea', 
-				'rows' => '5', 
+				'type' => 'textarea',
+				'rows' => '5',
 				'style' => 'width:90%;',
 			));?>
 		<?php $work_classes_list = array_merge(array('' => 'Choose one...'), $work_classes_list); ?>
@@ -227,7 +227,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 
 		<?php if($inventory): ?>
 			<legend>Inventory Info</legend>
-		
+
 			<?php $packing_types_list = array_merge(array('' => 'Choose one...'), $packing_types_list); ?>
 
 			<div class="control-group">
@@ -245,7 +245,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 					<?=$this->form->select('work.pack_price_per', $currencies_list, array('class' => 'span1')); ?>
 				</div>
 			</div>
-		
+
 			<?php if ($locations && sizeof($locations) < 50): ?>
 
 				<?php $locations_list = array_merge(array('' => 'Select location...'), $locations_list); ?>
@@ -258,7 +258,7 @@ $in_time = $work->in_time ?: date('Y-m-d');
 					</div>
 				</div>
 					<script>
-						
+
 						$(document).ready(function() {
 
 							$('#WorksSelectLocation').change(function() {
@@ -351,7 +351,7 @@ $(document).ready(function() {
 			for(i=0,x=classes.length;i<x;i++){
 				$('#WorksForm .' + classes[i]).closest('.control-group').fadeIn();
 			}
-			
+
 		} else {
 			$('#WorksForm .dim.remarks').closest('.control-group').hide();
 		}

@@ -21,15 +21,15 @@
 		<th>Notes</th>
 	</tr>
 </thead>
-		
+
 <tbody>
 
 <?php foreach($architectures as $architecture): ?>
 
 <tr>
-	
+
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $architecture->documents('first'); if($document && $document->id) { ?>	
+		<?php $document = $architecture->documents('first'); if($document && $document->id) { ?>
 			<a href="/architectures/view/<?=$architecture->archive->slug?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
@@ -41,8 +41,8 @@
     <td class="info-earliest_date"><?=$architecture->archive->years(); ?></td>
     <td class="info-architect info-location info-city info-country info-status"><?=$this->architecture->caption($architecture->archive, $architecture); ?></td>
 </tr>
-    
+
 <?php endforeach; ?>
-    
+
 </tbody>
 </table>

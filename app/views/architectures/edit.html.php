@@ -3,18 +3,18 @@
 $this->title($architecture->archive->name);
 
 $this->form->config(
-    array( 
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+    array(
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 ?>
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -26,7 +26,7 @@ $this->form->config(
 	<?=$this->html->link($architecture->archive->name,'/architectures/view/'.$architecture->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -91,7 +91,7 @@ $this->form->config(
 			<?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
 		<?=$this->form->end(); ?>
 		</div>
-		
+
 		<div class="well">
 
 			<legend>Edit</legend>
@@ -101,15 +101,15 @@ $this->form->config(
 			</a>
 
 		</div>
-		
+
 	</div>
-	
+
 	<div class="span5">
-	
+
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $architecture,
 		'archives_documents' => $archives_documents,
-	)); ?>		
+	)); ?>
 
 	</div>
 
@@ -120,7 +120,7 @@ $this->form->config(
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$architecture->archive->name; ?></strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Project from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

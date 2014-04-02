@@ -74,7 +74,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 		//Interpret any non-integer limit to mean 'All' results
 		$limit = !(intval($limit)) ? $total : $limit;
-		
+
 		$albums = Albums::find('all', array(
 			'with' => array('Archives', 'Archives.Users'),
 			'order' => array($order => $direction)
@@ -87,16 +87,16 @@ class AlbumsController extends \lithium\action\Controller {
 
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
 				'Archives.slug' => $this->request->params['slug'],
 			)));
-			
+
 			if($album->exists()) {
-			
+
 				$album_works = Components::find('all', array(
 					'fields' => 'archive_id2',
 					'conditions' => array(
@@ -157,10 +157,10 @@ class AlbumsController extends \lithium\action\Controller {
 
 				//Send the retrieved data to the view
 				return compact('album', 'works', 'publications', 'archives_documents');
-				
+
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Albums::index'));
 	}
@@ -278,7 +278,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
 				'with' => 'Archives',
@@ -286,7 +286,7 @@ class AlbumsController extends \lithium\action\Controller {
 					'Archives.slug' => $this->request->params['slug'],
 				)
 			));
-			
+
 			if($album) {
 
 				$album_works = Components::find('all', array(
@@ -302,7 +302,7 @@ class AlbumsController extends \lithium\action\Controller {
 					$work_ids = $album_works->map(function($aw) {
 						return $aw->archive_id2;
 					}, array('collect' => false));
-				
+
 					$archives_histories = ArchivesHistories::find('all', array(
 						'with' => 'Users',
 						'conditions' => array('archive_id' => $work_ids),
@@ -313,7 +313,7 @@ class AlbumsController extends \lithium\action\Controller {
 
 				//Send the retrieved data to the view
 				return compact('album', 'archives_histories');
-				
+
 			}
 		}
 
@@ -322,7 +322,7 @@ class AlbumsController extends \lithium\action\Controller {
 	}
 
 	public function publish() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 
@@ -330,18 +330,18 @@ class AlbumsController extends \lithium\action\Controller {
 
 			$layout = isset($options['layout']) ? $options['layout'] : 'download';
 
-			$config = FileSystem::config('documents'); 
+			$config = FileSystem::config('documents');
 			$options['path'] = $config['path'];
-		
+
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
 				'Archives.slug' => $this->request->params['slug'],
 			)));
-			
+
 			if($album) {
-				
+
 				$pdf = $album->archive->slug . '-' . $options['view'] . '.pdf';
 
 				$work_ids = array();
@@ -414,13 +414,13 @@ class AlbumsController extends \lithium\action\Controller {
 				);
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		//$this->redirect(array('Albums::index'));
 	}
 
 	public function packages() {
-	
+
 		$test_packages = Packages::all();
 
 		// Some packages may be removed from disk from time to time
@@ -442,25 +442,25 @@ class AlbumsController extends \lithium\action\Controller {
 
 		//Send the retrieved data to the view
 		return compact('packages');
-		
+
 	}
 
 	public function package() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 
 			$options = $this->request->query;
 
-			$filesystem = isset($options['filesystem']) ? $options['filesystem'] : 'secure'; 
-			
+			$filesystem = isset($options['filesystem']) ? $options['filesystem'] : 'secure';
+
 			//Get single record from the database where the slug matches the URL
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
 				'Archives.slug' => $this->request->params['slug'],
 			)));
-			
+
 			if($album) {
 
 				$test_packages = Packages::find('all', array(
@@ -490,7 +490,7 @@ class AlbumsController extends \lithium\action\Controller {
 				//Send the retrieved data to the view
 				return compact('album', 'packages');
 			}
-		
+
 		}
 
 		//since no record was specified, redirect to the index page
@@ -498,26 +498,26 @@ class AlbumsController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-    
+
 		if(isset($this->request->params['slug'])) {
-        
+
 			$album = Albums::first(array(
 				'with' => 'Archives',
 				'conditions' => array(
 				'Archives.slug' => $this->request->params['slug'],
 			)));
-		
+
 			if($album) {
-				
+
 				// For the following to work, the delete form must have an explicit 'method' => 'post'
 				// since the default method is PUT
 				if (!$this->request->is('post') && !$this->request->is('delete')) {
 					$msg = "Albums::delete can only be called with http:post or http:delete.";
 					throw new DispatchException($msg);
 				}
-		
+
 				$album->delete();
-		
+
 			}
 		}
 		return $this->redirect('Albums::index');

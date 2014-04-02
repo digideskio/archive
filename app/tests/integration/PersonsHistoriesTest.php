@@ -24,7 +24,7 @@ class PersonsHistoriesTest extends \lithium\test\Integration {
 			'biography' => 'Life.',
 			'remarks' => 'some text',
 			'roles' => 'many',
-			'email' => 'ex@example.com', 
+			'email' => 'ex@example.com',
 			'address' => 'Nowhere',
 			'phone' => '0001000',
 		);
@@ -32,7 +32,7 @@ class PersonsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function tearDown() {
-	
+
 		Persons::find("all")->delete();
 		PersonsHistories::find("all")->delete();
 
@@ -65,14 +65,14 @@ class PersonsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$person = Persons::first();
 		$data = array(
 			'family_name' => 'Last',
 			'given_name' => 'First'
 		);
 
-		$person->save($data); 
+		$person->save($data);
 
 		$count = PersonsHistories::count();
 

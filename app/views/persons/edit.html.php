@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 $this->title($person->archive->name);
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -18,11 +18,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 ?>
 

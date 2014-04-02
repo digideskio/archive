@@ -8,9 +8,9 @@ class MockDocuments extends \app\models\Documents {
 
 	// TODO figure out how to mock relations
 	protected static function _relations() {
-	
+
 	}
-	
+
     public static function find($type = 'all', array $options = array()) {
         switch ($type) {
             case 'first':

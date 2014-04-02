@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Exhibitions');
 
@@ -7,7 +7,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -38,7 +38,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
-		
+
 		<?php endif; ?>
 			<a class="btn btn-inverse" href="<?=$this->url(array('Exhibitions::index')); ?>/<?=$pdf ?>?limit=all"><i class="icon-print icon-white"></i> Print</a>
 

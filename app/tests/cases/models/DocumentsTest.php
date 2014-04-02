@@ -152,7 +152,7 @@ class DocumentsTest extends \lithium\test\Unit {
 	}
 
 	public function testView() {
-		
+
 		$thumb = 'thumb/Title-One.jpeg';
 		$small = 'small/Title-One.jpeg';
 		$download = 'download/Title-One.tiff';
@@ -187,7 +187,7 @@ class DocumentsTest extends \lithium\test\Unit {
 		$thumb = 'thumb/c4ca4238a0b923820dcc509a6f75849b.jpeg';
 		$small = 'small/c4ca4238a0b923820dcc509a6f75849b.jpeg';
 		$original = 'c4ca4238a0b923820dcc509a6f75849b.tiff';
-		
+
 		$data = array(
 			'id' => 1,
 			'title' => 'Title One',
@@ -213,7 +213,7 @@ class DocumentsTest extends \lithium\test\Unit {
 		)));
 
 	}
-	
+
 }
 
 ?>

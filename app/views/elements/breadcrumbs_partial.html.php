@@ -1,5 +1,5 @@
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<?php for($i = 0; $i < sizeof($crumbs); $i++): ?>

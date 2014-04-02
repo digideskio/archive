@@ -1,9 +1,9 @@
 <?php $check = lithium\security\Auth::check('default'); $username = $check['username']; ?>
 <?php $host = $this->request()->env('HTTP_HOST'); ?>
-<?php 
+<?php
 	$request_query = $this->request()->query;
 	$search_term = null;
-	
+
 	// Check the request, and then the custom storage, for a query search term.
 	// This allows the contents of the search input to persist across page views.
 	if(isset($request_query['query'])) {

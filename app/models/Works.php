@@ -55,7 +55,7 @@ class Works extends \lithium\data\Model {
 				'class' => 'four-d'
 			),
 			'Installation' => array(
-				'class' => 'two-d three-d' 
+				'class' => 'two-d three-d'
 			),
 			'Object' => array(
 				'class' => 'two-d three-d'
@@ -131,7 +131,7 @@ class Works extends \lithium\data\Model {
     }
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
-		
+
 		$conditions['ArchivesDocuments.archive_id'] = $entity->id;
 
 		$documents = Documents::find($type, array(
@@ -184,7 +184,7 @@ Works::applyFilter('save', function($self, $params, $chain) {
 Works::applyFilter('delete', function($self, $params, $chain) {
 
 	$work_id = $params['entity']->id;
-	
+
 	Archives::find('all', array(
 		'conditions' => array('id' => $work_id)
 	))->delete();
@@ -193,7 +193,7 @@ Works::applyFilter('delete', function($self, $params, $chain) {
 	Components::find('all', array(
 		'conditions' => array('archive_id2' => $work_id)
 	))->delete();
-	
+
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $work_id)
 	))->delete();

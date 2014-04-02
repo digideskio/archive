@@ -19,7 +19,7 @@ class ExhibitionsTest extends \lithium\test\Unit {
 
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
-	
+
 	}
 
 	public function testCreateWithNoId() {

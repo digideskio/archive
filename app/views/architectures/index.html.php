@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Architecture');
 
@@ -7,7 +7,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -36,7 +36,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="/architectures/add"><i class="icon-plus-sign icon-white"></i> Add a Project</a>
-		
+
 		<?php endif; ?>
 
 	</div>

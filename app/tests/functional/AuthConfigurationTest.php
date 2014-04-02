@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace app\tests\functional;
 
@@ -29,9 +29,9 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-	
+
 		$admin = Users::create();
 		$admin->save($users['admin']);
 
@@ -41,7 +41,7 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 
 		Users::all()->delete();
 		Auth::clear('default');
-	
+
 	}
 
 	public function testDefaultConfig() {
@@ -50,7 +50,7 @@ class AuthConfigurationTest extends \lithium\test\Integration {
 		$username = 'admin';
 
 		$this->request = new Request();
-		$this->request->data = $users[$username]; 
+		$this->request->data = $users[$username];
 
 		$check = Auth::check('default', $this->request);
 

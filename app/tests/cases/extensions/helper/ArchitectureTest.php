@@ -40,14 +40,14 @@ class ArchitectureTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 		$caption = $helper->caption($archive, $architecture);
 
-		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006.', $caption); 
+		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006.', $caption);
 
 		$data['latest_date'] = '2007-06-05';
 
 		$archive = Archives::create($data);
 		$caption = $helper->caption($archive, $architecture);
 
-		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006–2007.', $caption); 
+		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006–2007.', $caption);
 
 		$data['location'] = 'Somewhere';
 		$data['city'] = 'City';
@@ -56,14 +56,14 @@ class ArchitectureTest extends \lithium\test\Unit {
 		$architecture = Architectures::create($data);
 		$caption = $helper->caption($archive, $architecture);
 
-		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006–2007, Somewhere, City, Country.', $caption); 
+		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006–2007, Somewhere, City, Country.', $caption);
 
 		$data['status'] = 'completed';
 
 		$architecture = Architectures::create($data);
 		$caption = $helper->caption($archive, $architecture);
 
-		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006–2007, Somewhere, City, Country, (completed).', $caption); 
+		$this->assertEqual('Architect Name, <em>Building Title</em>, 2006–2007, Somewhere, City, Country, (completed).', $caption);
 
 	}
 

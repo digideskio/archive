@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 $this->title('Add Artist');
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -18,11 +18,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 ?>
 
@@ -43,7 +43,7 @@ $this->form->config(
 	<div class="btn-toolbar">
 
 			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add Artist</a>
-		
+
 	</div>
 
 </div>

@@ -33,13 +33,13 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$success = $album->save();
-	
+
 	}
 
 	public function tearDown() {
 		Albums::all()->delete();
 		AlbumsHistories::all()->delete();
-	
+
 		Works::all()->delete();
 		WorksHistories::all()->delete();
 
@@ -59,7 +59,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual('First Album Title', $album->archive->name);
 		$this->assertEqual('First Album Description', $album->remarks);
-	
+
 	}
 
 	public function testView() {
@@ -74,7 +74,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual('First Album Title', $album->archive->name);
 		$this->assertEqual('First Album Description', $album->remarks);
-	
+
 	}
 
 	public function testAdd() {
@@ -160,7 +160,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 		// Make sure the route that the add action redirects to is connected,
 		// otherwise we get an error that there is no match for this route.
 		Router::connect('/albums/view/{:slug}', array('Albums::view'));
-		
+
 		// Create a new archive (it could represent an artwork, publication, or something
 		// else) which we will use to seed the new album
 
@@ -280,7 +280,7 @@ class AlbumsControllerTest extends \li3_unit\test\ControllerUnit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new AlbumsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

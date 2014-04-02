@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 	$this->title($user->username);
 
@@ -14,7 +14,7 @@
 
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>

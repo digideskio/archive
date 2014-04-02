@@ -7,18 +7,18 @@
 	$role = $auth->role->name;
 
 	$this->form->config(
-		array( 
-			'templates' => array( 
-				'error' => '<div class="help-inline">{:content}</div>' 
+		array(
+			'templates' => array(
+				'error' => '<div class="help-inline">{:content}</div>'
 			)
 		)
-	); 
+	);
 
 ?>
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -30,7 +30,7 @@
 	<?=$this->html->link($user->username,'/users/view/'.$user->username); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -66,18 +66,18 @@ This user is no longer active.
     <?=$this->form->field('password', array('type' => 'password')); ?>
     <?=$this->form->field('name', array('autocomplete' => 'off'));?>
     <?=$this->form->field('email', array('autocomplete' => 'off'));?>
-    
+
     <?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
-    
+
 		<?=$this->form->select('role_id', $role_list); ?>
 
 	<?php endif; ?>
-	
+
 	<?php if($auth->role->name != 'Admin' || $auth->username == $user->username): ?>
 	<?=$this->form->label('role_name', 'Role'); ?>
     <input type="text" name="role_name" disabled="disabled" value="<?=$auth->role->name?>">
 	<?php endif; ?>
-    
+
     <fieldset>
     <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
     <?=$this->html->link('Cancel','/users/view/'.$user->username, array('class' => 'btn')); ?>
@@ -90,8 +90,8 @@ This user is no longer active.
 	<div class="well">
 
 			<legend>Edit</legend>
-	
-			<?php if($user->active): ?>	
+
+			<?php if($user->active): ?>
 			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
 				<i class="icon-white icon-ban-circle"></i> Disable Account
 			</a>
@@ -99,11 +99,11 @@ This user is no longer active.
 			<a class="btn btn-success" data-toggle="modal" href="#activateModal">
 				<i class="icon-white icon-ok-sign"></i> Activate Account
 			</a>
-			<?php endif; ?>	
+			<?php endif; ?>
 
 	</div>
 
-	
+
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
 		<button type="button" class="close" data-dismiss="modal">×</button>
@@ -111,7 +111,7 @@ This user is no longer active.
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to remove <strong><?=$user->name; ?>'s</strong> access?</p>
-			
+
 			<p>By selecting <code>Disable</code> you will de-activate this user's account. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
@@ -129,7 +129,7 @@ This user is no longer active.
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to enable <strong><?=$user->name; ?>'s</strong> access?</p>
-			
+
 			<p>By selecting <code>Activate</code> you will enable this user's account. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">
@@ -139,4 +139,4 @@ This user is no longer active.
 			<?=$this->form->end(); ?>
 	</div>
 </div>
-<?php endif; ?> 
+<?php endif; ?>

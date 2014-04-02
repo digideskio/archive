@@ -77,13 +77,13 @@ class ExhibitionsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$exhibition = Exhibitions::first();
 		$data = array(
 			'venue' => 'New Venue'
 		);
 
-		$exhibition->save($data); 
+		$exhibition->save($data);
 
 		$count = ExhibitionsHistories::count();
 

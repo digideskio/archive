@@ -79,7 +79,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function tearDown() {
-	
+
 		Works::all()->delete();
 		WorksHistories::all()->delete();
 
@@ -97,7 +97,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		Components::find("all")->delete();
 		ComponentsHistories::find("all")->delete();
-	
+
 	}
 
 	public function testIndex() {
@@ -113,7 +113,7 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['page']));
 		$this->assertTrue(isset($data['limit']));
-	
+
 	}
 
 	public function testView() {
@@ -384,9 +384,9 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function testDelete() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new WorksController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

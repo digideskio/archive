@@ -28,7 +28,7 @@ class NoticesController extends \lithium\action\Controller {
 			array('rule' => 'allowAdminUser', 'redirect' => "Pages::home"),
 		),
 	);
-	
+
 	public function index() {
 
 		$order = array('date_modified' => 'DESC');

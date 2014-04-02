@@ -6,7 +6,7 @@ $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $title){
 		list($r, $g, $b) = array(200,200,200);
-		$pdf->SetFillColor($r, $g, $b); 
+		$pdf->SetFillColor($r, $g, $b);
 		$pdf->SetTextColor(0 , 0, 0);
 		$pdf->Cell(0,15, $title, 0,1,'C', 1);
 		$pdf->Ln();
@@ -14,9 +14,9 @@ $this->Pdf->setCustomLayout(array(
 	'footer'=>function() use($pdf){
 		/*$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y')); */
 		$footertext = sprintf('Page ' . $pdf->PageNo());
-		$pdf->SetY(-20); 
-		$pdf->SetTextColor(0, 0, 0); 
-		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8); 
+		$pdf->SetY(-20);
+		$pdf->SetTextColor(0, 0, 0);
+		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8);
 		$pdf->Cell(0,8, $footertext,'T',1,'C');
 	}
 ));
@@ -56,7 +56,7 @@ $html = <<<EOD
 		.titles {
 			width: 70%;
 		}
-	
+
 		.dates {
 			text-align: right;
 			font-family: monospace;

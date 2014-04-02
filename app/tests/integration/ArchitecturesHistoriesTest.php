@@ -59,7 +59,7 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testInsertHistory() {
-		
+
 		$architecture = Architectures::first();
 
 		$architecture_history = ArchitecturesHistories::first();
@@ -93,17 +93,17 @@ class ArchitecturesHistoriesTest extends \lithium\test\Integration {
 		$count = ArchitecturesHistories::count();
 
 		$this->assertEqual(1, $count);
-	
+
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$architecture = Architectures::first();
 		$data = array(
 			'architect' => 'New Architect'
 		);
 
-		$architecture->save($data); 
+		$architecture->save($data);
 
 		$count = ArchitecturesHistories::count();
 

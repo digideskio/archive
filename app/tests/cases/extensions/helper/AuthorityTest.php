@@ -35,35 +35,35 @@ class AuthorityTest extends \lithium\test\Unit {
 	);
 
 	public function setUp() {
-	
+
 		$users = $this->users;
 
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-	
+
 		$admin = Users::create();
 		$admin->save($users['admin']);
-	
+
 		$editor = Users::create();
 		$editor->save($users['editor']);
-	
+
 		$viewer = Users::create();
 		$viewer->save($users['viewer']);
-	
+
 	}
 
 	public function tearDown() {
-	
+
 		Users::all()->delete();
 		Auth::clear('default');
-	
+
 	}
 
 	public function testAuthority() {
-	
+
 		$users = $this->users;
 		$admin = $users['admin'];
 		$editor = $users['editor'];
@@ -72,7 +72,7 @@ class AuthorityTest extends \lithium\test\Unit {
 		$helper = new Authority();
 
 		Auth::set('default', $admin);
-		$this->assertEqual('Admin', $helper->role()); 
+		$this->assertEqual('Admin', $helper->role());
 		$this->assertTrue($helper->isAdmin());
 		$this->assertTrue($helper->canEdit());
 		$this->assertTrue($helper->matches('admin'));

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title($publication->archive->name);
 
@@ -12,7 +12,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -34,10 +34,10 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<?php if($authority_can_edit): ?>
-	
+
 		<li><?=$this->html->link('Edit','/publications/edit/'.$publication->archive->slug); ?></li>
 		<li><?=$this->html->link('Attachments','/publications/attachments/'.$publication->archive->slug); ?></li>
-	
+
 	<?php endif; ?>
 
 	<li>
@@ -49,17 +49,17 @@ $authority_can_edit = $this->authority->canEdit();
 <div class="row">
 	<div class="span6">
 
-		<?=$this->partial->archives_documents(array('archives_documents' =>  $archives_documents)); ?>	
-		
+		<?=$this->partial->archives_documents(array('archives_documents' =>  $archives_documents)); ?>
+
 	</div>
-	
+
 	<div class="span4">
-	
+
 		<div class="alert alert-block">
     	<p>
     		<?=$this->publication->citation($publication->archive, $publication); ?>
     	</p>
-		
+
 		<?php if ($hasLinks): ?>
 
 			<?php foreach ($archives_links as $al): ?>
@@ -73,7 +73,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<? endif; ?>
 
 		</div>
-	
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -109,14 +109,14 @@ $authority_can_edit = $this->authority->canEdit();
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">Publication&nbsp;ID</td>
 					<td>
-						<?php 
-						
+						<?php
+
 						if($publication->publication_number) {
 							echo $publication->publication_number;
 						} else {
 							echo '<span class="label label-important">Missing</span>';
 						}
-						
+
 						?>
 					</td>
 				</tr>
@@ -124,7 +124,7 @@ $authority_can_edit = $this->authority->canEdit();
 					<td><i class="icon-globe"></i></td>
 					<td class="meta">Storage</td>
 					<td>
-						<?php 
+						<?php
 							if($publication->storage_number) {
 								echo "<span class='label label-success'>$publication->storage_number</span>\n";
 							}
@@ -150,9 +150,9 @@ $authority_can_edit = $this->authority->canEdit();
 					<td><?=$publication->remarks ?></td>
 				</tr>
 			</tbody>
-		
+
 		</table>
-	
+
 		<?php if ($hasAlbums || $hasDocuments || $hasLinks || $hasExhibitions): ?>
 
 			<table class="table">
@@ -190,14 +190,14 @@ $authority_can_edit = $this->authority->canEdit();
 						<td class="meta">Exhibitions</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-							
+
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
 									$exhibition->archive->name,
 									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
-							
+
 							</ul>
 						</td>
 					</tr>
@@ -209,14 +209,14 @@ $authority_can_edit = $this->authority->canEdit();
 						<td class="meta">Documents</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-						
-			
+
+
 						<?php foreach($archives_documents as $ad): ?>
-				
+
 								<li><a href="/documents/view/<?=$ad->document->slug?>">
 									<strong><?=$ad->document->slug?>.<?=$ad->document->format->extension?></strong>
 								</a></li>
-				
+
 						<?php endforeach; ?>
 						</ul>
 						<td>
@@ -229,23 +229,23 @@ $authority_can_edit = $this->authority->canEdit();
 						<td class="meta">Links</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-						
-			
+
+
 						<?php foreach($archives_links as $pl): ?>
-				
+
 								<li><a href="/links/view/<?=$pl->link->id?>">
 									<strong><?=$pl->link->elision()?></strong>
 								</a></li>
-				
+
 						<?php endforeach; ?>
 						</ul>
 						<td>
 					</tr>
 					<?php endif; ?>
-					
+
 				</tbody>
 			</table>
 		<?php endif; ?>
-	
+
 	</div>
 </div>

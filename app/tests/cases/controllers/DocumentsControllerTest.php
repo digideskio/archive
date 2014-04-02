@@ -14,7 +14,7 @@ use lithium\action\Request;
 class DocumentsControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
@@ -27,9 +27,9 @@ class DocumentsControllerTest extends \lithium\test\Unit {
 	public function testAdd() {}
 	public function testEdit() {}
 	public function testDelete() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new DocumentsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Search Documents');
 
@@ -14,7 +14,7 @@ $conditions_list = array(
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -45,7 +45,7 @@ $conditions_list = array(
 		<?php if($this->authority->canEdit()): ?>
 
 				<a class="btn btn-inverse" href="/documents/add"><i class="icon-plus-sign icon-white"></i> Add a Document</a>
-		
+
 		<?php endif; ?>
 
 	</div>
@@ -63,7 +63,7 @@ $conditions_list = array(
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
 	<?=$this->form->end(); ?>
-	
+
 </div>
 
 <?php if($total > 0): ?>

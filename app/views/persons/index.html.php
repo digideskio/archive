@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Artists');
 
@@ -24,7 +24,7 @@ $authority_is_admin = $this->authority->isAdmin();
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="<?=$this->url(array('Persons::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artist</a>
-		
+
 		<?php endif; ?>
 
 	</div>

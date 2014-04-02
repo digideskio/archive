@@ -42,15 +42,15 @@ class UsersController extends \lithium\action\Controller {
 			'with' => array('Roles'),
 			'order' => array('active' => 'DESC', 'username' => 'ASC')
 		));
-		
+
 		return compact('users');
 	}
 
 	public function view() {
-	
+
 		//Dont run the query if no username is provided
 		if(isset($this->request->params['username'])) {
-		
+
 			//Get single record from the database where the username matches the URL
 			$user = Users::first(array(
 				'conditions' => array('username' => $this->request->params['username']),
@@ -71,11 +71,11 @@ class UsersController extends \lithium\action\Controller {
 				'order' => $order,
 				'page' => $page
 			));
-			
+
 			//Send the retrieved data to the view
 			return compact('user', 'archives_histories', 'total', 'page', 'limit');
 		}
-		
+
 		//since no username was specified, redirect to the index page
 		$this->redirect(array('Users::index'));
 	}
@@ -99,12 +99,12 @@ class UsersController extends \lithium\action\Controller {
 	public function edit() {
 
 		$username = $this->request->params['username'];
-        
+
 		$user = Users::first(array(
 			'conditions' => array('username' => $username),
 			'with' => array('Roles')
 		));
-		
+
 		$roles = Roles::all();
 		$role_list = array();
 
@@ -115,7 +115,7 @@ class UsersController extends \lithium\action\Controller {
 		if (!$user) {
 			return $this->redirect('Users::index');
 		}
-		
+
 		if (($this->request->data)) {
 
 			$check = (Auth::check('default')) ?: null;
@@ -147,64 +147,64 @@ class UsersController extends \lithium\action\Controller {
 	}
 
 	public function activate() {
-    
+
 		$user = Users::first(array(
 			'conditions' => array('username' => $this->request->params['username']),
 			'with' => array('Roles')
 		));
-        
+
         // For the following to work, the form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post')) {
 			$msg = "Users::activate can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		// Set the user to active
 		$user->active = true;
 		$user->save();
-			
+
 		return $this->redirect(array('Users::view', 'username' => $user->username));
 	}
 
 	public function delete() {
-    
+
 		$user = Users::first(array(
 			'conditions' => array('username' => $this->request->params['username']),
 			'with' => array('Roles')
 		));
-        
+
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Users::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		// Set the user to in-active
 		$user->active = false;
 		$user->save();
-			
+
 		return $this->redirect('Users::index');
 	}
-	
+
 	public function register() {
-    	
+
     	if(Users::count()) {
     		return $this->redirect('/login');
     	}
-    	
+
     	$user = Users::create();
-    	
+
     	if (($this->request->data) && $user->save($this->request->data)) {
-    	
+
         	if(Auth::check('default', $this->request)) {
             	return $this->redirect('/home');
         	}
 		}
-    	
+
     	return $this->render(array('template' => 'register', 'layout' => 'simple'));
-	
+
 	}
 }
 

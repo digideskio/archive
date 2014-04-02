@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title($work->archive->name);
 
@@ -10,7 +10,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -33,11 +33,11 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 	</li>
 
 	<?php if($authority_can_edit): ?>
-	
+
 		<li><?=$this->html->link('Edit','/works/edit/'.$work->archive->slug); ?></li>
 
 		<li><?=$this->html->link('Attachments','/works/attachments/'.$work->archive->slug); ?></li>
-	
+
 	<?php endif; ?>
 
 		<li><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
@@ -62,13 +62,13 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 	<div class="span6">
 
 		<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents)); ?>
-		
+
 	</div>
-	
+
 	<div class="span4">
-	
+
 		<?php if($work->annotation): ?>
-		
+
 		<div class="popover" style="display:block; position: static; margin-bottom:18px; width:100%">
 		<div class="popover-inner">
 			<div class="popover-title">
@@ -79,15 +79,15 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 			</div>
 		</div>
 		</div>
-		
+
 		<?php endif; ?>
-	
+
 		<div class="alert alert-block">
     	<p>
     		<?=$this->artwork->caption($work); ?>
     	</p>
 		</div>
-	
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -146,14 +146,14 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">Artwork ID</td>
 					<td colspan="3">
-						<?php 
-						
+						<?php
+
 						if($work->creation_number) {
 							echo $work->creation_number;
 						} else {
 							echo '<span class="label label-warning">Missing</span>';
 						}
-						
+
 						?>
 					</td>
 				</tr>
@@ -178,13 +178,13 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td class="meta">Notes</td>
 					<td colspan="3">
 						<?=$this->artwork->inventory($work); ?>
-					
+
 				</tr>
 			</tbody>
 
 		</table>
 
-		<?php 
+		<?php
 			$hasAlbums = sizeof($albums) > 0;
 			$hasExhibitions = sizeof($exhibitions) > 0;
 			$hasDocuments = sizeof($archives_documents) > 0;
@@ -202,21 +202,21 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					</tr>
 				</thead>
 				<tbody>
-				
+
 					<?php if ($hasAlbums) : ?>
 					<tr>
 						<td><i class="icon-briefcase"></i></td>
 						<td class="meta">Albums</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-							
+
 								<?php foreach($albums as $album): ?>
 								<li><strong><?=$this->html->link(
 									$album->archive->name,
 									$this->url(array('Albums::view', 'slug' => $album->archive->slug))
 								);?></strong></li>
 								<?php endforeach; ?>
-							
+
 							</ul>
 						</td>
 					</tr>
@@ -228,14 +228,14 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 						<td class="meta">Exhibitions</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-							
+
 								<?php foreach($exhibitions as $exhibition): ?>
 								<li><strong><?=$this->html->link(
 									$exhibition->archive->name,
 									'/exhibitions/view/'.$exhibition->archive->slug
 								);?></strong></li>
 								<?php endforeach; ?>
-							
+
 							</ul>
 						</td>
 					</tr>
@@ -247,42 +247,42 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 						<td class="meta">Documents</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-						
-			
+
+
 						<?php foreach($archives_documents as $ad): ?>
-				
+
 								<li><a href="/documents/view/<?=$ad->document->slug?>">
 									<strong><?=$ad->document->slug?>.<?=$ad->document->format->extension?></strong>
 								</a></li>
-				
+
 						<?php endforeach; ?>
 						</ul>
 						<td>
 					</tr>
 					<?php endif; ?>
-					
+
 					<?php if ($hasLinks) : ?>
 					<tr>
 						<td><i class="icon-bookmark"></i></td>
 						<td class="meta">Links</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-						
-			
+
+
 						<?php foreach($archives_links as $al): ?>
-				
+
 								<li><a href="/links/view/<?=$al->link->id?>">
 									<strong><?=$al->link->elision()?></strong>
 								</a></li>
-				
+
 						<?php endforeach; ?>
 						</ul>
 						<td>
 					</tr>
 					<?php endif; ?>
-					
+
 				</tbody>
 			</table>
-		<?php endif; ?>	
+		<?php endif; ?>
 	</div>
 </div>

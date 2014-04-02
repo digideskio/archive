@@ -118,13 +118,13 @@ class PublicationsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$publication = Publications::first();
 		$data = array(
 			'publisher' => 'New Publisher'
 		);
 
-		$publication->save($data); 
+		$publication->save($data);
 
 		$count = PublicationsHistories::count();
 

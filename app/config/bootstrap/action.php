@@ -36,7 +36,7 @@ use lithium\security\Auth;
  * If `Dispatcher::run()` is called multiple times in the course of a single request, change the
  * `include`s to `include_once`.
  *
- * The filter then checks authentication. If an Exception is thrown (by Hmac) then it will 
+ * The filter then checks authentication. If an Exception is thrown (by Hmac) then it will
  * clear the session (the cookie) and log the user out.
  *
  * @see lithium\action\Request
@@ -80,7 +80,7 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 		$check = (Auth::check('default')) ?: null;
 
 		if ($check) {
-			
+
 			$auth = Users::first(array(
 				'conditions' => array('username' => $check['username']),
 			));
@@ -88,14 +88,14 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 			$user_id = $auth->id;
 
 			$request = $params['request'];
-			
+
 			$url = $request->url;
 
 			$parameters = $request->params;
 
 			$controller = $parameters['controller'];
 			$action = $parameters['action'];
-			
+
 			// Each request has at most one key, we just need to figure out which one
 			$id = !empty($parameters['id']) ? $parameters['id'] : '';
 			$slug = !empty($parameters['slug']) ? $parameters['slug'] : '';

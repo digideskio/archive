@@ -3,7 +3,7 @@
 $this->title($exhibition->archive->name);
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -18,11 +18,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $title_data = json_encode($titles);
 
@@ -38,7 +38,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -50,7 +50,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 	<?=$this->html->link($exhibition->archive->name,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -123,7 +123,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 		<div class="well">
 			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
 		</div>
-				
+
 	</div>
 	<div class="span5">
 		<div class="well">
@@ -148,7 +148,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$exhibition->archive->name; ?></strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Exhibition from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

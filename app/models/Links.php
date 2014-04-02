@@ -22,7 +22,7 @@ class Links extends \lithium\data\Model {
 		$url = $entity->url;
 		$url = substr($url, 7);
 		$len = strlen($url);
-		
+
 		if ($len > 30) {
 			$start = substr($url, 0, 15);
 			$end = substr($url, -10);

@@ -38,7 +38,7 @@ class Users extends \lithium\data\Model {
 	}
 
 	public function initials($entity) {
-		
+
 		$initials = preg_replace('~\b(\w)|.~', '$1', $entity->name);
 
 		return $initials;
@@ -49,15 +49,15 @@ Validator::add('uniqueUsername', function($value, $rule, $options) {
 
 	// Get the submitted values
 	$id = isset($options["values"]["id"]) ? $options["values"]["id"] : NULL;
-	
+
 	// Check event, set during the call to Model::save()
 	$event = $options["events"];  // 'update' OR 'create'
-	
+
 	// If the id is set, look up who it belogns to
 	if($id) {
 		$user = Users::first($id);
 	}
-	
+
 	// Check for conflicts if the record is new, or if the stored value is
 	// different from the submitted one
 	if
@@ -78,17 +78,17 @@ Validator::add('uniqueUsername', function($value, $rule, $options) {
 Users::applyFilter('save', function($self, $params, $chain) {
 	//Save the password from the record
 	$record_password = $params['entity']->password;
-	
-	// If data is passed to the save function, set it in the record.  
+
+	// If data is passed to the save function, set it in the record.
     // This makes it possible to validate the data before continuing the save process.
     if ($params['data']) {
         $params['entity']->set($params['data']);
         $params['data'] = array();
     }
-    
+
     //Examine the new password
     $data_password = $params['entity']->password;
-    
+
     //Keep the current password if the record exists but the submitted password is blank
     if($params['entity']->exists() && !$data_password) {
     	$params['entity']->password = $record_password;
@@ -99,7 +99,7 @@ Users::applyFilter('save', function($self, $params, $chain) {
     if ( (!$params['entity']->exists() && $data_password) || ($data_password && $data_password != $record_password) ) {
         $params['entity']->password = Password::hash($params['entity']->password);
     }
-    
+
     return $chain->next($self, $params, $chain);
 });
 

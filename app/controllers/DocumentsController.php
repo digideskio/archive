@@ -52,7 +52,7 @@ class DocumentsController extends \lithium\action\Controller {
 	}
 
 	public function index() {
-		
+
 		$conditions = isset($this->request->query['search']) ? array('title' => array('LIKE' => '%' . $this->request->query['search'] . '%')) : null;
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 20;
         $page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -69,7 +69,7 @@ class DocumentsController extends \lithium\action\Controller {
 		));
 
 		$search = isset($this->request->query['search']) ? $this->request->query['search'] : '';
-		
+
 		return compact('documents', 'page', 'limit', 'total', 'search');
 	}
 
@@ -137,10 +137,10 @@ class DocumentsController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-    
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $this->request->params['slug']),
@@ -200,28 +200,28 @@ class DocumentsController extends \lithium\action\Controller {
 
 				//Send the retrieved data to the view
 				return compact(
-					'document', 
+					'document',
 					'albums',
-					'works', 
+					'works',
 					'architectures',
 					'exhibitions',
-					'publications', 
+					'publications',
 					'architecture'
 				);
 
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Documents::index'));
 	}
 
 	public function add() {
-    
+
 	}
 
 	public function edit() {
-		
+
 		$document = Documents::first(array(
 			'conditions' => array('slug' => $this->request->params['slug'])
 		));
@@ -232,7 +232,7 @@ class DocumentsController extends \lithium\action\Controller {
 		if (($this->request->data) && $document->save($this->request->data)) {
 			return $this->redirect(array('Documents::view', 'args' => array($document->slug)));
 		}
-		
+
 		// If the database times are zero, just show an empty string in the form
 		if($document->file_date == '0000-00-00 00:00:00') {
 			$document->file_date = '';
@@ -267,18 +267,18 @@ class DocumentsController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-        
+
 		$document = Documents::first(array(
 			'conditions' => array('slug' => $this->request->params['slug']),
 		));
-        
+
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Documents::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		$file = $document->file();
 		$small = $document->file(array('size' => 'small'));
 		$thumb = $document->file(array('size' => 'thumb'));
@@ -290,21 +290,21 @@ class DocumentsController extends \lithium\action\Controller {
 		$document->delete();
 		return $this->redirect('Documents::index');
 	}
-	
+
 	public function upload() {
 
 		//Keep track of the resulting document_id to use in the response
 		$document_id = 0;
-        
+
         // HTTP headers for no cache etc
 		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
 		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 		header("Cache-Control: no-store, no-cache, must-revalidate");
 		header("Cache-Control: post-check=0, pre-check=0", false);
 		header("Pragma: no-cache");
-		
+
 		// Settings
-		$config = FileSystem::config('documents'); 
+		$config = FileSystem::config('documents');
 		$targetDir = $config['path'];
 
 		$cleanupTargetDir = true; // Remove old files
@@ -347,7 +347,7 @@ class DocumentsController extends \lithium\action\Controller {
 			@mkdir($targetDir, 0775, true);
 		}
 
-		// Remove old temp files	
+		// Remove old temp files
 		if ($cleanupTargetDir && is_dir($targetDir) && ($dir = opendir($targetDir))) {
 			while (($file = readdir($dir)) !== false) {
 				$tmpfilePath = $targetDir . DIRECTORY_SEPARATOR . $file;
@@ -363,7 +363,7 @@ class DocumentsController extends \lithium\action\Controller {
 			$response = array(
 				"jsonrpc" => "2.0",
 				"error" => array(
-					"code" => 100, 
+					"code" => 100,
 					"message" => "Failed to open temp directory."
 				),
 				"id" => "id"
@@ -394,7 +394,7 @@ class DocumentsController extends \lithium\action\Controller {
 						$response = array(
 							"jsonrpc" => "2.0",
 							"error" => array(
-								"code" => 101, 
+								"code" => 101,
 								"message" => "Failed to open input stream."
 							),
 							"id" => "id"
@@ -408,7 +408,7 @@ class DocumentsController extends \lithium\action\Controller {
 					$response = array(
 						"jsonrpc" => "2.0",
 						"error" => array(
-							"code" => 101, 
+							"code" => 101,
 							"message" => "Failed to open output stream."
 						),
 						"id" => "id"
@@ -419,7 +419,7 @@ class DocumentsController extends \lithium\action\Controller {
 				$response = array(
 					"jsonrpc" => "2.0",
 					"error" => array(
-						"code" => 104, 
+						"code" => 104,
 						"message" => "Failed to move uploaded file."
 					),
 					"id" => "id"
@@ -440,7 +440,7 @@ class DocumentsController extends \lithium\action\Controller {
 					$response = array(
 						"jsonrpc" => "2.0",
 						"error" => array(
-							"code" => 101, 
+							"code" => 101,
 							"message" => "Failed to open input stream."
 						),
 						"id" => "id"
@@ -454,7 +454,7 @@ class DocumentsController extends \lithium\action\Controller {
 				$response = array(
 					"jsonrpc" => "2.0",
 					"error" => array(
-						"code" => 101, 
+						"code" => 101,
 						"message" => "Failed to open output stream."
 					),
 					"id" => "id"
@@ -465,9 +465,9 @@ class DocumentsController extends \lithium\action\Controller {
 
 		// Check if file has been uploaded
 		if (!$chunks || $chunk == $chunks - 1) {
-			// Strip the temp .part suffix off 
+			// Strip the temp .part suffix off
 			rename("{$filePath}.part", $filePath);
-			
+
 			$file_name = $originalFileName;
 			$file_path = $filePath;
 
@@ -475,9 +475,9 @@ class DocumentsController extends \lithium\action\Controller {
 			$document_id = Documents::findDocumentIdByFile($file_path);
 
 			if (!$document_id) {
-			
+
 				$data = compact('file_name', 'file_path');
-			
+
 				$document = Documents::create();
 				$document->save($data);
 				$document_id = $document->id;
@@ -499,7 +499,7 @@ class DocumentsController extends \lithium\action\Controller {
 		// Return JSON-RPC response
 		$response = array("jsonrpc" => "2.0", "result" => $document_id, "id" => "id");
 		return $this->render(array('json' => $response));
-		
+
 	}
 }
 

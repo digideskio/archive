@@ -16,7 +16,7 @@ class LinksControllerTest extends \lithium\test\Unit {
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
 
 	}
@@ -30,7 +30,7 @@ class LinksControllerTest extends \lithium\test\Unit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new LinksController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

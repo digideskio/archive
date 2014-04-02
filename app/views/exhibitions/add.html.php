@@ -1,9 +1,9 @@
-<?php 
+<?php
 
 $this->title('Add an Exhibition');
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -18,11 +18,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $title_data = json_encode($titles);
 
@@ -44,7 +44,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 	<?=$this->html->link('Exhibitions','/exhibitions'); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Add
 	</li>
@@ -53,7 +53,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 
 </div>
 
-<div class="actions">    
+<div class="actions">
 	<ul class="nav nav-tabs">
 		<li>
 			<?=$this->html->link('Index','/exhibitions'); ?>
@@ -67,7 +67,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 		<li>
 			<?=$this->html->link('Search','/exhibitions/search'); ?>
 		</li>
-		
+
 	</ul>
 	<div class="btn-toolbar">
 			<a class="btn btn-inverse disabled" href="#"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
@@ -147,7 +147,7 @@ $show_types_list = array('Solo' => 'Solo', 'Group' => 'Group');
 	<div class="span5">
 		<?=$this->partial->archives_documents_add(array(
 			'documents' => $documents,
-		)); ?>		
+		)); ?>
 		<div class="well">
 			<legend>Details</legend>
 			<?=$this->form->field('exhibition.annotation', array(

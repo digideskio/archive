@@ -9,9 +9,9 @@ class SearchControllerTest extends \lithium\test\Unit {
 	public function tearDown() {}
 
 	public function testIndex() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new SearchController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

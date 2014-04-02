@@ -25,14 +25,14 @@ class Architectures extends \lithium\data\Model {
 		'id' => array(
 			array('notEmpty', 'message' => 'This field may not be empty.')
 		),
-	);		
+	);
 
 	public function dimensions($entity) {
 		return $entity->area ? $entity->area . " square meters" : '';
 	}
-    
+
 	public function documents($entity,  $type = 'all') {
-		
+
 		$documents = Documents::find($type, array(
 			'with' => array(
 				'ArchivesDocuments',
@@ -43,17 +43,17 @@ class Architectures extends \lithium\data\Model {
 
 		return $documents;
 	}
-	
+
 }
 
 Architectures::applyFilter('delete', function($self, $params, $chain) {
 
 	$architecture_id = $params['entity']->id;
-	
+
 	Archives::find('all', array(
 		'conditions' => array('id' => $architecture_id)
 	))->delete();
-		
+
 	//Delete any relationships
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $architecture_id)

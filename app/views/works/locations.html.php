@@ -31,7 +31,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-		
+
 		<?php endif; ?>
 
 	</div>

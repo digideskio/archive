@@ -13,13 +13,13 @@ class PublicationsTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Publications::all()->delete();
 		PublicationsHistories::all()->delete();
 
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
-	
+
 	}
 
 	public function testCreateWithNoId() {

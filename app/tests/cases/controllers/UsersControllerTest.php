@@ -22,13 +22,13 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 	public $editor_data;
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-	
+
 		$this->admin = Users::create();
 		$this->admin_data = array(
 			"username" => "admin",
@@ -38,7 +38,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 			"role_id" => '1'
 		);
 		$this->admin->save($this->admin_data);
-	
+
 		$this->editor = Users::create();
 		$this->editor_data = array(
 			"username" => "editor",
@@ -48,7 +48,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 			"role_id" => '2'
 		);
 		$this->editor->save($this->editor_data);
-	
+
 		$viewer = Users::create();
 		$viewer_data = array(
 			"username" => "viewer",
@@ -58,14 +58,14 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 			"role_id" => '3'
 		);
 		$viewer->save($viewer_data);
-	
+
 	}
 
 	public function tearDown() {
-	
+
 		Users::all()->delete();
 		Auth::clear('default');
-	
+
 	}
 
 	public function testIndex() {
@@ -242,7 +242,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		// Make sure the routes are connected
 		Router::connect('/login', 'Sessions::add');
 		Router::connect('/register', 'Users::register');
-	
+
 		// Test that the register route is not accessible since the system
 		// has users.
 		Auth::set('default', $this->editor_data);
@@ -302,7 +302,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual(2, sizeof($rules['activate']));
 		$this->assertEqual('allowAdminUser', $rules['delete'][0]['rule']);
 		$this->assertEqual('denyUserRequestingSelf', $rules['delete'][1]['rule']);
-	
+
 	}
 
 }

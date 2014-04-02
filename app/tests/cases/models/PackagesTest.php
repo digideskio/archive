@@ -4,16 +4,16 @@ namespace app\tests\cases\models;
 
 use app\models\Packages;
 
-use li3_filesystem\extensions\storage\FileSystem; 
+use li3_filesystem\extensions\storage\FileSystem;
 
 class PackagesTest extends \lithium\test\Unit {
 
 	public function setUp() {}
-	
+
 	public function tearDown() {}
 
 	public function testValidation() {
-	
+
 		$data = array(
 			'album_id' => '',
 			'filesystem' => 'secure',
@@ -37,7 +37,7 @@ class PackagesTest extends \lithium\test\Unit {
 		$this->assertFalse($package->validates());
 
 		$this->assertFalse($package->save($data));
-		
+
 		$data = array(
 			'album_id' => '1',
 			'filesystem' => 'secure',
@@ -49,7 +49,7 @@ class PackagesTest extends \lithium\test\Unit {
 		$this->assertFalse($package->validates());
 
 		$this->assertFalse($package->save($data));
-		
+
 	}
 
 	public function testBasics() {

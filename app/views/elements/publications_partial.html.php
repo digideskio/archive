@@ -21,7 +21,7 @@
 		<th>Publisher</th>
 	</tr>
 </thead>
-		
+
 <tbody>
 
 <?php foreach($publications as $publication): ?>
@@ -29,7 +29,7 @@
 <tr>
 	<td class="info-storage_location info-storage_number info-publication_number">
 		<?=$publication->publication_number?>
-			<?php 
+			<?php
 				if($publication->storage_number) {
 					echo "<br/><span class='label label-success'>$publication->storage_number</span>";
 				}
@@ -42,10 +42,10 @@
 					echo "<br/><span class='badge badge-info'>" . sizeof($documents) . "</span>";
 				}
 			?>
-	
+
 	</td>
 	<!--<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $publication->documents('first'); if(isset($document->id)) { ?>	
+		<?php $document = $publication->documents('first'); if(isset($document->id)) { ?>
 			<a href="/publications/view/<?=$publication->archive->slug?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
@@ -54,13 +54,13 @@
 		<?php } ?>
 	</td>-->
 	<td class="info-author info-editor"><?=$publication->byline(); ?></td>
-	
+
     <td class="info-title"><?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?></td>
     <td class="info-earliest_date"><?=$publication->archive->dates(); ?></td>
     <td class="info-publisher"><?=$publication->publisher ?></td>
 </tr>
-    
+
 <?php endforeach; ?>
-    
+
 </tbody>
 </table>

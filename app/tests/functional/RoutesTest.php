@@ -15,7 +15,7 @@ class RoutesTest extends \lithium\test\Integration {
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
 
 	}
@@ -24,14 +24,14 @@ class RoutesTest extends \lithium\test\Integration {
 	 * In order for other tests to work correctly, we have to set the Auth and re-connect
 	 * all the routes.
 	 */
-	public function tearDown() { 
-		Auth::set('default', array('username' => 'test'));	
+	public function tearDown() {
+		Auth::set('default', array('username' => 'test'));
 
 		Router::reset();
 
 		$config = Libraries::get('app');
 		$file = "{$config['path']}/config/routes.php";
-		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null; 
+		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null;
 	}
 
 	public function testPublicRoutes() {
@@ -56,7 +56,7 @@ class RoutesTest extends \lithium\test\Integration {
 
 		$config = Libraries::get('app');
 		$file = "{$config['path']}/config/routes.php";
-		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null; 
+		file_exists($file) ? call_user_func(function() use ($file) { include $file; }) : null;
 
 		$configurations = Router::get();
 		$routes = $configurations[0];
@@ -81,7 +81,7 @@ class RoutesTest extends \lithium\test\Integration {
 		foreach ($connected_routes as $template => $params) {
 			$this->assertEqual($public_routes[$template], $params);
 		}
-		
+
 	}
 
 	/*
@@ -123,7 +123,7 @@ class RoutesTest extends \lithium\test\Integration {
 			}
 		}
 
-	
+
 	}*/
 
 }

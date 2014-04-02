@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $classification = isset($options['classification']) ? $options['classification'] : NULL;
 $type = isset($options['type']) ? $options['type'] : NULL;
@@ -10,7 +10,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -33,13 +33,13 @@ $authority_can_edit = $this->authority->canEdit();
 			<ul class="dropdown-menu">
 		<?php foreach($pub_classifications as $pc): ?>
 			<li <?php if ($pc == $classification) { echo 'class="active"'; } ?>>
-				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
+				<?=$this->html->link($pc,'/publications?classification='.$pc); ?>
 			</li>
 		<?php endforeach; ?>
 			<li class="divider"></li>
 		<?php foreach($pub_types as $pt): ?>
 			<li <?php if ($pt == $type) { echo 'class="active"'; } ?>>
-				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+				<?=$this->html->link($pt,'/publications?type='.$pt); ?>
 			</li>
 		<?php endforeach; ?>
 			</ul>
@@ -63,7 +63,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/publications/add"><i class="icon-plus-sign icon-white"></i> Add Publication</a>
-		
+
 		<?php endif; ?>
 
 	</div>

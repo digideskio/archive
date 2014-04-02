@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $title = $link->title ?: "Link";
 
@@ -10,7 +10,7 @@ $authority_can_edit = $this->authority->canEdit();
 
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -59,10 +59,10 @@ $authority_can_edit = $this->authority->canEdit();
 
 </div>
 
-	<?php 
-		$has_works = sizeof($works) > 0 ? true : false; 
-		$has_exhibitions = sizeof($exhibitions) > 0 ? true : false; 
-		$has_publications = sizeof($publications) > 0 ? true : false; 
+	<?php
+		$has_works = sizeof($works) > 0 ? true : false;
+		$has_exhibitions = sizeof($exhibitions) > 0 ? true : false;
+		$has_publications = sizeof($publications) > 0 ? true : false;
 	?>
 
 	<?php if ($has_works): ?>

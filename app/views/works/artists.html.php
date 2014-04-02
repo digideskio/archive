@@ -10,7 +10,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -44,7 +44,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 			<li>
 				<?=$this->html->link('Locations','/works/locations'); ?>
 			</li>
-		
+
 		<?php endif; ?>
 
 		<li>
@@ -56,12 +56,12 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 		</li>
 
 	</ul>
-	
+
 	<div class="btn-toolbar">
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="/works/add/"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-		
+
 		<?php endif; ?>
 	</div>
 

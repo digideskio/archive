@@ -51,7 +51,7 @@ class ComponentsController extends \lithium\action\Controller {
 		}
 
 		$component = Components::find($this->request->id);
-		
+
 		if ($component) {
 			$component->delete();
 		}

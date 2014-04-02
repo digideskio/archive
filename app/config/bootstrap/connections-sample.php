@@ -79,7 +79,7 @@ Connections::add('default', array(
 		'password' => 'PASSWORD',
 		'database' => 'dev',
 		'encoding' => 'UTF-8'
-	), 
+	),
 	'test' => array(
 		'type' => 'database',
 		'adapter' => 'MySql',

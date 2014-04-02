@@ -1,6 +1,6 @@
 <?php
 
-	$this->title('Users'); 
+	$this->title('Users');
 
 ?>
 
@@ -17,7 +17,7 @@
 
 
 <div class="actions">
-		
+
 	<ul class="nav nav-tabs">
 		<li class="active">
 			<a href="#">Index</a>
@@ -76,7 +76,7 @@
 	</td>
 
 </tr>
-    
+
 <?php endforeach; ?>
 
 

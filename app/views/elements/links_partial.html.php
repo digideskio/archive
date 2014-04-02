@@ -55,7 +55,7 @@
 					?>
 
 				<?php endforeach; ?>
-	
+
 				<small style="font-size: smaller;">
 				<?php if ($work_count > 0): ?>
 					<i class="icon-picture"></i>
@@ -82,7 +82,7 @@
 				<?=$this->html->link($link->url) ?>
 			</strong>
 		</p>
-	
+
 		<?php if (!empty($link->description)): ?>
 		<blockquote><?=$link->description ?></blockquote>
 		<?php endif; ?>

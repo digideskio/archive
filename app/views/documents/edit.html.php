@@ -3,18 +3,18 @@
 $this->title($document->title);
 
 $this->form->config(
-    array( 
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+    array(
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 ?>
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -26,7 +26,7 @@ $this->form->config(
 	<?=$this->html->link($document->title,'/documents/view/'.$document->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -51,13 +51,13 @@ $this->form->config(
 		<div class="well">
 		<?=$this->form->create($document); ?>
 			<legend>Info</legend>
-			
+
 			<?=$this->form->field('title', array('autocomplete' => 'off'));?>
 			<?=$this->form->field('file_date', array('autocomplete' => 'off', 'disabled' => 'disabled'));?>
 			<?=$this->form->field('repository', array('label' => 'Image Repository', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('credit', array('label' => 'Photo Credit', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('remarks', array('type' => 'textarea'));?>
-			
+
 			<label class="checkbox">
 			<?=$this->form->checkbox('published');?> <strong>Approved for Publication</strong>
 			</label><br/>
@@ -85,9 +85,9 @@ $this->form->config(
 		<div class="well">
 			<legend>Albums</legend>
 			<table class="table">
-			
+
 				<?php foreach($albums as $album): ?>
-				<?php $archive_doc = $album->archives_documents->first(); ?> 
+				<?php $archive_doc = $album->archives_documents->first(); ?>
 					<tr>
 						<td>
 							<?=$this->html->link($album->archive->name, $this->url(array('Albums::view', 'slug' => $album->archive->slug))); ?>
@@ -98,22 +98,22 @@ $this->form->config(
 				<?=$this->form->end(); ?>
 						</td>
 					</tr>
-				
+
 				<?php endforeach; ?>
-				
+
 				<?php if(sizeof($other_albums) > 0): ?>
-				
+
 				<tr>
 					<td></td>
 					<td align="right" style="text-align:right">
 						<a data-toggle="modal" href="#albumModal" class="btn btn-mini btn-inverse">Add an Album</a>
 					</td>
 				</tr>
-				
+
 				<?php endif; ?>
-				
+
 				</table>
-			
+
 		</div>
 
 	</div>
@@ -157,7 +157,7 @@ $this->form->config(
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$document->title; ?></strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will erase this Document from the archive. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

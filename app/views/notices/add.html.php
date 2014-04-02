@@ -1,14 +1,14 @@
-<?php 
+<?php
 
 $this->title('Add a Notice');
 
 $this->form->config(
-    array( 
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+    array(
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $pages_list = array(
 	'' => 'Choose one...',
@@ -21,14 +21,14 @@ $pages_list = array(
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
 	<?=$this->html->link('Notices','/Notices'); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Write
 	</li>

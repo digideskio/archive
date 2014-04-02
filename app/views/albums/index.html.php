@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Albums');
 
@@ -11,7 +11,7 @@ if ($auth->timezone_id) {
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -36,7 +36,7 @@ if ($auth->timezone_id) {
 		<?php if($this->authority->canEdit()): ?>
 
 				<a class="btn btn-inverse" href="<?=$this->url(array('Albums::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add an Album</a>
-		
+
 		<?php endif; ?>
 	</div>
 </div>

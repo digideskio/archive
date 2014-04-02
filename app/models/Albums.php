@@ -29,22 +29,22 @@ class Albums extends \lithium\data\Model {
 		'id' => array(
 			array('notEmpty', 'message' => 'This field may not be empty.')
 		),
-	);		
+	);
 }
 
 Albums::applyFilter('delete', function($self, $params, $chain) {
 
 	$album_id = $params['entity']->id;
-	
+
 	Archives::find('all', array(
 		'conditions' => array('id' => $album_id)
 	))->delete();
-		
+
 	//Delete any relationships
 	Components::find('all', array(
 		'conditions' => array('archive_id1' => $album_id)
 	))->delete();
-	
+
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $album_id)
 	))->delete();

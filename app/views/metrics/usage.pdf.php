@@ -4,16 +4,16 @@ $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $title){
 		list($r, $g, $b) = array(200,200,200);
-		$pdf->SetFillColor($r, $g, $b); 
+		$pdf->SetFillColor($r, $g, $b);
 		$pdf->SetTextColor(0 , 0, 0);
 		$pdf->Cell(0,15, $title, 0,1,'C', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){
-		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y')); 
-		$pdf->SetY(-20); 
-		$pdf->SetTextColor(0, 0, 0); 
-		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8); 
+		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y'));
+		$pdf->SetY(-20);
+		$pdf->SetTextColor(0, 0, 0);
+		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8);
 		//$pdf->Cell(0,8, $footertext,'T',1,'C');
 	}
 ));
@@ -184,13 +184,13 @@ EOD;
 $contributions_month = array();
 $contributions_week = array();
 
-foreach ($contributions['month'] as $cm) {	
+foreach ($contributions['month'] as $cm) {
 	$username = $cm['username'];
 	$records = $cm['records'];
 	$contributions_month[$username] = $records;
 }
 
-foreach ($contributions['week'] as $cw) {	
+foreach ($contributions['week'] as $cw) {
 	$username = $cw['username'];
 	$records = $cw['records'];
 	$contributions_week[$username] = $records;
@@ -213,7 +213,7 @@ $html .= <<<EOD
 		<td class="stat">$contribution_month_records</td>
 		<td class="stat">$contribution_week_records</td>
 	</tr>
-	
+
 EOD;
 
 endforeach;

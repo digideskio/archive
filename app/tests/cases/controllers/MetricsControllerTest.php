@@ -13,13 +13,13 @@ use lithium\action\Request;
 class MetricsControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-	
+
 	}
 
 	public function tearDown() {}
@@ -31,7 +31,7 @@ class MetricsControllerTest extends \lithium\test\Unit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new MetricsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

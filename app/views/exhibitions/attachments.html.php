@@ -6,7 +6,7 @@ $this->title($exhibition->archive->name);
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -18,7 +18,7 @@ $this->title($exhibition->archive->name);
 	<?=$this->html->link($exhibition->archive->name,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Attachments
 	</li>
@@ -49,7 +49,7 @@ $this->title($exhibition->archive->name);
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $exhibition,
 		'archives_documents' => $archives_documents,
-	)); ?>		
+	)); ?>
 
 	</div>
 
@@ -58,7 +58,7 @@ $this->title($exhibition->archive->name);
 	<?=$this->partial->archives_links_edit(array(
 		'archive' => $exhibition->archive,
 		'archives_links' => $archives_links,
-	)); ?>		
+	)); ?>
 
 	</div>
 

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Search Architecture');
 
@@ -21,7 +21,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -55,7 +55,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="/architectures/add"><i class="icon-plus-sign icon-white"></i> Add a Project</a>
-		
+
 		<?php endif; ?>
 
 	</div>
@@ -73,7 +73,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
 	<?=$this->form->end(); ?>
-	
+
 </div>
 
 <?php if($total > 0): ?>
@@ -87,7 +87,7 @@ $authority_can_edit = $this->authority->canEdit();
 <?=$this->pagination->pager('architectures', 'search', $page, $total, $limit, array('condition' => $condition, 'query' => $query, 'limit' => $limit)); ?>
 
 	<?php
-		$condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column 
+		$condition_class = $condition ? ".info-$condition" : ''; //if we are searching a particular field, only highlight the term in the correct table column
 
 		if ($condition == 'Archives.name') {
 			$condition_class = '.info-title';

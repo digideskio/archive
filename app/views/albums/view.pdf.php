@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $options = $content['options'];
 
@@ -13,16 +13,16 @@ $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $album){
 		list($r, $g, $b) = array(200,200,200);
-		$pdf->SetFillColor($r, $g, $b); 
+		$pdf->SetFillColor($r, $g, $b);
 		$pdf->SetTextColor(0 , 0, 0);
 		$pdf->Cell(0,15, $title, 0,1,'C', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){
-		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y')); 
-		$pdf->SetY(-20); 
-		$pdf->SetTextColor(0, 0, 0); 
-		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8); 
+		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y'));
+		$pdf->SetY(-20);
+		$pdf->SetTextColor(0, 0, 0);
+		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8);
 		//$pdf->Cell(0,8, $footertext,'T',1,'C');
 	}
 ));
@@ -32,7 +32,7 @@ $this->Pdf->SetAutoPageBreak(true);
 
 $this->Pdf->AddPage('L', 'A4');
 $this->Pdf->SetTextColor(0, 0, 0);
-//$this->Pdf->SetFont($textfont,'B',20); 
+//$this->Pdf->SetFont($textfont,'B',20);
 
 $html = <<<EOD
 
@@ -53,7 +53,7 @@ EOD;
 
 foreach( $works as $work) {
 
-$caption = $this->artwork->caption($work); 
+$caption = $this->artwork->caption($work);
 
 	$work_documents = $work->documents('all');
 
@@ -75,7 +75,7 @@ $html .= <<<EOD
 
 	<tr style="page-break-inside: avoid;">
 		<td style="width:150px">
-			$thumb_img	
+			$thumb_img
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
@@ -129,7 +129,7 @@ $html .= <<<EOD
 
 	<tr style="page-break-inside: avoid;">
 		<td style="width:150px">
-			$thumb_img	
+			$thumb_img
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>

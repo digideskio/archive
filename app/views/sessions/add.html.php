@@ -1,7 +1,7 @@
 <?php
 
- $this->title('Login'); 
- 
+ $this->title('Login');
+
 ?>
 
 <div class="login">

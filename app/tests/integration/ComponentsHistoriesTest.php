@@ -9,7 +9,7 @@ class ComponentsHistoriesTest extends \lithium\test\Integration {
 
 
 	public function setUp() {
-	
+
 		$component = Components::create();
 		$data = array (
 			'archive_id1' => '123',
@@ -20,7 +20,7 @@ class ComponentsHistoriesTest extends \lithium\test\Integration {
 			'extent' => 'Yep',
 			'remarks' => 'Some Remarks',
 			'attributes'=> '{"x":5,"y":6}',
-			'earliest_date' => '2012-01-10', 
+			'earliest_date' => '2012-01-10',
 			'latest_date' => '2012-02-28',
 			'earliest_date_format' => 'Y-m-d',
 			'latest_date_format' => 'Y-m-d',
@@ -70,13 +70,13 @@ class ComponentsHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$component = Components::first();
 		$data = array(
 			'qualifier' => 'Yeah'
 		);
 
-		$component->save($data); 
+		$component->save($data);
 
 		$count = ComponentsHistories::count();
 

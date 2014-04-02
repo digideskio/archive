@@ -23,7 +23,7 @@ class ArchivesHistoriesTest extends \lithium\test\Integration {
 			'catalog_level' => 'item',
 			'description' => 'some text',
 			'slug' => 'name',
-			'earliest_date' => '2012-01-10', 
+			'earliest_date' => '2012-01-10',
 			'latest_date' => '2012-02-28',
 			'earliest_date_format' => 'Y-m-d',
 			'latest_date_format' => 'Y-m-d',
@@ -37,7 +37,7 @@ class ArchivesHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function tearDown() {
-	
+
 		Archives::find("all")->delete();
 		ArchivesHistories::find("all")->delete();
 
@@ -78,13 +78,13 @@ class ArchivesHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$archive = Archives::first();
 		$data = array(
 			'name' => 'New Name'
 		);
 
-		$archive->save($data); 
+		$archive->save($data);
 
 		$count = ArchivesHistories::count();
 

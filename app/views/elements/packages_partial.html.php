@@ -24,7 +24,7 @@
 	?>
 
 <tr>
-	
+
 	<td>
 		<?php
 			$filesystem = $package->filesystem;

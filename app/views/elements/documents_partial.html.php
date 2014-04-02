@@ -23,7 +23,7 @@
 	<div id="docs-toolbar" class="btn-toolbar">
 		<div id="select-docs" class="btn-group">
 		  <a class="btn btn-small dropdown-toggle" data-toggle="dropdown" href="#">
-			<i class="icon-ok"></i> 
+			<i class="icon-ok"></i>
 			<span class="caret"></span>
 		  </a>
 		  <ul class="dropdown-menu">
@@ -127,7 +127,7 @@
 		<?php
 			$span = 'span2';
 		?>
-		
+
 		<li class="<?=$span?>">
 			<div style="position:relative;">
 			<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">

@@ -13,7 +13,7 @@ class ArchivesTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Archives::all()->delete();
 		ArchivesHistories::all()->delete();
 
@@ -30,25 +30,25 @@ class ArchivesTest extends \lithium\test\Unit {
 
 		$this->assertTrue($archive->save($data));
 	}
-	
+
 	public function testSlugs() {
 		$archive = Archives::create();
 		$data = array (
 			"name" => "Archive Title",
 		);
-		
+
 		$slug = "Archive-Title";
-		
+
 		$this->assertTrue($archive->save($data));
 
 		$this->assertEqual($slug, $archive->slug);
-		
+
 		$second_archive = Archives::create();
 		$second_slug = "Archive-Title-1";
-		
+
 		$this->assertTrue($second_archive->save($data));
 		$this->assertEqual($second_slug, $second_archive->slug);
-		
+
 		$archive->delete();
 		$second_archive->delete();
 	}
@@ -78,10 +78,10 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 
 		$this->assertFalse($archive->validates());
-		
+
 		$this->assertFalse($archive->save($data));
 	}
-	
+
 
 	public function testYears() {
 
@@ -178,7 +178,7 @@ class ArchivesTest extends \lithium\test\Unit {
 	}
 
 	public function testDateFormats() {
-		
+
 		$data = array(
 			"earliest_date" => "2012-02-01",
 			"earliest_date_format" => "Y",
@@ -231,22 +231,22 @@ class ArchivesTest extends \lithium\test\Unit {
 	public function testValidDates() {
 		$early_date_Ymd_input = "1999-11-12";
 		$early_date_Ymd_expected = "1999-11-12";
-		
+
 		$later_date_Ymd_input = "2001-03-04";
 		$later_date_Ymd_expected = "2001-03-04";
-		
+
 		$early_date_Y_input = '1999';
 		$early_date_Y_expected = '1999-01-01';
-		
+
 		$later_date_Y_input = '2000';
 		$later_date_Y_expected = '2000-01-01';
-		
+
 		$early_date_FY_input = 'February 1999';
 		$early_date_FY_expected = '1999-02-01';
-		
+
 		$early_date_MY_input = 'Feb 2001';
 		$early_date_MY_expected = '2001-02-01';
-	
+
 		$data = array (
 			"name" => "Artwork Title",
 			"earliest_date" => $early_date_Ymd_input,
@@ -255,18 +255,18 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 
 		$this->assertTrue($archive->validates());
-		
+
 		$archive->save($data);
-		
+
 		$archive = Archives::first();
-		
+
 		$this->assertEqual($early_date_Ymd_expected, $archive->earliest_date);
 		$this->assertEqual($later_date_Ymd_expected, $archive->latest_date);
 		$this->assertEqual('Y-m-d', $archive->earliest_date_format);
 		$this->assertEqual('Y-m-d', $archive->latest_date_format);
-		
+
 		$archive->delete();
-		
+
 		$data = array (
 			"name" => "Artwork Title",
 			"earliest_date" => $early_date_Y_input,
@@ -275,18 +275,18 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 
 		$this->assertTrue($archive->validates());
-		
+
 		$archive->save($data);
-		
+
 		$archive = Archives::first();
-		
+
 		$this->assertEqual($early_date_Y_expected, $archive->earliest_date, "If the user input the date $early_date_Y_input, it should be saved as $early_date_Y_expected, but it was saved as $archive->earliest_date");
 		$this->assertEqual($later_date_Y_expected, $archive->latest_date, "If the user input the date $later_date_Y_input, it should be saved as $later_date_Y_expected, but it was saved as $archive->latest_date");
 		$this->assertEqual('Y', $archive->earliest_date_format);
 		$this->assertEqual('Y', $archive->latest_date_format);
-		
+
 		$archive->delete();
-		
+
 		$data = array (
 			"name" => "Artwork Title",
 			"earliest_date" => $early_date_FY_input,
@@ -294,16 +294,16 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 
 		$this->assertTrue($archive->validates());
-		
+
 		$archive->save($data);
-		
+
 		$archive = Archives::first();
-		
+
 		$this->assertEqual($early_date_FY_expected, $archive->earliest_date, "If the user input the date $early_date_FY_input, it should be saved as $early_date_FY_expected, but it was saved as $archive->earliest_date");
 		$this->assertEqual('M Y', $archive->earliest_date_format);
-		
+
 		$archive->delete();
-		
+
 		$data = array (
 			"name" => "Artwork Title",
 			"earliest_date" => $early_date_MY_input,
@@ -311,20 +311,20 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 
 		$this->assertTrue($archive->validates());
-		
+
 		$archive->save($data);
-		
+
 		$archive = Archives::first();
-		
+
 		$this->assertEqual($early_date_MY_expected, $archive->earliest_date, "If the user input the date $early_date_MY_input, it should be saved as $early_date_MY_expected, but it was saved as $archive->earliest_date");
 		$this->assertEqual('M Y', $archive->earliest_date_format);
-		
+
 		$archive->delete();
-		
+
 	}
-	
+
 	public function testInvalidDates() {
-		
+
 		$data = array (
 			"name" => "Artwork Title",
 			"earliest_date" => 'X',
@@ -333,9 +333,9 @@ class ArchivesTest extends \lithium\test\Unit {
 		$archive = Archives::create($data);
 
 		$this->assertFalse($archive->validates());
-		
+
 		$this->assertFalse($archive->save($data), "The archive was able to be saved with an invalid date.");
-		
+
 	}
 
 	public function testFilters() {

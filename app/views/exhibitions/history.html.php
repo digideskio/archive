@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title($exhibition->archive->name);
 
@@ -13,7 +13,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -25,7 +25,7 @@ $authority_can_edit = $this->authority->canEdit();
 	<?=$this->html->link($exhibition->archive->name,'/exhibitions/view/'.$exhibition->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		History
 	</li>
@@ -38,10 +38,10 @@ $authority_can_edit = $this->authority->canEdit();
 	<li><?=$this->html->link('View','/exhibitions/view/'.$exhibition->archive->slug); ?></li>
 
 	<?php if($authority_can_edit): ?>
-	
+
 		<li><?=$this->html->link('Edit','/exhibitions/edit/'.$exhibition->archive->slug); ?></li>
 		<li><?=$this->html->link('Attachments','/exhibitions/attachments/'.$exhibition->archive->slug); ?></li>
-	
+
 	<?php endif; ?>
 
 	<li class="active">
@@ -73,7 +73,7 @@ $authority_can_edit = $this->authority->canEdit();
 			<thead>
 				<tr>
 					<td colspan="2">
-						<strong><?=$start_date_display ?></strong> 
+						<strong><?=$start_date_display ?></strong>
 						<?php if( $ah->user->id ): ?>
 						<small style="font-size: smaller;">by <?=$this->html->link($ah->user->name,'/users/view/'.$ah->user->username); ?></small>
 						<?php endif; ?>

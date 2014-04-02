@@ -5,8 +5,8 @@ namespace app\models;
 class ExhibitionsHistories extends \app\models\Exhibitions {
 
 	public $belongsTo = array("Exhibitions");
-	
-	public $hasOne = array( 
+
+	public $hasOne = array(
 		'ArchivesHistories' => array (
 			'to' => 'app\models\ArchivesHistories',
 			'key' => array(

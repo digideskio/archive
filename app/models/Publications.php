@@ -42,12 +42,12 @@ class Publications extends \lithium\data\Model {
 	public static function classifications() {
 		return array(
 			"Monograph",
-			"Catalogue", 
+			"Catalogue",
 			"Artist's Book",
 			"Newspaper",
-			"Magazine", 
-			"Journal", 
-			"Essay in Book", 
+			"Magazine",
+			"Journal",
+			"Essay in Book",
 			"Website",
 			"Other"
 		);
@@ -68,7 +68,7 @@ class Publications extends \lithium\data\Model {
 	}
 
 	public function byline($entity) {
-		
+
     	$author = $entity->author;
 		$editor = $entity->editor ? $entity->editor . ' (ed.)' : '';
 
@@ -79,24 +79,24 @@ class Publications extends \lithium\data\Model {
 
     public function citation($entity) {
     	$years = Publications::dates($entity);
-    	
+
 		$byline = $entity->byline();
     	$author_years = $years ? $byline . ' (' . $years . ')' : $byline;
     	$title = '<em>' . $entity->title . '</em>';
     	$title = $entity->url ? "<a href='$entity->url'>$title</a>" : $title;
 		$publication = $entity->pages ? $entity->publisher . ', ' . $entity->pages : $entity->publisher;
-		
+
 		$citation = array_filter(array(
 			$author_years,
 			$title,
 			$publication
 		));
-    	
+
     	return implode('. ', $citation) . '.';
     }
 
 	public function documents($entity,  $type = 'all', $conditions = null) {
-		
+
 		$conditions['ArchivesDocuments.archive_id'] = $entity->id;
 
 		$documents = Documents::find($type, array(
@@ -109,22 +109,22 @@ class Publications extends \lithium\data\Model {
 
 		return $documents;
 	}
-    
+
 }
 
 Publications::applyFilter('delete', function($self, $params, $chain) {
 
 	$publication_id = $params['entity']->id;
-	
+
 	Archives::find('all', array(
 		'conditions' => array('id' => $publication_id)
 	))->delete();
-		
+
 	//Delete any relationships
 	Components::find('all', array(
 		'conditions' => array('archive_id2' => $publication_id)
 	))->delete();
-	
+
 	//Delete any relationships
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $publication_id)

@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $auth = $this->authority->auth();
 
@@ -10,16 +10,16 @@ $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
 	'header'=>function() use($pdf, $title){
 		list($r, $g, $b) = array(200,200,200);
-		$pdf->SetFillColor($r, $g, $b); 
+		$pdf->SetFillColor($r, $g, $b);
 		$pdf->SetTextColor(0 , 0, 0);
 		$pdf->Cell(0,15, $title, 0,1,'C', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){
-		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y')); 
-		$pdf->SetY(-20); 
-		$pdf->SetTextColor(0, 0, 0); 
-		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8); 
+		$footertext = sprintf('Copyright © %d. All rights reserved.', date('Y'));
+		$pdf->SetY(-20);
+		$pdf->SetTextColor(0, 0, 0);
+		$pdf->SetFont(PDF_FONT_NAME_MAIN,'', 8);
 		//$pdf->Cell(0,8, $footertext,'T',1,'C');
 	}
 ));
@@ -87,7 +87,7 @@ $html .= <<<EOD
 				<small class="meta">$update_display</small>
 		</td>
 	</tr>
-	
+
 EOD;
 
 	endforeach;
@@ -133,7 +133,7 @@ $html .= <<<EOD
 
 EOD;
 			endif;
-	
+
 $html .= <<<EOD
 	<table cellpadding="10" cellspacing="1" style="width:100%;">
 
@@ -161,7 +161,7 @@ $html .= <<<EOD
 			<small><strong>$user</strong></small>
 		</td>
 	</tr>
-	
+
 EOD;
 
 	endforeach;

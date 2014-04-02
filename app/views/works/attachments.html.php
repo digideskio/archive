@@ -6,7 +6,7 @@ $this->title($work->archive->name);
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -18,7 +18,7 @@ $this->title($work->archive->name);
 	<?=$this->html->link($work->archive->name,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Attachments
 	</li>
@@ -44,12 +44,12 @@ $this->title($work->archive->name);
 		<?=$this->partial->archives_documents_edit(array(
 			'model' => $work,
 			'archives_documents' => $archives_documents,
-		)); ?>		
+		)); ?>
 
 		<?=$this->partial->archives_links_edit(array(
 			'archive' => $work->archive,
 			'archives_links' => $archives_links,
-		)); ?>		
+		)); ?>
 
 	</div>
 
@@ -61,7 +61,7 @@ $this->title($work->archive->name);
 		'albums' => $albums,
 		'other_albums' => $other_albums,
 	)); ?>
-	
+
 	<?=$this->partial->exhibitions_archives_edit(array(
 		'archive' => $work->archive,
 		'component_type' => 'exhibitions_works',
@@ -80,7 +80,7 @@ $this->title($work->archive->name);
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$work->archive->name; ?></strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

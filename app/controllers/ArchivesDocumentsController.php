@@ -52,7 +52,7 @@ class ArchivesDocumentsController extends \lithium\action\Controller {
 		}
 
 		$archive_document = ArchivesDocuments::find($this->request->id);
-		
+
 		if ($archive_document) {
 			$archive_document->delete();
 		}

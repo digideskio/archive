@@ -12,7 +12,7 @@ use lithium\action\Request;
 class PagesControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
@@ -25,9 +25,9 @@ class PagesControllerTest extends \lithium\test\Unit {
 	public function testAdd() {}
 	public function testEdit() {}
 	public function testDelete() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new PagesController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

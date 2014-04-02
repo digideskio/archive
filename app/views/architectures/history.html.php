@@ -14,7 +14,7 @@ $authority_can_edit = $this->authority->canEdit();
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -26,7 +26,7 @@ $authority_can_edit = $this->authority->canEdit();
 	<?=$this->html->link($architecture->archive->name,'/architectures/view/'.$architecture->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		History
 	</li>
@@ -39,9 +39,9 @@ $authority_can_edit = $this->authority->canEdit();
 	<li><?=$this->html->link('View','/architectures/view/'.$architecture->archive->slug); ?></li>
 
 	<?php if($authority_can_edit): ?>
-	
+
 		<li><?=$this->html->link('Edit','/architectures/edit/'.$architecture->archive->slug); ?></li>
-	
+
 	<?php endif; ?>
 
 	<li class="active">
@@ -71,7 +71,7 @@ $authority_can_edit = $this->authority->canEdit();
 			<thead>
 				<tr>
 					<td colspan="2">
-						<strong><?=$start_date_display ?></strong> 
+						<strong><?=$start_date_display ?></strong>
 						<?php if( $ah->user->id ): ?>
 						<small style="font-size: smaller;">by <?=$this->html->link($ah->user->name,'/users/view/'.$ah->user->username); ?></small>
 						<?php endif; ?>

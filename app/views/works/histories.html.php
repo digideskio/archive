@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Artwork History');
 
@@ -37,7 +37,7 @@ if($auth->timezone_id) {
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
-		
+
 		<?php endif; ?>
 
 	</div>

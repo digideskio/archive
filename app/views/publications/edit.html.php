@@ -3,7 +3,7 @@
 $this->title($publication->archive->name);
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -18,11 +18,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $pub_classes_list = array_combine($pub_classifications, $pub_classifications);
 $pub_types_list = array_combine($pub_types, $pub_types);
@@ -35,7 +35,7 @@ $language_list = json_encode($language_names);
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -47,7 +47,7 @@ $language_list = json_encode($language_names);
 	<?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -83,7 +83,7 @@ $language_list = json_encode($language_names);
 	<div class="span5">
 		<div class="well">
 			<legend>Publication Info</legend>
-			
+
 			<?=$this->form->field('publication.author', array('label' => 'Author', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('archive.name', array('label' => 'Title', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.remarks', array('label' => 'Remarks', 'autocomplete' => 'off', 'type' => 'textarea'));?>
@@ -152,7 +152,7 @@ $language_list = json_encode($language_names);
 			<?=$this->form->field('publication.access_date', array('label' => 'Access Date', 'autocomplete' => 'off', 'value' => $publication->access_date, 'class' => 'web'));?>
 			<?=$this->form->field('publication.subject', array('label' => 'Subject', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('publication.language', array('label' => 'Language', 'autocomplete' => 'off', 'data-provide' => 'typeahead', 'data-source' => $language_list));?>
-			
+
 		</div>
 	</div>
 
@@ -170,7 +170,7 @@ $(document).ready(function() {
 	$('#PublicationsForm .pages').closest('.control-group').hide();
 
 	$("#PublicationsForm label[for='ArchivesEarliestDate']").html('Date');
-	
+
 	function handleFields() {
 		var pub = $('#ArchivesClassification').val();
 
@@ -180,9 +180,9 @@ $(document).ready(function() {
 			$('#PublicationsForm .book').closest('.control-group').hide();
 		}
 
-		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Essay in Book') { 
+		if (pub == 'Monograph' || pub == 'Catalogue' || pub == "Artist's Book" || pub == 'Essay in Book') {
 			$('#PublicationsForm #ArchivesEarliestDate').attr('placeholder', 'Year of Publication');
-			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher'); 	
+			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher');
 		}
 
 		if (pub == 'Newspaper') {
@@ -220,7 +220,7 @@ $(document).ready(function() {
 
 		if (pub == 'Website') {
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Website Name');
-		} 
+		}
 
 		if (pub == '') {
 			$("#PublicationsForm label[for='PublicationsPublisher']").html('Publisher');
@@ -246,7 +246,7 @@ $(document).ready(function() {
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$publication->archive->name; ?></strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Publication from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

@@ -6,7 +6,7 @@ $this->title($publication->archive->name);
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -18,7 +18,7 @@ $this->title($publication->archive->name);
 	<?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Attachments
 	</li>
@@ -52,7 +52,7 @@ $this->title($publication->archive->name);
 	<?=$this->partial->archives_documents_edit(array(
 		'model' => $publication,
 		'archives_documents' => $archives_documents,
-	)); ?>		
+	)); ?>
 
 	<?=$this->partial->archives_links_edit(array(
 		'archive' => $publication->archive,
@@ -60,7 +60,7 @@ $this->title($publication->archive->name);
 	)); ?>
 
 	</div>
-	
+
 	<div class="span5">
 
 	<?=$this->partial->albums_archives_edit(array(

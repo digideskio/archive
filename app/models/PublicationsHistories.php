@@ -5,8 +5,8 @@ namespace app\models;
 class PublicationsHistories extends \app\models\Publications {
 
 	public $belongsTo = array("Publications");
-	
-	public $hasOne = array( 
+
+	public $hasOne = array(
 		'ArchivesHistories' => array (
 			'to' => 'app\models\ArchivesHistories',
 			'key' => array(

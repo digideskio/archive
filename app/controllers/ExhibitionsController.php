@@ -60,14 +60,14 @@ class ExhibitionsController extends \lithium\action\Controller {
 	);
 
 	public function index() {
-		
+
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 		$order = array('Archives.earliest_date' => 'DESC');
 		$total = Exhibitions::count();
 
 		$limit = ($limit == 'all') ? $total : $limit;
-		
+
 		$exhibitions = Exhibitions::find('all', array(
 			'with' => array('Archives', 'Components', 'ArchivesLinks', 'ArchivesLinks.Links'),
 			'order' => $order,
@@ -166,7 +166,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 			'order' => $order,
 			'page' => $page
 		));
-		
+
 		return compact('archives_histories', 'total', 'page', 'limit');
 	}
 
@@ -210,17 +210,17 @@ class ExhibitionsController extends \lithium\action\Controller {
 	}
 
 	public function view() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$exhibition = Exhibitions::find('first', array(
 				'with' => 'Archives',
 				'conditions' => array(
 					'Archives.slug' => $this->request->params['slug'],
 			)));
-		
+
 			$exhibitions_works = Components::find('all', array(
 				'fields' => 'archive_id2',
 				'conditions' => array(
@@ -286,7 +286,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'conditions' => array('ArchivesDocuments.archive_id' => $exhibition->id),
 				'order' => array('Documents.slug' => 'ASC')
 			));
-			
+
 			//Send the retrieved data to the view
 			return compact(
 				'exhibition',
@@ -297,13 +297,13 @@ class ExhibitionsController extends \lithium\action\Controller {
 				'archives_links'
 			);
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Exhibitions::index'));
 	}
 
 	public function add() {
-        
+
 		$archive = Archives::create();
 		$exhibition = Exhibitions::create();
 		$link = Links::create();
@@ -486,7 +486,7 @@ class ExhibitionsController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-		
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
 
@@ -620,16 +620,16 @@ class ExhibitionsController extends \lithium\action\Controller {
 	}
 
 	public function history() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$exhibition = Exhibitions::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-			
+
 			if($exhibition) {
 
 				$archives_histories = ArchivesHistories::find('all', array(
@@ -644,32 +644,32 @@ class ExhibitionsController extends \lithium\action\Controller {
 					'conditions' => array('exhibition_id' => $exhibition->id),
 					'order' => array('start_date' => 'DESC')
 				));
-		
-		
+
+
 				//Send the retrieved data to the view
 				return compact('exhibition', 'archives_histories', 'exhibitions_histories');
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Exhibitions::index'));
 	}
 
 	public function delete() {
-		
+
 		$exhibition = Exhibitions::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array(
 			'Archives.slug' => $this->request->params['slug'],
 		)));
-        
+
         // For the following to work, the delete form must have an explicit 'method' => 'post'
         // since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Exhibitions::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		$exhibition->delete();
 		return $this->redirect('Exhibitions::index');
 	}

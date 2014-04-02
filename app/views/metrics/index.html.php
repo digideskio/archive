@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 $this->title('Metrics');
 
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -183,7 +183,7 @@ $.plot($("#publicationsYears"), [
 
 <hr/>
 
-<p>The archive includes publications in <strong><?php echo sizeof($publications_languages); ?></strong> <?php echo sizeof($publications_languages) == 1 ? 'language' : 'languages'; ?>.</p> 
+<p>The archive includes publications in <strong><?php echo sizeof($publications_languages); ?></strong> <?php echo sizeof($publications_languages) == 1 ? 'language' : 'languages'; ?>.</p>
 
 <div id="publicationsLanguages" style="width:500px;height:300px"></div>
 
@@ -191,17 +191,17 @@ $.plot($("#publicationsYears"), [
 $(function () {
 
 	var data = [
-		<?php foreach ($publications_languages as $langs): 
+		<?php foreach ($publications_languages as $langs):
 			$num = $langs['records'];
 			$lang = $langs['language'];
-			echo "{ label: '$lang',  data: $num}, "; 
+			echo "{ label: '$lang',  data: $num}, ";
 		endforeach; ?>
 	];
 
 	$.plot($("#publicationsLanguages"), data,
 	{
 		series: {
-			pie: { 
+			pie: {
 				show: true
 			}
 		}

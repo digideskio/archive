@@ -6,11 +6,11 @@
 		<legend>Links</legend>
 		<table class="table">
 			<?php foreach ($archives_links as $al): ?>
-			
+
 <?php
 
 	$delete_link_url = $this->url(array("ArchivesLinks::delete", 'id' => $al->id));
-	
+
 	//  When generating the edit link URL, indicate to LinksController to redirect back here
 	$edit_link_url = $this->url(array('Links::edit', 'id' => $al->link->id)) . '?redirect=1';
 
@@ -34,10 +34,10 @@
 		<?=$this->form->create(null, array('url' => $add_link_url, 'method' => 'post')); ?>
 			<legend>Add a Link</legend>
 			<?=$this->form->field('url', array('label' => 'URL'));?>
-			
+
 			<input type="hidden" name="title" value="<?=$archive->name ?>" />
 			<input type="hidden" name="archive_id" value="<?=$archive->id ?>" />
-		
+
 		<?=$this->form->submit('Add Link', array('class' => 'btn btn-inverse')); ?>
 		<?=$this->form->end(); ?>
 	</div>

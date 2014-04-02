@@ -1,7 +1,7 @@
 <div class="well">
 	<legend>Exhibitions</legend>
 	<table class="table">
-	
+
 		<?php foreach($exhibitions as $exhibition): ?>
 		<?php $component = $exhibition->components->first(); ?>
 			<tr>
@@ -17,22 +17,22 @@
 		<?=$this->form->end(); ?>
 				</td>
 			</tr>
-		
+
 		<?php endforeach; ?>
-		
-		<?php if(sizeof($other_exhibitions) > 0): ?>			
-		
+
+		<?php if(sizeof($other_exhibitions) > 0): ?>
+
 		<tr>
 			<td></td>
 			<td align="right" style="text-align:right">
 				<a data-toggle="modal" href="#exhibitionModal" class="btn btn-mini btn-inverse">Add an Exhibition</a>
 			</td>
 		</tr>
-		
+
 		<?php endif; ?>
-		
+
 		</table>
-	
+
 </div>
 
 <div class="modal fade hide" id="exhibitionModal">

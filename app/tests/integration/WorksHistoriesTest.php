@@ -52,7 +52,7 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function tearDown() {
-	
+
 		Works::find("all")->delete();
 		WorksHistories::find("all")->delete();
 
@@ -102,13 +102,13 @@ class WorksHistoriesTest extends \lithium\test\Integration {
 	}
 
 	public function testUpdateHistory() {
-	
+
 		$work = Works::first();
 		$data = array(
 			'materials' => 'New Materials'
 		);
 
-		$work->save($data); 
+		$work->save($data);
 
 		$count = WorksHistories::count();
 

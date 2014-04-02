@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Publications');
 
@@ -21,7 +21,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -44,13 +44,13 @@ $authority_can_edit = $this->authority->canEdit();
 			<ul class="dropdown-menu">
 		<?php foreach($pub_classifications as $pc): ?>
 			<li>
-				<?=$this->html->link($pc,'/publications?classification='.$pc); ?> 
+				<?=$this->html->link($pc,'/publications?classification='.$pc); ?>
 			</li>
 		<?php endforeach; ?>
 			<li class="divider"></li>
 		<?php foreach($pub_types as $pt): ?>
 			<li>
-				<?=$this->html->link($pt,'/publications?type='.$pt); ?> 
+				<?=$this->html->link($pt,'/publications?type='.$pt); ?>
 			</li>
 		<?php endforeach; ?>
 			</ul>
@@ -74,7 +74,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/publications/add"><i class="icon-plus-sign icon-white"></i> Add Publication</a>
-		
+
 		<?php endif; ?>
 
 	</div>
@@ -92,7 +92,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
 	<?=$this->form->end(); ?>
-	
+
 </div>
 
 <?php if($total > 0): ?>

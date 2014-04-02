@@ -11,7 +11,7 @@ use lithium\action\Request;
 class ArchivesLinksControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
@@ -26,7 +26,7 @@ class ArchivesLinksControllerTest extends \lithium\test\Unit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new ArchivesLinksController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

@@ -13,13 +13,13 @@ use lithium\action\Request;
 class FilesControllerTest extends \lithium\test\Unit {
 
 	public function setUp() {
-	
+
 		Session::config(array(
 			'default' => array('adapter' => 'Php', 'session.name' => 'app')
 		));
-	
+
 		Auth::clear('default');
-		
+
 	}
 
 	public function tearDown() {}
@@ -29,9 +29,9 @@ class FilesControllerTest extends \lithium\test\Unit {
 	public function testAdd() {}
 	public function testEdit() {}
 	public function testDelete() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new FilesController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

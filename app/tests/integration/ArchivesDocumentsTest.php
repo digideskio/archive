@@ -125,7 +125,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
-	
+
 	public function testArchitecturesDocuments() {
 
 		$document = Documents::first();
@@ -161,7 +161,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
-	
+
 	public function testPersonsDocuments() {
 
 		$document = Documents::first();
@@ -196,7 +196,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
-	
+
 	public function testAlbumsDocuments() {
 
 		$document = Documents::first();
@@ -231,7 +231,7 @@ class ArchivesDocumentsTest extends \lithium\test\Integration {
 		$this->assertEqual(0, ArchivesDocuments::count());
 
 	}
-	
+
 	public function testExhibitionsDocuments() {
 
 		$document = Documents::first();

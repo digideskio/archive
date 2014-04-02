@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 $this->title($album->archive->name);
 
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -29,9 +29,9 @@ $this->title($album->archive->name);
 		</li>
 
 		<?php if($this->authority->canEdit()): ?>
-		
+
 			<li><?=$this->html->link('Edit', $this->url(array('Albums::edit', 'slug' => $album->archive->slug))); ?></li>
-		
+
 		<?php endif; ?>
 
 		<li><?=$this->html->link('History', $this->url(array('Albums::history', 'slug' => $album->archive->slug))); ?></li>

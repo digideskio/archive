@@ -52,7 +52,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		Documents::all()->delete();
 		ArchivesDocuments::all()->delete();
-	
+
 	}
 
 	public function testIndex() {
@@ -68,7 +68,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertTrue(isset($data['page']));
 		$this->assertTrue(isset($data['limit']));
-	
+
 	}
 
 	public function testView() {
@@ -184,7 +184,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function testAddWithDocuments() {
-	
+
 		// Make sure the route that the add action redirects to is connected,
 		// otherwise we get an error that there is no match for this route.
 		Router::connect('/publications/view/{:slug}', array('Publications::view'));
@@ -304,9 +304,9 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 	}
 
 	public function testDelete() {}
-	
+
 	public function testRules() {
-	
+
 		$ctrl = new PublicationsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
@@ -345,7 +345,7 @@ class PublicationsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual(1, sizeof($rules['delete']));
 		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
-	
+
 }
 
 ?>

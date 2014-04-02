@@ -13,12 +13,12 @@ class SessionsController extends \lithium\action\Controller {
 
 		$message = '';
 		$path = isset($this->request->query['path']) ? $this->request->query['path'] : '';
-    	
+
     	if(!Users::count()) {
     		return $this->redirect('/register');
     	}
-    
-        if ($this->request->data) { 
+
+        if ($this->request->data) {
         	if(Auth::check('default', $this->request)) {
 				$redirect = isset($this->request->data['path']) && $this->request->data['path'] ? $this->request->data['path'] : '/home';
             	return $this->redirect($redirect);
@@ -28,7 +28,7 @@ class SessionsController extends \lithium\action\Controller {
         }
 
         Auth::clear('default');
-        
+
         return $this->render(array('data' => compact('message', 'path'), 'layout' => 'flat'));
     }
 

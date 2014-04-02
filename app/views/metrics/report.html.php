@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Metrics');
 
@@ -11,7 +11,7 @@ if($auth->timezone_id) {
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -119,7 +119,7 @@ if($auth->timezone_id) {
 					$archive_date_display = $archive_date_time->format("d M Y");
 				?>
 		<tr>
-				<?php if ($archive->controller != $last_controller): ?> 
+				<?php if ($archive->controller != $last_controller): ?>
 				<td class="meta">
 					<?=$archive->controller ?>
 				</td>

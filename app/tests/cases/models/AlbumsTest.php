@@ -13,7 +13,7 @@ class AlbumsTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Albums::find('all')->delete();
 		AlbumsHistories::find('all')->delete();
 
@@ -30,7 +30,7 @@ class AlbumsTest extends \lithium\test\Unit {
 		$album = Albums::create($data);
 
 		$this->assertFalse($album->validates());
-		
+
 		$this->assertFalse($album->save($data), "The album was able to be saved without an id.");
 
 		$errors = $album->errors();

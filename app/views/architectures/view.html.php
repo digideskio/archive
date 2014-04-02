@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title($architecture->archive->name);
 
@@ -7,7 +7,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -29,9 +29,9 @@ $authority_can_edit = $this->authority->canEdit();
 	</li>
 
 	<?php if($authority_can_edit): ?>
-	
+
 		<li><?=$this->html->link('Edit','/architectures/edit/'.$architecture->archive->slug); ?></li>
-	
+
 	<?php endif; ?>
 
 	<li>
@@ -42,15 +42,15 @@ $authority_can_edit = $this->authority->canEdit();
 
 <div class="row">
 	<div class="span6">
-	
+
 		<?=$this->partial->archives_documents(array('archives_documents' => $archives_documents)); ?>
 
 	</div>
-	
+
 	<div class="span4">
 
 		<?php if($architecture->annotation): ?>
-		
+
 		<div class="popover" style="display:block; position: static; margin-bottom:18px; width:100%">
 		<div class="popover-inner">
 			<div class="popover-title">
@@ -61,15 +61,15 @@ $authority_can_edit = $this->authority->canEdit();
 			</div>
 		</div>
 		</div>
-		
+
 		<?php endif; ?>
-	
+
 		<div class="alert alert-block">
     	<p>
     		<?=$this->architecture->caption($architecture->archive, $architecture); ?>
     	</p>
 		</div>
-	
+
 		<table class="table">
 			<thead>
 				<tr>
@@ -109,7 +109,7 @@ $authority_can_edit = $this->authority->canEdit();
 					<td><?=$architecture->dimensions(); ?> </td>
 				</tr>
 			</tbody>
-		
+
 		</table>
 
 		<?php
@@ -134,23 +134,23 @@ $authority_can_edit = $this->authority->canEdit();
 						<td class="meta">Documents</td>
 						<td>
 							<ul class="unstyled" style="margin-bottom:0">
-						
-			
+
+
 						<?php foreach($archives_documents as $ad): ?>
-				
+
 								<li><a href="/documents/view/<?=$ad->document->slug?>">
 									<strong><?=$ad->document->slug?>.<?=$ad->document->format->extension?></strong>
 								</a></li>
-				
+
 						<?php endforeach; ?>
 						</ul>
 						<td>
 					</tr>
 					<?php endif; ?>
-					
+
 				</tbody>
 			</table>
 		<?php endif; ?>
-	
+
 	</div>
 </div>

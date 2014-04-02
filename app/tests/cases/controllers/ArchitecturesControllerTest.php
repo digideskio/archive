@@ -15,7 +15,7 @@ use lithium\net\http\Router;
 class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 
 	public $controller = 'app\controllers\ArchitecturesController';
-	
+
 	public function setUp() {
 		//Create an archive and architecture pair for testing purposes
 		$archive_data = array(
@@ -31,7 +31,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$success = $arch->save();
-	
+
 	}
 
 	public function tearDown() {
@@ -52,7 +52,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual('First Architecture Title', $arch->archive->name);
 		$this->assertEqual('The Architect', $arch->architect);
-	
+
 	}
 
 	public function testView() {
@@ -67,7 +67,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 
 		$this->assertEqual('First Architecture Title', $arch->archive->name);
 		$this->assertEqual('The Architect', $arch->architect);
-	
+
 	}
 
 	public function testAdd() {
@@ -225,7 +225,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new ArchitecturesController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 
@@ -255,7 +255,7 @@ class ArchitecturesControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual(1, sizeof($rules['delete']));
 		$this->assertEqual('allowEditorUser', $rules['delete'][0]['rule']);
 	}
-	
+
 }
 
 ?>

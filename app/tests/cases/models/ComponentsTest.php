@@ -10,7 +10,7 @@ class ComponentsTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Components::all()->delete();
 		ComponentsHistories::all()->delete();
 

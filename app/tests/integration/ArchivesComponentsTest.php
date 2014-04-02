@@ -87,7 +87,7 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 		$work->delete();
 
 		$this->assertEqual(0, Components::count());
-	
+
 	}
 
 	public function testPersonsComponents() {

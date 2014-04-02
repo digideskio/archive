@@ -53,7 +53,7 @@ class Archives extends \lithium\data\Model {
 	/**
 	 * Sample schema and query. For now we rely on the schema being lazy-loaded
 	 */
-	
+
 //	protected $_schema = array(
 //		'id'                   => array('type' => 'integer', 'null' => 'false'),
 //		'name'                 => array('type' => 'string', 'null' => false),
@@ -114,7 +114,7 @@ class Archives extends \lithium\data\Model {
 		if (preg_match('/^\d{4}$/', $date)) {
 			$date .= '-01-01';
 			$format = 'Y';
-		} elseif (preg_match('/^\d{4}-\d{2}$/', $date)) { 
+		} elseif (preg_match('/^\d{4}-\d{2}$/', $date)) {
 			$date .= "-01";
 			$format = 'M Y';
 		} else {
@@ -151,17 +151,17 @@ class Archives extends \lithium\data\Model {
 	}
 
     public function years($entity) {
-    
+
     	$start_date = $entity->start_date();
     	$end_date = $entity->end_date();
-    
+
     	$start_year = (
     		$start_date
     	) ? date_format(date_create($start_date), 'Y') : '0';
     	$end_year = (
     		$end_date
     	) ? date_format(date_create($end_date), 'Y') : 0;
-    	
+
     	$years = array_unique(array_filter(array($start_year, $end_year)));
 
 		return implode('–', $years);
@@ -182,7 +182,7 @@ class Archives extends \lithium\data\Model {
 			$start['year'] = date('Y', strtotime($start_date));
 		}
 
-		// If the record has an end date, find the day, month and year, but respect the precision of the date 
+		// If the record has an end date, find the day, month and year, but respect the precision of the date
 		if($end_date) {
 			$end['day'] = stripos($end_format, 'd') === false ? '' : date('d', strtotime($end_date));
 			$end['month'] = stripos($end_format, 'm') === false ? '' : date('M', strtotime($end_date));
@@ -206,31 +206,31 @@ class Archives extends \lithium\data\Model {
 				}
 			}
 		}
-		
+
 		$starts = $start_date ? implode(' ', array_filter($start)) : '';
 		$ends = $end_date ? implode(' ', array_filter($end)) : '';
 
 		return implode(' – ', array_filter(array($starts, $ends)));
 	}
-    
+
     public function start_date($entity) {
-    
+
 		return (
 			$entity->earliest_date != '0000-00-00 00:00:00' &&
 			$entity->earliest_date != '0000-00-00' &&
 			$entity->earliest_date != NULL
 		) ? $entity->earliest_date : '';
-    	
+
     }
-    
+
     public function end_date($entity) {
-    
+
 		return (
 			$entity->latest_date != '0000-00-00 00:00:00' &&
 			$entity->latest_date != '0000-00-00' &&
 			$entity->latest_date != NULL
 		) ? $entity->latest_date : '';
-    	
+
     }
 
 	public function start_date_formatted($entity) {
@@ -246,7 +246,7 @@ class Archives extends \lithium\data\Model {
 
 		return $end_date ? date($format, strtotime($end_date)) : '';
 	}
-	
+
 }
 
 /**
@@ -274,7 +274,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 /**
  * Date Filters
- * 
+ *
  * Significant dates may be input as a year, as a month and year, or as a valid
  * day, month, and year. Either date may also be left blank. The filter runs
  * a similar procedure for data supplied to the create and save methods. For
@@ -294,7 +294,7 @@ Archives::applyFilter('create', function($self, $params, $chain) {
 			$earliest_date = $params['data']['earliest_date'];
 			$earliest_date_filtered = Archives::filterDate($earliest_date);
 			$params['data']['earliest_date'] = $earliest_date_filtered['date'];
-			$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
+			$params['data']['earliest_date_format'] = $earliest_date_filtered['format'];
 		}
 	} else {
 		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
@@ -310,7 +310,7 @@ Archives::applyFilter('create', function($self, $params, $chain) {
 			$latest_date = $params['data']['latest_date'];
 			$latest_date_filtered = Archives::filterDate($latest_date);
 			$params['data']['latest_date'] = $latest_date_filtered['date'];
-			$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
+			$params['data']['latest_date_format'] = $latest_date_filtered['format'];
 		}
 	} else {
 		$params['data']['latest_date'] = '';
@@ -326,7 +326,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		$earliest_date = $params['data']['earliest_date'];
 		$earliest_date_filtered = Archives::filterDate($earliest_date);
 		$params['data']['earliest_date'] = $earliest_date_filtered['date'];
-		$params['data']['earliest_date_format'] = $earliest_date_filtered['format']; 
+		$params['data']['earliest_date_format'] = $earliest_date_filtered['format'];
 	} else {
 		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
 		//So let's make sure the value is at least empty if it is not set
@@ -338,7 +338,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		$latest_date = $params['data']['latest_date'];
 		$latest_date_filtered = Archives::filterDate($latest_date);
 		$params['data']['latest_date'] = $latest_date_filtered['date'];
-		$params['data']['latest_date_format'] = $latest_date_filtered['format']; 
+		$params['data']['latest_date_format'] = $latest_date_filtered['format'];
 	} else {
 		$params['data']['latest_date'] = '';
 	}
@@ -353,7 +353,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 
 Archives::applyFilter('save', function($self, $params, $chain) {
 
-	if(!$params['entity']->exists() && isset($params['data']['name'])) { 
+	if(!$params['entity']->exists() && isset($params['data']['name'])) {
 
 		$name = $params['data']['name'];
 
@@ -381,7 +381,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		}
 
 		$params['data']['slug'] = $slug;
-		
+
 	}
 
 	return $chain->next($self, $params, $chain);
@@ -435,7 +435,7 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		if ($user) {
 			$params['data']['user_id'] = $user->id;
 		}
-		
+
 	}
 
 	return $chain->next($self, $params, $chain);

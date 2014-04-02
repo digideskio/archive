@@ -29,15 +29,15 @@ class SearchController extends \lithium\action\Controller {
 	);
 
 	public function index() {
-    
+
     	// Check authorization
 	    $check = (Auth::check('default')) ?: null;
-	
+
 		// If the user is not authorized, redirect to the login screen
         if (!$check) {
             return $this->redirect('Sessions::add');
         }
-        
+
 		$data = $this->request->data ?: $this->request->query;
 
 		$works = array();
@@ -63,7 +63,7 @@ class SearchController extends \lithium\action\Controller {
 
 			// Save the query term as a session variable in the custom storage
 			Session::write('query', $query, array('name' => 'custom'));
-        
+
 			$order = array('Archives.earliest_date' => 'DESC');
 
 			$artwork_ids = array();
@@ -313,8 +313,8 @@ class SearchController extends \lithium\action\Controller {
 			$limit = !(intval($limit)) ? max(array($works_total, $architectures_total, $exhibitions_total, $publications_total, $documents_total)) : $limit;
 		}
 
-		$architecture = Environment::get('architecture');		
-        
+		$architecture = Environment::get('architecture');
+
         return compact(
 			'works',
 			'works_total',
@@ -333,8 +333,8 @@ class SearchController extends \lithium\action\Controller {
 			'architecture',
 			'auth'
 		);
-        
+
 	}
-	
+
 
 }

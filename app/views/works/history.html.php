@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title($work->archive->name);
 
@@ -23,7 +23,7 @@ if($auth->timezone_id) {
 	<?=$this->html->link($work->archive->name,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		History
 	</li>
@@ -35,10 +35,10 @@ if($auth->timezone_id) {
 	</li>
 
 	<?php if($authority_can_edit): ?>
-	
+
 		<li><?=$this->html->link('Edit','/works/edit/'.$work->archive->slug); ?></li>
 		<li><?=$this->html->link('Attachments','/works/attachments/'.$work->archive->slug); ?></li>
-	
+
 	<?php endif; ?>
 
 		<li class="active"><?=$this->html->link('History','/works/history/'.$work->archive->slug); ?></li>
@@ -50,7 +50,7 @@ if($auth->timezone_id) {
 <div class="row">
 	<div class="span10">
 	<?php foreach($archives_histories as $ah): ?>
-		
+
 		<?php
 			$start_date_string = date("Y-m-d H:i:s", $ah->start_date);
 			$start_date_time = new DateTime($start_date_string);
@@ -66,7 +66,7 @@ if($auth->timezone_id) {
 			<thead>
 				<tr>
 					<td colspan="2">
-						<strong><?=$start_date_display ?></strong> 
+						<strong><?=$start_date_display ?></strong>
 						<?php if( $ah->user->id ): ?>
 						<small style="font-size: smaller;">by <?=$this->html->link($ah->user->name,'/users/view/'.$ah->user->username); ?></small>
 						<?php endif; ?>

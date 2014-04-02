@@ -1,11 +1,11 @@
-<?php 
+<?php
 
 $this->title('Search');
 
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -44,13 +44,13 @@ $this->title('Search');
 
 <div id="search-results">
 
-	<?php 
-		$has_works = $works && sizeof($works) > 0 ? true : false; 
-		$has_architectures = $architecture && $architectures && sizeof($architectures) > 0 ? true : false; 
-		$has_exhibitions = $exhibitions && sizeof($exhibitions) > 0 ? true : false; 
-		$has_publications = $publications && sizeof($publications) > 0 ? true : false; 
-		$has_documents = $documents && sizeof($documents) > 0 ? true : false; 
-		$has_links = $links && sizeof($links) > 0 ? true : false; 
+	<?php
+		$has_works = $works && sizeof($works) > 0 ? true : false;
+		$has_architectures = $architecture && $architectures && sizeof($architectures) > 0 ? true : false;
+		$has_exhibitions = $exhibitions && sizeof($exhibitions) > 0 ? true : false;
+		$has_publications = $publications && sizeof($publications) > 0 ? true : false;
+		$has_documents = $documents && sizeof($documents) > 0 ? true : false;
+		$has_links = $links && sizeof($links) > 0 ? true : false;
 	?>
 
 	<?php if ($query && !$has_works && !$has_architectures && !$has_exhibitions && !$has_publications && !$has_documents && !$has_links): ?>

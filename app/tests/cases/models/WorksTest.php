@@ -13,7 +13,7 @@ class WorksTest extends \lithium\test\Unit {
 	public function setUp() {}
 
 	public function tearDown() {
-	
+
 		Works::all()->delete();
 		WorksHistories::all()->delete();
 
@@ -30,7 +30,7 @@ class WorksTest extends \lithium\test\Unit {
 		$work = Works::create($data);
 
 		$this->assertFalse($work->validates());
-		
+
 		$this->assertFalse($work->save($data), "The work was able to be saved without an id.");
 
 		$errors = $work->errors();
@@ -38,7 +38,7 @@ class WorksTest extends \lithium\test\Unit {
 		$this->assertEqual('This field may not be empty.', $errors['id'][0]);
 
 	}
-	
+
 	public function testDimensions() {
 
 		$work = Works::create();

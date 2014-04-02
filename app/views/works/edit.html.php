@@ -7,7 +7,7 @@ $authority_is_admin = $this->authority->isAdmin();
 $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
 
 $this->form->config(
-    array( 
+    array(
 		'label' => array(
 			'class' => 'control-label',
 		),
@@ -22,11 +22,11 @@ $this->form->config(
 		'checkbox' => array(
 			'wrap' => array('class' => 'control-group'),
 		),
-        'templates' => array( 
-            'error' => '<div class="help-inline">{:content}</div>' 
+        'templates' => array(
+            'error' => '<div class="help-inline">{:content}</div>'
         )
     )
-); 
+);
 
 $artists_list = array('' => 'Choose one...');
 
@@ -58,7 +58,7 @@ foreach ($users as $user) {
 
 <div id="location" class="row-fluid">
 
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -70,7 +70,7 @@ foreach ($users as $user) {
 	<?=$this->html->link($work->archive->name,'/works/view/'.$work->archive->slug); ?>
 	<span class="divider">/</span>
 	</li>
-	
+
 	<li class="active">
 		Edit
 	</li>
@@ -135,17 +135,17 @@ foreach ($users as $user) {
 		<div class="well">
 			<?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
 		</div>
-		
+
 	</div>
-	
+
 	<div class="span5">
 
 		<div class="well">
 			<legend>Details</legend>
 				<?=$this->form->field('work.annotation', array(
 					'label' => 'Annotation',
-					'type' => 'textarea', 
-					'rows' => '5', 
+					'type' => 'textarea',
+					'rows' => '5',
 					'style' => 'width:90%;',
 				));?>
 
@@ -234,7 +234,7 @@ foreach ($users as $user) {
 						<?=$this->form->select('pack_price_per', $currencies_list, array('value' => $work->attribute('pack_price_per'), 'class' => 'span1')); ?>
 					</div>
 				</div>
-			
+
 				<?php if ($locations && sizeof($locations) < 50): ?>
 
 					<?php $locations_list = array_merge(array('' => 'Select location...'), $locations_list); ?>
@@ -247,7 +247,7 @@ foreach ($users as $user) {
 						</div>
 					</div>
 						<script>
-							
+
 							$(document).ready(function() {
 
 								$('#WorksSelectLocation').change(function() {
@@ -301,7 +301,7 @@ foreach ($users as $user) {
 
 <?=$this->form->end(); ?>
 
-		
+
 </div>
 
 <script>
@@ -344,7 +344,7 @@ $(document).ready(function() {
 			for(i=0,x=classes.length;i<x;i++){
 				$('#WorksForm .' + classes[i]).closest('.control-group').fadeIn();
 			}
-			
+
 		} else {
 			$('#WorksForm .dim.remarks').closest('.control-group').hide();
 		}
@@ -368,7 +368,7 @@ $(document).ready(function() {
 		</div>
 		<div class="modal-body">
 			<p>Are you sure you want to permanently delete <strong><?=$work->archive->name; ?></strong>?</p>
-			
+
 			<p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
 			</div>
 			<div class="modal-footer">

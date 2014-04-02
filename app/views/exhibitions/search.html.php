@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 $this->title('Search Exhibitions');
 
@@ -18,7 +18,7 @@ $authority_can_edit = $this->authority->canEdit();
 ?>
 
 <div id="location" class="row-fluid">
-    
+
 	<ul class="breadcrumb">
 
 	<li>
@@ -54,7 +54,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?php if($authority_can_edit): ?>
 
 				<a class="btn btn-inverse" href="/exhibitions/add"><i class="icon-plus-sign icon-white"></i> Add an Exhibition</a>
-		
+
 		<?php endif; ?>
 	</div>
 </div>
@@ -71,7 +71,7 @@ $authority_can_edit = $this->authority->canEdit();
 		<?=$this->form->submit('Submit', array('class' => 'btn btn-inverse')); ?>
 
 		<p></p>
-	
+
 		<fieldset>
 		<label class="radio">
 		<?php $checked = $type == 'All'; ?>
@@ -91,7 +91,7 @@ $authority_can_edit = $this->authority->canEdit();
 		</fieldset>
 
 	<?=$this->form->end(); ?>
-	
+
 </div>
 
 <?php if($total > 0): ?>

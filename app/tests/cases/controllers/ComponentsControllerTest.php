@@ -17,7 +17,7 @@ class ComponentsControllerTest extends \lithium\test\Unit {
 	public function testDelete() {}
 
 	public function testRules() {
-	
+
 		$ctrl = new ComponentsController();
 		$rules = isset($ctrl->rules) ? $ctrl->rules : NULL;
 

@@ -63,7 +63,7 @@ class ArtworkTest extends \lithium\test\Unit {
 	}
 
 	public function tearDown() {
-	
+
 		Works::all()->delete();
 		WorksHistories::all()->delete();
 
@@ -75,7 +75,7 @@ class ArtworkTest extends \lithium\test\Unit {
 
 		Components::find("all")->delete();
 		ComponentsHistories::find("all")->delete();
-	
+
 	}
 
 	public function testWorksCaption() {

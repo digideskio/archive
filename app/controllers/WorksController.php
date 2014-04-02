@@ -78,7 +78,7 @@ class WorksController extends \lithium\action\Controller {
 			$artworks = Environment::get('artworks');
 			$filter = isset($artworks['filter']) ? $artworks['filter'] : '';
 		}
-		
+
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 
@@ -109,13 +109,13 @@ class WorksController extends \lithium\action\Controller {
 
 		if (Environment::get('artworks')) {
 			$artworks = Environment::get('artworks');
-			
+
 			if (isset($artworks['search'])) {
 				$search = $artworks['search'];
 				$limit = isset($search['limit']) ? $search['limit'] : $limit;
 			}
 		}
-		
+
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : $limit;
 
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
@@ -285,15 +285,15 @@ class WorksController extends \lithium\action\Controller {
 			'order' => $order,
 			'page' => $page
 		));
-		
+
 		return compact('archives_histories', 'total', 'page', 'limit');
 	}
 
 	public function view() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$works = Works::find('artworks', array(
 				'with' => 'Archives',
@@ -320,7 +320,7 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array('ArchivesDocuments.archive_id' => $work->id),
 					'order' => array('Documents.slug' => 'ASC')
 				));
-		
+
 				$albums = Albums::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
@@ -328,7 +328,7 @@ class WorksController extends \lithium\action\Controller {
 					),
 					'order' => array('Archives.name' =>  'ASC')
 				));
-		
+
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
@@ -348,13 +348,13 @@ class WorksController extends \lithium\action\Controller {
 				return compact('work', 'artists', 'archives_documents', 'archives_links', 'albums', 'exhibitions');
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Works::index'));
 	}
 
 	public function add() {
-		
+
 		$archive = Archives::create();
 		$work = Works::create();
 		$link = Links::create();
@@ -508,15 +508,15 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function edit() {
-		
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			$work = Works::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-		
+
 			if (empty($work)) {
 				return $this->redirect('Works::index');
 			}
@@ -668,7 +668,7 @@ class WorksController extends \lithium\action\Controller {
 				'work',
 				'artist',
 				'archives_documents',
-				'albums', 
+				'albums',
 				'other_albums',
 				'exhibitions',
 				'other_exhibitions',
@@ -678,21 +678,21 @@ class WorksController extends \lithium\action\Controller {
 				'locations',
 				'users'
 			);
-		}																																		
-		
+		}
+
 		$this->redirect(array('Works::index'));
-		
+
 	}
 
 	public function attachments() {
 
 		if(isset($this->request->params['slug'])) {
-		
+
 			$work = Works::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-		
+
 			if($work) {
 
 				$albums = Albums::find('all', array(
@@ -717,7 +717,7 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('Archives.name' =>  'ASC'),
 					'conditions' => $other_album_conditions
 				));
-	
+
 				$exhibitions = Exhibitions::find('all', array(
 					'with' => array('Archives', 'Components'),
 					'conditions' => array(
@@ -731,7 +731,7 @@ class WorksController extends \lithium\action\Controller {
 				foreach ($exhibitions as $exhibition) {
 					array_push($exhibition_ids, $exhibition->id);
 				}
-	
+
 				//Find the exhibitions the work is NOT in
 				$other_exhibition_conditions = ($exhibition_ids) ? array('Exhibitions.id' => array('!=' => $exhibition_ids)) : '';
 
@@ -740,7 +740,7 @@ class WorksController extends \lithium\action\Controller {
 					'order' => array('Archives.name' =>  'ASC'),
 					'conditions' => $other_exhibition_conditions
 				));
-		
+
 				$archives_documents = ArchivesDocuments::find('all', array(
 					'with' => array(
 						'Documents',
@@ -763,32 +763,32 @@ class WorksController extends \lithium\action\Controller {
 				}
 
 				return compact(
-					'work', 
-					'archives_documents', 
-					'albums', 
-					'other_albums', 
-					'exhibitions', 
+					'work',
+					'archives_documents',
+					'albums',
+					'other_albums',
+					'exhibitions',
 					'other_exhibitions',
 					'archives_links'
 				);
-			}	
-		}																																		
-		
+			}
+		}
+
 		$this->redirect(array('Works::index'));
 
 	}
 
 	public function history() {
-	
+
 		//Don't run the query if no slug is provided
 		if(isset($this->request->params['slug'])) {
-		
+
 			//Get single record from the database where the slug matches the URL
 			$work = Works::first(array(
 				'with' => 'Archives',
 				'conditions' => array('Archives.slug' => $this->request->params['slug']),
 			));
-			
+
 			if($work) {
 
 				$archives_histories = ArchivesHistories::find('all', array(
@@ -803,12 +803,12 @@ class WorksController extends \lithium\action\Controller {
 					'conditions' => array('work_id' => $work->id),
 					'order' => array('start_date' => 'DESC')
 				));
-		
+
 				//Send the retrieved data to the view
 				return compact('work', 'archives_histories', 'works_histories');
 			}
 		}
-		
+
 		//since no record was specified, redirect to the index page
 		$this->redirect(array('Works::index'));
 	}
@@ -912,19 +912,19 @@ class WorksController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
-		
+
 		$work = Works::find('first', array(
 			'with' => 'Archives',
 			'conditions' => array('Archives.slug' => $this->request->params['slug']),
 		));
-		
+
 		// For the following to work, the delete form must have an explicit 'method' => 'post'
 		// since the default method is PUT
 		if (!$this->request->is('post') && !$this->request->is('delete')) {
 			$msg = "Works::delete can only be called with http:post or http:delete.";
 			throw new DispatchException($msg);
 		}
-		
+
 		$work->delete();
 		return $this->redirect('Works::index');
 	}
