@@ -27,7 +27,17 @@ class Components extends \lithium\data\Model {
 		)),
 	);
 
-	public $validates = array();
+	public $validates = array(
+		'archive_id1' => array(
+			array('notEmpty', 'message' => 'This field may not be empty.')
+		),
+		'archive_id2' => array(
+			array('notEmpty', 'message' => 'This field may not be empty.')
+		),
+		'type' => array(
+			array('notEmpty', 'message' => 'This field may not be empty.')
+		),
+	);
 
 }
 

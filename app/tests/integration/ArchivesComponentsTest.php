@@ -67,9 +67,10 @@ class ArchivesComponentsTest extends \lithium\test\Integration {
 
 		$archive_id1 = '123';
 		$archive_id2 = $work->id;
+        $type = 'albums_works';
 
 		$component = Components::create();
-		$comp_data = compact('archive_id1', 'archive_id2');
+		$comp_data = compact('archive_id1', 'archive_id2', 'type');
 
 		$component->save($comp_data);
 
