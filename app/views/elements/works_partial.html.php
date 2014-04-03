@@ -14,6 +14,20 @@
 
 <?php endif; ?>
 
+<?php
+    $albums = \app\models\Albums::find('all', array(
+        'with' => 'Archives',
+        'order' => array('Archives.name' => 'ASC')
+    ));
+
+    $albums_list = array('' => 'Select album...');
+
+    foreach ($albums as $a) {
+        $albums_list[$a->id] = $a->archive->names();
+    }
+
+?>
+
 <form method="post">
 
 	<table class="table table-bordered">
@@ -33,6 +47,7 @@
 		<?php if($authority_can_edit): ?>
 		<div class="btn-group">
 		<?=$this->form->submit('Create Album', array('onclick' => "this.form.action='/albums/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+        <a data-toggle="modal" href="#albumModal" class="btn btn-small batch-edit-btn" disabled="disabled">Add to Album</a>
 		</div>
 		<div class="btn-group">
 		<?=$this->form->submit('Create Exhibition', array('onclick' => "this.form.action='/exhibitions/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
@@ -45,6 +60,19 @@
 	</td></tr>
 	</tbody>
 	</table>
+
+    <div class="modal fade hide" id="albumModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+            <h3>Add to Album</h3>
+        </div>
+        <div class="modal-body">
+            <fieldset>
+            <?=$this->form->select('archive_id1', $albums_list, array('style' => 'width: 100%')); ?>
+            </fieldset>
+		    <?=$this->form->submit('Add Works to Album', array('name' => 'submit', 'onclick' => "this.form.action='/components/bulk'", 'class' => 'btn btn-primary btn-block')); ?>
+        </div>
+    </div>
 
 <?php
 	$layout = 'table';
