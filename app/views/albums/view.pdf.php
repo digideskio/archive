@@ -54,8 +54,9 @@ EOD;
 foreach( $works as $work) {
 
 $caption = $this->artwork->caption($work);
+$notes = $options['view'] === 'notes' ? $this->artwork->notes($work) : '';
 
-	$work_documents = $work->documents('all');
+$work_documents = $work->documents('all');
 
 	foreach ($work_documents as $doc) {
 
@@ -79,12 +80,13 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
-			<p style="color: #888888"><small>$remarks</small></p>
+            <p style="font-size: 0.8em">$notes</p>
 		</td>
 		<td style="width:380px; font-family:monospace; font-size:0.8em;">
 			$resolution<br/>
 			$size<br/>
-			$credit
+			$credit<br/>
+			<span style="color: #888888">$remarks</span>
 		</td>
 	</tr>
 EOD;

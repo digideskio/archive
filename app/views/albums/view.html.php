@@ -43,9 +43,9 @@ $this->title($album->archive->name);
 	<div class="btn-toolbar">
 		<div class="btn-group">
 			<button class="btn btn-inverse dropdown-toggle" data-toggle="dropdown"><i class="icon-print icon-white"></i> Print <span class="caret"</span></button>
-			<ul class="dropdown-menu">
-				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?layout=download"><i class="icon-download-alt"></i> Download PDF</a></li>
-				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?layout=inline"><i class="icon-fullscreen"></i> Display PDF</a></li>
+			<ul class="dropdown-menu pull-right">
+				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?layout=download&view=images"><i class="icon-qrcode"></i> Print Image Info</a></li>
+				<li><a href="<?=$this->url(array('Albums::publish', 'slug' => $album->archive->slug)); ?>?layout=download&view=notes"><i class="icon-list"></i> Print Artwork Notes</a></li>
 			</ul>
 		</div>
 	</div>
