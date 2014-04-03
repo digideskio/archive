@@ -190,6 +190,20 @@
 
 <?php foreach($works as $work): ?>
 
+<?php
+    $albums = array();
+    if (!empty($work->components)) {
+        $components = $work->components;
+
+        foreach ($components as $c) {
+            if ($c->type == 'albums_works') {
+                array_push($albums, $c->album);
+            }
+        }
+    }
+
+?>
+
 <tr>
 <?php if($authority_can_edit): ?>
 	<td>
@@ -210,9 +224,23 @@
 			<span class="label">No Preview</span>
 		<?php } ?>
 	</td>
-	<td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work, array('link' => true)); ?></td>
+    <td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work, array('link' => true)); ?></td>
 	<td class="info-materials"><?=$work->materials ?></td>
-    <td class="info-remarks info-annotation"><?=$this->artwork->notes($work); ?></td>
+    <td class="info-remarks info-annotation">
+        <ul class="unstyled" style="margin-bottom:0">
+            <li><?=$this->artwork->notes($work); ?></li>
+            <?php if(!empty($albums)): ?>
+               <li><strong>Albums</strong>
+                <?php foreach($albums as $album): ?>
+                   &middot; <?=$this->html->link(
+                        $album->archive->name,
+                        $this->url(array('Albums::view', 'slug' => $album->archive->slug))
+                    );?>
+                <?php endforeach; ?>
+                </li>
+            <?php endif; ?>
+        </ul>
+    </td>
     <td class="info-classification"><?=$work->archive->classification ?></td>
 </tr>
 

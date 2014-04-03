@@ -152,7 +152,7 @@ Works::finder('artworks', function($self, $params, $chain) {
 	$order = '(CASE WHEN ViewWorksArtists.artist_sort = \'\' OR ViewWorksArtists.artist_sort IS NULL THEN 1 ELSE 0 END), ViewWorksArtists.artist_sort ASC, Archives.earliest_date DESC, Archives.name, materials';
 
 	$params['options']['order'] = $order;
-	$params['options']['with'] = array('ViewWorksArtists', 'Archives', 'Components.Persons.Archives');
+	$params['options']['with'] = array('ViewWorksArtists', 'Archives', 'Components.Persons.Archives', 'Components.Albums.Archives');
 
 	$data = $chain->next($self, $params, $chain);
 	return $data ?: null;
