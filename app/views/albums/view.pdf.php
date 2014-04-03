@@ -80,7 +80,7 @@ $html .= <<<EOD
 		</td>
 		<td>
 			<p style="color:#08C"><strong>$caption</strong></p>
-            <p style="font-size: 0.8em">$notes</p>
+            <p style="font-size: 0.8em; font-family:kozminproregular">$notes</p>
 		</td>
 		<td style="width:380px; font-family:monospace; font-size:0.8em;">
 			$resolution<br/>
