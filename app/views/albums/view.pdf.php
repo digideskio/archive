@@ -75,14 +75,14 @@ $work_documents = $work->documents('all');
 $html .= <<<EOD
 
 	<tr style="page-break-inside: avoid;">
-		<td style="width:150px">
+		<td style="width:130px">
 			$thumb_img
 		</td>
-		<td>
+		<td style="width:420px">
 			<p style="color:#08C"><strong>$caption</strong></p>
             <p style="font-size: 0.8em; font-family:kozminproregular">$notes</p>
 		</td>
-		<td style="width:380px; font-family:monospace; font-size:0.8em;">
+		<td style="font-family:monospace; font-size:0.8em;">
 			$resolution<br/>
 			$size<br/>
 			$credit<br/>
