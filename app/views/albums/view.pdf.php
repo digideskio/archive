@@ -11,11 +11,12 @@ $documents = $content['documents'];
 
 $pdf =& $this->Pdf;
 $this->Pdf->setCustomLayout(array(
-	'header'=>function() use($pdf, $album){
+	'header'=>function() use($pdf, $title){
+        $headertext = $title . ' - ' . date('Y-m-d');
 		list($r, $g, $b) = array(200,200,200);
 		$pdf->SetFillColor($r, $g, $b);
 		$pdf->SetTextColor(0 , 0, 0);
-		$pdf->Cell(0,15, $title, 0,1,'C', 1);
+		$pdf->Cell(0,15, $headertext, 0,1,'C', 1);
 		$pdf->Ln();
 	},
 	'footer'=>function() use($pdf){
