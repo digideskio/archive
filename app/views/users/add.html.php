@@ -4,6 +4,20 @@ $this->title('Add a User');
 
 $this->form->config(
     array(
+		'label' => array(
+			'class' => 'control-label',
+		),
+		'field' => array(
+			'wrap' => array('class' => 'control-group'),
+			'template' => '<div{:wrap}>{:label}<div class="controls control-row">{:input}{:error}</div></div>',
+			'style' => 'max-width:100%'
+		),
+		'select' => array(
+			'style' => 'max-width:100%'
+		),
+		'checkbox' => array(
+			'wrap' => array('class' => 'control-group'),
+		),
         'templates' => array(
             'error' => '<div class="help-inline">{:content}</div>'
         )
@@ -51,17 +65,28 @@ $this->form->config(
 	</div>
 </div>
 
-<div class="well">
-<?=$this->form->create($user); ?>
+<div class="row">
+
+<?=$this->form->create($user, array('class' => 'form-horizontal')); ?>
+
+    <div class="span5">
+    <div class="well">
+    <legend>User Info</legend>
     <?=$this->form->field('username', array('autocomplete' => 'off'));?>
     <?=$this->form->field('password', array('type' => 'password')); ?>
     <?=$this->form->field('name', array('autocomplete' => 'off'));?>
     <?=$this->form->field('email', array('autocomplete' => 'off'));?>
+    <div class="control-group">
+	<?=$this->form->label('role_name', 'Role'); ?>
+    <div class="controls">
 	<?= $this->form->select('role_id', $role_list) ?>
+    </div>
+    </div>
+    </div>
 
-    <fieldset>
-    <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/users', array('class' => 'btn')); ?>
-    </fieldset>
+    <div class="well">
+        <?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
+    </div>
+    </div>
 <?=$this->form->end(); ?>
 </div>

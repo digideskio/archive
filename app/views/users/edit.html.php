@@ -6,13 +6,27 @@
 
 	$role = $auth->role->name;
 
-	$this->form->config(
-		array(
-			'templates' => array(
-				'error' => '<div class="help-inline">{:content}</div>'
-			)
-		)
-	);
+    $this->form->config(
+        array(
+            'label' => array(
+                'class' => 'control-label',
+            ),
+            'field' => array(
+                'wrap' => array('class' => 'control-group'),
+                'template' => '<div{:wrap}>{:label}<div class="controls control-row">{:input}{:error}</div></div>',
+                'style' => 'max-width:100%'
+            ),
+            'select' => array(
+                'style' => 'max-width:100%'
+            ),
+            'checkbox' => array(
+                'wrap' => array('class' => 'control-group'),
+            ),
+            'templates' => array(
+                'error' => '<div class="help-inline">{:content}</div>'
+            )
+        )
+    );
 
 ?>
 
@@ -51,46 +65,9 @@
 		</li>
 	</ul>
 
-</div>
-
-<?php if(!$user->active): ?>
-
-<div class="alert alert-error">
-This user is no longer active.
-</div>
-
-<?php endif; ?>
-<div class="well">
-<?=$this->form->create($user); ?>
-    <?=$this->form->field('username', array('autocomplete' => 'off', 'disabled' => 'disabled'));?>
-    <?=$this->form->field('password', array('type' => 'password')); ?>
-    <?=$this->form->field('name', array('autocomplete' => 'off'));?>
-    <?=$this->form->field('email', array('autocomplete' => 'off'));?>
-
     <?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
 
-		<?=$this->form->select('role_id', $role_list); ?>
-
-	<?php endif; ?>
-
-	<?php if($auth->role->name != 'Admin' || $auth->username == $user->username): ?>
-	<?=$this->form->label('role_name', 'Role'); ?>
-    <input type="text" name="role_name" disabled="disabled" value="<?=$auth->role->name?>">
-	<?php endif; ?>
-
-    <fieldset>
-    <?=$this->form->submit('Save', array('class' => 'btn btn-inverse')); ?>
-    <?=$this->html->link('Cancel','/users/view/'.$user->username, array('class' => 'btn')); ?>
-    </fieldset>
-<?=$this->form->end(); ?>
-</div>
-
-<?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
-
-	<div class="well">
-
-			<legend>Edit</legend>
-
+        <div class="btn-toolbar">
 			<?php if($user->active): ?>
 			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
 				<i class="icon-white icon-ban-circle"></i> Disable Account
@@ -100,9 +77,55 @@ This user is no longer active.
 				<i class="icon-white icon-ok-sign"></i> Activate Account
 			</a>
 			<?php endif; ?>
+        </div>
 
-	</div>
+    <?php endif; ?>
 
+</div>
+
+<?php if(!$user->active): ?>
+
+<div class="alert alert-error">
+This user is no longer active.
+</div>
+
+<?php endif; ?>
+
+<div class="row">
+
+<?=$this->form->create($user, array('class' => 'form-horizontal')); ?>
+    <div class="span5">
+    <div class="well">
+    <legend>User Info</legend>
+    <?=$this->form->field('username', array('autocomplete' => 'off', 'disabled' => 'disabled'));?>
+    <?=$this->form->field('password', array('type' => 'password')); ?>
+    <?=$this->form->field('name', array('autocomplete' => 'off'));?>
+    <?=$this->form->field('email', array('autocomplete' => 'off'));?>
+
+    <?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
+
+        <div class="control-group">
+        <?=$this->form->label('role_name', 'Role'); ?>
+        <div class="controls">
+		<?=$this->form->select('role_id', $role_list); ?>
+        </div>
+        </div>
+
+	<?php endif; ?>
+
+	<?php if($auth->role->name != 'Admin' || $auth->username == $user->username): ?>
+    <?=$this->form->field('role_name', array('label' => 'Role', 'disabled' => 'disabled', 'value' => $auth->role->name)); ?>
+	<?php endif; ?>
+    </div>
+
+    <div class="well">
+        <?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
+    </div>
+    </div>
+<?=$this->form->end(); ?>
+</div>
+
+<?php if($auth->role->name == 'Admin' && $auth->username != $user->username): ?>
 
 <div class="modal fade hide" id="deleteModal">
 	<div class="modal-header">
