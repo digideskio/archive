@@ -93,7 +93,7 @@ class UsersController extends \lithium\action\Controller {
 		if (($this->request->data) && $user->save($this->request->data)) {
 			return $this->redirect(array('Users::view', 'username' => $user->username));
 		}
-		return compact('user', 'role_list');
+		return compact('user', 'roles');
 	}
 
 	public function edit() {
@@ -106,11 +106,6 @@ class UsersController extends \lithium\action\Controller {
 		));
 
 		$roles = Roles::all();
-		$role_list = array();
-
-		foreach($roles as $role) {
-			$role_list[$role->id] = $role->name;
-		}
 
 		if (!$user) {
 			return $this->redirect('Users::index');
@@ -143,7 +138,7 @@ class UsersController extends \lithium\action\Controller {
 				}
 			}
 		}
-		return compact('user', 'role_list');
+		return compact('user', 'roles');
 	}
 
 	public function activate() {

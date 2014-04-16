@@ -24,6 +24,12 @@ $this->form->config(
     )
 );
 
+$role_list = array();
+
+foreach($roles as $role) {
+    $role_list[$role->id] = $role->name;
+}
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -88,5 +94,19 @@ $this->form->config(
         <?=$this->form->submit('Save', array('class' => 'btn btn-large btn-block btn-primary')); ?>
     </div>
     </div>
+
+    <div class="span5">
+    <div class="well">
+    <legend>Help</legend>
+        <dl>
+        <h4>Roles</h4>
+        <?php foreach ($roles as $role): ?>
+            <dt class="meta"><?=$role->name ?></dt>
+            <dd><p><?=$role->description ?></p></dd>
+        <?php endforeach; ?>
+        <dl>
+    </div>
+    </div>
+
 <?=$this->form->end(); ?>
 </div>

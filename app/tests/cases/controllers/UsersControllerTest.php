@@ -99,7 +99,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(isset($data['user']));
-		$this->assertTrue(isset($data['role_list']));
+		$this->assertTrue(isset($data['roles']));
 
 		// Test that this action processes and saves the correct data
 		$username = 'new';
@@ -140,7 +140,7 @@ class UsersControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertTrue(isset($data['user']));
-		$this->assertTrue(isset($data['role_list']));
+		$this->assertTrue(isset($data['roles']));
 
 		// Set the user who will be performing the action
 		Auth::set('default', $this->editor_data);

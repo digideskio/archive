@@ -28,6 +28,12 @@
         )
     );
 
+    $role_list = array();
+
+    foreach($roles as $role) {
+        $role_list[$role->id] = $role->name;
+    }
+
 ?>
 
 <div id="location" class="row-fluid">
