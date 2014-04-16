@@ -52,9 +52,15 @@ Access::adapter('rule_based')->add('allowAdminUser', function($user, $request, $
 
 });
 
+Access::adapter('rule_based')->add('allowRegistrarUser', function($user, $request, $options){
+
+	return ($user['role'] == 'Admin' || $user['role'] == 'Registrar');
+
+});
+
 Access::adapter('rule_based')->add('allowEditorUser', function($user, $request, $options){
 
-	return ($user['role'] == 'Admin' || $user['role'] == 'Editor');
+	return ($user['role'] == 'Admin' || $user['role'] == 'Editor' || $user['role'] == 'Registrar');
 
 });
 

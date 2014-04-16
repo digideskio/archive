@@ -3,9 +3,9 @@
 $this->title('Locations');
 
 $authority_can_edit = $this->authority->canEdit();
-$authority_is_admin = $this->authority->isAdmin();
 
-$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+$authority_can_inventory = $this->authority->canInventory();
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));
 
 ?>
 
@@ -38,10 +38,12 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 
 </div>
 
+    <?php if($authority_can_inventory): ?>
 	<?php foreach ($locations as $location): ?>
 
 		<?php $query = urlencode($location['name']); ?>
 		<p><?=$this->html->link($location['name'], "/works/search?condition=Works.location&query=$query"); ?> <span class="badge"><?=$location['works'] ?></span></p>
 
 	<?php endforeach; ?>
+    <?php endif; ?>
 </div>

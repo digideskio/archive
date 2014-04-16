@@ -37,21 +37,36 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 			"email" => "viewer@example.com",
 			"role_id" => '3'
 		),
+		'registrar' => array(
+			"username" => "registrar",
+			"password" => "abcd",
+			"name" => "A Registrar User",
+			"email" => "registrar@example.com",
+			"role_id" => '4'
+		),
 	);
 
 	public $test_rules = array(
 		array('rule' => 'allowAdminUser', 'user' => 'admin', 'access' => true),
 		array('rule' => 'allowAdminUser', 'user' => 'editor', 'access' => false),
 		array('rule' => 'allowAdminUser', 'user' => 'viewer', 'access' => false),
+		array('rule' => 'allowAdminUser', 'user' => 'registrar', 'access' => false),
+
+		array('rule' => 'allowRegistrarUser', 'user' => 'admin', 'access' => true),
+		array('rule' => 'allowRegistrarUser', 'user' => 'editor', 'access' => false),
+		array('rule' => 'allowRegistrarUser', 'user' => 'viewer', 'access' => false),
+		array('rule' => 'allowRegistrarUser', 'user' => 'registrar', 'access' => true),
 
 		array('rule' => 'allowEditorUser', 'user' => 'admin', 'access' => true),
 		array('rule' => 'allowEditorUser', 'user' => 'editor', 'access' => true),
 		array('rule' => 'allowEditorUser', 'user' => 'viewer', 'access' => false),
+		array('rule' => 'allowEditorUser', 'user' => 'registrar', 'access' => true),
 
 		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'admin', 'params' => array('username' => 'editor'), 'access' => true),
 		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'editor', 'params' => array('username' => 'editor'), 'access' => true),
 		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'editor', 'params' => array('username' => 'viewer'), 'access' => false),
 		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'viewer', 'params' => array('username' => 'viewer'), 'access' => true),
+		array('rule' => 'allowAdminOrUserRequestingSelf', 'user' => 'registrar', 'params' => array('username' => 'registrar'), 'access' => true),
 
 		array('rule' => 'denyUserRequestingSelf', 'user' => 'admin', 'params' => array('username' => 'admin'), 'access' => false),
 		array('rule' => 'denyUserRequestingSelf', 'user' => 'admin', 'params' => array('username' => 'editor'), 'access' => true),
@@ -75,6 +90,9 @@ class AccessConfigurationTest extends \lithium\test\Integration {
 
 		$viewer = Users::create();
 		$viewer->save($users['viewer']);
+
+		$registrar = Users::create();
+		$registrar->save($users['registrar']);
 
 	}
 

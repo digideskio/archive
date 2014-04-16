@@ -5,9 +5,6 @@ $this->title('Artwork History');
 $auth = $this->authority->auth();
 
 $authority_can_edit = $this->authority->canEdit();
-$authority_is_admin = $this->authority->isAdmin();
-
-$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
 
 if($auth->timezone_id) {
 	$tz = new DateTimeZone($auth->timezone_id);

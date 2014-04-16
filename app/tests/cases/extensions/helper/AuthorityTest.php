@@ -32,6 +32,13 @@ class AuthorityTest extends \lithium\test\Unit {
 			"email" => "viewer@example.com",
 			"role_id" => '3'
 		),
+		'registrar' => array(
+			"username" => "registrar",
+			"password" => "abcd",
+			"name" => "A Registrar User",
+			"email" => "registrar@example.com",
+			"role_id" => '4'
+		),
 	);
 
 	public function setUp() {
@@ -53,6 +60,9 @@ class AuthorityTest extends \lithium\test\Unit {
 		$viewer = Users::create();
 		$viewer->save($users['viewer']);
 
+		$registrar = Users::create();
+		$registrar->save($users['registrar']);
+
 	}
 
 	public function tearDown() {
@@ -68,6 +78,7 @@ class AuthorityTest extends \lithium\test\Unit {
 		$admin = $users['admin'];
 		$editor = $users['editor'];
 		$viewer = $users['viewer'];
+		$registrar = $users['registrar'];
 
 		$helper = new Authority();
 
@@ -77,14 +88,22 @@ class AuthorityTest extends \lithium\test\Unit {
 		$this->assertTrue($helper->canEdit());
 		$this->assertTrue($helper->matches('admin'));
 		$this->assertFalse($helper->matches('editor'));
+		$this->assertTrue($helper->canInventory());
 
 		Auth::set('default', $editor);
 		$this->assertFalse($helper->isAdmin());
 		$this->assertTrue($helper->canEdit());
+		$this->assertFalse($helper->canInventory());
 
 		Auth::set('default', $viewer);
 		$this->assertFalse($helper->isAdmin());
 		$this->assertFalse($helper->canEdit());
+		$this->assertFalse($helper->canInventory());
+
+		Auth::set('default', $registrar);
+		$this->assertFalse($helper->isAdmin());
+		$this->assertTrue($helper->canEdit());
+		$this->assertTrue($helper->canInventory());
 	}
 
 }

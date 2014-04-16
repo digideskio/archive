@@ -15,9 +15,9 @@ $conditions_list = array(
 );
 
 $authority_can_edit = $this->authority->canEdit();
-$authority_is_admin = $this->authority->isAdmin();
+$authority_can_inventory = $this->authority->canInventory();
 
-$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));
 
 if ($inventory) {
 	$conditions_list['Works.location'] = 'Location';

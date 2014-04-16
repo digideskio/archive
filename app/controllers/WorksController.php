@@ -860,7 +860,24 @@ class WorksController extends \lithium\action\Controller {
 				'order' => array('Archives.name' => 'ASC')
 			));
 
-			$inventory = Environment::get('inventory');
+            $inventory = false;
+
+            $check = (Auth::check('default')) ?: null;
+            if ($check) {
+                $auth = Users::first(array(
+                    'conditions' => array('username' => $check['username']),
+                    'with' => array('Roles')
+                ));
+
+                if ($auth) {
+
+                    if($auth->role->name === 'Admin' || $auth->role->name === "Registrar") {
+                        if (Environment::get('inventory')) {
+                            $inventory = true;
+                        }
+                    }
+                }
+            }
 
 			if (!empty($parent->name)) {
 				$pdf = $parent->slug . '.pdf';

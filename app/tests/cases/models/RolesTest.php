@@ -12,7 +12,7 @@ class RolesTest extends \lithium\test\Unit {
 
 	public function testDefaultRoles() {
 
-		$role_names = array('Admin', 'Editor', 'Viewer');
+		$role_names = array('Admin', 'Editor', 'Viewer', 'Registrar');
 
 		$roles = Roles::all();
 

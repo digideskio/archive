@@ -3,9 +3,9 @@
 $this->title($work->archive->name);
 
 $authority_can_edit = $this->authority->canEdit();
-$authority_is_admin = $this->authority->isAdmin();
+$authority_can_inventory = $this->authority->canInventory();
 
-$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));
 
 ?>
 
@@ -163,8 +163,6 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					<td class="meta">Location</td>
 					<td colspan="3"><?=$work->location ?></td>
 				</tr>
-				<?php endif; ?>
-				<?php if($inventory): ?>
 				<tr>
 					<td><i class="icon-gift"></i></td>
 					<td class="meta">Inventory</td>
@@ -173,13 +171,6 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admi
 					</td>
 				</tr>
 				<?php endif; ?>
-				<tr>
-					<td><i class="icon-info-sign"></i></td>
-					<td class="meta">Notes</td>
-					<td colspan="3">
-						<?=$this->artwork->inventory($work); ?>
-
-				</tr>
 			</tbody>
 
 		</table>

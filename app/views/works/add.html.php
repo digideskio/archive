@@ -2,9 +2,8 @@
 
 $this->title('Add Artwork');
 
-$authority_is_admin = $this->authority->isAdmin();
-
-$inventory = (\lithium\core\Environment::get('inventory') && ($authority_is_admin));
+$authority_can_inventory = $this->authority->canInventory();
+$inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));
 
 $this->form->config(
     array(

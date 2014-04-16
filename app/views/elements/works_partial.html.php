@@ -81,7 +81,8 @@
 		$layout = $artworks['layout'];
 	}
 
-	$inventory = \lithium\core\Environment::get('inventory');
+    $authority_can_inventory = $this->authority->canInventory();
+    $inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));
 ?>
 
 <?php if ($layout == 'compact'): ?>
