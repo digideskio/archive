@@ -69,6 +69,74 @@ class DocumentsTest extends \lithium\test\Unit {
 		rmdir($tmp_documents . 'thumb');
 		rmdir($tmp_documents);
 	}
+
+    public function testCreateDocX() {
+		// Get the path to a sample PDF
+		$file_name = 'Sample-Document.docx';
+		$test_path = Libraries::get(true, 'path') . '/tests/resources/' . $file_name;
+
+		$test_path = Libraries::get(true, 'path') . '/tests/resources/' . $file_name;
+
+		$tmp_documents = Libraries::get(true, 'resources') . '/tmp/documents/';
+
+		if (!file_exists($tmp_documents)) {
+			@mkdir($tmp_documents, 0777, true);
+		}
+
+		$file_path = $tmp_documents . $file_name;
+
+		// Copy the file into the resources directory
+		copy($test_path, $file_path);
+
+		$doc = Documents::create();
+		$doc->save(compact('file_name', 'file_path'));
+
+		$this->assertEqual('Sample-Document', $doc->title);
+		$this->assertEqual('Sample-Document', $doc->slug);
+
+		// Look up the document with the format
+		$document = Documents::find('first', array(
+			'with' => 'Formats',
+			'conditions' => array('slug' => $doc->slug)
+		));
+
+        // Correct extension and mime type:
+        $docx_ext = 'docx';
+        $docx_mime = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+
+        // Common extension and mime type (may or may not be incorrect):
+        $doc_ext = 'doc';
+        $doc_mime = 'application/msword';
+
+        // Not all systems are able to evaluate the correct mime-type of a .docx file.
+        // Set the following flat to true if you want to be more accepting of treating
+        // a .docx as a .doc file.
+        $accept_docx_as_doc = true;
+
+        if ($accept_docx_as_doc) {
+            $accepted_ext = array($docx_ext, $doc_ext);
+            $accepted_mime = array($docx_mime, $doc_mime);
+        } else {
+            $accepted_ext = array($docx_ext);
+            $accepted_mime = array($docx_mime);
+        }
+
+        $ext_is_correct = in_array($document->format->extension, $accepted_ext);
+        $mime_is_correct = in_array($document->format->mime_type, $accepted_mime);
+
+		$this->assertTrue($ext_is_correct && $mime_is_correct, 'Word .docx files are being saved as .' . $document->format->extension . ' files with ' . $document->format->mime_type . ' mime type.');
+
+		$file = $document->file();
+		$this->assertTrue(file_exists($tmp_documents . $file));
+
+		unlink($tmp_documents . $file);
+
+		rmdir($tmp_documents . 'small');
+		rmdir($tmp_documents . 'thumb');
+		rmdir($tmp_documents);
+
+    }
+
 	public function testCreateImage() {
 		// Get the path to a sample image
 		$file_name = 'Sample-Image.jpg';
