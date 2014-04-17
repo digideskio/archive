@@ -4,6 +4,7 @@ namespace app\controllers;
 
 use app\models\Documents;
 
+use lithium\core\Libraries;
 use li3_filesystem\extensions\storage\FileSystem;
 
 use lithium\action\DispatchException;
@@ -98,7 +99,15 @@ class FilesController extends \lithium\action\Controller {
 
 					return compact('file');
 
-				}
+                } else {
+                    $webroot = Libraries::get(true, 'path') . '/webroot';
+                    $fallback = $webroot . '/img/text-x-generic.jpg';
+
+					$this->response->headers(array('Content-type' => 'image/jpeg'));
+					$this->response->body = file_get_contents($fallback);
+
+					return compact('file');
+                }
 			}
 
 			$this->redirect('/', array('status' => '404'));
@@ -132,7 +141,15 @@ class FilesController extends \lithium\action\Controller {
 
 					return compact('file');
 
-				}
+                } else {
+                    $webroot = Libraries::get(true, 'path') . '/webroot';
+                    $fallback = $webroot . '/img/text-x-generic.jpg';
+
+					$this->response->headers(array('Content-type' => 'image/jpeg'));
+					$this->response->body = file_get_contents($fallback);
+
+					return compact('file');
+                }
 			}
 
 			$this->redirect('/', array('status' => '404'));
