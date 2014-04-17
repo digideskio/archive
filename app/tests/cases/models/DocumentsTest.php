@@ -111,7 +111,7 @@ class DocumentsTest extends \lithium\test\Unit {
         // Not all systems are able to evaluate the correct mime-type of a .docx file.
         // Set the following flat to true if you want to be more accepting of treating
         // a .docx as a .doc file.
-        $accept_docx_as_doc = true;
+        $accept_docx_as_doc = false;
 
         if ($accept_docx_as_doc) {
             $accepted_ext = array($docx_ext, $doc_ext);

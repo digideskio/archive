@@ -189,6 +189,16 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			$mimes = explode(';',$mime_info[0]);
 			$mime_type = array_shift($mimes);
 
+            // Workaround for the system not reporting the correct MIME type for
+            // Microsoft Word .docx files
+            $extension = pathinfo($file_name, PATHINFO_EXTENSION);
+            $ext_is_docx = strtolower($extension) === 'docx';
+            $mime_is_ms_or_zip = $mime_type === 'application/msword' || $mime_type === 'application/zip';
+            if ($ext_is_docx && $mime_is_ms_or_zip) {
+                // Redefine the mime type correctly
+                $mime_type = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+            }
+
 			$args = explode('/', $mime_type);
 			$type = $args[0]; //e.g., image
 			$format = $args[1]; //e.g., jpeg
