@@ -104,7 +104,7 @@
 		<em><?=$document->remarks ?></em>
 	</td>
 	<td style="width: 125px;">
-		<span class="label"><?= $document->format->mime_type ?></span></br/>
+		<span class="label"><?= $document->format->extension ?></span></br/>
 		<?php if ($document->width && $document->height): ?>
 			<span style="font-family: monospace">
 				<?=$document->resolution(); ?>

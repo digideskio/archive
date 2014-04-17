@@ -161,7 +161,7 @@ $this->title($document->title);
 					<td><i class="icon-barcode"></i></td>
 					<td class="meta">File Type</td>
 					<td>
-						<span class="label"><?= $document->format->mime_type ?></span>
+						<span class="label"><?=$document->format->extension ?></span>
 					</td>
 				</tr>
 				<tr>
