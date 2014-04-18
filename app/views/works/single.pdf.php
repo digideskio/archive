@@ -56,34 +56,6 @@ $page_class = "first-page";
 
 foreach ($works as $work) {
 
-$html .= <<<EOD
-
-	<div class="$page_class page-artwork">
-
-EOD;
-
-	$page_class = 'following-page';
-
-	$document = $work->documents('first');
-	if (!empty($document) && !empty($document->id)) {
-
-		$thumbnail = $document->file(array('size' => 'small'));
-		$img_path = $options['path'] . '/' . $thumbnail;
-
-        if (file_exists($img_path)) {
-		    $thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
-        } else {
-            $thumb_img = "<p></p>";
-        }
-
-$html .= <<<EOD
-
-	<p>$thumb_img</p>
-
-EOD;
-
-	}
-
 	$artwork_helper = new \app\extensions\helper\Artwork();
 	$caption = $artwork_helper->caption($work, array('materials' => true, 'separator' => '<br/>'));
 
@@ -97,13 +69,44 @@ EOD;
 
 	$caption = implode('<br/>', array_filter(array($caption, $price)));
 
+    $documents = $work->documents('all');
+    $output_doc_count = 0;
+
+    foreach ($documents as $document) {
+
+		$thumbnail = $document->file(array('size' => 'small'));
+		$img_path = $options['path'] . '/' . $thumbnail;
+
+        if (file_exists($img_path)) {
+		    $thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
+
 $html .= <<<EOD
+
+	<div class="$page_class page-artwork">
+	<p>$thumb_img</p>
 
 	<p>$caption</p>
 	</div>
 
 EOD;
 
+    	$page_class = 'following-page';
+        $output_doc_count++;
+        }
+    }
+
+    // Output just the caption if no documents were printed
+    if($output_doc_count === 0) {
+
+$html .= <<<EOD
+	<div class="$page_class page-artwork">
+    <p><em>No Preview Available</em></p>
+	<p>$caption</p>
+	</div>
+EOD;
+    	$page_class = 'following-page';
+
+    }
 }
 
 $this->Pdf->writeHTML($html, true, false, true, false, '');

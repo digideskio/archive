@@ -103,37 +103,6 @@ EOD;
 
 foreach ($works as $work) {
 
-$html .= <<<EOD
-
-EOD;
-
-	$document = $work->documents('first');
-	if (!empty($document) && !empty($document->id)) {
-
-		$thumbnail = $document->file(array('size' => 'small'));
-		$img_path = $options['path'] . '/' . $thumbnail;
-
-        if (file_exists($img_path)) {
-		    $thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
-        } else {
-            $thumb_img = "<p></p>";
-        }
-
-$html .= <<<EOD
-
-	<tr>
-		<td>
-
-		<p>$thumb_img</p>
-
-		</td>
-
-	</tr>
-
-EOD;
-
-	}
-
 	$artwork_helper = new \app\extensions\helper\Artwork();
 	$caption = $artwork_helper->caption($work, array('materials' => true));
 
@@ -144,6 +113,38 @@ EOD;
 		$currency = $this->escape($work->attribute('sell_price_per'));
 		$price = $sell_price ? $currency . ' ' . $sell_price : NULL;
 	}
+
+$html .= <<<EOD
+
+	<tr>
+
+EOD;
+
+	$documents = $work->documents('all');
+
+    foreach ($documents as $document) {
+
+		$thumbnail = $document->file(array('size' => 'small'));
+		$img_path = $options['path'] . '/' . $thumbnail;
+
+        if (file_exists($img_path)) {
+		    $thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
+
+$html .= <<<EOD
+
+		<td>
+
+		<p>$thumb_img</p>
+
+		</td>
+
+EOD;
+        }
+    }
+
+$html .= <<<EOD
+	</tr>
+EOD;
 
 $html .= <<<EOD
 
