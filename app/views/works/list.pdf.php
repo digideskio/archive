@@ -112,7 +112,12 @@ EOD;
 
 		$thumbnail = $document->file(array('size' => 'small'));
 		$img_path = $options['path'] . '/' . $thumbnail;
-		$thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
+
+        if (file_exists($img_path)) {
+		    $thumb_img = '<img class="image-artwork" src="'.$img_path.'" />';
+        } else {
+            $thumb_img = "<p></p>";
+        }
 
 $html .= <<<EOD
 

@@ -64,7 +64,12 @@ $work_documents = $work->documents('all');
 		$thumbnail = $doc->file(array('size' => 'thumb'));
 
 		$img_path = $options['path'] . '/' . $thumbnail;
-		$thumb_img = '<img width="100" src="'.$img_path.'" />';
+
+        if (file_exists($img_path)) {
+            $thumb_img = '<img width="100" src="'.$img_path.'" />';
+        } else {
+            $thumb_img = "<p></p>";
+        }
 
 		$resolution = $doc->resolution();
 		$size = $doc->size();
