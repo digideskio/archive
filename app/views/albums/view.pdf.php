@@ -99,6 +99,24 @@ EOD;
 
 	}
 
+    // Output just the caption if no documents were printed
+	if (sizeof($work_documents) === 0) {
+$html .= <<<EOD
+
+	<tr style="page-break-inside: avoid;">
+		<td style="width:130px">
+		</td>
+		<td style="width:420px">
+			<p style="color:#08C"><strong>$caption</strong></p>
+            <p style="font-size: 0.8em; font-family:kozminproregular">$notes</p>
+		</td>
+		<td style="font-family:monospace; font-size:0.8em;">
+		</td>
+	</tr>
+EOD;
+
+	}
+
 }
 
 foreach ($documents as $doc) {
