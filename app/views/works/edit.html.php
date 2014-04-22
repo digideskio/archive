@@ -108,7 +108,8 @@ foreach ($users as $user) {
 			<div class="control-group">
 				<?=$this->form->label('artist.id', 'Artist', array('class' => 'control-label')); ?>
 				<div class="controls">
-					<?=$this->form->select('artist.id', $artists_list, array('value' => $artist->id)); ?>
+                    <?php $artist_id = !empty($artist) ? $artist->id : ''; ?>
+					<?=$this->form->select('artist.id', $artists_list, array('value' => $artist_id)); ?>
 				</div>
 			</div>
 
