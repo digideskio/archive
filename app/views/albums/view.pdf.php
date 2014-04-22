@@ -57,7 +57,14 @@ foreach( $works as $work) {
 $caption = $this->artwork->caption($work);
 $notes = $options['view'] === 'notes' ? $this->artwork->notes($work) : '';
 
-$work_documents = $work->documents('all');
+$doc_preview_conditions = array(
+    'or' => array(
+        array('Formats.mime_type' => 'application/pdf'),
+        array('Formats.mime_type' => array('LIKE' => 'image/%'))
+    )
+);
+
+$work_documents = $work->documents('all', $doc_preview_conditions);
 
 	foreach ($work_documents as $doc) {
 

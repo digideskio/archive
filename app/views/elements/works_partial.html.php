@@ -83,7 +83,15 @@
 
     $authority_can_inventory = $this->authority->canInventory();
     $inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));
+
+    $doc_preview_conditions = array(
+        'or' => array(
+            array('Formats.mime_type' => 'application/pdf'),
+            array('Formats.mime_type' => array('LIKE' => 'image/%'))
+        )
+    );
 ?>
+
 
 <?php if ($layout == 'compact'): ?>
 
@@ -96,7 +104,7 @@
 	<?php endif;?>
 
 		<div class="span2">
-				<?php $document = $work->documents('first'); ?>
+            <?php $document = $work->documents('first', $doc_preview_conditions); ?>
 				<ul class="thumbnails">
 
 					<li class="span2">
@@ -245,13 +253,16 @@
 	<td class="info-creation_number"><?=$work->creation_number?></td>
 
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $work->documents('first'); if($document && $document->id) { ?>
+        <?php
+            $document = $work->documents('first', $doc_preview_conditions);
+            if ($document && $document->id):
+        ?>
 			<a href="/works/view/<?=$work->archive->slug ?>">
 			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
 			</a>
-		<?php } else { ?>
+		<?php else: ?>
 			<span class="label">No Preview</span>
-		<?php } ?>
+		<?php endif; ?>
 	</td>
     <td class="info-title info-artist info-earliest_date"><?=$this->artwork->caption($work, array('link' => true)); ?></td>
 	<td class="info-materials"><?=$work->materials ?></td>

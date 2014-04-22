@@ -69,7 +69,14 @@ foreach ($works as $work) {
 
 	$caption = implode('<br/>', array_filter(array($caption, $price)));
 
-    $documents = $work->documents('all');
+    $doc_preview_conditions = array(
+        'or' => array(
+            array('Formats.mime_type' => 'application/pdf'),
+            array('Formats.mime_type' => array('LIKE' => 'image/%'))
+        )
+    );
+
+    $documents = $work->documents('all', $doc_preview_conditions);
     $output_doc_count = 0;
 
     foreach ($documents as $document) {
