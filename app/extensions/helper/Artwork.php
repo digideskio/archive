@@ -10,6 +10,14 @@ class Artwork extends \lithium\template\Helper {
 
 	public function caption(Record $artwork, $options = array()) {
 
+        $defaults = array(
+            'link' => false,
+            'materials' => false,
+            'separator' => ', '
+        );
+
+        $options += $defaults;
+
 		if (!empty($artwork->archive)) {
 			$years = $artwork->archive->years();
 			$title = $artwork->archive->name;
@@ -32,26 +40,26 @@ class Artwork extends \lithium\template\Helper {
 
 		$display_artists = $this->escape(implode(', ', $artists));
 
-		if (isset($options['link']) && $options['link']) {
+		if ($options['link'] && !empty($artwork->archive)) {
 			$html = new Html();
 			$title = $html->link(
 				$artwork->archive->name,
 				'/works/view/'.$artwork->archive->slug
-			);	
+			);
 		} else {
 			$title = $this->escape($title);
 		}
 
 		$display_title = $title ? '<em>' . $title . '</em>' : '';
 
-		if (isset($options['materials']) && $options['materials']) {
+		if ($options['materials']) {
 			$materials = $artwork->materials;
 		} else {
 			$materials = '';
 		}
 
-		$separator = isset($options['separator']) ? $options['separator'] : ', ';
-    
+		$separator = $options['separator'];
+
 		$caption = array_filter(array(
 			$display_artists,
 			$display_title,
@@ -60,24 +68,33 @@ class Artwork extends \lithium\template\Helper {
 			$this->escape($artwork->dimensions()),
 			$this->escape($artwork->measurement_remarks)
     	));
-    	
+
     	return implode($separator, $caption) . '.';
 
 	}
 
 	public function notes(Record $artwork, $options = array()) {
 
+        $defaults = array(
+            'annotation' => true,
+            'separator' => '<br/>'
+        );
+
+        $options += $defaults;
+
 		$a = $artwork;
-						
-		$annotation = $a->annotation ? '<em>' . $this->escape($a->annotation) . '</em>' : '';
+
+        $showAnnotation = !empty($a->annotation) && $options['annotation'] === true;
+
+		$annotation = $showAnnotation ? '<em>' . $this->escape($a->annotation) . '</em>' : '';
 		$quantity = $a->quantity ? 'Quantity: ' . $this->escape($a->quantity) : '';
-		$remarks =  $a->remarks ? $this->escape($a->remarks) : '';
+		$remarks =  $a->remarks ? nl2br($this->escape($a->remarks)) : '';
 
 		$edition = $a->attribute('edition') ? 'Edition: ' . $this->escape($a->attribute('edition')) : '';
 		$signed = $a->attribute('signed') ? '<span class="label label-info">Signed</span>' : '';
 		$framed = $a->attribute('framed') ? '<span class="label label-inverse">Framed</span>' : '';
 		$certification = $a->attribute('certification') ? '<span class="label label-success">Certification</span>' : '';
-		
+
 		$info = array_filter(array(
 			$annotation,
 			$edition,
@@ -88,13 +105,19 @@ class Artwork extends \lithium\template\Helper {
 			$certification
 		));
 
-		$separator = isset($options['separator']) ? $options['separator'] : '<br/>';
-		
+		$separator = $options['separator'];
+
 		return implode($separator, $info);
 
 	}
 
 	public function inventory(Record $artwork, $options = array()) {
+
+        $defaults = array(
+            'separator' => '<br/>'
+        );
+
+        $options += $defaults;
 
 		$a = $artwork;
 
@@ -120,8 +143,8 @@ class Artwork extends \lithium\template\Helper {
 			$in_operator
 		));
 
-		$separator = isset($options['separator']) ? $options['separator'] : '<br/>';
-		
+		$separator = $options['separator'];
+
 		return implode($separator, $info);
 
 	}

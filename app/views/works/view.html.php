@@ -75,7 +75,8 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inv
 			<strong><?=$work->archive->name ?></strong>
 			</div>
 			<div class="popover-content">
-			<p><?=$work->annotation ?></p>
+            <?php $annotation = nl2br($this->escape($work->annotation)); ?>
+            <p><?php echo $annotation ?></p>
 			</div>
 		</div>
 		</div>
@@ -171,6 +172,13 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inv
 					</td>
 				</tr>
 				<?php endif; ?>
+                <tr>
+                    <td><i class="icon-info-sign"></i></td>
+                    <td class="meta">Notes</td>
+                    <td colspan="3">
+                        <?=$this->artwork->notes($work, array('annotation' => false)); ?>
+                    </td>
+                </tr>
 			</tbody>
 
 		</table>
