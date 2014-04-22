@@ -118,7 +118,11 @@ foreach ($users as $user) {
 			<?=$this->form->field('archive.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off', 'value' => $work->archive->end_date_formatted()));?>
 			<?=$this->form->field('work.creation_number', array('autocomplete' => 'off', 'label' => 'Artwork ID'));?>
 
-			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
+            <?=$this->form->field('work.remarks', array(
+                'label' => 'Remarks',
+                'type' => 'textarea',
+                'rows' => 5
+            ));?>
 
 			<div class="control-group" style="margin-bottom: 0">
 				<label class="control-label">Published</label>
@@ -185,8 +189,13 @@ foreach ($users as $user) {
 				'autocomplete' => 'off',
 				'value' => $work->diameter ?: ''
 			));?>
-			<?=$this->form->field('work.running_time', array('autocomplete' => 'off', 'class' => 'dim four-d'));?>
-			<?=$this->form->field('work.measurement_remarks', array('type' => 'textarea', 'class' => 'dim remarks'));?>
+			<?=$this->form->field('work.running_time', array('label' => 'Running Time', 'autocomplete' => 'off', 'class' => 'dim four-d'));?>
+            <?=$this->form->field('work.measurement_remarks', array(
+                'label' => 'Measurement Remarks',
+                'type' => 'textarea',
+                'class' => 'dim remarks',
+                'rows' => 5
+            ));?>
 
 			<div class="certification control-group" style="margin-bottom: 0">
 				<label class="control-label">Additional Notes</label>

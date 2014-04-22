@@ -116,7 +116,12 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			<?=$this->form->field('archive.latest_date', array('label' => 'Latest Date', 'autocomplete' => 'off'));?>
 			<?=$this->form->field('work.creation_number', array('label' => 'Artwork ID', 'autocomplete' => 'off'));?>
 
-			<?=$this->form->field('work.remarks', array('label' => 'Remarks', 'type' => 'textarea'));?>
+            <?=$this->form->field('work.remarks', array(
+                'label' => 'Remarks',
+                'type' => 'textarea',
+                'rows' => 5
+            ));?>
+
 			<?=$this->form->field('link.url', array('label' => 'URL', 'autocomplete' => 'off'));?>
 
 			<div class="control-group" style="margin-bottom: 0">
@@ -197,7 +202,12 @@ $in_time = $work->in_time ?: date('Y-m-d');
 			'autocomplete' => 'off'
 		));?>
 		<?=$this->form->field('work.running_time', array('label'=> 'Running Time', 'autocomplete' => 'off', 'class' => 'dim four-d'));?>
-		<?=$this->form->field('work.measurement_remarks', array('label' => 'Measurement Remarks', 'type' => 'textarea', 'class' => 'dim remarks'));?>
+        <?=$this->form->field('work.measurement_remarks', array(
+            'label' => 'Measurement Remarks',
+            'type' => 'textarea',
+            'class' => 'dim remarks',
+            'rows' => 5
+        ));?>
 
 		<div class="certification control-group" style="margin-bottom: 0">
 			<label class="control-label">Additional Notes</label>
