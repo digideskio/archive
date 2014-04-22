@@ -257,7 +257,9 @@
 	<td class="info-materials"><?=$work->materials ?></td>
     <td class="info-remarks info-annotation">
         <ul class="unstyled" style="margin-bottom:0">
-            <li><?=$this->artwork->notes($work); ?></li>
+            <?php $notes = $this->artwork->notes($work); if (!empty($notes)): ?>
+            <li style="margin-bottom: 1em;"><?=$this->artwork->notes($work); ?></li>
+            <?php endif; ?>
             <?php if(!empty($albums)): ?>
                <li><strong>Albums</strong>
                 <?php foreach($albums as $album): ?>

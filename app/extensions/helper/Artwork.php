@@ -77,7 +77,7 @@ class Artwork extends \lithium\template\Helper {
 
         $defaults = array(
             'annotation' => true,
-            'separator' => '<br/>'
+            'separator' => '<br/><br/>'
         );
 
         $options += $defaults;
