@@ -237,9 +237,17 @@ class WorksController extends \lithium\action\Controller {
 				return $ai->id;
 			}, array('collect' => false));
 
+			$doc_preview_conditions = array(
+				'ArchivesDocuments.archive_id' => $archives_ids,
+				'or' => array(
+					array('Formats.mime_type' => 'application/pdf'),
+					array('Formats.mime_type' => array('LIKE' => 'image/%'))
+				)
+			);
+
 			$document = Documents::find('first', array(
 				'with' => array('Formats', 'ArchivesDocuments'),
-				'conditions' => array('ArchivesDocuments.archive_id' => $archives_ids),
+				'conditions' => $doc_preview_conditions,
 				'order' => array('date_modified' => 'DESC')
 			));
 
