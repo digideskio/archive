@@ -53,6 +53,20 @@ class ArchivesTest extends \lithium\test\Unit {
 		$second_archive->delete();
 	}
 
+    public function testUnsluggableNames() {
+        $archive = Archives::create();
+        $data = array(
+            "name" => "名字"
+        );
+
+        $slug = "Archive";
+
+        $this->assertTrue($archive->save($data));
+
+        $this->assertEqual($slug, $archive->slug);
+
+    }
+
 	public function testSlugsAfterSave() {
 		$archive = Archives::create();
 		$data = array (

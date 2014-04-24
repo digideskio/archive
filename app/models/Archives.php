@@ -362,7 +362,10 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		}
 
 		/* FIXME we should respect that slugs are varchar(255). Limit slugs to 200 characters? */
-		$slug = Inflector::slug($name);
+		$slugged = Inflector::slug($name);
+
+        // Set the slug to something generic if one cannot be generated from the name
+        $slug = !empty($slugged) ? $slugged : 'Archive';
 
 		$conditions = array('slug' => $slug);
 
