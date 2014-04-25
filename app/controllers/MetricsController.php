@@ -412,7 +412,12 @@ class MetricsController extends \lithium\action\Controller {
 		$title = "$host Progress Report: " . $dates['start'] . ' - ' . $dates['end'];
 		$filename = Inflector::slug($host) . '-Updates-' . $end_date->format('Y-m-d') . '.pdf';
 
+        $content = array(
+            'pdf' => $title
+        );
+
 		return compact(
+            'content',
 			'dates',
 			'updates',
 			'archives',
