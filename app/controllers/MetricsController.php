@@ -352,7 +352,10 @@ class MetricsController extends \lithium\action\Controller {
 		$period = DEFAULT_REPORTING_PERIOD;
 
 		if(isset($this->request->query['period'])) {
-			$period = (int) $this->request->query['period'];
+            $query_period = $this->request->query['period'];
+            if (intval($query_period)) {
+                $period = $query_period;
+            }
 		}
 
 	    $check = (Auth::check('default')) ?: null;
