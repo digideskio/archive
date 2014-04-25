@@ -77,11 +77,14 @@
     </div>
 
 <?php
-	$layout = 'table';
-	$artworks = \lithium\core\Environment::get('artworks');
-	if ($artworks && isset($artworks['layout'])) {
-		$layout = $artworks['layout'];
-	}
+    if (empty($layout)) {
+        $artworks = \lithium\core\Environment::get('artworks');
+        if ($artworks && isset($artworks['layout'])) {
+            $layout = $artworks['layout'];
+        } else {
+            $layout = 'table';
+        }
+    }
 
     $authority_can_inventory = $this->authority->canInventory();
     $inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inventory));

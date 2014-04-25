@@ -82,6 +82,8 @@ class WorksController extends \lithium\action\Controller {
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 
+		$action = isset($this->request->query['action']) ? $this->request->query['action'] : '';
+
 		$total = Works::find('count', array(
 			'conditions' => $filter,
 		));
@@ -95,7 +97,7 @@ class WorksController extends \lithium\action\Controller {
 			'page' => $page
 		));
 
-		return compact('works', 'total', 'page', 'limit');
+		return compact('works', 'total', 'page', 'limit', 'action');
 	}
 
 	public function search() {

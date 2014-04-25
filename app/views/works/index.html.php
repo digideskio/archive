@@ -14,6 +14,12 @@ $authority_can_edit = $this->authority->canEdit();
 
 <div class="actions">
 
+<?php if ($action === 'print'): ?>
+    <script>
+        window.print();
+    </script>
+<?php endif; ?>
+
 <?=$this->partial->navtabs(array(
 	'tabs' => array(
 		array('title' => 'Index', 'url' => $this->url(array('Works::index')), 'active' => true),
@@ -24,6 +30,7 @@ $authority_can_edit = $this->authority->canEdit();
 	)
 )); ?>
 	<div class="btn-toolbar">
+			<a class="btn btn-inverse" href="<?=$this->url(array('Works::index')); ?>?action=print&limit=all"><i class="icon-print icon-white"></i> Print Artwork</a>
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
@@ -48,7 +55,15 @@ $authority_can_edit = $this->authority->canEdit();
 
 <?php if($total > 0): ?>
 
-<?=$this->partial->works(compact('works')); ?>
+<?php
+    if ($action === 'print') {
+        $layout = 'table';
+    } else {
+        $layout = null;
+    }
+?>
+
+<?=$this->partial->works(compact('works', 'layout')); ?>
 
 <?=$this->pagination->pager('works', 'pages', $page, $total, $limit, array('limit' => $limit)); ?>
 
