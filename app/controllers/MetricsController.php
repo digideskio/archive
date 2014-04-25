@@ -418,6 +418,7 @@ class MetricsController extends \lithium\action\Controller {
 
 		return compact(
             'content',
+            'period',
 			'dates',
 			'updates',
 			'archives',

@@ -45,10 +45,30 @@ if($auth->timezone_id) {
 </ul>
 
 	<div class="btn-toolbar">
-		<a class="btn btn-inverse" href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>"><i class="icon-print icon-white"></i> Print</a>
+    <a class="btn btn-inverse" href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>?period=<?=$period ?>"><i class="icon-print icon-white"></i> Print</a>
 	</div>
 
 </div>
+
+<p class="meta"><strong>Reporting period</strong></p>
+
+<?php
+    $month_link_class = $period === 30 || empty($period) ? 'active' : '';
+    $week_link_class = $period === 7 ? 'active' : '';
+    $day_link_class = $period === 1 ? 'active' : '';
+?>
+
+<ul class="nav nav-pills">
+    <li class="<?=$month_link_class ?>">
+        <?=$this->html->link('One Month','/metrics/report?period=30'); ?>
+    </li>
+    <li class="<?=$week_link_class ?>">
+        <?=$this->html->link('One Week','/metrics/report?period=7'); ?>
+    </li>
+    <li class="<?=$day_link_class ?>">
+        <?=$this->html->link('Today','/metrics/report?period=1'); ?>
+    </li>
+</ul>
 
 <h1>Progress Report</h2>
 
