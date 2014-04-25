@@ -272,6 +272,7 @@ class SearchController extends \lithium\action\Controller {
 			$document_limit = !(intval($limit)) ? $documents_total : $limit;
 
 			$documents = Documents::find('all', array(
+                'with' => 'Formats',
 				'conditions' => $doc_conditions,
 				'limit' => $document_limit,
 			));
