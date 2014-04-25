@@ -354,7 +354,7 @@ class MetricsController extends \lithium\action\Controller {
 		if(isset($this->request->query['period'])) {
             $query_period = $this->request->query['period'];
             if (intval($query_period)) {
-                $period = $query_period;
+                $period = (int) $query_period;
             }
 		}
 
