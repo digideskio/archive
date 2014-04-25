@@ -410,7 +410,7 @@ class MetricsController extends \lithium\action\Controller {
 
 		$host = Inflector::humanize($this->request->env('HTTP_HOST'));
 		$title = "$host Progress Report: " . $dates['start'] . ' - ' . $dates['end'];
-		$filename = Inflector::slug($host) . '-Updates-' . $end_date->format('Y-m-d') . '.pdf';
+		$filename = Inflector::slug($host) . '-Updates-' . $end_date->format('Y-m-d');
 
         $content = array(
             'pdf' => $title

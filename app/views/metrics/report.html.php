@@ -45,7 +45,20 @@ if($auth->timezone_id) {
 </ul>
 
 	<div class="btn-toolbar">
-    <a class="btn btn-inverse" href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>?period=<?=$period ?>"><i class="icon-print icon-white"></i> Print</a>
+		<div class="btn-group">
+            <a class="btn btn-inverse" href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>.pdf?period=<?=$period ?>"><i class="icon-print icon-white"></i> Print</a>
+            <a class="btn btn-inverse dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </a>
+   			<ul class="dropdown-menu pull-right">
+            <li>
+            <a class href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>.pdf?period=<?=$period ?>"><i class="icon-book"></i> Print PDF</a>
+            </li>
+            <li>
+            <a class href="<?=$this->url(array('Metrics::report')); ?>/<?=$filename ?>.txt?period=<?=$period ?>"><i class="icon-align-left"></i> Print Text</a>
+            </li>
+            </ul>
+        </div>
 	</div>
 
 </div>
