@@ -30,6 +30,7 @@
 
 <form method="post">
 
+    <div class="archive-toolbar">
 	<table class="table table-bordered">
 	<tbody>
 	<tr><td>
@@ -60,6 +61,7 @@
 	</td></tr>
 	</tbody>
 	</table>
+    </div>
 
     <div class="modal fade hide" id="albumModal">
         <div class="modal-header">
@@ -209,7 +211,7 @@
 <thead>
 	<tr>
 <?php if($authority_can_edit): ?>
-		<th style="text-align: center;">
+		<th class="table-check-column" style="text-align: center;">
 			<i class="icon-ok"></i>
 		</th>
 <?php endif; ?>
@@ -243,7 +245,7 @@
 
 <tr>
 <?php if($authority_can_edit): ?>
-	<td>
+	<td class="table-check-column">
 		<label class="batch-checkbox archives-label works-label" for="Archive-<?=$work->id?>">
 			<?=$this->form->checkbox('archives[]', array('id' => "Archive-$work->id", 'value' => $work->id, 'hidden' => false, 'class' => 'archives-checkbox works-checkbox'));?>
 		</label>

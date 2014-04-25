@@ -183,3 +183,25 @@ a.text-success:focus {
   }
 }
 
+
+@media print {
+  .navbar,
+  #sidebar,
+  #location,
+  .actions,
+  .pagination,
+  .archive-toolbar,
+  .table-check-column
+  {
+    display: none;
+  }
+
+  .table-bordered {
+    border: 0;
+  }
+
+  .table-bordered td, .table-bordered th {
+    border-left: 0;
+  }
+
+}
