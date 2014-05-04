@@ -416,7 +416,7 @@ class MetricsController extends \lithium\action\Controller {
 		$filename = Inflector::slug($host) . '-Updates-' . $end_date->format('Y-m-d');
 
         $content = array(
-            'pdf' => $title
+            'pdf' => $filename
         );
 
 		return compact(
