@@ -246,7 +246,10 @@ Documents::applyFilter('save', function($self, $params, $chain) {
 			$title = substr($file_name, 0, $ext);
 
 			//create a slug based on the title
-			$slug = Inflector::slug($title);
+			$slugged = Inflector::slug($title);
+
+            // Set the slug to something generic if one cannot be generated from the name
+            $slug = !empty($slugged) ? $slugged : 'Document';
 
 			$conditions = array('slug' => $slug);
 			$conflicts = Documents::count(compact('conditions'));

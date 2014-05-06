@@ -70,6 +70,44 @@ class DocumentsTest extends \lithium\test\Unit {
 		rmdir($tmp_documents);
 	}
 
+    public function testUnsluggableNames() {
+		// Get the path to a sample PDF
+		$original_file_name = 'Sample-Document.pdf';
+		$test_path = Libraries::get(true, 'path') . '/tests/resources/' . $original_file_name;
+
+		$tmp_documents = Libraries::get(true, 'resources') . '/tmp/documents/';
+
+		if (!file_exists($tmp_documents)) {
+			@mkdir($tmp_documents, 0777, true);
+		}
+
+        // Give the file an unsluggable name
+        $file_name = '中文.pdf';
+		$file_path = $tmp_documents . $file_name;
+
+		// Copy the file into the resources directory
+		copy($test_path, $file_path);
+
+		$document = Documents::create();
+		$document->save(compact('file_name', 'file_path'));
+
+		$this->assertEqual('中文', $document->title);
+		$this->assertEqual('Document', $document->slug);
+
+		$file = $document->file();
+		$small = $document->file(array('size' => 'small'));
+		$thumb = $document->file(array('size' => 'thumb'));
+
+		unlink($tmp_documents . $file);
+		unlink($tmp_documents . $small);
+		unlink($tmp_documents . $thumb);
+
+		rmdir($tmp_documents . 'small');
+		rmdir($tmp_documents . 'thumb');
+		rmdir($tmp_documents);
+
+    }
+
     public function testCreateDocX() {
 		// Get the path to a sample PDF
 		$file_name = 'Sample-Document.docx';
