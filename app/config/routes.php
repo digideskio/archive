@@ -163,7 +163,7 @@ Router::connect('/archives_documents/delete/{:id}', array('ArchivesDocuments::de
 Router::connect('/files/view/{:file}', array('Files::view'));
 Router::connect('/files/small/{:file}', array('Files::small'));
 Router::connect('/files/thumb/{:file}', array('Files::thumb'));
-Router::connect('/files/download/{:file}', array('Files::download'));
+Router::connect('/files/download/{:slug}/{:file}', array('Files::download'));
 
 Router::connect('/files/secure/{:file}', array('Files::secure'));
 

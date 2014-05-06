@@ -162,17 +162,16 @@ class FilesController extends \lithium\action\Controller {
 	public function download() {
 
         //Don't run the query if no slug is provided
-		if (isset($this->request->params['file'])) {
+		if (isset($this->request->params['slug'])) {
 
-			$file = $this->request->params['file'];
-
-			$ext = strrpos($file, '.');
-			$slug = substr($file, 0, $ext);
+			$slug = $this->request->params['slug'];
 
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $slug),
 				'with' => array('Formats')
 			));
+
+            $file_name = $document->title . '.' . $document->format->extension;
 
 			if ($document) {
 
@@ -187,7 +186,7 @@ class FilesController extends \lithium\action\Controller {
 					$this->response->headers(array(
 						'X-Sendfile' => $send_file,
 						'Content-type' => 'application/octet-stream',
-						'Content-Disposition' => 'attachment; filename="' . $file . '"'
+						'Content-Disposition' => 'attachment; filename="' . $file_name . '"'
 					));
 
 					return compact('file');

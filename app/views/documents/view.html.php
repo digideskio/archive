@@ -191,9 +191,10 @@ $this->title($document->title);
 					<td><i class="icon-download-alt"></i></td>
 					<td class="meta">Download</td>
 					<td>
+                        <?php $file_name = $document->title . '.' .$document->format->extension; ?>
 						<?=$this->html->link(
-							$document->slug . '.' .$document->format->extension,
-							'/files/download/'.$document->slug . '.' .$document->format->extension
+                            $file_name,
+                            array('Files::download', 'slug' => $document->slug, 'file' => $file_name)
 						);?>
 					</td>
 				</tr>
