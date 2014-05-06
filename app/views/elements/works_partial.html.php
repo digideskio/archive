@@ -115,8 +115,10 @@
 					<li class="span2">
 					<div style="position:relative;">
 					<?php if($document && $document->id): ?>
+                        <?php $file_name = $document->title . '.' .$document->format->extension; ?>
+                        <?php $img_url = $this->url(array("Files::small", 'slug' => $document->slug, 'file' => $file_name)); ?>
 						<a href="/works/view/<?=$work->archive->slug ?>" class="thumbnail">
-						<img style="max-height:120px;" src="/files/<?=$document->view(array('action' => 'small')); ?>" />
+                        <img style="max-height:120px;" src="<?=$img_url ?>" />
 						</a>
 					<?php else: ?>
 						<div class="thumbnail">
@@ -261,9 +263,11 @@
         <?php
             $document = $work->documents('first', $doc_preview_conditions);
             if ($document && $document->id):
+                $file_name = $document->title . '.' .$document->format->extension;
+                $img_url = $this->url(array("Files::thumb", 'slug' => $document->slug, 'file' => $file_name));
         ?>
 			<a href="/works/view/<?=$work->archive->slug ?>">
-			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
+			<img width="125" height="125" src="<?=$img_url ?>" />
 			</a>
 		<?php else: ?>
 			<span class="label">No Preview</span>

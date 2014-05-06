@@ -44,15 +44,6 @@
 			?>
 
 	</td>
-	<!--<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
-		<?php $document = $publication->documents('first'); if(isset($document->id)) { ?>
-			<a href="/publications/view/<?=$publication->archive->slug?>">
-			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
-			</a>
-		<?php } else { ?>
-			<span class="label label-warning">No Image</span>
-		<?php } ?>
-	</td>-->
 	<td class="info-author info-editor"><?=$publication->byline(); ?></td>
 
     <td class="info-title"><?=$this->html->link($publication->archive->name,'/publications/view/'.$publication->archive->slug); ?></td>

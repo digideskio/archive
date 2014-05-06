@@ -30,8 +30,12 @@
 
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 		<?php $document = $architecture->documents('first'); if($document && $document->id) { ?>
+        <?php
+            $file_name = $document->title . '.' .$document->format->extension;
+            $img_url = $this->url(array("Files::thumb", 'slug' => $document->slug, 'file' => $file_name));
+        ?>
 			<a href="/architectures/view/<?=$architecture->archive->slug?>">
-			<img width="125" height="125" src="/files/<?=$document->view(); ?>" />
+            <img width="125" height="125" src="<?=$img_url ?>" />
 			</a>
 		<?php } else { ?>
 			<span class="label label-warning">No Image</span>

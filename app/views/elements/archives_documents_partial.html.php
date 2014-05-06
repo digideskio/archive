@@ -31,7 +31,13 @@
 							<span class="label label-important">Private</span>
 						<?php endif; ?>
 
-						<img src="/files/<?=$ad->document->view(array('action' => $size)); ?>" alt="<?=$ad->document->title ?>">
+                        <?php
+                            $document = $ad->document;
+                            $file_name = $document->title . '.' .$document->format->extension;
+                            $img_url = $this->url(array("Files::$size", 'slug' => $document->slug, 'file' => $file_name));
+                        ?>
+
+                            <img src="<?=$img_url ?>" alt="<?=$ad->document->title ?>">
 					</a>
 				</li>
 

@@ -301,6 +301,8 @@ Handlebars.registerHelper('document_rows', function() {
 			"<tr><td width='30px'>"
 			+ "<img width='30px' src='/files/thumb/"
 			+ doc['slug']
+            + '/'
+            + doc['title']
 			+ ".jpeg'/>"
 			+ '</td><td>'
 			+ doc['title']
@@ -352,13 +354,17 @@ Handlebars.registerHelper('document_rows', function() {
 	$delete_url = $this->url(array("ArchivesDocuments::delete", 'id'=> $ad->id));
 
 	$view_document_url = $this->url(array('Documents::view', 'slug' => $ad->document->slug));
+
+    $document = $ad->document;
+    $file_name = $document->title . '.' .$document->format->extension;
+    $img_url = $this->url(array("Files::thumb", 'slug' => $document->slug, 'file' => $file_name));
 ?>
 
 				<tr>
 					<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 						<?php $px = '260'; ?>
 						<a href="/documents/view/<?=$ad->document->slug ?>" title="<?=$ad->document->title ?>">
-						<img width="125" height="125" src="/files/<?=$ad->document->view(); ?>" alt="<?=$ad->document->title ?>">
+                        <img width="125" height="125" src="<?=$img_url ?>" alt="<?=$ad->document->title ?>">
 						</a>
 					</td>
 					<td align="right" style="text-align:right">

@@ -81,9 +81,13 @@
 		</label>
 	</td>
 <?php endif; ?>
+    <?php
+        $file_name = $document->title . '.' .$document->format->extension;
+        $img_url = $this->url(array("Files::thumb", 'slug' => $document->slug, 'file' => $file_name));
+    ?>
 	<td align="center" valign="center" style="text-align: center; vertical-align: center; width: 125px;">
 			<a href="/documents/view/<?=$document->slug?>" title="<?=$document->title?>">
-				<img width="125" src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
+                <img width="125" src="<?=$img_url ?>" alt="<?=$document->title ?>">
 			</a>
 	</td>
 	<td>
@@ -126,12 +130,14 @@
 
 		<?php
 			$span = 'span2';
+            $file_name = $document->title . '.' .$document->format->extension;
+            $img_url = $this->url(array("Files::thumb", 'slug' => $document->slug, 'file' => $file_name));
 		?>
 
 		<li class="<?=$span?>">
 			<div style="position:relative;">
 			<a href="/documents/view/<?=$document->slug?>" class="thumbnail" title="<?=$document->title?>">
-				<img src="/files/thumb/<?=$document->slug?>.jpeg" alt="<?=$document->title ?>">
+                <img src="<?=$img_url ?>" alt="<?=$document->title ?>">
 			</a>
 	<?php if($authority_can_edit): ?>
 			<label class="batch-checkbox doc-checkbox" for="Document-<?=$document->id?>">

@@ -41,12 +41,9 @@ class FilesController extends \lithium\action\Controller {
 	public function view() {
 
         //Don't run the query if no slug is provided
-		if (isset($this->request->params['file'])) {
+		if (isset($this->request->params['slug'])) {
 
-			$file = $this->request->params['file'];
-
-			$ext = strrpos($file, '.');
-			$slug = substr($file, 0, $ext);
+			$slug = $this->request->params['slug'];
 
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $slug),
@@ -77,12 +74,9 @@ class FilesController extends \lithium\action\Controller {
 	public function small() {
 
         //Don't run the query if no slug is provided
-		if (isset($this->request->params['file'])) {
+		if (isset($this->request->params['slug'])) {
 
-			$file = $this->request->params['file'];
-
-			$ext = strrpos($file, '.');
-			$slug = substr($file, 0, $ext);
+			$slug = $this->request->params['slug'];
 			$px = '560';
 
 			$document = Documents::first(array(
@@ -120,12 +114,9 @@ class FilesController extends \lithium\action\Controller {
 	public function thumb() {
 
         //Don't run the query if no slug is provided
-		if (isset($this->request->params['file'])) {
+		if (isset($this->request->params['slug'])) {
 
-			$file = $this->request->params['file'];
-
-			$ext = strrpos($file, '.');
-			$slug = substr($file, 0, $ext);
+			$slug = $this->request->params['slug'];
 
 			$document = Documents::first(array(
 				'conditions' => array('slug' => $slug),

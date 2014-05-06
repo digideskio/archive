@@ -160,9 +160,9 @@ Router::connect('/documents/delete/{:slug}', array('Documents::delete'));
 
 Router::connect('/archives_documents/delete/{:id}', array('ArchivesDocuments::delete'));
 
-Router::connect('/files/view/{:file}', array('Files::view'));
-Router::connect('/files/small/{:file}', array('Files::small'));
-Router::connect('/files/thumb/{:file}', array('Files::thumb'));
+Router::connect('/files/view/{:slug}/{:file}', array('Files::view'));
+Router::connect('/files/small/{:slug}/{:file}', array('Files::small'));
+Router::connect('/files/thumb/{:slug}/{:file}', array('Files::thumb'));
 Router::connect('/files/download/{:slug}/{:file}', array('Files::download'));
 
 Router::connect('/files/secure/{:file}', array('Files::secure'));

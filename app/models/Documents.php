@@ -48,26 +48,6 @@ class Documents extends \lithium\data\Model {
 
 	}
 
-	public function view($entity, array $options = null) {
-
-		$action = isset($options['action']) ? $options['action'] : 'thumb';
-
-		if ($action == 'download') {
-
-			$format = Formats::find('first', array(
-				'conditions' => array('id' => $entity->format_id),
-			));
-
-			$extension = $format->extension;
-
-		} else {
-			$extension = 'jpeg';
-		}
-
-		return $action . '/' . $entity->slug . '.'  . $extension;
-
-	}
-
 	public function file($entity, array $options = null) {
 
 		$size = isset($options['size']) ? $options['size'] : '';

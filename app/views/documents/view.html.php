@@ -2,6 +2,8 @@
 
 $this->title($document->title);
 
+$file_name = $document->title . '.' .$document->format->extension;
+
 ?>
 
 <div id="location" class="row-fluid">
@@ -37,11 +39,13 @@ $this->title($document->title);
 <div class="row">
 	<div class="span6">
 
+        <?php $img_url = $this->url(array("Files::small", 'slug' => $document->slug, 'file' => $file_name)); ?>
+
 		<ul class="thumbnails">
 		<?php $span = 'span6'; ?>
 		<li class="<?=$span?>" >
 		<div class="thumbnail">
-		<img src="/files/<?=$document->view(array('action' => 'small')); ?>" alt="<?=$document->title ?>">
+        <img src="<?=$img_url ?>" alt="<?=$document->title ?>">
 		</div>
 		</li>
 		</ul>
@@ -191,7 +195,6 @@ $this->title($document->title);
 					<td><i class="icon-download-alt"></i></td>
 					<td class="meta">Download</td>
 					<td>
-                        <?php $file_name = $document->title . '.' .$document->format->extension; ?>
 						<?=$this->html->link(
                             $file_name,
                             array('Files::download', 'slug' => $document->slug, 'file' => $file_name)

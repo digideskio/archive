@@ -26,6 +26,7 @@ use lithium\core\Environment;
 use lithium\data\collection\RecordSet;
 use lithium\template\View;
 use lithium\util\Inflector;
+use lithium\net\http\Router;
 
 use li3_access\security\Access;
 
@@ -253,9 +254,16 @@ class WorksController extends \lithium\action\Controller {
 				'order' => array('date_modified' => 'DESC')
 			));
 
+            if ($document) {
+                $file_name = $document->title . '.' .$document->format->extension;
+                $thumbnail = Router::match(array("Files::thumb", 'slug' => $document->slug, 'file' => $file_name));
+            } else {
+                $thumbnail = '';
+            }
+
 			$document_slug = $document ? $document->slug : '';
 
-			return array('name' => $wc->classification, 'works' => $wc->works, 'document' => $document_slug);
+			return array('name' => $wc->classification, 'works' => $wc->works, 'thumbnail' => $thumbnail);
 		}, array('collect' => false));
 
 		return compact('classifications');

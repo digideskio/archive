@@ -257,37 +257,6 @@ class DocumentsTest extends \lithium\test\Unit {
 
 	}
 
-	public function testView() {
-
-		$thumb = 'thumb/Title-One.jpeg';
-		$small = 'small/Title-One.jpeg';
-		$download = 'download/Title-One.tiff';
-
-		$data = array(
-			'id' => 1,
-			'title' => 'Title One',
-			'hash' => 'c4ca4238a0b923820dcc509a6f75849b',
-			'slug' => 'Title-One',
-			'format_id' => 792, //tiff
-		);
-
-		$document = Documents::create($data);
-
-		$this->assertEqual($thumb, $document->view());
-
-		$this->assertEqual($thumb, $document->view(array(
-			'action' => 'thumb'
-		)));
-
-		$this->assertEqual($small, $document->view(array(
-			'action' => 'small'
-		)));
-
-		$this->assertEqual($download, $document->view(array(
-			'action' => 'download'
-		)));
-	}
-
 	public function testFile() {
 
 		$thumb = 'thumb/c4ca4238a0b923820dcc509a6f75849b.jpeg';
