@@ -50,53 +50,27 @@ class Archives extends \lithium\data\Model {
 		)
     );
 
-	/**
-	 * Sample schema and query. For now we rely on the schema being lazy-loaded
-	 */
-
-//	protected $_schema = array(
-//		'id'                   => array('type' => 'integer', 'null' => 'false'),
-//		'name'                 => array('type' => 'string', 'null' => false),
-//		'native_name'          => array('type' => 'string', 'null' => false),
-//		'language_code'        => array('type' => 'string', 'null' => false),
-//		'controller'           => array('type' => 'string', 'null' => false),
-//		'classification'       => array('type' => 'string', 'null' => false),
-//		'type'                 => array('type' => 'string', 'null' => false),
-//		'catalog_level'        => array('type' => 'string', 'null' => false),
-//		'description'          => array('type' => 'string', 'null' => false),
-//		'slug'                 => array('type' => 'string', 'null' => false),
-//		'earliest_date'        => array('type' => 'date', 'null' => false, 'default' => ''),
-//		'earliest_date_format' => array('type' => 'string', 'null' => false),
-//		'latest_date'          => array('type' => 'date', 'null' => false, 'default' => ''),
-//		'latest_date_format'   => array('type' => 'string', 'null' => false),
-//		'date_created'         => array('type' => 'date', 'null' => false),
-//		'date_modified'        => array('type' => 'date', 'null' => false),
-//		'user_id'              => array('type' => 'integer', 'null' => 'false'),
-//		'parent_id'            => array('type' => 'integer', 'null' => 'false'),
-//	);
-
-//	protected $_query = array(
-//		'fields' => array(
-//			'id',
-//			'name',
-//			'native_name',
-//			'language_code',
-//			'controller',
-//			'classification',
-//			'type',
-//			'catalog_level',
-//			'description',
-//			'slug',
-//			'earliest_date',
-//			'earliest_date_format',
-//			'latest_date',
-//			'latest_date_format',
-//			'date_created',
-//			'date_modified',
-//			'user_id',
-//			'parent_id',
-//		),
-//	);
+	protected $_schema = array(
+		'id'                   => array('type' => 'id'),
+		'name'                 => array('type' => 'string', 'null' => false),
+		'native_name'          => array('type' => 'string', 'null' => false),
+		'language_code'        => array('type' => 'string', 'null' => false),
+		'controller'           => array('type' => 'string', 'null' => false),
+		'classification'       => array('type' => 'string', 'null' => false),
+		'type'                 => array('type' => 'string', 'null' => false),
+		'catalog_level'        => array('type' => 'string', 'null' => false),
+		'description'          => array('type' => 'string', 'null' => false),
+		'slug'                 => array('type' => 'string', 'null' => false),
+		'earliest_date'        => array('type' => 'date', 'null' => false, 'default' => ''),
+		'latest_date'          => array('type' => 'date', 'null' => false, 'default' => ''),
+		'earliest_date_format' => array('type' => 'string', 'null' => false),
+		'latest_date_format'   => array('type' => 'string', 'null' => false),
+		'date_created'         => array('type' => 'date', 'null' => false),
+		'date_modified'        => array('type' => 'date', 'null' => false),
+		'user_id'              => array('type' => 'integer', 'null' => 'false'),
+		'parent_id'            => array('type' => 'integer', 'null' => 'false'),
+		'published'            => array('type' => 'boolean', 'null' => 'false'),
+	);
 
 	/**
 	 * This function takes a string and, if the string is a date, returns it in
@@ -296,11 +270,6 @@ Archives::applyFilter('create', function($self, $params, $chain) {
 			$params['data']['earliest_date'] = $earliest_date_filtered['date'];
 			$params['data']['earliest_date_format'] = $earliest_date_filtered['format'];
 		}
-	} else {
-		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
-		//So let's make sure the value is at least empty if it is not set
-		//This has only been necessary since the extra date format code was added
-		$params['data']['earliest_date'] = '';
 	}
 
 	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
@@ -312,8 +281,6 @@ Archives::applyFilter('create', function($self, $params, $chain) {
 			$params['data']['latest_date'] = $latest_date_filtered['date'];
 			$params['data']['latest_date_format'] = $latest_date_filtered['format'];
 		}
-	} else {
-		$params['data']['latest_date'] = '';
 	}
 
 	return $chain->next($self, $params, $chain);
@@ -322,16 +289,32 @@ Archives::applyFilter('create', function($self, $params, $chain) {
 
 Archives::applyFilter('save', function($self, $params, $chain) {
 
+    // If the entity exists and has the database default of 0000-00-00 for any dates, overwrite
+    // them with with an empty string, since they will not pass validation.
+    if($params['entity']->exists()) {
+        $entity_data = $params['entity']->data();
+
+            $entity_earliest_date_is_default = $entity_data['earliest_date'] === '0000-00-00';
+            $entity_latest_date_is_default = $entity_data['latest_date'] === '0000-00-00';
+
+            $data_earliest_date_is_set = isset($params['data']['earliest_date']);
+            $data_latest_date_is_set = isset($params['data']['latest_date']);
+
+	    if ($entity_earliest_date_is_default && !$data_earliest_date_is_set) {
+            $params['data']['earliest_date'] = '';
+        }
+
+	    if ($entity_latest_date_is_default && !$data_latest_date_is_set) {
+            $params['data']['latest_date'] = '';
+        }
+
+    }
+
 	if (isset($params['data']['earliest_date']) && $params['data']['earliest_date'] != '') {
 		$earliest_date = $params['data']['earliest_date'];
 		$earliest_date_filtered = Archives::filterDate($earliest_date);
 		$params['data']['earliest_date'] = $earliest_date_filtered['date'];
 		$params['data']['earliest_date_format'] = $earliest_date_filtered['format'];
-	} else {
-		//FIXME validation for the dates is failing if they are NULL, which is true of many unit tests
-		//So let's make sure the value is at least empty if it is not set
-		//This has only been necessary since the extra date format code was added
-		$params['data']['earliest_date'] = '';
 	}
 
 	if (isset($params['data']['latest_date']) && $params['data']['latest_date'] != '') {
@@ -339,8 +322,6 @@ Archives::applyFilter('save', function($self, $params, $chain) {
 		$latest_date_filtered = Archives::filterDate($latest_date);
 		$params['data']['latest_date'] = $latest_date_filtered['date'];
 		$params['data']['latest_date_format'] = $latest_date_filtered['format'];
-	} else {
-		$params['data']['latest_date'] = '';
 	}
 
 	return $chain->next($self, $params, $chain);

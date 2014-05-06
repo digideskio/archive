@@ -373,6 +373,25 @@ class ArchivesTest extends \lithium\test\Unit {
 
 	}
 
+    public function testEdit() {
+
+		$archive_data = array(
+			'name' => 'Some Album Title',
+			'controller' => 'albums'
+		);
+		$archive = Archives::create();
+		$archive->save($archive_data);
+
+        $find = Archives::first();
+
+        $archive_data = array(
+            'name' => 'New Album Title'
+        );
+
+        $this->assertTrue($find->save($archive_data));
+
+    }
+
 	public function testValidators() {
 
 		$archive = Archives::create();
