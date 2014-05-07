@@ -948,20 +948,28 @@ class WorksController extends \lithium\action\Controller {
 
 	public function delete() {
 
-		$work = Works::find('first', array(
-			'with' => 'Archives',
-			'conditions' => array('Archives.slug' => $this->request->params['slug']),
-		));
+        $action = '';
+        $request = $this->request;
+        $slug = isset($request->params['slug']) ? $request->params['slug'] : null;
 
-		// For the following to work, the delete form must have an explicit 'method' => 'post'
-		// since the default method is PUT
-		if (!$this->request->is('post') && !$this->request->is('delete')) {
-			$msg = "Works::delete can only be called with http:post or http:delete.";
-			throw new DispatchException($msg);
-		}
+        if (!empty($slug)) {
 
-		$work->delete();
-		return $this->redirect('Works::index');
+            $work = Works::find('first', array(
+                'with' => 'Archives',
+                'conditions' => array('Archives.slug' => $this->request->params['slug']),
+            ));
+
+            if ($work) {
+
+                if ($this->request->is('post') || $this->request->is('delete')) {
+                    $work->delete();
+                    $action = 'delete';
+                }
+
+            }
+        }
+
+        return compact('action');
 	}
 }
 

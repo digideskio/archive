@@ -383,7 +383,46 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual($artist->id, $pw->archive_id1);
 	}
 
-	public function testDelete() {}
+    public function testDelete() {
+		// Make sure the route that the add action redirects to is connected,
+		// otherwise we get an error that there is no match for this route.
+		Router::connect('/works/delete/{:slug}', array('Works::delete'));
+
+        // Test delete without POST method
+		$data = $this->call('delete', array(
+			'params' => array(
+				'slug' => 'First-Artwork-Title'
+            )
+		));
+
+		$this->assertEqual(1, Works::count());
+
+        // Test delete with no slug
+		$data = $this->call('delete', array(
+			'params' => array(
+				'slug' => ''
+            ),
+            'method' => 'POST',
+            'env' => array(
+                'REQUEST_METHOD' => 'POST'
+            )
+		));
+
+		$this->assertEqual(1, Works::count());
+
+		$data = $this->call('delete', array(
+			'params' => array(
+				'slug' => 'First-Artwork-Title'
+            ),
+            'method' => 'POST',
+            'env' => array(
+                'REQUEST_METHOD' => 'POST'
+            )
+		));
+
+		$this->assertEqual(0, Works::count());
+        $this->assertEqual('delete', $data['action']);
+    }
 
 	public function testRules() {
 
