@@ -27,6 +27,17 @@ class Users extends \lithium\data\Model {
         )
     );
 
+//    protected $_schema = array(
+//		'id'                   => array('type' => 'id'),
+//		'username'             => array('type' => 'string', 'null' => false),
+//		'name'                 => array('type' => 'string', 'null' => false),
+//		'email'                => array('type' => 'string', 'null' => false),
+//		'password'             => array('type' => 'string', 'null' => false),
+//		'role_id'              => array('type' => 'integer', 'null' => 'false'),
+//		'timezone_id'          => array('type' => 'integer', 'null' => 'false'),
+//		'active'               => array('type' => 'integer', 'null' => 'false')
+//    );
+
 	/**
 	 * Normally Auth will only store the User record in the session. We can include the Role as well
 	 * by writing this function and then adding 'query' => 'authenticate' to our Auth::config.
