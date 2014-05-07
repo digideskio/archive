@@ -47,16 +47,21 @@
 		</div>
 		<?php if($authority_can_edit): ?>
 		<div class="btn-group">
-		<?=$this->form->submit('Create Album', array('onclick' => "this.form.action='/albums/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
-        <a data-toggle="modal" href="#albumModal" class="btn btn-small batch-edit-btn" disabled="disabled">Add to Album</a>
+		<?=$this->form->submit('Create Album', array('onclick' => "this.form.action='/albums/add'", 'class' => 'btn btn-small batch-edit-btn batch-create-btn', 'disabled' => 'disabled')); ?>
+        <a data-toggle="modal" href="#albumModal" class="btn btn-small batch-edit-btn batch-create-btn" disabled="disabled">Add to Album</a>
 		</div>
 		<div class="btn-group">
-		<?=$this->form->submit('Create Exhibition', array('onclick' => "this.form.action='/exhibitions/add'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		<?=$this->form->submit('Create Exhibition', array('onclick' => "this.form.action='/exhibitions/add'", 'class' => 'btn btn-small batch-edit-btn batch-create-btn', 'disabled' => 'disabled')); ?>
 		</div>
 		<?php endif; ?>
 		<div class="btn-group">
 		<?=$this->form->submit('Print', array('onclick' => "this.form.action='/works/publish'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
+		<?php if($authority_can_edit): ?>
+		<div class="btn-group pull-right">
+        <a data-toggle="modal" href="#deleteWorksModal" class="btn btn-small batch-edit-btn batch-delete-btn" disabled="disabled">Delete</a>
+		</div>
+		<?php endif; ?>
 	</div>
 	</td></tr>
 	</tbody>
@@ -73,6 +78,22 @@
             <?=$this->form->select('archive_id1', $albums_list, array('style' => 'width: 100%')); ?>
             </fieldset>
 		    <?=$this->form->submit('Add Works to Album', array('name' => 'submit', 'onclick' => "this.form.action='/components/bulk'", 'class' => 'btn btn-primary btn-block')); ?>
+        </div>
+    </div>
+
+    <div class="modal fade hide" id="deleteWorksModal">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">×</button>
+                <h3>Delete Artwork</h3>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to permanently delete this Artwork?</p>
+
+                <p>By selecting <code>Delete</code>, you will remove this Artwork from the listings. Are you sure you want to continue?</p>
+                </div>
+                <div class="modal-footer">
+                <a href="#" class="btn" data-dismiss="modal">Cancel</a>
+                <?=$this->form->submit('Delete', array('onclick' => "this.form.action='/works/delete'", 'class' => 'btn btn-small btn-danger')); ?>
         </div>
     </div>
 
@@ -326,10 +347,12 @@ $(document).ready(function() {
 	function handleWorksButtons() {
 		if ($('.works-checkbox:checked').length) {
 			$('#works-toolbar .batch-edit-btn').removeAttr('disabled');
-			$('#works-toolbar .batch-edit-btn').addClass('btn-success');
+			$('#works-toolbar .batch-create-btn').addClass('btn-success');
+			$('#works-toolbar .batch-delete-btn').addClass('btn-danger');
 		} else {
 			$('#works-toolbar .batch-edit-btn').attr('disabled', 'disabled');
-			$('#works-toolbar .batch-edit-btn').removeClass('btn-success');
+			$('#works-toolbar .batch-create-btn').removeClass('btn-success');
+			$('#works-toolbar .batch-delete-btn').removeClass('btn-danger');
 		}
 	}
 

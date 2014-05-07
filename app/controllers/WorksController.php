@@ -948,24 +948,30 @@ class WorksController extends \lithium\action\Controller {
 
 	public function delete() {
 
-        $action = '';
+        $action = null;
         $request = $this->request;
+
         $slug = isset($request->params['slug']) ? $request->params['slug'] : null;
+        $archives = isset($request->data['archives']) ? $request->data['archives'] : array();
 
-        if (!empty($slug)) {
+        if ($this->request->is('post') || $this->request->is('delete')) {
+            $conditions = array();
 
-            $work = Works::find('first', array(
-                'with' => 'Archives',
-                'conditions' => array('Archives.slug' => $this->request->params['slug']),
-            ));
+            if (!empty($slug)) {
+                $conditions['Archives.slug'] = $slug;
+            }
 
-            if ($work) {
+            if (!empty($archives)) {
+                $conditions['Archives.id'] = $archives;
+            }
 
-                if ($this->request->is('post') || $this->request->is('delete')) {
-                    $work->delete();
-                    $action = 'delete';
-                }
+            if (!empty($conditions)) {
+                $success = Works::find('all', array(
+                    'with' => 'Archives',
+                    'conditions' => $conditions
+                ))->delete();
 
+                $action = $success ? 'delete' : null;
             }
         }
 
