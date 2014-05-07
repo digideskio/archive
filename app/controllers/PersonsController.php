@@ -42,7 +42,7 @@ class PersonsController extends \lithium\action\Controller {
 
 		$persons = Persons::find('all', array(
 			'with' => 'Archives',
-			'order' => array('Archives.name' => 'ASC'),
+			'order' => array('Persons.family_name' => 'ASC', 'Archives.name' => 'ASC'),
 			'limit' => $limit,
 			'page' => $page
 		));
