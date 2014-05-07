@@ -10,8 +10,7 @@ class ArchivesLinks extends \lithium\data\Model {
 
 	public $validates = array(
 		'archive_id' => array(
-			array('notEmpty', 'message' => "You can't leave this blank."),
-			array('archiveLinkUnique', 'message' => 'The Archive Link already exists')
+			array('notEmpty', 'message' => "You can't leave this blank.")
 		),
 	);
 }
@@ -29,7 +28,19 @@ ArchivesLinks::applyFilter('save', function($self, $params, $chain) {
 		));
 
 		if (!empty($link)) {
-			$success = true;
+            $archive_id = $params['data']['archive_id'];
+
+            // Check if this archive/link combo already exists
+            $archives_link = ArchivesLinks::find('first', array(
+                'conditions' => array(
+                    'archive_id' => $archive_id,
+                    'link_id' => $link->id
+                )
+            ));
+
+            if (empty($archives_link)) {
+			    $success = true;
+            }
 		}
 
 		if (empty($link)) {
@@ -48,11 +59,6 @@ ArchivesLinks::applyFilter('save', function($self, $params, $chain) {
 		return false;
 	}
 
-});
-
-// TODO Don't save combinations of archive_id and link_id that already exist in the database
-Validator::add('archiveLinkUnique', function($value, $rule, $options) {
-	return true;
 });
 
 ?>
