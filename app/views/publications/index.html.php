@@ -85,6 +85,6 @@ $authority_can_edit = $this->authority->canEdit();
 
 <?=$this->partial->publications(compact('publications')); ?>
 
-<?=$this->pagination->pager('publications', 'pages', $page, $total, $limit, array('classification' => $classification)); ?>
+<?=$this->pagination->pager('publications', 'pages', $page, $total, $limit, array('classification' => $classification, 'type' => $type)); ?>
 
 <?php endif; ?>
