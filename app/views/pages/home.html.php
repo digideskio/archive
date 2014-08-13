@@ -32,7 +32,7 @@ $this->title('Home');
 				<small class="meta"><?=$update->date_created ?>
 			</td></tr>
 
-		<? endforeach; ?>
+		<?php endforeach; ?>
 		</table>
 
 	</div>

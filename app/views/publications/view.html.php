@@ -68,9 +68,9 @@ $authority_can_edit = $this->authority->canEdit();
 					<strong><?=$al->link->elision()?></strong>
 				</a></p>
 
-			<? endforeach; ?>
+			<?php endforeach; ?>
 
-		<? endif; ?>
+		<?php endif; ?>
 
 		</div>
 
