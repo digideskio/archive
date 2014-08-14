@@ -80,6 +80,17 @@ class WorksController extends \lithium\action\Controller {
 			$filter = isset($artworks['filter']) ? $artworks['filter'] : '';
 		}
 
+        $archives = isset($this->request->data['archives']) ? $this->request->data['archives'] : array();
+        error_log(count($archives));
+
+        if (!empty($archives)) {
+            if (is_array($filter)) {
+                $filter['Works.id'] = $archives;
+            } else {
+                $filter = array('Works.id' => $archives);
+            }
+        }
+
 		$limit = isset($this->request->query['limit']) ? $this->request->query['limit'] : 40;
 		$page = isset($this->request->params['page']) ? $this->request->params['page'] : 1;
 

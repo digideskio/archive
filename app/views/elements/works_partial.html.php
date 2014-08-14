@@ -55,7 +55,7 @@
 		</div>
 		<?php endif; ?>
 		<div class="btn-group">
-		<?=$this->form->submit('Print', array('onclick' => "this.form.action='/works/publish'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
+		<?=$this->form->submit('Print', array('onclick' => "this.form.action='/works?action=print&limit=all'", 'class' => 'btn btn-small batch-edit-btn', 'disabled' => 'disabled')); ?>
 		</div>
 		<?php if($authority_can_edit): ?>
 		<div class="btn-group pull-right">
