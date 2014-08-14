@@ -5,6 +5,8 @@ app/config/bootstrap/connections.php
 app/config/bootstrap/filesystems.php
 .*.sw[op]
 app/resources/archive/*
+app/views/custom
+app/webroot/custom
 
 # Migrations
 app/config/db/logs
