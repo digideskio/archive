@@ -23,6 +23,10 @@ html, body {
     margin-bottom: 80px;
 }
 
+.image {
+    height: 360;
+}
+
 .caption {
     line-height: 2em;
     font-weight: bold;
@@ -58,7 +62,7 @@ if ($document && $document->id) :
 ?>
 
     <p>
-    <img width="400" max-height="360" src="<?=$img_url ?>" />
+    <img class="image" src="<?=$img_url ?>" />
     </p>
 
 <?php endif; ?>
