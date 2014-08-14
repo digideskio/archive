@@ -52,6 +52,11 @@ class Artwork extends \lithium\template\Helper {
 
 		$display_title = $title ? '<em>' . $title . '</em>' : '';
 
+        $title_years = implode(', ', array_filter(array(
+            $display_title,
+            $this->escape($years)
+        )));
+
 		if ($options['materials']) {
 			$materials = $artwork->materials;
 		} else {
@@ -62,9 +67,8 @@ class Artwork extends \lithium\template\Helper {
 
 		$caption = array_filter(array(
 			$display_artists,
-			$display_title,
+			$title_years,
 			$this->escape($materials),
-			$this->escape($years),
 			$this->escape($artwork->dimensions()),
 			$this->escape($artwork->measurement_remarks)
     	));

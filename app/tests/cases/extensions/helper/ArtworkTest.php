@@ -133,7 +133,7 @@ class ArtworkTest extends \lithium\test\Unit {
 
 		$caption = $helper->caption($work, array('separator' => '<br/>'));
 
-		$this->assertEqual('<em>First Artwork Title</em><br/>2004–2005<br/>40 × 50 cm.', $caption);
+		$this->assertEqual('<em>First Artwork Title</em>, 2004–2005<br/>40 × 50 cm.', $caption);
 
 	}
 
