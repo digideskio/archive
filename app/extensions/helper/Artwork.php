@@ -13,7 +13,8 @@ class Artwork extends \lithium\template\Helper {
         $defaults = array(
             'link' => false,
             'materials' => false,
-            'separator' => ', '
+            'separator' => ', ',
+            'terminator' => '.'
         );
 
         $options += $defaults;
@@ -64,6 +65,7 @@ class Artwork extends \lithium\template\Helper {
 		}
 
 		$separator = $options['separator'];
+        $terminator = $options['terminator'];
 
 		$caption = array_filter(array(
 			$display_artists,
@@ -73,7 +75,7 @@ class Artwork extends \lithium\template\Helper {
 			$this->escape($artwork->measurement_remarks)
     	));
 
-    	return implode($separator, $caption) . '.';
+        return implode($separator, $caption) . $terminator;
 
 	}
 
