@@ -946,6 +946,44 @@ class WorksController extends \lithium\action\Controller {
 
 	}
 
+    public function sheet() {
+
+		if(isset($this->request->params['slug'])) {
+
+			$works = Works::find('artworks', array(
+				'with' => 'Archives',
+				'conditions' => array('Archives.slug' => $this->request->params['slug']),
+			));
+
+			$work = $works->first();
+
+            if ($work) {
+                $doc_preview_conditions = array(
+                    'or' => array(
+                        array('Formats.mime_type' => 'application/pdf'),
+                        array('Formats.mime_type' => array('LIKE' => 'image/%'))
+                    )
+                );
+
+                $document = $work->documents('first', $doc_preview_conditions);
+
+                $paths = array(
+                    'template' => '{:library}/views/works/single.{:type}.php',
+                    'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
+                );
+
+                $layout = 'blank';
+
+                $data = compact('work', 'document');
+
+                return $this->render(compact('data', 'layout', 'paths'));
+            }
+        }
+
+		$this->redirect(array('Works::index'));
+
+    }
+
 	public function delete() {
 
         $action = null;

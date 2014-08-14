@@ -51,7 +51,7 @@ $inventory = (\lithium\core\Environment::get('inventory') && ($authority_can_inv
 					'archives' => $work->archive->id,
 					'template' => 'single'
 				);
-				$print_url = $this->url(array('Works::publish')) . '?' . http_build_query($print_query);
+				$print_url = $this->url(array('Works::sheet', 'slug' => $work->archive->slug));
 			?>
 			<a class="btn btn-inverse" href="<?=$print_url ?>"><i class="icon-print icon-white"></i> Print</a>
 		</div>
