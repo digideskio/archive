@@ -967,8 +967,17 @@ class WorksController extends \lithium\action\Controller {
 
                 $document = $work->documents('first', $doc_preview_conditions);
 
+                $custom = LITHIUM_APP_PATH . '/views/custom/works/single.html.php';
+                error_log($custom);
+
+                if (file_exists($custom)) {
+                    $template = $custom;
+                } else {
+                    $template = '{:library}/views/works/single.html.php';
+                }
+
                 $paths = array(
-                    'template' => '{:library}/views/works/single.{:type}.php',
+                    'template' => $template,
                     'layout'   => '{:library}/views/layouts/{:layout}.{:type}.php',
                 );
 
