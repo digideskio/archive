@@ -16,7 +16,9 @@ $authority_can_edit = $this->authority->canEdit();
 
 <?php if ($action === 'print'): ?>
     <script>
-        window.print();
+        $(document).ready(function() {
+            window.print();
+        });
     </script>
 <?php endif; ?>
 
@@ -30,7 +32,7 @@ $authority_can_edit = $this->authority->canEdit();
 	)
 )); ?>
 	<div class="btn-toolbar">
-			<a class="btn btn-inverse" href="<?=$this->url(array('Works::index')); ?>?action=print&limit=all"><i class="icon-print icon-white"></i> Print Artwork</a>
+			<a class="btn btn-inverse" href="<?=$this->url(array('Works::index')); ?>?action=print&limit=all"><i class="icon-print icon-white"></i> Print All</a>
 		<?php if($authority_can_edit): ?>
 
 			<a class="btn btn-inverse" href="<?=$this->url(array('Works::add')); ?>"><i class="icon-plus-sign icon-white"></i> Add Artwork</a>
