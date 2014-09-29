@@ -1033,9 +1033,14 @@ class WorksController extends \lithium\action\Controller {
             }
         }
 
-		$redirect = $this->request->env('HTTP_REFERER');
-
-        return $this->redirect($redirect);
+        // If we are deleting a set of works, return to the page where the
+        // delete was made. Otherwise, show the work delete template.
+        if (!empty($archives)) {
+            $redirect = $this->request->env('HTTP_REFERER');
+            return $this->redirect($redirect);
+        } else {
+            return compact('action');
+        }
 	}
 }
 
