@@ -242,6 +242,23 @@ class PersonsControllerTest extends \li3_unit\test\ControllerUnit {
 		$this->assertEqual($family_name, $person->family_name);
 	}
 
+    public function testDelete() {
+		Router::connect('/artists/delete/{:slug}', array('Artists::delete'));
+
+		$data = $this->call('delete', array(
+			'params' => array(
+				'slug' => 'First-Person'
+            ),
+            'method' => 'POST',
+            'env' => array(
+                'REQUEST_METHOD' => 'POST'
+            )
+		));
+
+		$this->assertEqual(0, Persons::count());
+        $this->assertEqual('delete', $data['action']);
+    }
+
 	public function testRules() {
 
 		$ctrl = new PersonsController();

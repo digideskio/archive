@@ -240,8 +240,26 @@ class PersonsController extends \lithium\action\Controller {
 	}
 
 	public function delete() {
+        $action = null;
+        $request = $this->request;
 
-		return $this->redirect('Persons::index');
+        $slug = isset($request->params['slug']) ? $request->params['slug'] : null;
+
+        if ($this->request->is('post') || $this->request->is('delete')) {
+
+            if (!empty($slug)) {
+                $conditions['Archives.slug'] = $slug;
+
+                $success = Persons::find('all', array(
+                    'with' => 'Archives',
+                    'conditions' => $conditions
+                ))->delete();
+
+                $action = $success ? 'delete' : null;
+            }
+        }
+
+        return compact('action');
 	}
 
 }

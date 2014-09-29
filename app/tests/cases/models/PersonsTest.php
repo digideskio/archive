@@ -34,6 +34,7 @@ class PersonsTest extends \lithium\test\Unit {
 
 	}
 
+    // TODO Test that delete removes all relationships and artworks
 
 }
 

@@ -44,10 +44,25 @@ Persons::applyFilter('delete', function($self, $params, $chain) {
 		'conditions' => array('id' => $person_id)
 	))->delete();
 
-	//Delete any relationships
-	Components::find('all', array(
+	//Delete any relationships and artworks
+
+	$components = Components::find('all', array(
 		'conditions' => array('archive_id1' => $person_id)
-	))->delete();
+	));
+
+    $archive_ids = $components->map(function($c) {
+        return $c->archive_id2;
+    }, array('collect' => false));
+
+    if (!empty($archive_ids)) {
+        Works::find('all', array(
+            'conditions' => array('Works.id' => $archive_ids),
+        ))->delete();
+
+        // TODO Delete any documents attached to these artworks
+    }
+
+    $components->delete();
 
 	ArchivesDocuments::find('all', array(
 		'conditions' => array('archive_id' => $person_id)

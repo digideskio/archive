@@ -69,6 +69,11 @@ $this->form->config(
 		)
 	)
 )); ?>
+	<div class="btn-toolbar">
+			<a class="btn btn-danger" data-toggle="modal" href="#deleteModal">
+				<i class="icon-white icon-trash"></i> Delete Artist
+			</a>
+	</div>
 </div>
 
 <div class="row">
@@ -122,4 +127,23 @@ $this->form->config(
 
 
 <?=$this->form->end(); ?>
+</div>
+
+<div class="modal fade hide" id="deleteModal">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal">×</button>
+			<h3>Delete Artist</h3>
+		</div>
+		<div class="modal-body">
+			<p>Are you sure you want to permanently delete <strong><?=$person->archive->name; ?></strong>?</p>
+
+			<p>By selecting <code>Delete</code>, you will remove this Artist and all of their Artwork from the listings. Are you sure you want to continue?</p>
+			</div>
+			<div class="modal-footer">
+			<?php $slug = $work->archive->slug; ?>
+			<?=$this->form->create($work, array('url' => $this->url(array("Persons::delete", 'slug' => $person->archive->slug)), 'method' => 'post')); ?>
+			<a href="#" class="btn" data-dismiss="modal">Cancel</a>
+			<?=$this->form->submit('Delete', array('class' => 'btn btn-danger')); ?>
+			<?=$this->form->end(); ?>
+	</div>
 </div>
