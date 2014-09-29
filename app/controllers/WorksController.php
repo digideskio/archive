@@ -1033,7 +1033,9 @@ class WorksController extends \lithium\action\Controller {
             }
         }
 
-        return compact('action');
+		$redirect = $this->request->env('HTTP_REFERER');
+
+        return $this->redirect($redirect);
 	}
 }
 
