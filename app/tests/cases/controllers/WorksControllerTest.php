@@ -425,8 +425,6 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
     }
 
     public function testBulkDelete() {
-		// Make sure the route that the add action redirects to is connected,
-		// otherwise we get an error that there is no match for this route.
 		Router::connect('/works/delete/{:slug}', array('Works::delete'));
 
         $work = Works::first();
@@ -445,8 +443,6 @@ class WorksControllerTest extends \li3_unit\test\ControllerUnit {
 		));
 
 		$this->assertEqual(0, Works::count());
-        $this->assertEqual('delete', $data['action']);
-
     }
 
 	public function testRules() {
