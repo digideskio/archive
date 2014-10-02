@@ -69,6 +69,34 @@ class SearchController extends \lithium\action\Controller {
 
 			$order = array('Archives.earliest_date' => 'DESC');
 
+            $person_ids = array();
+
+			$fields = array('Archives.name', 'Archives.native_name');
+
+			foreach ($fields as $field) {
+				$matching_persons = Persons::find('all', array(
+					'with' => 'Archives',
+					'fields' => 'Persons.id',
+					'conditions' => array($field => array('LIKE' => "%$query%")),
+				));
+
+				if ($matching_persons) {
+					$matching_ids = $matching_persons->map(function($mp) {
+						return $mp->id;
+					}, array('collect' => false));
+
+					$person_ids = array_unique(array_merge($person_ids, $matching_ids));
+				}
+			}
+
+			$person_conditions = $person_ids ? array('Persons.id' => $person_ids) : array('Archives.name' => $query);
+
+            $persons = Persons::find('all', array(
+                'with' => 'Archives',
+                'order' => array('Persons.family_name' => 'ASC', 'Archives.name' => 'ASC'),
+                'conditions' => $person_conditions
+            ));
+
 			$artwork_ids = array();
 
 			$name_fields = array('Archives.name', 'Archives.native_name');
@@ -343,6 +371,7 @@ class SearchController extends \lithium\action\Controller {
 		$architecture = Environment::get('architecture');
 
         return compact(
+            'persons',
 			'works',
 			'works_total',
 			'architectures',

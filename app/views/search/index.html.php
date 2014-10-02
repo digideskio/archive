@@ -45,6 +45,7 @@ $this->title('Search');
 <div id="search-results">
 
 	<?php
+		$has_persons = $persons && sizeof($persons) > 0 ? true : false;
 		$has_works = $works && sizeof($works) > 0 ? true : false;
 		$has_architectures = $architecture && $architectures && sizeof($architectures) > 0 ? true : false;
 		$has_exhibitions = $exhibitions && sizeof($exhibitions) > 0 ? true : false;
@@ -53,13 +54,20 @@ $this->title('Search');
 		$has_links = $links && sizeof($links) > 0 ? true : false;
 	?>
 
-	<?php if ($query && !$has_works && !$has_architectures && !$has_exhibitions && !$has_publications && !$has_documents && !$has_links): ?>
+	<?php if ($query && !$has_persons && !$has_works && !$has_architectures && !$has_exhibitions && !$has_publications && !$has_documents && !$has_links): ?>
 
 		<div class="alert alert-error">
 			<p>No results found.</p>
 		</div>
 
 	<?php endif; ?>
+
+    <?php if ($has_persons): ?>
+
+		<?=$this->partial->persons(array('persons' => $persons, 'showBar' => true)); ?>
+
+		<hr/>
+    <?php endif; ?>
 
 	<?php if ($has_works): ?>
 

@@ -31,26 +31,6 @@ $authority_is_admin = $this->authority->isAdmin();
 
 </div>
 
-<?php if ($persons->count() > 20): ?>
-	<div style="-moz-column-count:3; -webkit-column-count:3; column-count:3;">
-<?php else: ?>
-	<div>
-<?php endif; ?>
-
-<?php foreach ($persons as $person): ?>
-
-	<p>
-		<?=$this->html->link(
-			$person->archive->name . ' ' . $person->archive->native_name,
-			$this->url(array(
-				'controller' => 'persons',
-				'action' => 'view',
-				'slug' => $person->archive->slug
-			))
-		); ?>
-	</p>
-
-<?php endforeach; ?>
-</div>
+<?=$this->partial->persons(array('persons' => $persons)); ?>
 
 <?=$this->pagination->pager('artists', 'pages', $page, $total, $limit, array('limit' => $limit)); ?>
