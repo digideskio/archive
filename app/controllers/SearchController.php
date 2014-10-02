@@ -121,22 +121,6 @@ class SearchController extends \lithium\action\Controller {
 				}
 			}
 
-            /*
-            if ($query_year_parse) {
-				$matching_works = Works::find('artworks', array(
-					'fields' => 'Works.id',
-					'conditions' => array('Archives.earliest_date' => array('LIKE' => "%$query_year_parse%")),
-				));
-				if ($matching_works) {
-					$matching_ids = $matching_works->map(function($mw) {
-						return $mw->id;
-					}, array('collect' => false));
-
-					$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
-				}
-            }
-             */
-
 			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('Archives.name' => $query);
 
 			$filter = '';
