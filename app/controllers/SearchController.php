@@ -64,6 +64,9 @@ class SearchController extends \lithium\action\Controller {
 			// Save the query term as a session variable in the custom storage
 			Session::write('query', $query, array('name' => 'custom'));
 
+            // Check if the query parses as four-digit year
+            $query_is_year = preg_match('/^(\d{4})$/', $query);
+
 			$order = array('Archives.earliest_date' => 'DESC');
 
 			$artwork_ids = array();
@@ -95,9 +98,15 @@ class SearchController extends \lithium\action\Controller {
 
 			}
 
-			$fields = array('Archives.name', 'Archives.classification', 'Archives.earliest_date', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
+			$fields = array('Archives.name', 'Archives.classification', 'Works.materials', 'Works.remarks', 'Works.creation_number', 'Works.annotation');
+
+            // Only compare the date if the query parses as a year
+            if ($query_is_year) {
+                $fields[] = 'Archives.earliest_date';
+            }
 
 			foreach ($fields as $field) {
+
 				$matching_works = Works::find('artworks', array(
 					'fields' => 'Works.id',
 					'conditions' => array("$field" => array('LIKE' => "%$query%")),
@@ -111,6 +120,22 @@ class SearchController extends \lithium\action\Controller {
 					$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
 				}
 			}
+
+            /*
+            if ($query_year_parse) {
+				$matching_works = Works::find('artworks', array(
+					'fields' => 'Works.id',
+					'conditions' => array('Archives.earliest_date' => array('LIKE' => "%$query_year_parse%")),
+				));
+				if ($matching_works) {
+					$matching_ids = $matching_works->map(function($mw) {
+						return $mw->id;
+					}, array('collect' => false));
+
+					$artwork_ids = array_unique(array_merge($artwork_ids, $matching_ids));
+				}
+            }
+             */
 
 			$work_conditions = $artwork_ids ? array('Works.id' => $artwork_ids) : array('Archives.name' => $query);
 
@@ -138,7 +163,11 @@ class SearchController extends \lithium\action\Controller {
 
 			$architecture_ids = array();
 
-			$fields = array('Archives.name', 'architect', 'client', 'project_lead', 'earliest_date', 'status', 'location', 'city', 'country', 'remarks');
+			$fields = array('Archives.name', 'architect', 'client', 'project_lead', 'status', 'location', 'city', 'country', 'remarks');
+
+            if ($query_is_year) {
+                $fields[] = 'Archives.earliest_date';
+            }
 
 			foreach ($fields as $field) {
 				$matching_works = Architectures::find('all', array(
@@ -174,7 +203,12 @@ class SearchController extends \lithium\action\Controller {
 
 			$exhibition_ids = array();
 
-			$fields = array('Archives.name', 'venue', 'curator', 'earliest_date', 'city', 'country', 'remarks');
+            // FIXME
+			$fields = array('Archives.name', 'venue', 'curator', 'city', 'country', 'remarks');
+
+            if ($query_is_year) {
+                $fields[] = 'Archives.earliest_date';
+            }
 
 			foreach ($fields as $field) {
 				$matching_exhibits = Exhibitions::find('all', array(
@@ -210,7 +244,11 @@ class SearchController extends \lithium\action\Controller {
 
 			$publication_ids = array();
 
-			$fields = array('Archives.name', 'author', 'publisher', 'editor', 'earliest_date', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
+			$fields = array('Archives.name', 'author', 'publisher', 'editor', 'subject', 'language', 'storage_location', 'storage_number', 'publication_number');
+
+            if ($query_is_year) {
+                $fields[] = 'Archives.earliest_date';
+            }
 
 			foreach ($fields as $field) {
 				$matching_pubs = Publications::find('all', array(
@@ -246,7 +284,11 @@ class SearchController extends \lithium\action\Controller {
 
 			$document_ids = array();
 
-			$fields = array('title', 'date_created', 'repository', 'credit', 'remarks');
+			$fields = array('title', 'repository', 'credit', 'remarks');
+
+            if ($query_is_year) {
+                $fields[] = 'date_created';
+            }
 
 			foreach ($fields as $field) {
 				$matching_docs = Documents::find('all', array(
