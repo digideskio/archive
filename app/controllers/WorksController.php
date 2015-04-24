@@ -1016,22 +1016,18 @@ class WorksController extends \lithium\action\Controller {
                     @mkdir($target_dir, 0775, true);
                 }
 
-                $html_file = $target_dir . DIRECTORY_SEPARATOR .
-                             $work->archive->slug . ".html";
-                $pdf_file  = $target_dir . DIRECTORY_SEPARATOR .
-                             $work->archive->slug . ".pdf";
+                $title = Inflector::slug($work->archive->name);
+                $html = $title . ".html";
+                $pdf = $title . ".pdf";
+
+                $html_file = $target_dir . DIRECTORY_SEPARATOR . $html;
+                $pdf_file  = $target_dir . DIRECTORY_SEPARATOR . $pdf;
 
                 file_put_contents($html_file, $page);
                 $cmd = escapeshellcmd("wkhtmltopdf '$html_file' '$pdf_file'");
                 exec($cmd);
 
-				$this->response->headers(array(
-					'X-Sendfile' => $pdf_file,
-					'Content-type' => 'application/octet-stream',
-					'Content-Disposition' => 'attachment; filename="' . $work->archive->slug . '.pdf' .  '"'
-				));
-
-                return $page;
+                return $this->redirect(array('Files::package', 'file' => $pdf));
             }
         }
 
