@@ -979,7 +979,6 @@ class WorksController extends \lithium\action\Controller {
                 $document = $work->documents('first', $doc_preview_conditions);
 
                 $custom = LITHIUM_APP_PATH . '/views/custom/works/single.html.php';
-                error_log($custom);
 
                 if (file_exists($custom)) {
                     $template = $custom;
@@ -994,9 +993,45 @@ class WorksController extends \lithium\action\Controller {
 
                 $layout = 'blank';
 
-                $data = compact('work', 'document');
+                $host = $this->request->env('HTTP_HOST');
+                $data = compact('host', 'work', 'document');
 
-                return $this->render(compact('data', 'layout', 'paths'));
+                $view = new View(compact('paths'));
+                $page = $view->render(
+                    'all',
+                    $data,
+                    array(
+                        'controller' => 'works',
+                        'template' => $template,
+                        'type' => 'html',
+                        'layout' => $layout
+                    )
+                );
+
+                $filesystems = FileSystem::config('packages');
+                $target_dir = $filesystems['path'];
+
+                // Create target dir
+                if (!file_exists($target_dir)) {
+                    @mkdir($target_dir, 0775, true);
+                }
+
+                $html_file = $target_dir . DIRECTORY_SEPARATOR .
+                             $work->archive->slug . ".html";
+                $pdf_file  = $target_dir . DIRECTORY_SEPARATOR .
+                             $work->archive->slug . ".pdf";
+
+                file_put_contents($html_file, $page);
+                $cmd = escapeshellcmd("wkhtmltopdf '$html_file' '$pdf_file'");
+                exec($cmd);
+
+				$this->response->headers(array(
+					'X-Sendfile' => $pdf_file,
+					'Content-type' => 'application/octet-stream',
+					'Content-Disposition' => 'attachment; filename="' . $work->archive->slug . '.pdf' .  '"'
+				));
+
+                return $page;
             }
         }
 

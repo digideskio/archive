@@ -11,6 +11,7 @@ The Archive tracks Artworks, Architectural Projects, Exhibitions, and Publicatio
 * imagick and mod\_xsendfile
 * Ghostscript
 * exiftool
+* wkhtmltopdf
 
 ### Installation
 

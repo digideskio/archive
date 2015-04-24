@@ -1,13 +1,15 @@
 <?php
 
+use li3_filesystem\extensions\storage\FileSystem;
+
 $this->title($work->archive->name);
-$host = $this->request()->env('HTTP_HOST');
 
 ?>
 
+<meta charset="UTF-8">
+
 <script>
     document.title = "<?=$work->archive->name ?>";
-    window.print();
 </script>
 
 <style>
@@ -58,11 +60,14 @@ html, body {
 if ($document && $document->id) :
 
     $file_name = $document->title . '.' .$document->format->extension;
+    $filename = $document->file();
+    $file_data = base64_encode(FileSystem::read('documents', $filename));
+    $file_mime = $document->format->mime_type;
     $img_url = $this->url(array("Files::small", 'slug' => $document->slug, 'file' => $file_name));
 ?>
 
     <p>
-    <img class="image" src="<?=$img_url ?>" />
+    <img class="image" src="data:<?=$file_mime ?>;base64,<?php echo $file_data; ?>" title="<?=$file_name ?>"/>
     </p>
 
 <?php endif; ?>
